@@ -6,7 +6,7 @@ import com.stedi.randomimagegenerator.app.di.components.AppComponent;
 import com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent;
 import com.stedi.randomimagegenerator.app.di.modules.AppModule;
 
-public class App extends Application {
+public final class App extends Application {
     private AppComponent component;
 
     @Override
