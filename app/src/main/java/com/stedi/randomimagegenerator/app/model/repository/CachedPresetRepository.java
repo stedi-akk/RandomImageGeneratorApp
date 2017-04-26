@@ -1,5 +1,7 @@
 package com.stedi.randomimagegenerator.app.model.repository;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.SparseArray;
 
 import com.stedi.randomimagegenerator.app.model.data.Preset;
@@ -14,12 +16,12 @@ public class CachedPresetRepository implements PresetRepository {
 
     private boolean isActual;
 
-    public CachedPresetRepository(PresetRepository target) {
+    public CachedPresetRepository(@NonNull PresetRepository target) {
         this.target = target;
     }
 
     @Override
-    public boolean save(Preset preset) {
+    public boolean save(@NonNull Preset preset) {
         if (target.save(preset)) {
             cache.put(preset.getId(), preset);
             return true;
@@ -37,6 +39,7 @@ public class CachedPresetRepository implements PresetRepository {
     }
 
     @Override
+    @Nullable
     public Preset get(int id) {
         if (cache.indexOfKey(id) >= 0) {
             return cache.get(id);
@@ -48,6 +51,7 @@ public class CachedPresetRepository implements PresetRepository {
     }
 
     @Override
+    @NonNull
     public List<Preset> getAll() {
         if (isActual) {
             return Utils.sparseArrayToList(cache);

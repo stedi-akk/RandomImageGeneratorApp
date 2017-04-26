@@ -1,6 +1,7 @@
 package com.stedi.randomimagegenerator.app.di.modules;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.app.App;
 
@@ -14,7 +15,7 @@ import dagger.Provides;
 public class AppModule {
     private final App app;
 
-    public AppModule(App app) {
+    public AppModule(@NonNull App app) {
         this.app = app;
     }
 

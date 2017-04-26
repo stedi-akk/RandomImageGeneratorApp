@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.other;
 
+import android.support.annotation.NonNull;
 import android.util.SparseArray;
 
 import java.util.ArrayList;
@@ -17,7 +18,8 @@ public final class Utils {
         }
     }
 
-    public static <T> List<T> sparseArrayToList(SparseArray<T> array) {
+    @NonNull
+    public static <T> List<T> sparseArrayToList(@NonNull SparseArray<T> array) {
         List<T> result = new ArrayList<>();
         for (int i = 0; i < array.size(); i++)
             result.add(array.valueAt(i));

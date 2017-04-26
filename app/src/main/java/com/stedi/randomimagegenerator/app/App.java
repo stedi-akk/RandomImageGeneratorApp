@@ -1,6 +1,7 @@
 package com.stedi.randomimagegenerator.app;
 
 import android.app.Application;
+import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.app.di.components.AppComponent;
 import com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent;
@@ -17,6 +18,7 @@ public final class App extends Application {
                 .build();
     }
 
+    @NonNull
     public AppComponent getComponent() {
         return component;
     }
