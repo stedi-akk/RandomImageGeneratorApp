@@ -1,14 +1,14 @@
 package com.stedi.randomimagegenerator.app.model.repository;
 
-import android.util.LongSparseArray;
+import android.util.SparseArray;
 
 import com.stedi.randomimagegenerator.app.model.data.Preset;
+import com.stedi.randomimagegenerator.app.other.Utils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CachedPresetRepository implements PresetRepository {
-    private final LongSparseArray<Preset> cache = new LongSparseArray<>();
+    private final SparseArray<Preset> cache = new SparseArray<>();
 
     private final PresetRepository target;
 
@@ -38,21 +38,19 @@ public class CachedPresetRepository implements PresetRepository {
 
     @Override
     public Preset get(int id) {
-        Preset preset = cache.get(id);
-        if (preset != null || isActual)
+        if (cache.indexOfKey(id) >= 0) {
+            return cache.get(id);
+        } else {
+            Preset preset = target.get(id);
+            cache.put(id, preset);
             return preset;
-        preset = target.get(id);
-        cache.put(id, preset);
-        return preset;
+        }
     }
 
     @Override
     public List<Preset> getAll() {
         if (isActual) {
-            List<Preset> result = new ArrayList<>();
-            for (int i = 0; i < cache.size(); i++)
-                result.add(cache.valueAt(i));
-            return result;
+            return Utils.sparseArrayToList(cache);
         } else {
             List<Preset> result = target.getAll();
             for (Preset preset : result)

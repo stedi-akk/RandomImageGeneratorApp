@@ -1,14 +1,14 @@
 package com.stedi.randomimagegenerator.app.model.repository;
 
-import android.util.LongSparseArray;
+import android.util.SparseArray;
 
 import com.stedi.randomimagegenerator.app.model.data.Preset;
+import com.stedi.randomimagegenerator.app.other.Utils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DatabasePresetRepository implements PresetRepository {
-    private final LongSparseArray<Preset> fakeDatabase = new LongSparseArray<>();
+    private final SparseArray<Preset> fakeDatabase = new SparseArray<>();
 
     @Override
     public boolean save(Preset preset) {
@@ -29,9 +29,6 @@ public class DatabasePresetRepository implements PresetRepository {
 
     @Override
     public List<Preset> getAll() {
-        List<Preset> result = new ArrayList<>();
-        for (int i = 0; i < fakeDatabase.size(); i++)
-            result.add(fakeDatabase.valueAt(i));
-        return result;
+        return Utils.sparseArrayToList(fakeDatabase);
     }
 }
