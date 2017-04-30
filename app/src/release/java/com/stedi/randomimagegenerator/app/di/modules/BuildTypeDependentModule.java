@@ -15,4 +15,9 @@ public class BuildTypeDependentModule {
     Logger provideLogger() {
         return new NullLogger();
     }
+
+    @Provides
+    PresetRepository providePresetRepository() {
+        return new CachedPresetRepository(new DatabasePresetRepository());
+    }
 }

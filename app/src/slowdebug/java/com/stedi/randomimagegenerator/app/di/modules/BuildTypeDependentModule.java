@@ -1,5 +1,9 @@
 package com.stedi.randomimagegenerator.app.di.modules;
 
+import com.stedi.randomimagegenerator.app.model.repository.CachedPresetRepository;
+import com.stedi.randomimagegenerator.app.model.repository.DatabasePresetRepository;
+import com.stedi.randomimagegenerator.app.model.repository.PresetRepository;
+import com.stedi.randomimagegenerator.app.model.repository.SlowPresetRepository;
 import com.stedi.randomimagegenerator.app.other.logger.LogCatLogger;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 
@@ -14,5 +18,10 @@ public class BuildTypeDependentModule {
     @Singleton
     Logger provideLogger() {
         return new LogCatLogger("RIGAPP-SDBG");
+    }
+
+    @Provides
+    PresetRepository providePresetRepository() {
+        return new CachedPresetRepository(new SlowPresetRepository(new DatabasePresetRepository()));
     }
 }

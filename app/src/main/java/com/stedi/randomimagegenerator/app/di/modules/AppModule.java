@@ -3,6 +3,7 @@ package com.stedi.randomimagegenerator.app.di.modules;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.squareup.otto.Bus;
 import com.stedi.randomimagegenerator.app.App;
 
 import javax.inject.Named;
@@ -24,5 +25,11 @@ public class AppModule {
     @Named("AppContext")
     Context provideAppContext() {
         return app;
+    }
+
+    @Provides
+    @Singleton
+    Bus provideBus() {
+        return new Bus();
     }
 }
