@@ -21,7 +21,7 @@ public class CachedPresetRepository implements PresetRepository {
     }
 
     @Override
-    public boolean save(@NonNull Preset preset) {
+    public boolean save(@NonNull Preset preset) throws Exception {
         if (target.save(preset)) {
             cache.put(preset.getId(), preset);
             return true;
@@ -30,7 +30,7 @@ public class CachedPresetRepository implements PresetRepository {
     }
 
     @Override
-    public boolean remove(int id) {
+    public boolean remove(int id) throws Exception {
         if (target.remove(id)) {
             cache.remove(id);
             return true;
@@ -40,7 +40,7 @@ public class CachedPresetRepository implements PresetRepository {
 
     @Override
     @Nullable
-    public Preset get(int id) {
+    public Preset get(int id) throws Exception {
         if (cache.indexOfKey(id) >= 0) {
             return cache.get(id);
         } else {
@@ -52,7 +52,7 @@ public class CachedPresetRepository implements PresetRepository {
 
     @Override
     @NonNull
-    public List<Preset> getAll() {
+    public List<Preset> getAll() throws Exception {
         if (isActual) {
             return Utils.sparseArrayToList(cache);
         } else {

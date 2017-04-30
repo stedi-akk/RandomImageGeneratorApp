@@ -12,6 +12,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import rx.Scheduler;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 @Module
@@ -45,5 +46,11 @@ public class AppModule {
     @Named("RigScheduler")
     Scheduler provideRigScheduler() {
         return Schedulers.computation();
+    }
+
+    @Provides
+    @Named("UiScheduler")
+    Scheduler provideAndroidScheduler() {
+        return AndroidSchedulers.mainThread();
     }
 }

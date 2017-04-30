@@ -1,7 +1,9 @@
 package com.stedi.randomimagegenerator.app.other;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.SparseArray;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,5 +26,9 @@ public final class Utils {
         for (int i = 0; i < array.size(); i++)
             result.add(array.valueAt(i));
         return result;
+    }
+
+    public static void toast(Context context, String message) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 }

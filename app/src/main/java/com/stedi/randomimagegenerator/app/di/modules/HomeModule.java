@@ -15,7 +15,11 @@ import rx.Scheduler;
 @Module
 public class HomeModule {
     @Provides
-    HomePresenter provideHomePresenter(PresetRepository repository, @Named("DefaultScheduler") Scheduler scheduler, Bus bus, Logger logger) {
-        return new HomePresenterImpl(repository, scheduler, bus, logger);
+    HomePresenter provideHomePresenter(PresetRepository repository,
+                                       @Named("DefaultScheduler") Scheduler subscribeOn,
+                                       @Named("UiScheduler") Scheduler observeOn,
+                                       Bus bus,
+                                       Logger logger) {
+        return new HomePresenterImpl(repository, subscribeOn, observeOn, bus, logger);
     }
 }
