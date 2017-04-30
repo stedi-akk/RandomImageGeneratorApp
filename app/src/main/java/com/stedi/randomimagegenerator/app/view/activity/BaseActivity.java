@@ -11,7 +11,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private ActivityComponent component;
 
     @NonNull
-    public ActivityComponent getComponent() {
+    public ActivityComponent getActivityComponent() {
         if (component == null)
             component = Components.getAppComponent(this).plus(new ActivityModule(this));
         return component;

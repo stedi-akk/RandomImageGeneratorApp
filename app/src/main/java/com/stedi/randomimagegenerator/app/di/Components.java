@@ -14,10 +14,10 @@ public final class Components {
     }
 
     public static AppComponent getAppComponent(@NonNull Context context) {
-        return ((App) context.getApplicationContext()).getComponent();
+        return ((App) context.getApplicationContext()).getAppComponent();
     }
 
     public static ActivityComponent getActivityComponent(@NonNull Activity activity) {
-        return ((BaseActivity) activity).getComponent();
+        return ((BaseActivity) activity).getActivityComponent();
     }
 }

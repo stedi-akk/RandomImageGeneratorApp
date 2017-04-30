@@ -11,6 +11,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import rx.Scheduler;
+import rx.schedulers.Schedulers;
 
 @Module
 public class AppModule {
@@ -31,5 +33,17 @@ public class AppModule {
     @Singleton
     Bus provideBus() {
         return new Bus();
+    }
+
+    @Provides
+    @Named("DefaultScheduler")
+    Scheduler provideDefaultScheduler() {
+        return Schedulers.io();
+    }
+
+    @Provides
+    @Named("RigScheduler")
+    Scheduler provideRigScheduler() {
+        return Schedulers.computation();
     }
 }

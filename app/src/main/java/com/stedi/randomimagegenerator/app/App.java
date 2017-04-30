@@ -19,7 +19,7 @@ public final class App extends Application {
     }
 
     @NonNull
-    public AppComponent getComponent() {
+    public AppComponent getAppComponent() {
         return component;
     }
 }
