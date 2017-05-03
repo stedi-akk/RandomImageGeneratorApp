@@ -71,6 +71,11 @@ public class HomePresenterImpl implements HomePresenter {
     }
 
     @Override
+    public void createNewGeneration() {
+        ui.onShowNewGeneration();
+    }
+
+    @Override
     public void onAttach(@NonNull UIImpl ui) {
         this.ui = ui;
         bus.register(this);
