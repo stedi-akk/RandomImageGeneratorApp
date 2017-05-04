@@ -45,7 +45,6 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl {
 
     @Override
     public void onPresetsFetched(@NonNull List<Preset> presets) {
-        Utils.toast(this, "onPresetsFetched");
     }
 
     @Override

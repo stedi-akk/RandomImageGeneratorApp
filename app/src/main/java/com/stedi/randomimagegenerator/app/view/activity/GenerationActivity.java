@@ -4,14 +4,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.stedi.randomimagegenerator.app.R;
-import com.stedi.randomimagegenerator.app.presenter.GenerationPresenter;
 import com.stedi.randomimagegenerator.app.view.adapters.GenerationStepperAdapter;
 import com.stepstone.stepper.StepperLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class GenerationActivity extends BaseActivity implements GenerationPresenter.UIImpl {
+public class GenerationActivity extends BaseActivity {
     @BindView(R.id.generation_activity_stepper) StepperLayout stepper;
 
     @Override

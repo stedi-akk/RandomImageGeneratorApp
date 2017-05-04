@@ -5,9 +5,13 @@ import android.support.annotation.Nullable;
 
 import java.io.Serializable;
 
-public class GenerationPresenterImpl implements GenerationPresenter {
-
+public class ChooseGeneratorPresenterImpl implements ChooseGeneratorPresenter {
     private UIImpl ui;
+
+    @Override
+    public void getGenerators() {
+
+    }
 
     @Override
     public void onAttach(@NonNull UIImpl ui) {
