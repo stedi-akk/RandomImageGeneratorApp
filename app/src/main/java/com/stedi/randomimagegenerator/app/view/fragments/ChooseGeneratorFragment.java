@@ -31,7 +31,12 @@ public class ChooseGeneratorFragment extends BaseFragment implements ChooseGener
     }
 
     @Override
-    public void onShowGeneratorsToChoose(List<Generator> generators) {
+    public void onShowGeneratorsToChoose(@NonNull List<Generator> generators) {
+
+    }
+
+    @Override
+    public void onGeneratorChose(@NonNull Generator generator) {
 
     }
 

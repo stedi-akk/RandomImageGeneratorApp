@@ -2,13 +2,23 @@ package com.stedi.randomimagegenerator.app.model.data;
 
 import android.support.annotation.NonNull;
 
-public class Preset {
-    private final int id;
-    private final String name;
+import com.stedi.randomimagegenerator.generators.Generator;
 
-    public Preset(int id, @NonNull String name) {
-        this.id = id;
+public class Preset {
+    private int id;
+    private String name;
+    private Generator generator;
+
+    public Preset(@NonNull String name) {
         this.name = name;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setGenerator(@NonNull Generator generator) {
+        this.generator = generator;
     }
 
     public int getId() {
@@ -18,5 +28,10 @@ public class Preset {
     @NonNull
     public String getName() {
         return name;
+    }
+
+    @NonNull
+    public Generator getGenerator() {
+        return generator;
     }
 }

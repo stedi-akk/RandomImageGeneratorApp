@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
+import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.model.repository.PresetRepository;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
@@ -17,6 +18,7 @@ import rx.Scheduler;
 
 public class HomePresenterImpl implements HomePresenter {
     private final PresetRepository presetRepository;
+    private final PendingPreset pendingPreset;
     private final Scheduler subscribeOn;
     private final Scheduler observeOn;
     private final Bus bus;
@@ -35,8 +37,9 @@ public class HomePresenterImpl implements HomePresenter {
         }
     }
 
-    public HomePresenterImpl(PresetRepository presetRepository, Scheduler subscribeOn, Scheduler observeOn, Bus bus, Logger logger) {
+    public HomePresenterImpl(PresetRepository presetRepository, PendingPreset pendingPreset, Scheduler subscribeOn, Scheduler observeOn, Bus bus, Logger logger) {
         this.presetRepository = presetRepository;
+        this.pendingPreset = pendingPreset;
         this.subscribeOn = subscribeOn;
         this.observeOn = observeOn;
         this.bus = bus;
@@ -67,11 +70,12 @@ public class HomePresenterImpl implements HomePresenter {
         if (event.t != null)
             ui.onFailedToFetch(event.t);
         else
-            ui.onPresetsFetched(event.presets);
+            ui.onPresetsFetched(pendingPreset, event.presets);
     }
 
     @Override
     public void createNewGeneration() {
+        pendingPreset.setPreset(PendingPreset.createDefault());
         ui.onShowNewGeneration();
     }
 

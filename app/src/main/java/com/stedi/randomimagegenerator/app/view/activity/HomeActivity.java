@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.modules.HomeModule;
+import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
@@ -44,7 +45,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl {
     }
 
     @Override
-    public void onPresetsFetched(@NonNull List<Preset> presets) {
+    public void onPresetsFetched(@NonNull PendingPreset pendingPreset, @NonNull List<Preset> presets) {
     }
 
     @Override

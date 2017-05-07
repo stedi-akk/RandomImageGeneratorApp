@@ -14,12 +14,14 @@ public class DatabasePresetRepository implements PresetRepository {
 
     @Override
     public boolean save(@NonNull Preset preset) throws Exception {
+        Utils.sleep(100);
         fakeDatabase.put(preset.getId(), preset);
         return true;
     }
 
     @Override
     public boolean remove(int id) throws Exception {
+        Utils.sleep(100);
         fakeDatabase.remove(id);
         return true;
     }
@@ -27,12 +29,14 @@ public class DatabasePresetRepository implements PresetRepository {
     @Override
     @Nullable
     public Preset get(int id) throws Exception {
+        Utils.sleep(100);
         return fakeDatabase.get(id);
     }
 
     @Override
     @NonNull
     public List<Preset> getAll() throws Exception {
+        Utils.sleep(100);
         return Utils.sparseArrayToList(fakeDatabase);
     }
 }
