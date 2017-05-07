@@ -1,0 +1,22 @@
+package com.stedi.randomimagegenerator.app.model.data.generatorparams;
+
+import android.support.annotation.NonNull;
+
+import com.stedi.randomimagegenerator.generators.Generator;
+import com.stedi.randomimagegenerator.generators.TextOverlayGenerator;
+
+public class TextOverlayParams implements GeneratorParams {
+    private final GeneratorParams target;
+
+    public TextOverlayParams(@NonNull GeneratorParams target) {
+        this.target = target;
+    }
+
+    @NonNull
+    @Override
+    public Generator createGenerator() {
+        return new TextOverlayGenerator.Builder()
+                .setGenerator(target.createGenerator())
+                .build();
+    }
+}

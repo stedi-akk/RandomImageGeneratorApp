@@ -3,7 +3,7 @@ package com.stedi.randomimagegenerator.app.model.data;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.stedi.randomimagegenerator.generators.FlatColorGenerator;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.FlatColorParams;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -15,7 +15,7 @@ public class PendingPreset {
     @NonNull
     public static Preset createDefault() {
         Preset preset = new Preset("Unsaved preset");
-        preset.setGenerator(new FlatColorGenerator());
+        preset.setGeneratorParams(new FlatColorParams());
         return preset;
     }
 
@@ -24,11 +24,11 @@ public class PendingPreset {
     }
 
     @Nullable
-    public Preset getPreset() {
+    public Preset get() {
         return preset;
     }
 
-    public void setPreset(Preset preset) {
+    public void set(Preset preset) {
         this.preset = preset;
     }
 }

@@ -4,18 +4,25 @@ import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.app.presenter.core.RetainedPresenter;
 import com.stedi.randomimagegenerator.app.presenter.core.UI;
-import com.stedi.randomimagegenerator.generators.Generator;
-
-import java.util.List;
 
 public interface ChooseGeneratorPresenter extends RetainedPresenter<ChooseGeneratorPresenter.UIImpl> {
-    void getGenerators();
+    enum Type {
+        FLAT_COLOR,
+        COLORED_PIXELS,
+        COLORED_CIRCLES,
+        COLORED_RECTANGLE,
+        COLORED_NOISE
+    }
 
-    void chooseGenerator(@NonNull Generator generator);
+    void getGeneratorTypes();
+
+    void chooseGeneratorType(@NonNull Type type);
 
     interface UIImpl extends UI {
-        void onShowGeneratorsToChoose(@NonNull List<Generator> generators);
+        void showTypesToChoose(@NonNull Type[] types);
 
-        void onGeneratorChose(@NonNull Generator generator);
+        void onGeneratorTypeChose(@NonNull Type type);
+
+        void showEditGeneratorParams(@NonNull Type type);
     }
 }

@@ -4,8 +4,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredCirclesParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredNoiseParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredPixelsParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredRectangleParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.FlatColorParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.GeneratorParams;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
-import com.stedi.randomimagegenerator.generators.Generator;
 
 import java.io.Serializable;
 
@@ -21,16 +26,16 @@ public class ChooseGeneratorPresenterImpl implements ChooseGeneratorPresenter {
     }
 
     @Override
-    public void getGenerators() {
-
+    public void getGeneratorTypes() {
+        ui.showTypesToChoose(Type.values());
     }
 
     @Override
-    public void chooseGenerator(@NonNull Generator generator) {
-        if (pendingPreset.getPreset() == null)
-            pendingPreset.setPreset(PendingPreset.createDefault());
-        pendingPreset.getPreset().setGenerator(generator);
-        ui.onGeneratorChose(generator);
+    public void chooseGeneratorType(@NonNull Type type) {
+        if (pendingPreset.get() == null)
+            pendingPreset.set(PendingPreset.createDefault());
+        pendingPreset.get().setGeneratorParams(createGeneratorParamsFromType(type));
+        ui.onGeneratorTypeChose(type);
     }
 
     @Override
@@ -52,5 +57,22 @@ public class ChooseGeneratorPresenterImpl implements ChooseGeneratorPresenter {
     @Override
     public Serializable onRetain() {
         return null;
+    }
+
+    private GeneratorParams createGeneratorParamsFromType(Type type) {
+        switch (type) {
+            case FLAT_COLOR:
+                return new FlatColorParams();
+            case COLORED_PIXELS:
+                return new ColoredPixelsParams();
+            case COLORED_CIRCLES:
+                return new ColoredCirclesParams();
+            case COLORED_RECTANGLE:
+                return new ColoredRectangleParams();
+            case COLORED_NOISE:
+                return new ColoredNoiseParams();
+            default:
+                throw new IllegalStateException();
+        }
     }
 }

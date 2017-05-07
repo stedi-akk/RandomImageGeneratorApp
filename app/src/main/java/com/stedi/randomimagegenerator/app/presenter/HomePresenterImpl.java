@@ -75,7 +75,7 @@ public class HomePresenterImpl implements HomePresenter {
 
     @Override
     public void createNewGeneration() {
-        pendingPreset.setPreset(PendingPreset.createDefault());
+        pendingPreset.set(PendingPreset.createDefault());
         ui.onShowNewGeneration();
     }
 
