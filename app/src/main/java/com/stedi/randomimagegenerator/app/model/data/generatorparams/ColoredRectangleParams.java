@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import com.stedi.randomimagegenerator.generators.ColoredRectangleGenerator;
 import com.stedi.randomimagegenerator.generators.Generator;
 
-public class ColoredRectangleParams implements GeneratorParams {
+public class ColoredRectangleParams extends GeneratorParams {
     private Integer count;
 
     @Nullable

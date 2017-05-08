@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.stedi.randomimagegenerator.generators.ColoredPixelsGenerator;
 import com.stedi.randomimagegenerator.generators.Generator;
 
-public class ColoredPixelsParams implements GeneratorParams {
+public class ColoredPixelsParams extends GeneratorParams {
     private int pixelMultiplier = 1;
 
     public int getPixelMultipler() {

@@ -6,6 +6,7 @@ import com.stedi.randomimagegenerator.app.model.data.generatorparams.GeneratorPa
 
 public class Preset {
     private int id;
+    private long timestamp;
     private String name;
     private GeneratorParams generatorParams;
 
@@ -17,12 +18,24 @@ public class Preset {
         this.id = id;
     }
 
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public void setName(@NonNull String name) {
+        this.name = name;
+    }
+
     public void setGeneratorParams(@NonNull GeneratorParams generatorParams) {
         this.generatorParams = generatorParams;
     }
 
     public int getId() {
         return id;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
     }
 
     @NonNull

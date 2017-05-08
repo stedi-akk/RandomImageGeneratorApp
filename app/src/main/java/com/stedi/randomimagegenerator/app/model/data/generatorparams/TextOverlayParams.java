@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.stedi.randomimagegenerator.generators.Generator;
 import com.stedi.randomimagegenerator.generators.TextOverlayGenerator;
 
-public class TextOverlayParams implements GeneratorParams {
+public class TextOverlayParams extends GeneratorParams {
     private final GeneratorParams target;
 
     public TextOverlayParams(@NonNull GeneratorParams target) {

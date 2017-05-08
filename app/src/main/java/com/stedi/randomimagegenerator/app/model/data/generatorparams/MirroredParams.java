@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.stedi.randomimagegenerator.generators.Generator;
 import com.stedi.randomimagegenerator.generators.MirroredGenerator;
 
-public class MirroredParams implements GeneratorParams {
+public class MirroredParams extends GeneratorParams {
     private final GeneratorParams target;
 
     public MirroredParams(@NonNull GeneratorParams target) {

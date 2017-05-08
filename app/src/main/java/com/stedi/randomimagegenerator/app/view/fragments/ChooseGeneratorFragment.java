@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.stedi.randomimagegenerator.app.di.modules.ChooseGeneratorModule;
+import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.presenter.ChooseGeneratorPresenter;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
@@ -28,17 +29,17 @@ public class ChooseGeneratorFragment extends BaseFragment implements ChooseGener
     }
 
     @Override
-    public void showTypesToChoose(@NonNull ChooseGeneratorPresenter.Type[] types) {
+    public void showTypesToChoose(@NonNull GeneratorType[] types) {
 
     }
 
     @Override
-    public void onGeneratorTypeChose(@NonNull ChooseGeneratorPresenter.Type type) {
+    public void onGeneratorTypeChose(@NonNull GeneratorType type) {
 
     }
 
     @Override
-    public void showEditGeneratorParams(@NonNull ChooseGeneratorPresenter.Type type) {
+    public void showEditGeneratorParams(@NonNull GeneratorType type) {
 
     }
 

@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.stedi.randomimagegenerator.generators.ColoredNoiseGenerator;
 import com.stedi.randomimagegenerator.generators.Generator;
 
-public class ColoredNoiseParams implements GeneratorParams {
+public class ColoredNoiseParams extends GeneratorParams {
     private ColoredNoiseGenerator.Orientation orientation = ColoredNoiseGenerator.Orientation.RANDOM;
     private ColoredNoiseGenerator.Type type = ColoredNoiseGenerator.Type.RANDOM;
 

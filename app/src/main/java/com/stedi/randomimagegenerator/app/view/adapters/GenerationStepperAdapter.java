@@ -32,7 +32,7 @@ public class GenerationStepperAdapter extends AbstractFragmentStepAdapter {
             case 4:
                 return new ApplyGenerationFragment();
             default:
-                throw new IllegalStateException();
+                throw new IllegalStateException("unreachable code");
         }
     }
 

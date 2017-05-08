@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import com.stedi.randomimagegenerator.generators.ColoredCirclesGenerator;
 import com.stedi.randomimagegenerator.generators.Generator;
 
-public class ColoredCirclesParams implements GeneratorParams {
+public class ColoredCirclesParams extends GeneratorParams {
     private Integer count;
 
     @Nullable
