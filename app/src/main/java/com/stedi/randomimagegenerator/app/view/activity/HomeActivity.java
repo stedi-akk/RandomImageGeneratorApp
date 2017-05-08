@@ -51,7 +51,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl {
     @Override
     public void onFailedToFetch(@NonNull Throwable t) {
         logger.log(this, t);
-        Utils.toast(this, "onFailedToFetch");
+        Utils.toastLong(this, "onFailedToFetch");
     }
 
     @OnClick(R.id.home_activity_fab)

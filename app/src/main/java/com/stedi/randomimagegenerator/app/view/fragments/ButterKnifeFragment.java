@@ -12,7 +12,7 @@ public abstract class ButterKnifeFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        unbinder = ButterKnife.bind(view);
+        unbinder = ButterKnife.bind(this, view);
     }
 
     @Override

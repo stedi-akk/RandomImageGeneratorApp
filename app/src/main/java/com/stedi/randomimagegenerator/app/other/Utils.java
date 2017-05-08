@@ -28,7 +28,11 @@ public final class Utils {
         return result;
     }
 
-    public static void toast(Context context, String message) {
+    public static void toastLong(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    }
+
+    public static void toastShort(Context context, String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 }

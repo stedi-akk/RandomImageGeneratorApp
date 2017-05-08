@@ -10,7 +10,8 @@ public abstract class GeneratorParams {
     @NonNull
     abstract Generator createGenerator();
 
-    public static GeneratorParams createDefaultFromType(GeneratorType type) {
+    @NonNull
+    public static GeneratorParams createDefaultFromType(@NonNull GeneratorType type) {
         switch (type) {
             case FLAT_COLOR:
                 return new FlatColorParams();
@@ -27,7 +28,8 @@ public abstract class GeneratorParams {
         }
     }
 
-    public static GeneratorParams createDefaultFromType(GeneratorEffectType type, GeneratorParams target) {
+    @NonNull
+    public static GeneratorParams createDefaultFromType(@NonNull GeneratorEffectType type, @NonNull GeneratorParams target) {
         switch (type) {
             case MIRRORED:
                 return new MirroredParams(target);

@@ -28,12 +28,12 @@ public class ChooseGeneratorPresenterImpl implements ChooseGeneratorPresenter {
 
     @Override
     public void chooseGeneratorType(@NonNull GeneratorType type) {
-        if (pendingPreset.get() == null) {
-            logger.log(this, "chooseGeneratorType pending preset is null !");
-            pendingPreset.set(PendingPreset.createDefault());
-        }
         pendingPreset.get().setGeneratorParams(GeneratorParams.createDefaultFromType(type));
-        ui.onGeneratorTypeChose(type);
+    }
+
+    @Override
+    public void editChoseGeneratorParams() {
+        ui.showEditGeneratorParams(pendingPreset.get().getGeneratorParams());
     }
 
     @Override

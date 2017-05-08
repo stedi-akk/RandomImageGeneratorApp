@@ -1,7 +1,6 @@
 package com.stedi.randomimagegenerator.app.model.data;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.FlatColorParams;
 
@@ -23,8 +22,14 @@ public class PendingPreset {
     public PendingPreset() {
     }
 
-    @Nullable
+    public boolean exists() {
+        return preset != null;
+    }
+
+    @NonNull
     public Preset get() {
+        if (preset == null)
+            preset = PendingPreset.createDefault();
         return preset;
     }
 
