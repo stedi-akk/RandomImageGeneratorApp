@@ -3,6 +3,7 @@ package com.stedi.randomimagegenerator.app.model.data.generatorparams;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.generators.ColoredRectangleGenerator;
 import com.stedi.randomimagegenerator.generators.Generator;
 
@@ -24,5 +25,16 @@ public class ColoredRectangleParams extends GeneratorParams {
         if (count == null)
             return new ColoredRectangleGenerator();
         return new ColoredRectangleGenerator(count);
+    }
+
+    @Override
+    public boolean isEditable() {
+        return true;
+    }
+
+    @NonNull
+    @Override
+    public GeneratorType getType() {
+        return GeneratorType.COLORED_RECTANGLE;
     }
 }

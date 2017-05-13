@@ -10,37 +10,38 @@ public class Preset {
     private String name;
     private GeneratorParams generatorParams;
 
-    public Preset(@NonNull String name) {
+    public Preset(@NonNull String name, @NonNull GeneratorParams generatorParams) {
         this.name = name;
+        this.generatorParams = generatorParams;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public void setName(@NonNull String name) {
-        this.name = name;
-    }
-
-    public void setGeneratorParams(@NonNull GeneratorParams generatorParams) {
-        this.generatorParams = generatorParams;
-    }
-
     public int getId() {
         return id;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public long getTimestamp() {
         return timestamp;
     }
 
+    public void setName(@NonNull String name) {
+        this.name = name;
+    }
+
     @NonNull
     public String getName() {
         return name;
+    }
+
+    public void setGeneratorParams(@NonNull GeneratorParams generatorParams) {
+        this.generatorParams = generatorParams;
     }
 
     @NonNull

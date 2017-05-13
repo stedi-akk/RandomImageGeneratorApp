@@ -23,17 +23,23 @@ public class ChooseGeneratorPresenterImpl implements ChooseGeneratorPresenter {
 
     @Override
     public void getGeneratorTypes() {
-        ui.showTypesToChoose(GeneratorType.values());
+        ui.showTypesToChoose(new GeneratorType[]{
+                GeneratorType.FLAT_COLOR,
+                GeneratorType.COLORED_PIXELS,
+                GeneratorType.COLORED_CIRCLES,
+                GeneratorType.COLORED_RECTANGLE,
+                GeneratorType.COLORED_NOISE,
+        });
     }
 
     @Override
     public void chooseGeneratorType(@NonNull GeneratorType type) {
-        pendingPreset.get().setGeneratorParams(GeneratorParams.createDefaultFromType(type));
+        pendingPreset.get().setGeneratorParams(GeneratorParams.createDefaultParams(type));
     }
 
     @Override
     public void editChoseGeneratorParams() {
-        ui.showEditGeneratorParams(pendingPreset.get().getGeneratorParams());
+        ui.showEditGeneratorParams(pendingPreset.get().getGeneratorParams().getType());
     }
 
     @Override

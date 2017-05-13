@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.modules.ChooseGeneratorModule;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
-import com.stedi.randomimagegenerator.app.model.data.generatorparams.GeneratorParams;
 import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.presenter.ChooseGeneratorPresenter;
 import com.stedi.randomimagegenerator.app.view.adapters.ChooseGeneratorAdapter;
@@ -71,7 +70,7 @@ public class ChooseGeneratorFragment extends ButterKnifeFragment implements
     }
 
     @Override
-    public void showEditGeneratorParams(@NonNull GeneratorParams params) {
+    public void showEditGeneratorParams(@NonNull GeneratorType type) {
 
     }
 

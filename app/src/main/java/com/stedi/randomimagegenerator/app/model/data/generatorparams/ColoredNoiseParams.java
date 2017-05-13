@@ -2,6 +2,7 @@ package com.stedi.randomimagegenerator.app.model.data.generatorparams;
 
 import android.support.annotation.NonNull;
 
+import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.generators.ColoredNoiseGenerator;
 import com.stedi.randomimagegenerator.generators.Generator;
 
@@ -16,12 +17,12 @@ public class ColoredNoiseParams extends GeneratorParams {
     }
 
     @NonNull
-    public ColoredNoiseGenerator.Orientation getOrientation() {
+    public ColoredNoiseGenerator.Orientation getNoiseOrientation() {
         return orientation;
     }
 
     @NonNull
-    public ColoredNoiseGenerator.Type getType() {
+    public ColoredNoiseGenerator.Type getNoiseType() {
         return type;
     }
 
@@ -29,5 +30,16 @@ public class ColoredNoiseParams extends GeneratorParams {
     @Override
     public Generator createGenerator() {
         return new ColoredNoiseGenerator(orientation, type);
+    }
+
+    @Override
+    public boolean isEditable() {
+        return true;
+    }
+
+    @NonNull
+    @Override
+    public GeneratorType getType() {
+        return GeneratorType.COLORED_NOISE;
     }
 }

@@ -2,16 +2,23 @@ package com.stedi.randomimagegenerator.app.model.data.generatorparams;
 
 import android.support.annotation.NonNull;
 
-import com.stedi.randomimagegenerator.app.model.data.GeneratorEffectType;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.generators.Generator;
 
 public abstract class GeneratorParams {
     @NonNull
-    abstract Generator createGenerator();
+    public abstract Generator createGenerator();
+
+    public abstract boolean isEditable();
 
     @NonNull
-    public static GeneratorParams createDefaultFromType(@NonNull GeneratorType type) {
+    public abstract GeneratorType getType();
+
+    @NonNull
+    public static GeneratorParams createDefaultParams(@NonNull GeneratorType type) {
+        if (type.isEffect())
+            throw new IllegalArgumentException("type must not be effect");
+
         switch (type) {
             case FLAT_COLOR:
                 return new FlatColorParams();
@@ -29,8 +36,11 @@ public abstract class GeneratorParams {
     }
 
     @NonNull
-    public static GeneratorParams createDefaultFromType(@NonNull GeneratorEffectType type, @NonNull GeneratorParams target) {
-        switch (type) {
+    public static GeneratorParams createDefaultEffectParams(@NonNull GeneratorType effectType, @NonNull GeneratorParams target) {
+        if (!effectType.isEffect())
+            throw new IllegalArgumentException("type must be effect");
+
+        switch (effectType) {
             case MIRRORED:
                 return new MirroredParams(target);
             case TEXT_OVERLAY:

@@ -2,6 +2,7 @@ package com.stedi.randomimagegenerator.app.model.data.generatorparams;
 
 import android.support.annotation.NonNull;
 
+import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.generators.Generator;
 import com.stedi.randomimagegenerator.generators.MirroredGenerator;
 
@@ -16,5 +17,16 @@ public class MirroredParams extends GeneratorParams {
     @Override
     public Generator createGenerator() {
         return new MirroredGenerator(target.createGenerator());
+    }
+
+    @Override
+    public boolean isEditable() {
+        return false;
+    }
+
+    @NonNull
+    @Override
+    public GeneratorType getType() {
+        return GeneratorType.MIRRORED;
     }
 }
