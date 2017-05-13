@@ -37,7 +37,9 @@ public class HomePresenterImpl implements HomePresenter {
         }
     }
 
-    public HomePresenterImpl(PresetRepository presetRepository, PendingPreset pendingPreset, Scheduler subscribeOn, Scheduler observeOn, Bus bus, Logger logger) {
+    public HomePresenterImpl(@NonNull PresetRepository presetRepository, @NonNull PendingPreset pendingPreset,
+                             @NonNull Scheduler subscribeOn, @NonNull Scheduler observeOn,
+                             @NonNull Bus bus, @NonNull Logger logger) {
         this.presetRepository = presetRepository;
         this.pendingPreset = pendingPreset;
         this.subscribeOn = subscribeOn;

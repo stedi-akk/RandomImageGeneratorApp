@@ -3,6 +3,7 @@ package com.stedi.randomimagegenerator.app.view.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,11 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.stedi.randomimagegenerator.app.R;
+import com.stedi.randomimagegenerator.app.di.Components;
+import com.stedi.randomimagegenerator.app.di.components.ChooseGeneratorComponent;
 import com.stedi.randomimagegenerator.app.di.modules.ChooseGeneratorModule;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.presenter.ChooseGeneratorPresenter;
 import com.stedi.randomimagegenerator.app.view.adapters.ChooseGeneratorAdapter;
+import com.stedi.randomimagegenerator.app.view.dialogs.EditColoredCirclesDialog;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
 
@@ -31,11 +35,20 @@ public class ChooseGeneratorFragment extends ButterKnifeFragment implements
 
     @BindView(R.id.choose_generator_fragment_recycler_view) RecyclerView recyclerView;
 
+    private ChooseGeneratorComponent component;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getBaseActivity().getActivityComponent().plus(new ChooseGeneratorModule()).inject(this);
+        getChooseGeneratorComponent().inject(this);
         presenter.onAttach(this);
+    }
+
+    @NonNull
+    public ChooseGeneratorComponent getChooseGeneratorComponent() {
+        if (component == null)
+            component = Components.getActivityComponent(this).plus(new ChooseGeneratorModule());
+        return component;
     }
 
     @Nullable
@@ -71,7 +84,25 @@ public class ChooseGeneratorFragment extends ButterKnifeFragment implements
 
     @Override
     public void showEditGeneratorParams(@NonNull GeneratorType type) {
-
+        DialogFragment dialog;
+        switch (type) {
+            case COLORED_CIRCLES:
+                dialog = new EditColoredCirclesDialog();
+                break;
+            case COLORED_NOISE:
+                dialog = new EditColoredCirclesDialog();
+                break;
+            case COLORED_PIXELS:
+                dialog = new EditColoredCirclesDialog();
+                break;
+            case COLORED_RECTANGLE:
+                dialog = new EditColoredCirclesDialog();
+                break;
+            default:
+                throw new IllegalStateException("incorrect behavior");
+        }
+        dialog.setTargetFragment(this, -1);
+        dialog.show(getFragmentManager(), "test");
     }
 
     @Override

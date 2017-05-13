@@ -24,10 +24,9 @@ public class PendingPreset {
         return preset != null;
     }
 
-    @NonNull
     public Preset get() {
         if (preset == null)
-            preset = PendingPreset.createDefault();
+            throw new IllegalStateException("incorrect behavior");
         return preset;
     }
 

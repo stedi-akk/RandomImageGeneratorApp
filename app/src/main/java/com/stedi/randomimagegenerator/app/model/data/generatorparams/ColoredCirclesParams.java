@@ -15,6 +15,10 @@ public class ColoredCirclesParams extends GeneratorParams {
         return count;
     }
 
+    public void setRandomCount() {
+        this.count = null;
+    }
+
     public void setCount(int count) {
         this.count = count;
     }

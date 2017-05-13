@@ -16,7 +16,7 @@ public class ChooseGeneratorPresenterImpl implements ChooseGeneratorPresenter {
 
     private UIImpl ui;
 
-    public ChooseGeneratorPresenterImpl(PendingPreset pendingPreset, Logger logger) {
+    public ChooseGeneratorPresenterImpl(@NonNull PendingPreset pendingPreset, @NonNull Logger logger) {
         this.pendingPreset = pendingPreset;
         this.logger = logger;
     }
