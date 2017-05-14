@@ -17,7 +17,7 @@ import com.stedi.randomimagegenerator.app.di.modules.ChooseGeneratorModule;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.presenter.ChooseGeneratorPresenter;
-import com.stedi.randomimagegenerator.app.view.adapters.ChooseGeneratorAdapter;
+import com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapter;
 import com.stedi.randomimagegenerator.app.view.dialogs.EditColoredCirclesDialog;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
@@ -28,7 +28,7 @@ import butterknife.BindView;
 
 public class ChooseGeneratorFragment extends ButterKnifeFragment implements
         ChooseGeneratorPresenter.UIImpl,
-        ChooseGeneratorAdapter.ClickListener,
+        GeneratorTypeAdapter.ClickListener,
         Step {
 
     @Inject ChooseGeneratorPresenter presenter;
@@ -67,7 +67,7 @@ public class ChooseGeneratorFragment extends ButterKnifeFragment implements
 
     @Override
     public void showTypesToChoose(@NonNull GeneratorType[] types) {
-        recyclerView.setAdapter(new ChooseGeneratorAdapter(types, this));
+        recyclerView.setAdapter(new GeneratorTypeAdapter(types, this));
     }
 
     @Override

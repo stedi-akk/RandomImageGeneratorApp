@@ -13,7 +13,7 @@ import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ChooseGeneratorAdapter extends RecyclerView.Adapter<ChooseGeneratorAdapter.ViewHolder> implements View.OnClickListener {
+public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdapter.ViewHolder> implements View.OnClickListener {
     private final GeneratorType[] generatorType;
 
     private ClickListener listener;
@@ -24,18 +24,18 @@ public class ChooseGeneratorAdapter extends RecyclerView.Adapter<ChooseGenerator
         void onEditSelected();
     }
 
-    public ChooseGeneratorAdapter(@NonNull GeneratorType[] generatorType, ClickListener listener) {
+    public GeneratorTypeAdapter(@NonNull GeneratorType[] generatorType, ClickListener listener) {
         this.generatorType = generatorType;
         this.listener = listener;
     }
 
     @Override
-    public ChooseGeneratorAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.choose_generator_item, parent, false));
+    public GeneratorTypeAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.generator_type_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(ChooseGeneratorAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(GeneratorTypeAdapter.ViewHolder holder, int position) {
         GeneratorType type = generatorType[position];
         holder.itemView.setTag(type);
         holder.itemView.setOnClickListener(this);
@@ -48,7 +48,7 @@ public class ChooseGeneratorAdapter extends RecyclerView.Adapter<ChooseGenerator
         if (listener == null)
             return;
 
-        if (v.getId() == R.id.choose_generator_item_btn_edit) {
+        if (v.getId() == R.id.generator_type_item_btn_edit) {
             listener.onEditSelected();
         } else {
             listener.onSelected((GeneratorType) v.getTag());
@@ -61,8 +61,8 @@ public class ChooseGeneratorAdapter extends RecyclerView.Adapter<ChooseGenerator
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.choose_generator_item_text) TextView text;
-        @BindView(R.id.choose_generator_item_btn_edit) View btnEdit;
+        @BindView(R.id.generator_type_item_text) TextView text;
+        @BindView(R.id.generator_type_item_btn_edit) View btnEdit;
 
         public ViewHolder(View itemView) {
             super(itemView);

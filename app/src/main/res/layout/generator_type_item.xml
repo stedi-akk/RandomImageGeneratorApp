@@ -5,13 +5,13 @@
     android:layout_margin="8dp">
 
     <TextView
-        android:id="@+id/choose_generator_item_text"
+        android:id="@+id/generator_type_item_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
 
     <ImageView
-        android:id="@+id/choose_generator_item_btn_edit"
+        android:id="@+id/generator_type_item_btn_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
