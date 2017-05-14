@@ -16,11 +16,15 @@ public class Preset {
     private int height = 1;
 
     public Preset(@NonNull String name, @NonNull GeneratorParams generatorParams) {
+        if (name.isEmpty())
+            throw new IllegalArgumentException("name must not be empty");
         this.name = name;
         this.generatorParams = generatorParams;
     }
 
     public void setId(int id) {
+        if (id < 1)
+            throw new IllegalArgumentException("id must be > 0");
         this.id = id;
     }
 
@@ -29,6 +33,8 @@ public class Preset {
     }
 
     public void setTimestamp(long timestamp) {
+        if (timestamp < 1)
+            throw new IllegalArgumentException("timestamp must be > 0");
         this.timestamp = timestamp;
     }
 
@@ -37,6 +43,8 @@ public class Preset {
     }
 
     public void setName(@NonNull String name) {
+        if (name.isEmpty())
+            throw new IllegalArgumentException("name must not be empty");
         this.name = name;
     }
 
@@ -55,6 +63,8 @@ public class Preset {
     }
 
     public void setCount(int count) {
+        if (count < 1)
+            throw new IllegalArgumentException("count must be > 0");
         this.count = count;
     }
 
@@ -63,6 +73,8 @@ public class Preset {
     }
 
     public void setWidth(int width) {
+        if (width < 1)
+            throw new IllegalArgumentException("width must be > 0");
         this.width = width;
     }
 
@@ -71,6 +83,8 @@ public class Preset {
     }
 
     public void setHeight(int height) {
+        if (height < 1)
+            throw new IllegalArgumentException("height must be > 0");
         this.height = height;
     }
 

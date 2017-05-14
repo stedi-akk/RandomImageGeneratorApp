@@ -20,6 +20,8 @@ public class ColoredCirclesParams extends GeneratorParams {
     }
 
     public void setCount(int count) {
+        if (count < 1)
+            throw new IllegalArgumentException("count must be > 0");
         this.count = count;
     }
 

@@ -15,7 +15,13 @@ public class ColoredRectangleParams extends GeneratorParams {
         return count;
     }
 
+    public void setRandomCount() {
+        this.count = null;
+    }
+
     public void setCount(int count) {
+        if (count < 1)
+            throw new IllegalArgumentException("count must be > 0");
         this.count = count;
     }
 

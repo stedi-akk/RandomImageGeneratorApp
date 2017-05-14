@@ -14,6 +14,8 @@ public class ColoredPixelsParams extends GeneratorParams {
     }
 
     public void setPixelMultipler(int pixelMultiplier) {
+        if (pixelMultiplier < 1)
+            throw new IllegalArgumentException("pixelMultiplier must be > 0");
         this.pixelMultiplier = pixelMultiplier;
     }
 
