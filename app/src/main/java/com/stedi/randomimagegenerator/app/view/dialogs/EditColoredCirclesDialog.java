@@ -18,7 +18,7 @@ public class EditColoredCirclesDialog extends ButterKnifeDialogFragment implemen
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Components.getChooseGeneratorComponent(getTargetFragment()).inject(this);
+        Components.getGenerationComponent(this).inject(this);
         presenter.onAttach(this);
     }
 

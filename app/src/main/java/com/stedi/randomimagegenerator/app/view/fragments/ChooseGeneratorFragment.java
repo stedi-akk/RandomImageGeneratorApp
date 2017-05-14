@@ -12,8 +12,6 @@ import android.view.ViewGroup;
 
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.Components;
-import com.stedi.randomimagegenerator.app.di.components.ChooseGeneratorComponent;
-import com.stedi.randomimagegenerator.app.di.modules.ChooseGeneratorModule;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.presenter.ChooseGeneratorPresenter;
@@ -35,20 +33,11 @@ public class ChooseGeneratorFragment extends ButterKnifeFragment implements
 
     @BindView(R.id.choose_generator_fragment_recycler_view) RecyclerView recyclerView;
 
-    private ChooseGeneratorComponent component;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getChooseGeneratorComponent().inject(this);
+        Components.getGenerationComponent(this).inject(this);
         presenter.onAttach(this);
-    }
-
-    @NonNull
-    public ChooseGeneratorComponent getChooseGeneratorComponent() {
-        if (component == null)
-            component = Components.getActivityComponent(this).plus(new ChooseGeneratorModule());
-        return component;
     }
 
     @Nullable
@@ -101,7 +90,6 @@ public class ChooseGeneratorFragment extends ButterKnifeFragment implements
             default:
                 throw new IllegalStateException("incorrect behavior");
         }
-        dialog.setTargetFragment(this, -1);
         dialog.show(getFragmentManager(), "test");
     }
 

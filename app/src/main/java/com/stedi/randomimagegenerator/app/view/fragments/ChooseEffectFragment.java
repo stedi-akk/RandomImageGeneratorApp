@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.Components;
-import com.stedi.randomimagegenerator.app.di.modules.ChooseEffectModule;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
+import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.presenter.ChooseEffectPresenter;
 import com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapter;
 import com.stepstone.stepper.Step;
@@ -34,7 +34,7 @@ public class ChooseEffectFragment extends ButterKnifeFragment implements
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Components.getActivityComponent(getActivity()).plus(new ChooseEffectModule()).inject(this);
+        Components.getGenerationComponent(this).inject(this);
         presenter.onAttach(this);
     }
 
@@ -59,6 +59,7 @@ public class ChooseEffectFragment extends ButterKnifeFragment implements
 
     @Override
     public void onSelected(@NonNull GeneratorType type) {
+        Utils.toastShort(getContext(), "onSelected: " + type.name());
         presenter.chooseEffectType(type);
     }
 

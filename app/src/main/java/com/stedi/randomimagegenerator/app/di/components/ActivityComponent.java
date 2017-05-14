@@ -1,8 +1,7 @@
 package com.stedi.randomimagegenerator.app.di.components;
 
 import com.stedi.randomimagegenerator.app.di.modules.ActivityModule;
-import com.stedi.randomimagegenerator.app.di.modules.ChooseEffectModule;
-import com.stedi.randomimagegenerator.app.di.modules.ChooseGeneratorModule;
+import com.stedi.randomimagegenerator.app.di.modules.GenerationModule;
 import com.stedi.randomimagegenerator.app.di.modules.HomeModule;
 
 import dagger.Subcomponent;
@@ -11,7 +10,5 @@ import dagger.Subcomponent;
 public interface ActivityComponent {
     HomeComponent plus(HomeModule module);
 
-    ChooseGeneratorComponent plus(ChooseGeneratorModule module);
-
-    ChooseEffectComponent plus(ChooseEffectModule module);
+    GenerationComponent plus(GenerationModule module);
 }

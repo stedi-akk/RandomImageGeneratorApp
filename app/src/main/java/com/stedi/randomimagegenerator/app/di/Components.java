@@ -8,9 +8,9 @@ import android.support.v4.app.Fragment;
 import com.stedi.randomimagegenerator.app.App;
 import com.stedi.randomimagegenerator.app.di.components.ActivityComponent;
 import com.stedi.randomimagegenerator.app.di.components.AppComponent;
-import com.stedi.randomimagegenerator.app.di.components.ChooseGeneratorComponent;
+import com.stedi.randomimagegenerator.app.di.components.GenerationComponent;
 import com.stedi.randomimagegenerator.app.view.activity.BaseActivity;
-import com.stedi.randomimagegenerator.app.view.fragments.ChooseGeneratorFragment;
+import com.stedi.randomimagegenerator.app.view.activity.GenerationActivity;
 
 public final class Components {
     private Components() {
@@ -28,7 +28,7 @@ public final class Components {
         return getActivityComponent(fragment.getActivity());
     }
 
-    public static ChooseGeneratorComponent getChooseGeneratorComponent(@NonNull Fragment fragment) {
-        return ((ChooseGeneratorFragment) fragment).getChooseGeneratorComponent();
+    public static GenerationComponent getGenerationComponent(@NonNull Fragment fragment) {
+        return ((GenerationActivity) fragment.getActivity()).getGenerationComponent();
     }
 }
