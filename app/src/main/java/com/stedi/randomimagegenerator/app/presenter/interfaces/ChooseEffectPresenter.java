@@ -1,10 +1,10 @@
-package com.stedi.randomimagegenerator.app.presenter;
+package com.stedi.randomimagegenerator.app.presenter.interfaces;
 
 import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
-import com.stedi.randomimagegenerator.app.presenter.core.RetainedPresenter;
-import com.stedi.randomimagegenerator.app.presenter.core.UI;
+import com.stedi.randomimagegenerator.app.presenter.interfaces.core.RetainedPresenter;
+import com.stedi.randomimagegenerator.app.presenter.interfaces.core.UI;
 
 public interface ChooseEffectPresenter extends RetainedPresenter<ChooseEffectPresenter.UIImpl> {
     void getEffectTypes();

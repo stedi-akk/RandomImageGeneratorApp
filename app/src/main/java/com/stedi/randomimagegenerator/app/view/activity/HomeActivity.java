@@ -13,7 +13,7 @@ import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
-import com.stedi.randomimagegenerator.app.presenter.HomePresenter;
+import com.stedi.randomimagegenerator.app.presenter.interfaces.HomePresenter;
 
 import java.util.List;
 

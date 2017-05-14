@@ -13,7 +13,7 @@ import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.Components;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.other.Utils;
-import com.stedi.randomimagegenerator.app.presenter.ChooseEffectPresenter;
+import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseEffectPresenter;
 import com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapter;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;

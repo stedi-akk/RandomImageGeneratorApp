@@ -1,4 +1,4 @@
-package com.stedi.randomimagegenerator.app.presenter.core;
+package com.stedi.randomimagegenerator.app.presenter.interfaces.core;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

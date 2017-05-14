@@ -14,7 +14,7 @@ import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.Components;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.other.Utils;
-import com.stedi.randomimagegenerator.app.presenter.ChooseGeneratorPresenter;
+import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseGeneratorPresenter;
 import com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapter;
 import com.stedi.randomimagegenerator.app.view.dialogs.EditColoredCirclesDialog;
 import com.stepstone.stepper.Step;

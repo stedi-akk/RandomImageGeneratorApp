@@ -1,45 +1,41 @@
-package com.stedi.randomimagegenerator.app.presenter;
+package com.stedi.randomimagegenerator.app.presenter.impl;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
+import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.GeneratorParams;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
+import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseEffectPresenter;
 
 import java.io.Serializable;
 
-public class ChooseGeneratorPresenterImpl implements ChooseGeneratorPresenter {
+public class ChooseEffectPresenterImpl implements ChooseEffectPresenter {
     private final PendingPreset pendingPreset;
     private final Logger logger;
 
     private UIImpl ui;
 
-    public ChooseGeneratorPresenterImpl(@NonNull PendingPreset pendingPreset, @NonNull Logger logger) {
+    public ChooseEffectPresenterImpl(@NonNull PendingPreset pendingPreset, @NonNull Logger logger) {
         this.pendingPreset = pendingPreset;
         this.logger = logger;
     }
 
     @Override
-    public void getGeneratorTypes() {
+    public void getEffectTypes() {
         ui.showTypesToChoose(new GeneratorType[]{
-                GeneratorType.FLAT_COLOR,
-                GeneratorType.COLORED_PIXELS,
-                GeneratorType.COLORED_CIRCLES,
-                GeneratorType.COLORED_RECTANGLE,
-                GeneratorType.COLORED_NOISE,
+                GeneratorType.MIRRORED,
+                GeneratorType.TEXT_OVERLAY
         });
     }
 
     @Override
-    public void chooseGeneratorType(@NonNull GeneratorType type) {
-        pendingPreset.get().setGeneratorParams(GeneratorParams.createDefaultParams(type));
-    }
-
-    @Override
-    public void editChoseGeneratorParams() {
-        ui.showEditGeneratorParams(pendingPreset.get().getGeneratorParams().getType());
+    public void chooseEffectType(@NonNull GeneratorType effectType) {
+        Preset preset = pendingPreset.get();
+        GeneratorParams effectParams = GeneratorParams.createDefaultEffectParams(effectType, preset.getGeneratorParams());
+        preset.setGeneratorParams(effectParams);
     }
 
     @Override

@@ -8,7 +8,7 @@ import android.support.v7.app.AlertDialog;
 
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.Components;
-import com.stedi.randomimagegenerator.app.presenter.EditColoredCirclesPresenter;
+import com.stedi.randomimagegenerator.app.presenter.interfaces.EditColoredCirclesPresenter;
 
 import javax.inject.Inject;
 

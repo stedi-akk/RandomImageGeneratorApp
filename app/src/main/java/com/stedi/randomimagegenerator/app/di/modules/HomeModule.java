@@ -4,8 +4,8 @@ import com.squareup.otto.Bus;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.repository.PresetRepository;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
-import com.stedi.randomimagegenerator.app.presenter.HomePresenter;
-import com.stedi.randomimagegenerator.app.presenter.HomePresenterImpl;
+import com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl;
+import com.stedi.randomimagegenerator.app.presenter.interfaces.HomePresenter;
 
 import javax.inject.Named;
 

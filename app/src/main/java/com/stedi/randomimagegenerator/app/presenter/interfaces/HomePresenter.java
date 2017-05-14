@@ -1,11 +1,11 @@
-package com.stedi.randomimagegenerator.app.presenter;
+package com.stedi.randomimagegenerator.app.presenter.interfaces;
 
 import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
-import com.stedi.randomimagegenerator.app.presenter.core.RetainedPresenter;
-import com.stedi.randomimagegenerator.app.presenter.core.UI;
+import com.stedi.randomimagegenerator.app.presenter.interfaces.core.RetainedPresenter;
+import com.stedi.randomimagegenerator.app.presenter.interfaces.core.UI;
 
 import java.util.List;
 

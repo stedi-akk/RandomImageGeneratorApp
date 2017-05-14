@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.Components;
-import com.stedi.randomimagegenerator.app.presenter.ChooseSizeAndCountPresenter;
+import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSizeAndCountPresenter;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
 
