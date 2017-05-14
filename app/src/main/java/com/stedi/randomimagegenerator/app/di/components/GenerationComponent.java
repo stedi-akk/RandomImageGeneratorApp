@@ -4,6 +4,7 @@ import com.stedi.randomimagegenerator.app.di.modules.GenerationModule;
 import com.stedi.randomimagegenerator.app.view.dialogs.EditColoredCirclesDialog;
 import com.stedi.randomimagegenerator.app.view.fragments.ChooseEffectFragment;
 import com.stedi.randomimagegenerator.app.view.fragments.ChooseGeneratorFragment;
+import com.stedi.randomimagegenerator.app.view.fragments.ChooseSizeAndCountFragment;
 
 import dagger.Subcomponent;
 
@@ -14,4 +15,6 @@ public interface GenerationComponent {
     void inject(EditColoredCirclesDialog dialog);
 
     void inject(ChooseEffectFragment fragment);
+
+    void inject(ChooseSizeAndCountFragment fragment);
 }

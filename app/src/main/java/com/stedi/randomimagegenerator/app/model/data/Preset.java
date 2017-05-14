@@ -7,8 +7,13 @@ import com.stedi.randomimagegenerator.app.model.data.generatorparams.GeneratorPa
 public class Preset {
     private int id;
     private long timestamp;
+
     private String name;
     private GeneratorParams generatorParams;
+
+    private int count = 1;
+    private int width = 1;
+    private int height = 1;
 
     public Preset(@NonNull String name, @NonNull GeneratorParams generatorParams) {
         this.name = name;
@@ -47,5 +52,29 @@ public class Preset {
     @NonNull
     public GeneratorParams getGeneratorParams() {
         return generatorParams;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getHeight() {
+        return height;
     }
 }

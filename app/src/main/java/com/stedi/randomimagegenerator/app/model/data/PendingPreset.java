@@ -13,7 +13,11 @@ public class PendingPreset {
 
     @NonNull
     public static Preset createDefault() {
-        return new Preset("Unsaved preset", new FlatColorParams());
+        Preset preset = new Preset("Unsaved preset", new FlatColorParams());
+        preset.setWidth(100);
+        preset.setHeight(100);
+        preset.setCount(1);
+        return preset;
     }
 
     @Inject

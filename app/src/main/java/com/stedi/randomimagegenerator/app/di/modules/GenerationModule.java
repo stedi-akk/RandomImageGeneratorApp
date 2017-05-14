@@ -6,6 +6,8 @@ import com.stedi.randomimagegenerator.app.presenter.ChooseEffectPresenter;
 import com.stedi.randomimagegenerator.app.presenter.ChooseEffectPresenterImpl;
 import com.stedi.randomimagegenerator.app.presenter.ChooseGeneratorPresenter;
 import com.stedi.randomimagegenerator.app.presenter.ChooseGeneratorPresenterImpl;
+import com.stedi.randomimagegenerator.app.presenter.ChooseSizeAndCountPresenter;
+import com.stedi.randomimagegenerator.app.presenter.ChooseSizeAndCountPresenterImpl;
 import com.stedi.randomimagegenerator.app.presenter.EditColoredCirclesPresenter;
 import com.stedi.randomimagegenerator.app.presenter.EditColoredCirclesPresenterImpl;
 
@@ -27,5 +29,10 @@ public class GenerationModule {
     @Provides
     ChooseEffectPresenter provideChooseEffectPresenter(PendingPreset pendingPreset, Logger logger) {
         return new ChooseEffectPresenterImpl(pendingPreset, logger);
+    }
+
+    @Provides
+    ChooseSizeAndCountPresenter provideChooseSizeAndCountPresenter(PendingPreset pendingPreset, Logger logger) {
+        return new ChooseSizeAndCountPresenterImpl(pendingPreset, logger);
     }
 }
