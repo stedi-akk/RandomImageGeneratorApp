@@ -4,11 +4,13 @@ import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.impl.ChooseEffectPresenterImpl;
 import com.stedi.randomimagegenerator.app.presenter.impl.ChooseGeneratorPresenterImpl;
+import com.stedi.randomimagegenerator.app.presenter.impl.ChooseSaveOptionsPresenterImpl;
 import com.stedi.randomimagegenerator.app.presenter.impl.ChooseSizeAndCountPresenterImpl;
 import com.stedi.randomimagegenerator.app.presenter.impl.EditColoredCirclesPresenterImpl;
 import com.stedi.randomimagegenerator.app.presenter.impl.GenerationPresenterImpl;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseEffectPresenter;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseGeneratorPresenter;
+import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSaveOptionsPresenter;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSizeAndCountPresenter;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.EditColoredCirclesPresenter;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationPresenter;
@@ -41,5 +43,10 @@ public class GenerationModule {
     @Provides
     ChooseSizeAndCountPresenter provideChooseSizeAndCountPresenter(PendingPreset pendingPreset, Logger logger) {
         return new ChooseSizeAndCountPresenterImpl(pendingPreset, logger);
+    }
+
+    @Provides
+    ChooseSaveOptionsPresenter provideChooseSaveOptionsPresenter(PendingPreset pendingPreset, Logger logger) {
+        return new ChooseSaveOptionsPresenterImpl(pendingPreset, logger);
     }
 }
