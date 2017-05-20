@@ -6,16 +6,23 @@ import com.stedi.randomimagegenerator.app.presenter.impl.ChooseEffectPresenterIm
 import com.stedi.randomimagegenerator.app.presenter.impl.ChooseGeneratorPresenterImpl;
 import com.stedi.randomimagegenerator.app.presenter.impl.ChooseSizeAndCountPresenterImpl;
 import com.stedi.randomimagegenerator.app.presenter.impl.EditColoredCirclesPresenterImpl;
+import com.stedi.randomimagegenerator.app.presenter.impl.GenerationPresenterImpl;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseEffectPresenter;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseGeneratorPresenter;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSizeAndCountPresenter;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.EditColoredCirclesPresenter;
+import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationPresenter;
 
 import dagger.Module;
 import dagger.Provides;
 
 @Module
 public class GenerationModule {
+    @Provides
+    GenerationPresenter provideGenerationPresenter(PendingPreset pendingPreset, Logger logger) {
+        return new GenerationPresenterImpl(pendingPreset, logger);
+    }
+
     @Provides
     ChooseGeneratorPresenter provideChooseGeneratorPresenter(PendingPreset pendingPreset, Logger logger) {
         return new ChooseGeneratorPresenterImpl(pendingPreset, logger);

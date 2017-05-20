@@ -1,6 +1,7 @@
 package com.stedi.randomimagegenerator.app.di.modules;
 
 import android.content.Context;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 
 import com.squareup.otto.Bus;
@@ -52,5 +53,11 @@ public class AppModule {
     @Named("UiScheduler")
     Scheduler provideAndroidScheduler() {
         return AndroidSchedulers.mainThread();
+    }
+
+    @Provides
+    @Named("DefaultSavePath")
+    String provideDefaultSavePath() {
+        return Environment.getExternalStorageDirectory().getPath();
     }
 }

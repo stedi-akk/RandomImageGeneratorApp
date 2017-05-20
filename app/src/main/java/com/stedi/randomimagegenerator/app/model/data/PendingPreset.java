@@ -1,27 +1,32 @@
 package com.stedi.randomimagegenerator.app.model.data;
 
-import android.support.annotation.NonNull;
-
+import com.stedi.randomimagegenerator.Quality;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.FlatColorParams;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 @Singleton
 public class PendingPreset {
+    private final String defaultSavePath;
+
     private Preset preset;
 
-    @NonNull
-    public static Preset createDefault() {
-        Preset preset = new Preset("Unsaved preset", new FlatColorParams());
+    @Inject
+    public PendingPreset(@Named("DefaultSavePath") String defaultSavePath) {
+        this.defaultSavePath = defaultSavePath;
+    }
+
+    public void createNew() {
+        preset = new Preset(
+                "Unsaved preset",
+                new FlatColorParams(),
+                Quality.png(),
+                defaultSavePath);
         preset.setWidth(100);
         preset.setHeight(100);
         preset.setCount(1);
-        return preset;
-    }
-
-    @Inject
-    public PendingPreset() {
     }
 
     public boolean exists() {
@@ -32,9 +37,5 @@ public class PendingPreset {
         if (preset == null)
             throw new IllegalStateException("incorrect behavior");
         return preset;
-    }
-
-    public void set(Preset preset) {
-        this.preset = preset;
     }
 }
