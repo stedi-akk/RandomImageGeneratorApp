@@ -61,6 +61,36 @@ public class HomePresenterImpl implements HomePresenter {
         }
     }
 
+    @Override
+    public void editPreset(@NonNull Preset preset) {
+
+    }
+
+    @Override
+    public void generateFromPreset(@NonNull Preset preset) {
+
+    }
+
+    @Override
+    public void confirmLastAction() {
+
+    }
+
+    @Override
+    public void cancelLastAction() {
+
+    }
+
+    @Override
+    public void openFolder(@NonNull Preset preset) {
+
+    }
+
+    @Override
+    public void deletePreset(@NonNull Preset preset) {
+
+    }
+
     @Subscribe
     public void onEvent(Event event) {
         fetchInProgress = false;
@@ -70,15 +100,16 @@ public class HomePresenterImpl implements HomePresenter {
             return;
         }
 
-        if (event.t != null)
-            ui.onFailedToFetch(event.t);
-        else
-            ui.onPresetsFetched(pendingPreset, event.presets);
+        if (event.t != null) {
+            ui.onFailedToFetchPresets();
+        } else {
+            ui.onPresetsFetched(pendingPreset.exists() ? pendingPreset.get() : null, event.presets);
+        }
     }
 
     @Override
     public void createNewGeneration() {
-        ui.onShowNewGeneration();
+        ui.showNewGeneration();
     }
 
     @Override

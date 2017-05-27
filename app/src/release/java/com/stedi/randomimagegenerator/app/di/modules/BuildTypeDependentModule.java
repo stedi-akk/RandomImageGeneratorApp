@@ -17,6 +17,7 @@ public class BuildTypeDependentModule {
     }
 
     @Provides
+    @Singleton
     PresetRepository providePresetRepository() {
         return new CachedPresetRepository(new DatabasePresetRepository());
     }

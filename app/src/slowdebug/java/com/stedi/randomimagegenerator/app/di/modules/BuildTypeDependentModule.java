@@ -21,6 +21,7 @@ public class BuildTypeDependentModule {
     }
 
     @Provides
+    @Singleton
     PresetRepository providePresetRepository() {
         return new CachedPresetRepository(new SlowPresetRepository(new DatabasePresetRepository()));
     }

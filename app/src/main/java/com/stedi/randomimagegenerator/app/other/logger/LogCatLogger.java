@@ -11,16 +11,16 @@ public class LogCatLogger implements Logger {
 
     @Override
     public void log(Object from, String message) {
-        Log.d(tag, from + ": " + message);
+        Log.d(tag, from.getClass().getSimpleName() + ": " + message);
     }
 
     @Override
     public void log(Object from, Throwable t) {
-        Log.d(tag, from + ": ", t);
+        Log.d(tag, from.getClass().getSimpleName() + ": ", t);
     }
 
     @Override
     public void log(Object from, String message, Throwable t) {
-        Log.d(tag, from + ": " + message, t);
+        Log.d(tag, from.getClass().getSimpleName() + ": " + message, t);
     }
 }

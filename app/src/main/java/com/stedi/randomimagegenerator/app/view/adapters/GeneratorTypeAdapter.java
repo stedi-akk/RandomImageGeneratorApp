@@ -64,7 +64,7 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
         @BindView(R.id.generator_type_item_text) TextView text;
         @BindView(R.id.generator_type_item_btn_edit) View btnEdit;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
