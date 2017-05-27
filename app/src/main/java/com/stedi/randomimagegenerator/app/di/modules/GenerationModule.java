@@ -1,6 +1,8 @@
 package com.stedi.randomimagegenerator.app.di.modules;
 
+import com.squareup.otto.Bus;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
+import com.stedi.randomimagegenerator.app.model.repository.PresetRepository;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.impl.ApplyGenerationPresenterImpl;
 import com.stedi.randomimagegenerator.app.presenter.impl.ChooseEffectPresenterImpl;
@@ -17,8 +19,11 @@ import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSizeAndCoun
 import com.stedi.randomimagegenerator.app.presenter.interfaces.EditColoredCirclesPresenter;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationPresenter;
 
+import javax.inject.Named;
+
 import dagger.Module;
 import dagger.Provides;
+import rx.Scheduler;
 
 @Module
 public class GenerationModule {
@@ -53,7 +58,11 @@ public class GenerationModule {
     }
 
     @Provides
-    ApplyGenerationPresenter provideApplyGenerationPresenter(PendingPreset pendingPreset, Logger logger) {
-        return new ApplyGenerationPresenterImpl(pendingPreset, logger);
+    ApplyGenerationPresenter provideApplyGenerationPresenter(PendingPreset pendingPreset,
+                                                             PresetRepository presetRepository,
+                                                             @Named("DefaultScheduler") Scheduler subscribeOn,
+                                                             @Named("UiScheduler") Scheduler observeOn,
+                                                             Bus bus, Logger logger) {
+        return new ApplyGenerationPresenterImpl(pendingPreset, presetRepository, subscribeOn, observeOn, bus, logger);
     }
 }

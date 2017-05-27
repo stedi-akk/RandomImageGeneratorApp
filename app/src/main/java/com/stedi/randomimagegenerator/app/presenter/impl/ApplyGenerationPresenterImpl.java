@@ -3,25 +3,54 @@ package com.stedi.randomimagegenerator.app.presenter.impl;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.EffectGeneratorParams;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.GeneratorParams;
+import com.stedi.randomimagegenerator.app.model.repository.PresetRepository;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter;
 
 import java.io.Serializable;
 
+import rx.Observable;
+import rx.Scheduler;
+
 public class ApplyGenerationPresenterImpl implements ApplyGenerationPresenter {
     private final PendingPreset pendingPreset;
+    private final PresetRepository presetRepository;
+    private final Scheduler subscribeOn;
+    private final Scheduler observeOn;
+    private final Bus bus;
     private final Logger logger;
 
     private UIImpl ui;
 
-    public ApplyGenerationPresenterImpl(PendingPreset pendingPreset, Logger logger) {
+    private boolean saveInProgress;
+
+    private static class OnPresetSaveEvent {
+        private final boolean success;
+        private final Throwable throwable;
+
+        public OnPresetSaveEvent(boolean success, Throwable throwable) {
+            this.success = success;
+            this.throwable = throwable;
+        }
+    }
+
+    public ApplyGenerationPresenterImpl(PendingPreset pendingPreset,
+                                        PresetRepository presetRepository,
+                                        Scheduler subscribeOn, Scheduler observeOn,
+                                        Bus bus, Logger logger) {
         this.pendingPreset = pendingPreset;
+        this.presetRepository = presetRepository;
         this.logger = logger;
+        this.subscribeOn = subscribeOn;
+        this.observeOn = observeOn;
+        this.bus = bus;
     }
 
     @Override
@@ -31,12 +60,47 @@ public class ApplyGenerationPresenterImpl implements ApplyGenerationPresenter {
 
     @Override
     public void savePreset() {
-        ui.finishGeneration();
+        if (saveInProgress)
+            return;
+        saveInProgress = true;
+
+        Observable.fromCallable(() -> presetRepository.save(pendingPreset.get()))
+                .subscribeOn(subscribeOn)
+                .observeOn(observeOn)
+                .subscribe(aBoolean -> {
+                    bus.post(new OnPresetSaveEvent(true, null));
+                }, throwable -> {
+                    bus.post(new OnPresetSaveEvent(false, throwable));
+                });
     }
 
     @Override
     public void onAttach(@NonNull UIImpl ui) {
         this.ui = ui;
+        bus.register(this);
+        showPresetDetails();
+    }
+
+    @Subscribe
+    public void onPresetSaveEvent(OnPresetSaveEvent event) {
+        saveInProgress = false;
+        if (event.throwable == null && event.success)
+            pendingPreset.clear();
+
+        if (ui == null) {
+            logger.log(this, "onPresetSaveEvent when ui == null");
+            return;
+        }
+
+        if (event.throwable != null || !event.success) {
+            ui.failedToSavePreset();
+            return;
+        }
+
+        ui.finishGeneration();
+    }
+
+    private void showPresetDetails() {
         Preset preset = pendingPreset.get();
 
         GeneratorParams generatorParams = preset.getGeneratorParams();
@@ -55,17 +119,18 @@ public class ApplyGenerationPresenterImpl implements ApplyGenerationPresenter {
 
     @Override
     public void onDetach() {
+        bus.unregister(this);
         this.ui = null;
     }
 
     @Override
     public void onRestore(@NonNull Serializable state) {
-
+        saveInProgress = (boolean) state;
     }
 
     @Nullable
     @Override
     public Serializable onRetain() {
-        return null;
+        return saveInProgress;
     }
 }

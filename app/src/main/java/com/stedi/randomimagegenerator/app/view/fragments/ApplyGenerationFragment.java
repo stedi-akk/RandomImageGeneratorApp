@@ -12,6 +12,7 @@ import com.stedi.randomimagegenerator.Quality;
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.Components;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
+import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
@@ -72,6 +73,11 @@ public class ApplyGenerationFragment extends ButterKnifeFragment implements Step
     @Override
     public void finishGeneration() {
         getActivity().finish();
+    }
+
+    @Override
+    public void failedToSavePreset() {
+        Utils.toastShort(getContext(), "failedToSavePreset");
     }
 
     @OnClick(R.id.apply_generation_fragment_btn_save_preset)

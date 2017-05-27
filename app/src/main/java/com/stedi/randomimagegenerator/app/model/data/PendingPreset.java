@@ -38,4 +38,8 @@ public class PendingPreset {
             throw new IllegalStateException("incorrect behavior");
         return preset;
     }
+
+    public void clear() {
+        preset = null;
+    }
 }
