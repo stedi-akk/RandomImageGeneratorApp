@@ -6,18 +6,16 @@ import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.generators.Generator;
 import com.stedi.randomimagegenerator.generators.TextOverlayGenerator;
 
-public class TextOverlayParams extends GeneratorParams {
-    private final GeneratorParams target;
-
+public class TextOverlayParams extends EffectGeneratorParams {
     public TextOverlayParams(@NonNull GeneratorParams target) {
-        this.target = target;
+        super(target);
     }
 
     @NonNull
     @Override
-    public Generator createGenerator() {
+    protected Generator createEffectGenerator(@NonNull Generator target) {
         return new TextOverlayGenerator.Builder()
-                .setGenerator(target.createGenerator())
+                .setGenerator(target)
                 .build();
     }
 

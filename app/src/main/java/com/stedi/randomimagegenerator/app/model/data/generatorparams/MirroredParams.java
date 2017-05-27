@@ -6,17 +6,15 @@ import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.generators.Generator;
 import com.stedi.randomimagegenerator.generators.MirroredGenerator;
 
-public class MirroredParams extends GeneratorParams {
-    private final GeneratorParams target;
-
+public class MirroredParams extends EffectGeneratorParams {
     public MirroredParams(@NonNull GeneratorParams target) {
-        this.target = target;
+        super(target);
     }
 
     @NonNull
     @Override
-    public Generator createGenerator() {
-        return new MirroredGenerator(target.createGenerator());
+    protected Generator createEffectGenerator(@NonNull Generator target) {
+        return new MirroredGenerator(target);
     }
 
     @Override
