@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 
 import com.squareup.otto.Bus;
 import com.stedi.randomimagegenerator.app.App;
+import com.stedi.randomimagegenerator.app.other.CachedBus;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -34,7 +35,7 @@ public class AppModule {
     @Provides
     @Singleton
     Bus provideBus() {
-        return new Bus();
+        return new CachedBus();
     }
 
     @Provides
