@@ -59,4 +59,9 @@ public class EditColoredCirclesDialog extends ButterKnifeDialogFragment implemen
         super.onDestroy();
         presenter.onDetach();
     }
+
+    @Override
+    public boolean canRetain() {
+        return false;
+    }
 }

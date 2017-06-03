@@ -26,6 +26,7 @@ public class HomePresenterImpl implements HomePresenter {
     private final Logger logger;
 
     private UIImpl ui;
+    private boolean canRetainAfterDetach;
     private boolean fetchInProgress;
 
     private static class Event {
@@ -52,12 +53,19 @@ public class HomePresenterImpl implements HomePresenter {
     @Override
     public void fetchPresets() {
         if (!fetchInProgress) {
+            logger.log(this, "fetching presets");
             fetchInProgress = true;
             Observable.fromCallable(presetRepository::getAll)
                     .subscribeOn(subscribeOn)
                     .observeOn(observeOn)
-                    .subscribe(presets -> bus.post(new Event(presets, null)),
-                            throwable -> bus.post(new Event(null, throwable)));
+                    .subscribe(presets -> {
+                                if (ui != null && ui.canRetain() || canRetainAfterDetach)
+                                    bus.post(new Event(presets, null));
+                            },
+                            throwable -> {
+                                if (ui != null && ui.canRetain() || canRetainAfterDetach)
+                                    bus.post(new Event(null, throwable));
+                            });
         }
     }
 
@@ -93,6 +101,7 @@ public class HomePresenterImpl implements HomePresenter {
 
     @Subscribe
     public void onEvent(Event event) {
+        logger.log(this, "onEvent");
         fetchInProgress = false;
 
         if (ui == null) {
@@ -108,11 +117,6 @@ public class HomePresenterImpl implements HomePresenter {
     }
 
     @Override
-    public void createNewGeneration() {
-        ui.showNewGeneration();
-    }
-
-    @Override
     public void onAttach(@NonNull UIImpl ui) {
         this.ui = ui;
         bus.register(this);
@@ -120,8 +124,9 @@ public class HomePresenterImpl implements HomePresenter {
 
     @Override
     public void onDetach() {
+        canRetainAfterDetach = ui.canRetain();
         bus.unregister(this);
-        this.ui = null;
+        ui = null;
     }
 
     @Override

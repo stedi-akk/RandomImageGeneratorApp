@@ -16,6 +16,7 @@ import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.HomePresenter;
 import com.stedi.randomimagegenerator.app.view.adapters.PresetsAdapter;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -25,6 +26,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, PresetsAdapter.ClickListener {
+    private static final String KEY_HOME_PRESENTER_STATE = "KEY_HOME_PRESENTER_STATE";
+
     @Inject HomePresenter presenter;
     @Inject Logger logger;
 
@@ -37,17 +40,21 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
         super.onCreate(savedInstanceState);
         getActivityComponent().plus(new HomeModule()).inject(this);
         presenter.onAttach(this);
+
         setContentView(R.layout.home_activity);
         ButterKnife.bind(this);
+
+        if (savedInstanceState != null) {
+            Serializable state = savedInstanceState.getSerializable(KEY_HOME_PRESENTER_STATE);
+            if (state != null)
+                presenter.onRestore(state);
+        }
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
         adapter = new PresetsAdapter(this);
         recyclerView.setAdapter(adapter);
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        logger.log(this, "fetchPresets");
         presenter.fetchPresets();
     }
 
@@ -64,40 +71,9 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
         Utils.toastLong(this, "onFailedToFetch");
     }
 
-    @Override
-    public void onLongRunningAction(boolean stopped) {
-
-    }
-
-    @Override
-    public void onFailedToDeletePreset() {
-
-    }
-
-    @Override
-    public void showConfirmLastAction() {
-
-    }
-
     @OnClick(R.id.home_activity_fab)
     public void onFabClick(View v) {
-        presenter.createNewGeneration();
-    }
-
-    @Override
-    public void showNewGeneration() {
         startActivity(new Intent(this, GenerationActivity.class));
-    }
-
-    @Override
-    public void showEditPreset() {
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        presenter.onDetach();
     }
 
     @Override
@@ -106,7 +82,17 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     }
 
     @Override
+    public void showEditPreset() {
+
+    }
+
+    @Override
     public void onDeleteClick(@NonNull Preset preset) {
+
+    }
+
+    @Override
+    public void onFailedToDeletePreset() {
 
     }
 
@@ -118,5 +104,27 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     @Override
     public void onGenerateClick(@NonNull Preset preset) {
 
+    }
+
+    @Override
+    public void showConfirmLastAction() {
+
+    }
+
+    @Override
+    public boolean canRetain() {
+        return !isFinishing();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(KEY_HOME_PRESENTER_STATE, presenter.onRetain());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.onDetach();
     }
 }

@@ -87,4 +87,9 @@ public class ChooseSaveOptionsFragment extends ButterKnifeFragment implements St
         super.onDestroy();
         presenter.onDetach();
     }
+
+    @Override
+    public boolean canRetain() {
+        return false;
+    }
 }

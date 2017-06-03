@@ -44,4 +44,9 @@ public class GenerationActivity extends BaseActivity implements GenerationPresen
         super.onDestroy();
         presenter.onDetach();
     }
+
+    @Override
+    public boolean canRetain() {
+        return false;
+    }
 }

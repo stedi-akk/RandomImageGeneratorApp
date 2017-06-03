@@ -1,7 +1,6 @@
 package com.stedi.randomimagegenerator.app.presenter.interfaces;
 
 import com.stedi.randomimagegenerator.app.presenter.interfaces.core.RetainedPresenter;
-import com.stedi.randomimagegenerator.app.presenter.interfaces.core.UI;
 
 public interface ChooseSizeAndCountPresenter extends RetainedPresenter<ChooseSizeAndCountPresenter.UIImpl> {
     void setCount(int count);
@@ -10,7 +9,7 @@ public interface ChooseSizeAndCountPresenter extends RetainedPresenter<ChooseSiz
 
     void setHeight(int height);
 
-    interface UIImpl extends UI {
+    interface UIImpl extends RetainedPresenter.RetainedUI {
         void showCount(int count);
 
         void showSize(int width, int height);

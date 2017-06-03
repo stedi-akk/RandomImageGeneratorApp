@@ -5,9 +5,13 @@ import android.support.annotation.Nullable;
 
 import java.io.Serializable;
 
-public interface RetainedPresenter<T extends UI> extends Presenter<T> {
+public interface RetainedPresenter<T extends RetainedPresenter.RetainedUI> extends Presenter<T> {
     void onRestore(@NonNull Serializable state);
 
     @Nullable
     Serializable onRetain();
+
+    interface RetainedUI extends UI {
+        boolean canRetain();
+    }
 }

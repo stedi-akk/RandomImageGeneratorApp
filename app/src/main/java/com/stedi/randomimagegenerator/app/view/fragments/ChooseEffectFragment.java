@@ -88,4 +88,9 @@ public class ChooseEffectFragment extends ButterKnifeFragment implements
         super.onDestroy();
         presenter.onDetach();
     }
+
+    @Override
+    public boolean canRetain() {
+        return false;
+    }
 }

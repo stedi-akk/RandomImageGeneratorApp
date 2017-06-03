@@ -74,4 +74,9 @@ public class ChooseSizeAndCountFragment extends ButterKnifeFragment implements
         super.onDestroy();
         presenter.onDetach();
     }
+
+    @Override
+    public boolean canRetain() {
+        return false;
+    }
 }
