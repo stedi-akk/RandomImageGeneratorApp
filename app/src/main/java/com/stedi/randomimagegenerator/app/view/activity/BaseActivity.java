@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.squareup.otto.Bus;
 import com.stedi.randomimagegenerator.app.di.Components;
 import com.stedi.randomimagegenerator.app.di.components.ActivityComponent;
 import com.stedi.randomimagegenerator.app.di.modules.ActivityModule;
@@ -16,7 +15,7 @@ import javax.inject.Inject;
 public abstract class BaseActivity extends AppCompatActivity {
     private ActivityComponent component;
 
-    @Inject Bus bus;
+    @Inject CachedBus bus;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,14 +32,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (bus instanceof CachedBus)
-            ((CachedBus) bus).unlock();
+        bus.unlock();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (bus instanceof CachedBus)
-            ((CachedBus) bus).lock();
+        bus.lock();
     }
 }

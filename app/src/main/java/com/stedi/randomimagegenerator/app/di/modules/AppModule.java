@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 
-import com.squareup.otto.Bus;
 import com.stedi.randomimagegenerator.app.App;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
 
@@ -34,7 +33,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    Bus provideBus() {
+    CachedBus provideBus() {
         return new CachedBus();
     }
 

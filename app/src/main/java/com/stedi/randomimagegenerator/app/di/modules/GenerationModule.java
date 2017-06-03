@@ -1,8 +1,8 @@
 package com.stedi.randomimagegenerator.app.di.modules;
 
-import com.squareup.otto.Bus;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.repository.PresetRepository;
+import com.stedi.randomimagegenerator.app.other.CachedBus;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.impl.ApplyGenerationPresenterImpl;
 import com.stedi.randomimagegenerator.app.presenter.impl.ChooseEffectPresenterImpl;
@@ -62,7 +62,7 @@ public class GenerationModule {
                                                              PresetRepository presetRepository,
                                                              @Named("DefaultScheduler") Scheduler subscribeOn,
                                                              @Named("UiScheduler") Scheduler observeOn,
-                                                             Bus bus, Logger logger) {
+                                                             CachedBus bus, Logger logger) {
         return new ApplyGenerationPresenterImpl(pendingPreset, presetRepository, subscribeOn, observeOn, bus, logger);
     }
 }

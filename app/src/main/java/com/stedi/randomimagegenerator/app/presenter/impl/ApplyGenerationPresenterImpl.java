@@ -3,7 +3,6 @@ package com.stedi.randomimagegenerator.app.presenter.impl;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
@@ -11,6 +10,7 @@ import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.EffectGeneratorParams;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.GeneratorParams;
 import com.stedi.randomimagegenerator.app.model.repository.PresetRepository;
+import com.stedi.randomimagegenerator.app.other.CachedBus;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter;
 
@@ -24,7 +24,7 @@ public class ApplyGenerationPresenterImpl implements ApplyGenerationPresenter {
     private final PresetRepository presetRepository;
     private final Scheduler subscribeOn;
     private final Scheduler observeOn;
-    private final Bus bus;
+    private final CachedBus bus;
     private final Logger logger;
 
     private UIImpl ui;
@@ -44,7 +44,7 @@ public class ApplyGenerationPresenterImpl implements ApplyGenerationPresenter {
     public ApplyGenerationPresenterImpl(PendingPreset pendingPreset,
                                         PresetRepository presetRepository,
                                         Scheduler subscribeOn, Scheduler observeOn,
-                                        Bus bus, Logger logger) {
+                                        CachedBus bus, Logger logger) {
         this.pendingPreset = pendingPreset;
         this.presetRepository = presetRepository;
         this.logger = logger;

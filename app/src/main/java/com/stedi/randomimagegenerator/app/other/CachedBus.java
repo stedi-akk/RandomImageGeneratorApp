@@ -7,13 +7,9 @@ import java.util.LinkedList;
 public class CachedBus extends Bus {
     private final LinkedList<Runnable> cache = new LinkedList<>();
 
-    private Thread creationThread;
+    private final Thread creationThread = Thread.currentThread();
 
     private boolean locked;
-
-    {
-        creationThread = Thread.currentThread();
-    }
 
     public void lock() {
         ensureCreationThread();

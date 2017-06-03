@@ -1,8 +1,8 @@
 package com.stedi.randomimagegenerator.app.di.modules;
 
-import com.squareup.otto.Bus;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.repository.PresetRepository;
+import com.stedi.randomimagegenerator.app.other.CachedBus;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.HomePresenter;
@@ -20,7 +20,7 @@ public class HomeModule {
                                        PendingPreset pendingPreset,
                                        @Named("DefaultScheduler") Scheduler subscribeOn,
                                        @Named("UiScheduler") Scheduler observeOn,
-                                       Bus bus,
+                                       CachedBus bus,
                                        Logger logger) {
         return new HomePresenterImpl(repository, pendingPreset, subscribeOn, observeOn, bus, logger);
     }
