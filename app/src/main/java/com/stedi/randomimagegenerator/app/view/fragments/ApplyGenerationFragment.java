@@ -110,9 +110,4 @@ public class ApplyGenerationFragment extends ButterKnifeFragment implements Step
         super.onDestroyView();
         presenter.onDetach();
     }
-
-    @Override
-    public boolean canRetain() {
-        return false;
-    }
 }

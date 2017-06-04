@@ -26,7 +26,6 @@ public class HomePresenterImpl implements HomePresenter {
     private final Logger logger;
 
     private UIImpl ui;
-    private boolean canRetainAfterDetach;
     private boolean fetchInProgress;
 
     private static class Event {
@@ -58,14 +57,8 @@ public class HomePresenterImpl implements HomePresenter {
             Observable.fromCallable(presetRepository::getAll)
                     .subscribeOn(subscribeOn)
                     .observeOn(observeOn)
-                    .subscribe(presets -> {
-                                if (ui != null && ui.canRetain() || canRetainAfterDetach)
-                                    bus.post(new Event(presets, null));
-                            },
-                            throwable -> {
-                                if (ui != null && ui.canRetain() || canRetainAfterDetach)
-                                    bus.post(new Event(null, throwable));
-                            });
+                    .subscribe(presets -> bus.post(new Event(presets, null)),
+                            throwable -> bus.post(new Event(null, throwable)));
         }
     }
 
@@ -102,6 +95,12 @@ public class HomePresenterImpl implements HomePresenter {
     @Subscribe
     public void onEvent(Event event) {
         logger.log(this, "onEvent");
+
+        if (!fetchInProgress) {
+            logger.log(this, "ignoring event from not retained presenter!");
+            return;
+        }
+
         fetchInProgress = false;
 
         if (ui == null) {
@@ -124,7 +123,6 @@ public class HomePresenterImpl implements HomePresenter {
 
     @Override
     public void onDetach() {
-        canRetainAfterDetach = ui.canRetain();
         bus.unregister(this);
         ui = null;
     }

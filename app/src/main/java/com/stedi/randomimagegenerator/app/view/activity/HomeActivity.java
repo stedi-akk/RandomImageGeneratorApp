@@ -112,11 +112,6 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     }
 
     @Override
-    public boolean canRetain() {
-        return !isFinishing();
-    }
-
-    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(KEY_HOME_PRESENTER_STATE, presenter.onRetain());

@@ -113,9 +113,4 @@ public class ChooseGeneratorFragment extends ButterKnifeFragment implements
         super.onDestroy();
         presenter.onDetach();
     }
-
-    @Override
-    public boolean canRetain() {
-        return false;
-    }
 }

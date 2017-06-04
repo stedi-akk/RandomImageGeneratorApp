@@ -1,6 +1,7 @@
 package com.stedi.randomimagegenerator.app.presenter.interfaces;
 
 import com.stedi.randomimagegenerator.app.presenter.interfaces.core.RetainedPresenter;
+import com.stedi.randomimagegenerator.app.presenter.interfaces.core.UI;
 
 public interface EditColoredCirclesPresenter extends RetainedPresenter<EditColoredCirclesPresenter.UIImpl> {
     void setRandomCount();
@@ -11,7 +12,7 @@ public interface EditColoredCirclesPresenter extends RetainedPresenter<EditColor
 
     void cancel();
 
-    interface UIImpl extends RetainedPresenter.RetainedUI {
+    interface UIImpl extends UI {
         void showRandomCount();
 
         void showCount(int count);

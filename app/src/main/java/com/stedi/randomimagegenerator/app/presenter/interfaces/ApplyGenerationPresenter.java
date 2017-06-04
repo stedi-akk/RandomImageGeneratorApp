@@ -5,13 +5,14 @@ import android.support.annotation.NonNull;
 import com.stedi.randomimagegenerator.Quality;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.core.RetainedPresenter;
+import com.stedi.randomimagegenerator.app.presenter.interfaces.core.UI;
 
 public interface ApplyGenerationPresenter extends RetainedPresenter<ApplyGenerationPresenter.UIImpl> {
     void startGeneration();
 
     void savePreset();
 
-    interface UIImpl extends RetainedPresenter.RetainedUI {
+    interface UIImpl extends UI {
         void showGeneratorType(@NonNull GeneratorType type);
 
         void showEffectType(@NonNull GeneratorType effectType);

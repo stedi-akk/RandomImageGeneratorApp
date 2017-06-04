@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.core.RetainedPresenter;
+import com.stedi.randomimagegenerator.app.presenter.interfaces.core.UI;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public interface HomePresenter extends RetainedPresenter<HomePresenter.UIImpl> {
 
     void deletePreset(@NonNull Preset preset);
 
-    interface UIImpl extends RetainedPresenter.RetainedUI {
+    interface UIImpl extends UI {
         void onPresetsFetched(@Nullable Preset pendingPreset, @NonNull List<Preset> presets);
 
         void onFailedToFetchPresets();
