@@ -17,6 +17,8 @@ public class ChooseSaveOptionsPresenterImpl implements ChooseSaveOptionsPresente
     private UIImpl ui;
 
     public ChooseSaveOptionsPresenterImpl(PendingPreset pendingPreset, Logger logger) {
+        if (pendingPreset.getCandidate() == null)
+            throw new IllegalStateException("pending preset candidate must not be null");
         this.pendingPreset = pendingPreset;
         this.logger = logger;
     }

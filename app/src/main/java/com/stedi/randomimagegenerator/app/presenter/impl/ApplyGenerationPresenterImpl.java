@@ -45,6 +45,8 @@ public class ApplyGenerationPresenterImpl implements ApplyGenerationPresenter {
                                         PresetRepository presetRepository,
                                         Scheduler subscribeOn, Scheduler observeOn,
                                         CachedBus bus, Logger logger) {
+        if (pendingPreset.getCandidate() == null)
+            throw new IllegalStateException("pending preset candidate must not be null");
         this.pendingPreset = pendingPreset;
         this.presetRepository = presetRepository;
         this.logger = logger;
@@ -55,6 +57,7 @@ public class ApplyGenerationPresenterImpl implements ApplyGenerationPresenter {
 
     @Override
     public void startGeneration() {
+        pendingPreset.applyCandidate();
         ui.finishGeneration();
     }
 
@@ -64,7 +67,7 @@ public class ApplyGenerationPresenterImpl implements ApplyGenerationPresenter {
             return;
         saveInProgress = true;
 
-        Observable.fromCallable(() -> presetRepository.save(pendingPreset.get()))
+        Observable.fromCallable(() -> presetRepository.save(pendingPreset.getCandidate()))
                 .subscribeOn(subscribeOn)
                 .observeOn(observeOn)
                 .subscribe(aBoolean -> {
@@ -101,7 +104,7 @@ public class ApplyGenerationPresenterImpl implements ApplyGenerationPresenter {
     }
 
     private void showPresetDetails() {
-        Preset preset = pendingPreset.get();
+        Preset preset = pendingPreset.getCandidate();
 
         GeneratorParams generatorParams = preset.getGeneratorParams();
         if (generatorParams.getType().isEffect()) {

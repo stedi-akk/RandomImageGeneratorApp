@@ -32,7 +32,7 @@ public class HomePresenterImpl implements HomePresenter {
         private final List<Preset> presets;
         private final Throwable t;
 
-        public Event(List<Preset> presets, Throwable t) {
+        Event(List<Preset> presets, Throwable t) {
             this.presets = presets;
             this.t = t;
         }
@@ -64,7 +64,7 @@ public class HomePresenterImpl implements HomePresenter {
 
     @Override
     public void editPreset(@NonNull Preset preset) {
-
+        pendingPreset.setCandidate(preset);
     }
 
     @Override
@@ -111,7 +111,7 @@ public class HomePresenterImpl implements HomePresenter {
         if (event.t != null) {
             ui.onFailedToFetchPresets();
         } else {
-            ui.onPresetsFetched(pendingPreset.exists() ? pendingPreset.get() : null, event.presets);
+            ui.onPresetsFetched(pendingPreset.get(), event.presets);
         }
     }
 

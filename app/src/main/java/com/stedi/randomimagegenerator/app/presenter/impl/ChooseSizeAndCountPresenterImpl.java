@@ -17,6 +17,8 @@ public class ChooseSizeAndCountPresenterImpl implements ChooseSizeAndCountPresen
     private UIImpl ui;
 
     public ChooseSizeAndCountPresenterImpl(@NonNull PendingPreset pendingPreset, @NonNull Logger logger) {
+        if (pendingPreset.getCandidate() == null)
+            throw new IllegalStateException("pending preset candidate must not be null");
         this.pendingPreset = pendingPreset;
         this.logger = logger;
     }
@@ -25,27 +27,27 @@ public class ChooseSizeAndCountPresenterImpl implements ChooseSizeAndCountPresen
     public void setCount(int count) {
         if (count < 1)
             ui.showErrorIncorrectCount();
-        pendingPreset.get().setCount(count);
+        pendingPreset.getCandidate().setCount(count);
     }
 
     @Override
     public void setWidth(int width) {
         if (width < 1)
             ui.showErrorIncorrectSize();
-        pendingPreset.get().setWidth(width);
+        pendingPreset.getCandidate().setWidth(width);
     }
 
     @Override
     public void setHeight(int height) {
         if (height < 1)
             ui.showErrorIncorrectSize();
-        pendingPreset.get().setHeight(height);
+        pendingPreset.getCandidate().setHeight(height);
     }
 
     @Override
     public void onAttach(@NonNull UIImpl ui) {
         this.ui = ui;
-        Preset preset = pendingPreset.get();
+        Preset preset = pendingPreset.getCandidate();
         this.ui.showCount(preset.getCount());
         this.ui.showSize(preset.getWidth(), preset.getHeight());
     }

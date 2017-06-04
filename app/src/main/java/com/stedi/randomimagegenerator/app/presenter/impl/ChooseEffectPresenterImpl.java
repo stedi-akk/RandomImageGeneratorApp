@@ -19,6 +19,8 @@ public class ChooseEffectPresenterImpl implements ChooseEffectPresenter {
     private UIImpl ui;
 
     public ChooseEffectPresenterImpl(@NonNull PendingPreset pendingPreset, @NonNull Logger logger) {
+        if (pendingPreset.getCandidate() == null)
+            throw new IllegalStateException("pending preset candidate must not be null");
         this.pendingPreset = pendingPreset;
         this.logger = logger;
     }
@@ -33,7 +35,7 @@ public class ChooseEffectPresenterImpl implements ChooseEffectPresenter {
 
     @Override
     public void chooseEffectType(@NonNull GeneratorType effectType) {
-        Preset preset = pendingPreset.get();
+        Preset preset = pendingPreset.getCandidate();
         GeneratorParams effectParams = GeneratorParams.createDefaultEffectParams(effectType, preset.getGeneratorParams());
         preset.setGeneratorParams(effectParams);
     }

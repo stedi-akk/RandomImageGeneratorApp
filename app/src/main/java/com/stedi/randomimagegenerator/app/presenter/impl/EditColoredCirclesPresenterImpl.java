@@ -18,6 +18,8 @@ public class EditColoredCirclesPresenterImpl implements EditColoredCirclesPresen
     private ColoredCirclesParams params;
 
     public EditColoredCirclesPresenterImpl(@NonNull PendingPreset pendingPreset, @NonNull Logger logger) {
+        if (pendingPreset.getCandidate() == null)
+            throw new IllegalStateException("pending preset candidate must not be null");
         this.pendingPreset = pendingPreset;
         this.logger = logger;
     }
@@ -45,7 +47,7 @@ public class EditColoredCirclesPresenterImpl implements EditColoredCirclesPresen
     @Override
     public void onAttach(@NonNull UIImpl ui) {
         this.ui = ui;
-        this.params = (ColoredCirclesParams) pendingPreset.get().getGeneratorParams();
+        this.params = (ColoredCirclesParams) pendingPreset.getCandidate().getGeneratorParams();
     }
 
     @Override

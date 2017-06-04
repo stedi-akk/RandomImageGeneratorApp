@@ -18,6 +18,8 @@ public class ChooseGeneratorPresenterImpl implements ChooseGeneratorPresenter {
     private UIImpl ui;
 
     public ChooseGeneratorPresenterImpl(@NonNull PendingPreset pendingPreset, @NonNull Logger logger) {
+        if (pendingPreset.getCandidate() == null)
+            throw new IllegalStateException("pending preset candidate must not be null");
         this.pendingPreset = pendingPreset;
         this.logger = logger;
     }
@@ -35,12 +37,12 @@ public class ChooseGeneratorPresenterImpl implements ChooseGeneratorPresenter {
 
     @Override
     public void chooseGeneratorType(@NonNull GeneratorType type) {
-        pendingPreset.get().setGeneratorParams(GeneratorParams.createDefaultParams(type));
+        pendingPreset.getCandidate().setGeneratorParams(GeneratorParams.createDefaultParams(type));
     }
 
     @Override
     public void editChoseGeneratorParams() {
-        ui.showEditGeneratorParams(pendingPreset.get().getGeneratorParams().getType());
+        ui.showEditGeneratorParams(pendingPreset.getCandidate().getGeneratorParams().getType());
     }
 
     @Override

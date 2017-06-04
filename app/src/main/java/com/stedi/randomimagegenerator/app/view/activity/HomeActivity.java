@@ -1,6 +1,5 @@
 package com.stedi.randomimagegenerator.app.view.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -73,12 +72,13 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
 
     @OnClick(R.id.home_activity_fab)
     public void onFabClick(View v) {
-        startActivity(new Intent(this, GenerationActivity.class));
+        GenerationActivity.startActivity(this, true);
     }
 
     @Override
     public void onCardClick(@NonNull Preset preset) {
-
+        presenter.editPreset(preset);
+        GenerationActivity.startActivity(this, false);
     }
 
     @Override
