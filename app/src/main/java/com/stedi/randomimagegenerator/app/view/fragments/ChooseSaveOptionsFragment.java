@@ -37,6 +37,7 @@ public class ChooseSaveOptionsFragment extends ButterKnifeFragment implements St
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         return inflater.inflate(R.layout.choose_save_options_fragment, container, false);
     }
 

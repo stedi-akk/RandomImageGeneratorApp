@@ -36,6 +36,7 @@ public class ApplyGenerationFragment extends ButterKnifeFragment implements Step
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         return inflater.inflate(R.layout.apply_generation_fragment, container, false);
     }
 

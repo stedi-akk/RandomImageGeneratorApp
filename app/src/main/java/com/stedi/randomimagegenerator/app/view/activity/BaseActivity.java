@@ -3,7 +3,6 @@ package com.stedi.randomimagegenerator.app.view.activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 
 import com.stedi.randomimagegenerator.app.di.Components;
 import com.stedi.randomimagegenerator.app.di.components.ActivityComponent;
@@ -12,7 +11,7 @@ import com.stedi.randomimagegenerator.app.other.CachedBus;
 
 import javax.inject.Inject;
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends LifeCycleActivity {
     private ActivityComponent component;
 
     @Inject CachedBus bus;
