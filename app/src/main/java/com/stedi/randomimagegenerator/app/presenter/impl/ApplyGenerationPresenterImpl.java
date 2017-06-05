@@ -57,7 +57,8 @@ public class ApplyGenerationPresenterImpl implements ApplyGenerationPresenter {
 
     @Override
     public void startGeneration() {
-        pendingPreset.applyCandidate();
+        if (pendingPreset.getCandidate().getId() == 0)
+            pendingPreset.applyCandidate();
         ui.finishGeneration();
     }
 
@@ -70,11 +71,10 @@ public class ApplyGenerationPresenterImpl implements ApplyGenerationPresenter {
         Observable.fromCallable(() -> presetRepository.save(pendingPreset.getCandidate()))
                 .subscribeOn(subscribeOn)
                 .observeOn(observeOn)
-                .subscribe(aBoolean -> {
-                    bus.post(new OnPresetSaveEvent(true, null));
-                }, throwable -> {
-                    bus.post(new OnPresetSaveEvent(false, throwable));
-                });
+                .subscribe(aBoolean ->
+                                bus.post(new OnPresetSaveEvent(true, null))
+                        , throwable ->
+                                bus.post(new OnPresetSaveEvent(false, throwable)));
     }
 
     @Override
@@ -87,8 +87,12 @@ public class ApplyGenerationPresenterImpl implements ApplyGenerationPresenter {
     @Subscribe
     public void onPresetSaveEvent(OnPresetSaveEvent event) {
         saveInProgress = false;
-        if (event.throwable == null && event.success)
-            pendingPreset.clear();
+        if (event.throwable == null && event.success) {
+            if (pendingPreset.getCandidate() == pendingPreset.get())
+                pendingPreset.clear();
+            else
+                pendingPreset.setCandidate(null);
+        }
 
         if (ui == null) {
             logger.log(this, "onPresetSaveEvent when ui == null");

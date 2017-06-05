@@ -78,12 +78,11 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     @Override
     public void onCardClick(@NonNull Preset preset) {
         presenter.editPreset(preset);
-        GenerationActivity.startActivity(this, false);
     }
 
     @Override
     public void showEditPreset() {
-
+        GenerationActivity.startActivity(this, false);
     }
 
     @Override
