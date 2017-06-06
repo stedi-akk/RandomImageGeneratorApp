@@ -18,13 +18,14 @@ public abstract class BaseActivity extends LifeCycleActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        getActivityComponent().inject(this);
         super.onCreate(savedInstanceState);
-        component = Components.getAppComponent(this).plus(new ActivityModule(this));
-        component.inject(this);
     }
 
     @NonNull
     public ActivityComponent getActivityComponent() {
+        if (component == null)
+            component = Components.getAppComponent(this).plus(new ActivityModule(this));
         return component;
     }
 

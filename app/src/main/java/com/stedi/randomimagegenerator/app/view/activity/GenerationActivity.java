@@ -37,9 +37,9 @@ public class GenerationActivity extends BaseActivity implements GenerationPresen
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         component = getActivityComponent().plus(new GenerationModule());
         component.inject(this);
+        super.onCreate(savedInstanceState);
         presenter.onAttach(this);
 
         setContentView(R.layout.generation_activity);

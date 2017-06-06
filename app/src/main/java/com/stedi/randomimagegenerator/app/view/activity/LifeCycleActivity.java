@@ -16,59 +16,59 @@ public abstract class LifeCycleActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         if (LOG) {
             Components.getAppComponent(this).inject(this);
             logger.log(this, "onCreate");
         }
+        super.onCreate(savedInstanceState);
     }
 
     @Override
     protected void onRestart() {
-        super.onRestart();
         if (LOG)
             logger.log(this, "onRestart");
+        super.onRestart();
     }
 
     @Override
     protected void onStart() {
-        super.onStart();
         if (LOG)
             logger.log(this, "onStart");
+        super.onStart();
     }
 
     @Override
     protected void onResume() {
-        super.onResume();
         if (LOG)
             logger.log(this, "onResume");
+        super.onResume();
     }
 
     @Override
     protected void onPause() {
-        super.onPause();
         if (LOG)
             logger.log(this, "onPause");
+        super.onPause();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
         if (LOG)
             logger.log(this, "onSaveInstanceState");
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onStop() {
-        super.onStop();
         if (LOG)
             logger.log(this, "onStop");
+        super.onStop();
     }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         if (LOG)
             logger.log(this, "onDestroy");
+        super.onDestroy();
     }
 }

@@ -36,8 +36,8 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         getActivityComponent().plus(new HomeModule()).inject(this);
+        super.onCreate(savedInstanceState);
         presenter.onAttach(this);
 
         setContentView(R.layout.home_activity);
