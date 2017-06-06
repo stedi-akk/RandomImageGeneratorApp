@@ -28,7 +28,8 @@ public class GenerationPresenterImpl implements GenerationPresenter {
     }
 
     @Override
-    public void cancel() {
+    public void release() {
+        logger.log(this, "release called");
         pendingPreset.setCandidate(null);
     }
 

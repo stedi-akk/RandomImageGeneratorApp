@@ -72,7 +72,7 @@ public class ApplyGenerationFragment extends ButterKnifeFragment implements Step
     }
 
     @Override
-    public void finishGeneration() {
+    public void onPresetSaved() {
         getActivity().finish();
     }
 

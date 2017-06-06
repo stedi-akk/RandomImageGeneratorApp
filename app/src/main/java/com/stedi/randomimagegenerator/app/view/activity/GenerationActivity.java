@@ -67,12 +67,6 @@ public class GenerationActivity extends BaseActivity implements
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        presenter.cancel();
-    }
-
-    @Override
     public void showFirstStep() {
         stepper.setCurrentStepPosition(0);
     }
@@ -109,6 +103,8 @@ public class GenerationActivity extends BaseActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (isFinishing())
+            presenter.release();
         presenter.onDetach();
     }
 }

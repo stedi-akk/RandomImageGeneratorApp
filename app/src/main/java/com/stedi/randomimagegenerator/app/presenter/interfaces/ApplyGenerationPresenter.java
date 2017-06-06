@@ -21,7 +21,7 @@ public interface ApplyGenerationPresenter extends RetainedPresenter<ApplyGenerat
 
         void showCount(int count);
 
-        void finishGeneration();
+        void onPresetSaved();
 
         void failedToSavePreset();
     }

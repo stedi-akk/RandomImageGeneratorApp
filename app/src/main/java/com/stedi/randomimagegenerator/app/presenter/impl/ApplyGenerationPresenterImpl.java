@@ -97,7 +97,7 @@ public class ApplyGenerationPresenterImpl implements ApplyGenerationPresenter {
             return;
         }
 
-        ui.finishGeneration();
+        ui.onPresetSaved();
     }
 
     private void showPresetDetails() {
