@@ -8,8 +8,6 @@ import com.stedi.randomimagegenerator.app.presenter.interfaces.core.RetainedPres
 import com.stedi.randomimagegenerator.app.presenter.interfaces.core.UI;
 
 public interface ApplyGenerationPresenter extends RetainedPresenter<ApplyGenerationPresenter.UIImpl> {
-    void startGeneration();
-
     void savePreset();
 
     interface UIImpl extends UI {

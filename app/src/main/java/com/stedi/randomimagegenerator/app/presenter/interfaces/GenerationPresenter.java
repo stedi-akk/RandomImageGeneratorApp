@@ -8,6 +8,8 @@ public interface GenerationPresenter extends Presenter<GenerationPresenter.UIImp
 
     void cancel();
 
+    void generate();
+
     interface UIImpl extends UI {
         void showFirstStep();
 

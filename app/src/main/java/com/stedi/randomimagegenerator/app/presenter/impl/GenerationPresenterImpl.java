@@ -33,6 +33,12 @@ public class GenerationPresenterImpl implements GenerationPresenter {
     }
 
     @Override
+    public void generate() {
+        if (pendingPreset.getCandidate().getId() == 0)
+            pendingPreset.applyCandidate();
+    }
+
+    @Override
     public void onAttach(@NonNull UIImpl ui) {
         this.ui = ui;
     }

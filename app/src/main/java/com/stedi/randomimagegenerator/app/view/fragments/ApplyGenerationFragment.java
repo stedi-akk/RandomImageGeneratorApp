@@ -86,11 +86,6 @@ public class ApplyGenerationFragment extends ButterKnifeFragment implements Step
         presenter.savePreset();
     }
 
-    @OnClick(R.id.apply_generation_fragment_btn_generate)
-    public void onGenerateClick(View v) {
-        presenter.startGeneration();
-    }
-
     @Override
     public VerificationError verifyStep() {
         return null;

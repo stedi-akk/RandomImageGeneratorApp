@@ -56,13 +56,6 @@ public class ApplyGenerationPresenterImpl implements ApplyGenerationPresenter {
     }
 
     @Override
-    public void startGeneration() {
-        if (pendingPreset.getCandidate().getId() == 0)
-            pendingPreset.applyCandidate();
-        ui.finishGeneration();
-    }
-
-    @Override
     public void savePreset() {
         if (saveInProgress)
             return;
