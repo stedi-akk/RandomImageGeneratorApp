@@ -53,14 +53,18 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
         recyclerView.setHasFixedSize(true);
         adapter = new PresetsAdapter(this);
         recyclerView.setAdapter(adapter);
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
         presenter.fetchPresets();
     }
 
     @Override
     public void onPresetsFetched(@Nullable Preset pendingPreset, @NonNull List<Preset> presets) {
         logger.log(this, "onPresetsFetched");
-        adapter.addAll(presets);
+        adapter.set(presets);
         adapter.setPendingPreset(pendingPreset);
         adapter.notifyDataSetChanged();
     }

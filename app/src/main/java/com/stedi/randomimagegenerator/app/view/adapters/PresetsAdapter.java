@@ -38,7 +38,8 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
         this.listener = listener;
     }
 
-    public void addAll(@NonNull List<Preset> presets) {
+    public void set(@NonNull List<Preset> presets) {
+        presetsList.clear();
         presetsList.addAll(presets);
     }
 
