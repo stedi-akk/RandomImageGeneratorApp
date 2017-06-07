@@ -47,11 +47,9 @@ public class PendingPreset {
 
     public void applyCandidate() {
         preset = presetCandidate;
-        presetCandidate = null;
     }
 
     public void clear() {
         preset = null;
-        presetCandidate = null;
     }
 }

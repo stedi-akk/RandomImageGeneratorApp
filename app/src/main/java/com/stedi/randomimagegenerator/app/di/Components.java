@@ -10,7 +10,7 @@ import com.stedi.randomimagegenerator.app.di.components.ActivityComponent;
 import com.stedi.randomimagegenerator.app.di.components.AppComponent;
 import com.stedi.randomimagegenerator.app.di.components.GenerationComponent;
 import com.stedi.randomimagegenerator.app.view.activity.BaseActivity;
-import com.stedi.randomimagegenerator.app.view.activity.GenerationActivity;
+import com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity;
 
 public final class Components {
     private Components() {
@@ -29,6 +29,6 @@ public final class Components {
     }
 
     public static GenerationComponent getGenerationComponent(@NonNull Fragment fragment) {
-        return ((GenerationActivity) fragment.getActivity()).getGenerationComponent();
+        return ((GenerationStepsActivity) fragment.getActivity()).getGenerationComponent();
     }
 }

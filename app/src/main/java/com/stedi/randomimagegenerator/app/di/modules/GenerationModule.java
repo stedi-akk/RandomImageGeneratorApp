@@ -10,14 +10,14 @@ import com.stedi.randomimagegenerator.app.presenter.impl.ChooseGeneratorPresente
 import com.stedi.randomimagegenerator.app.presenter.impl.ChooseSaveOptionsPresenterImpl;
 import com.stedi.randomimagegenerator.app.presenter.impl.ChooseSizeAndCountPresenterImpl;
 import com.stedi.randomimagegenerator.app.presenter.impl.EditColoredCirclesPresenterImpl;
-import com.stedi.randomimagegenerator.app.presenter.impl.GenerationPresenterImpl;
+import com.stedi.randomimagegenerator.app.presenter.impl.GenerationStepsPresenterImpl;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseEffectPresenter;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseGeneratorPresenter;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSaveOptionsPresenter;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSizeAndCountPresenter;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.EditColoredCirclesPresenter;
-import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationPresenter;
+import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationStepsPresenter;
 
 import javax.inject.Named;
 
@@ -28,8 +28,8 @@ import rx.Scheduler;
 @Module
 public class GenerationModule {
     @Provides
-    GenerationPresenter provideGenerationPresenter(PendingPreset pendingPreset, Logger logger) {
-        return new GenerationPresenterImpl(pendingPreset, logger);
+    GenerationStepsPresenter provideGenerationStepsPresenter(PendingPreset pendingPreset, Logger logger) {
+        return new GenerationStepsPresenterImpl(pendingPreset, logger);
     }
 
     @Provides

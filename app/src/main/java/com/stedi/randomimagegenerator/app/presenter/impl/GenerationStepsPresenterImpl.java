@@ -4,15 +4,15 @@ import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
-import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationPresenter;
+import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationStepsPresenter;
 
-public class GenerationPresenterImpl implements GenerationPresenter {
+public class GenerationStepsPresenterImpl implements GenerationStepsPresenter {
     private final PendingPreset pendingPreset;
     private final Logger logger;
 
     private UIImpl ui;
 
-    public GenerationPresenterImpl(PendingPreset pendingPreset, Logger logger) {
+    public GenerationStepsPresenterImpl(PendingPreset pendingPreset, Logger logger) {
         this.pendingPreset = pendingPreset;
         this.logger = logger;
     }

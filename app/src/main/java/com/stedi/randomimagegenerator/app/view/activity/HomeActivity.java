@@ -76,7 +76,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
 
     @OnClick(R.id.home_activity_fab)
     public void onFabClick(View v) {
-        GenerationActivity.startActivity(this, true);
+        GenerationStepsActivity.startActivity(this, true);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
 
     @Override
     public void showEditPreset() {
-        GenerationActivity.startActivity(this, false);
+        GenerationStepsActivity.startActivity(this, false);
     }
 
     @Override

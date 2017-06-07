@@ -10,7 +10,7 @@ import android.view.View;
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.components.GenerationComponent;
 import com.stedi.randomimagegenerator.app.di.modules.GenerationModule;
-import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationPresenter;
+import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationStepsPresenter;
 import com.stedi.randomimagegenerator.app.view.adapters.GenerationStepperAdapter;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
@@ -20,8 +20,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class GenerationActivity extends BaseActivity implements
-        GenerationPresenter.UIImpl,
+public class GenerationStepsActivity extends BaseActivity implements
+        GenerationStepsPresenter.UIImpl,
         StepperLayout.StepperListener {
 
     private static final String KEY_NEW_GENERATION = "KEY_NEW_GENERATION";
@@ -29,14 +29,14 @@ public class GenerationActivity extends BaseActivity implements
 
     private GenerationComponent component;
 
-    @Inject GenerationPresenter presenter;
+    @Inject GenerationStepsPresenter presenter;
 
-    @BindView(R.id.generation_activity_stepper) StepperLayout stepper;
+    @BindView(R.id.generation_steps_activity_stepper) StepperLayout stepper;
 
     private GenerationStepperAdapter stepperAdapter;
 
     public static void startActivity(Context context, boolean newGeneration) {
-        Intent intent = new Intent(context, GenerationActivity.class);
+        Intent intent = new Intent(context, GenerationStepsActivity.class);
         intent.putExtra(KEY_NEW_GENERATION, newGeneration);
         context.startActivity(intent);
     }
@@ -48,7 +48,7 @@ public class GenerationActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         presenter.onAttach(this);
 
-        setContentView(R.layout.generation_activity);
+        setContentView(R.layout.generation_steps_activity);
         ButterKnife.bind(this);
 
         stepperAdapter = new GenerationStepperAdapter(getSupportFragmentManager(), this);
