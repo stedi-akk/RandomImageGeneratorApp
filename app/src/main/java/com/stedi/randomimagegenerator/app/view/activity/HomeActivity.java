@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.stedi.randomimagegenerator.ImageParams;
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.modules.HomeModule;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
@@ -106,7 +107,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
 
     @Override
     public void onGenerateClick(@NonNull Preset preset) {
-
+        presenter.startGeneration(preset);
     }
 
     @Override
@@ -124,5 +125,25 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     protected void onDestroy() {
         super.onDestroy();
         presenter.onDetach();
+    }
+
+    @Override
+    public void onStartGeneration() {
+
+    }
+
+    @Override
+    public void onGenerated(@NonNull ImageParams imageParams) {
+
+    }
+
+    @Override
+    public void onFailedToGenerate(@NonNull ImageParams imageParams) {
+
+    }
+
+    @Override
+    public void onFinishGeneration() {
+
     }
 }

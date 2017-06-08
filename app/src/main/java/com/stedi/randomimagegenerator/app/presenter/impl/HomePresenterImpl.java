@@ -69,7 +69,7 @@ public class HomePresenterImpl implements HomePresenter {
     }
 
     @Override
-    public void generateFromPreset(@NonNull Preset preset) {
+    public void startGeneration(@NonNull Preset preset) {
 
     }
 

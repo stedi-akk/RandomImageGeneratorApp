@@ -4,17 +4,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.stedi.randomimagegenerator.app.model.data.Preset;
-import com.stedi.randomimagegenerator.app.presenter.interfaces.core.RetainedPresenter;
-import com.stedi.randomimagegenerator.app.presenter.interfaces.core.UI;
 
 import java.util.List;
 
-public interface HomePresenter extends RetainedPresenter<HomePresenter.UIImpl> {
+public interface HomePresenter extends GenerationPresenter<HomePresenter.UIImpl> {
     void fetchPresets();
 
     void editPreset(@NonNull Preset preset);
-
-    void generateFromPreset(@NonNull Preset preset);
 
     void confirmLastAction();
 
@@ -24,7 +20,7 @@ public interface HomePresenter extends RetainedPresenter<HomePresenter.UIImpl> {
 
     void deletePreset(@NonNull Preset preset);
 
-    interface UIImpl extends UI {
+    interface UIImpl extends GenerationPresenter.UIImpl {
         void onPresetsFetched(@Nullable Preset pendingPreset, @NonNull List<Preset> presets);
 
         void onFailedToFetchPresets();

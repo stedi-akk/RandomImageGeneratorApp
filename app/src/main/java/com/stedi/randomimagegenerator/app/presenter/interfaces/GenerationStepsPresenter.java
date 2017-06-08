@@ -1,16 +1,18 @@
 package com.stedi.randomimagegenerator.app.presenter.interfaces;
 
-import com.stedi.randomimagegenerator.app.presenter.interfaces.core.Presenter;
-import com.stedi.randomimagegenerator.app.presenter.interfaces.core.UI;
+import android.support.annotation.NonNull;
 
-public interface GenerationStepsPresenter extends Presenter<GenerationStepsPresenter.UIImpl> {
+import com.stedi.randomimagegenerator.app.model.data.Preset;
+
+public interface GenerationStepsPresenter extends GenerationPresenter<GenerationStepsPresenter.UIImpl> {
     void setIsNew(boolean isNew);
 
     void release();
 
-    void generate();
+    @NonNull
+    Preset getCandidate();
 
-    interface UIImpl extends UI {
+    interface UIImpl extends GenerationPresenter.UIImpl {
         void showFirstStep();
 
         void showLastStep();
