@@ -8,6 +8,7 @@ import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.model.repository.PresetRepository;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
+import com.stedi.randomimagegenerator.app.other.ChainSerializable;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.HomePresenter;
 
@@ -70,11 +71,6 @@ public class HomePresenterImpl extends HomePresenter {
     }
 
     @Override
-    public void startGeneration(@NonNull Preset preset) {
-
-    }
-
-    @Override
     public void confirmLastAction() {
 
     }
@@ -133,12 +129,16 @@ public class HomePresenterImpl extends HomePresenter {
 
     @Override
     public void onRestore(@NonNull Serializable state) {
-        fetchInProgress = (boolean) state;
+        ChainSerializable chainSerializable = (ChainSerializable) state;
+        super.onRestore(chainSerializable.getState());
+        fetchInProgress = (boolean) chainSerializable.getNext().getState();
     }
 
     @Nullable
     @Override
     public Serializable onRetain() {
-        return fetchInProgress;
+        ChainSerializable chainSerializable = new ChainSerializable(super.onRetain());
+        chainSerializable.createNext(fetchInProgress);
+        return chainSerializable;
     }
 }

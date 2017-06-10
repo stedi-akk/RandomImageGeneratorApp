@@ -1,15 +1,12 @@
 package com.stedi.randomimagegenerator.app.presenter.impl;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationStepsPresenter;
-
-import java.io.Serializable;
 
 import rx.Scheduler;
 
@@ -62,19 +59,9 @@ public class GenerationStepsPresenterImpl extends GenerationStepsPresenter {
     }
 
     @Override
-    public void onRestore(@NonNull Serializable state) {
-
-    }
-
-    @Nullable
-    @Override
-    public Serializable onRetain() {
-        return null;
-    }
-
-    @Override
     public void startGeneration(@NonNull Preset preset) {
         if (pendingPreset.getCandidate().getId() == 0)
             pendingPreset.applyCandidate();
+        super.startGeneration(preset);
     }
 }

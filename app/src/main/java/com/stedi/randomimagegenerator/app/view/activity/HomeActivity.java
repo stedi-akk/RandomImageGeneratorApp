@@ -116,6 +116,31 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     }
 
     @Override
+    public void onStartGeneration() {
+        logger.log(this, "onStartGeneration");
+    }
+
+    @Override
+    public void onGenerated(@NonNull ImageParams imageParams) {
+        logger.log(this, "onGenerated");
+    }
+
+    @Override
+    public void onGenerationUnknownError() {
+        logger.log(this, "onGenerationUnknownError");
+    }
+
+    @Override
+    public void onFailedToGenerate(@NonNull ImageParams imageParams) {
+        logger.log(this, "onFailedToGenerate");
+    }
+
+    @Override
+    public void onFinishGeneration() {
+        Utils.toastShort(this, getClass().getSimpleName() + " onFinishGeneration");
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(KEY_HOME_PRESENTER_STATE, presenter.onRetain());
@@ -125,30 +150,5 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     protected void onDestroy() {
         super.onDestroy();
         presenter.onDetach();
-    }
-
-    @Override
-    public void onStartGeneration() {
-
-    }
-
-    @Override
-    public void onGenerated(@NonNull ImageParams imageParams) {
-
-    }
-
-    @Override
-    public void onGenerationUnknownError() {
-
-    }
-
-    @Override
-    public void onFailedToGenerate(@NonNull ImageParams imageParams) {
-
-    }
-
-    @Override
-    public void onFinishGeneration() {
-
     }
 }

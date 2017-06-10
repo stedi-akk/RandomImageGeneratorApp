@@ -15,7 +15,7 @@ import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import javax.inject.Inject;
 
 public abstract class LifeCycleFragment extends Fragment {
-    private static final boolean LOG = true;
+    private static final boolean LOG = false;
 
     @Inject Logger logger;
 
