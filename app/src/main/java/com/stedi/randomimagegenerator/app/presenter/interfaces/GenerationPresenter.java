@@ -23,6 +23,7 @@ import java.io.Serializable;
 
 import rx.Completable;
 import rx.Scheduler;
+import rx.functions.Action0;
 
 abstract class GenerationPresenter<T extends GenerationPresenter.UIImpl> implements RetainedPresenter<T> {
     private final Scheduler subscribeOn;
@@ -44,12 +45,10 @@ abstract class GenerationPresenter<T extends GenerationPresenter.UIImpl> impleme
 
         private final Type type;
         private final ImageParams imageParams;
-        private final Throwable throwable;
 
-        public Event(Type type, ImageParams imageParams, Throwable throwable) {
+        private Event(Type type, ImageParams imageParams) {
             this.type = type;
             this.imageParams = imageParams;
-            this.throwable = throwable;
         }
     }
 
@@ -67,41 +66,59 @@ abstract class GenerationPresenter<T extends GenerationPresenter.UIImpl> impleme
 
         logger.log(this, "GENERATION STARTED");
         generationInProgress = true;
-        Completable.fromAction(() -> {
-            new Rig.Builder()
-                    .setGenerator(preset.getGeneratorParams().createGenerator())
-                    .setCount(preset.getCount())
-                    .setFixedSize(preset.getWidth(), preset.getHeight())
-                    .setQuality(preset.getQuality())
-                    .setFileSavePath(preset.getSaveFolder())
-                    .setCallback(new GenerateCallback() {
-                        @Override
-                        public void onGenerated(ImageParams imageParams, Bitmap bitmap) {
+        Completable.fromAction(new Action0() {
+            private ImageParams generationFor;
 
-                        }
+            @Override
+            public void call() {
+                runOnObserver(() -> bus.post(new Event(Event.Type.ON_START_GENERATION, null)));
+                new Rig.Builder()
+                        .setGenerator(preset.getGeneratorParams().createGenerator())
+                        .setCount(preset.getCount())
+                        .setFixedSize(preset.getWidth(), preset.getHeight())
+                        .setQuality(preset.getQuality())
+                        .setFileSavePath(preset.getSaveFolder())
+                        .setCallback(new GenerateCallback() {
+                            @Override
+                            public void onGenerated(ImageParams imageParams, Bitmap bitmap) {
+                                generationFor = imageParams;
+                            }
 
-                        @Override
-                        public void onFailedToGenerate(ImageParams imageParams, Exception e) {
+                            @Override
+                            public void onFailedToGenerate(ImageParams imageParams, Exception e) {
+                                logger.log(this, e);
+                                generationFor = imageParams;
+                            }
+                        })
+                        .setFileSaveCallback(new SaveCallback() {
+                            @Override
+                            public void onSaved(Bitmap bitmap, File file) {
+                                final ImageParams generationForRef = generationFor;
+                                runOnObserver(() -> bus.post(new Event(Event.Type.ON_GENERATED, generationForRef)));
+                            }
 
-                        }
-                    })
-                    .setFileSaveCallback(new SaveCallback() {
-                        @Override
-                        public void onSaved(Bitmap bitmap, File file) {
+                            @Override
+                            public void onFailedToSave(Bitmap bitmap, Exception e) {
+                                logger.log(this, e);
+                                final ImageParams generationForRef = generationFor;
+                                runOnObserver(() -> bus.post(new Event(Event.Type.ON_FAILED_TO_GENERATE, generationForRef)));
+                            }
+                        })
+                        .build().generate();
+                runOnObserver(() -> bus.post(new Event(Event.Type.ON_FINISH_GENERATION, null)));
+            }
 
-                        }
-
-                        @Override
-                        public void onFailedToSave(Bitmap bitmap, Exception e) {
-
-                        }
-                    })
-                    .build().generate();
+            private void runOnObserver(Action0 action) {
+                Completable.fromAction(action)
+                        .subscribeOn(observeOn)
+                        .subscribe();
+            }
         }).subscribeOn(subscribeOn)
                 .observeOn(observeOn)
                 .subscribe(() -> {
                 }, throwable -> {
-                    bus.post(new Event(Event.Type.ON_GENERATION_UNKNOWN_ERROR, null, throwable));
+                    logger.log(this, throwable);
+                    bus.post(new Event(Event.Type.ON_GENERATION_UNKNOWN_ERROR, null));
                 });
     }
 
