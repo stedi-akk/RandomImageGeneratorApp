@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.view.activity;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,6 +28,7 @@ import butterknife.OnClick;
 
 public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, PresetsAdapter.ClickListener {
     private static final String KEY_HOME_PRESENTER_STATE = "KEY_HOME_PRESENTER_STATE";
+    private static final int REQUEST_CODE_WRITE_EXTERNAL = 11;
 
     @Inject HomePresenter presenter;
     @Inject Logger logger;
@@ -107,7 +109,8 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
 
     @Override
     public void onGenerateClick(@NonNull Preset preset) {
-        presenter.startGeneration(preset);
+        if (checkForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_CODE_WRITE_EXTERNAL))
+            presenter.startGeneration(preset);
     }
 
     @Override

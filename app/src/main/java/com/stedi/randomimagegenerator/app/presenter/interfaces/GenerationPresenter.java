@@ -1,9 +1,11 @@
 package com.stedi.randomimagegenerator.app.presenter.interfaces;
 
+import android.Manifest;
 import android.graphics.Bitmap;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresPermission;
 
 import com.squareup.otto.Subscribe;
 import com.stedi.randomimagegenerator.ImageParams;
@@ -58,6 +60,7 @@ abstract class GenerationPresenter<T extends GenerationPresenter.UIImpl> impleme
         this.logger = logger;
     }
 
+    @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     public void startGeneration(@NonNull Preset preset) {
         if (generationInProgress)
             return;

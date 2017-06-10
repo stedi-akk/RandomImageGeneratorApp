@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.view.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ public class GenerationStepsActivity extends BaseActivity implements
     private static final String KEY_NEW_GENERATION = "KEY_NEW_GENERATION";
     private static final String KEY_CURRENT_STEP = "KEY_CURRENT_STEP";
     private static final String KEY_GENERATION_STEPS_PRESENTER_STATE = "KEY_GENERATION_STEPS_PRESENTER_STATE";
+    private static final int REQUEST_CODE_WRITE_EXTERNAL = 22;
 
     private GenerationComponent component;
 
@@ -87,7 +89,8 @@ public class GenerationStepsActivity extends BaseActivity implements
 
     @Override
     public void onCompleted(View completeButton) {
-        presenter.startGeneration(presenter.getCandidate());
+        if (checkForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_CODE_WRITE_EXTERNAL))
+            presenter.startGeneration(presenter.getCandidate());
     }
 
     @Override
