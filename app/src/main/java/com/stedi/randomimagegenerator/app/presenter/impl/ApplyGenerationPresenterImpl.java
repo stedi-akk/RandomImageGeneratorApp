@@ -41,10 +41,10 @@ public class ApplyGenerationPresenterImpl implements ApplyGenerationPresenter {
         }
     }
 
-    public ApplyGenerationPresenterImpl(PendingPreset pendingPreset,
-                                        PresetRepository presetRepository,
-                                        Scheduler subscribeOn, Scheduler observeOn,
-                                        CachedBus bus, Logger logger) {
+    public ApplyGenerationPresenterImpl(@NonNull PendingPreset pendingPreset,
+                                        @NonNull PresetRepository presetRepository,
+                                        @NonNull Scheduler subscribeOn, @NonNull Scheduler observeOn,
+                                        @NonNull CachedBus bus, @NonNull Logger logger) {
         if (pendingPreset.getCandidate() == null)
             throw new IllegalStateException("pending preset candidate must not be null");
         this.pendingPreset = pendingPreset;

@@ -4,23 +4,31 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.stedi.randomimagegenerator.app.model.data.Preset;
+import com.stedi.randomimagegenerator.app.other.CachedBus;
+import com.stedi.randomimagegenerator.app.other.logger.Logger;
 
 import java.util.List;
 
-public interface HomePresenter extends GenerationPresenter<HomePresenter.UIImpl> {
-    void fetchPresets();
+import rx.Scheduler;
 
-    void editPreset(@NonNull Preset preset);
+public abstract class HomePresenter extends GenerationPresenter<HomePresenter.UIImpl> {
+    public HomePresenter(@NonNull Scheduler subscribeOn, @NonNull Scheduler observeOn, @NonNull CachedBus bus, @NonNull Logger logger) {
+        super(subscribeOn, observeOn, bus, logger);
+    }
 
-    void confirmLastAction();
+    public abstract void fetchPresets();
 
-    void cancelLastAction();
+    public abstract void editPreset(@NonNull Preset preset);
 
-    void openFolder(@NonNull Preset preset);
+    public abstract void confirmLastAction();
 
-    void deletePreset(@NonNull Preset preset);
+    public abstract void cancelLastAction();
 
-    interface UIImpl extends GenerationPresenter.UIImpl {
+    public abstract void openFolder(@NonNull Preset preset);
+
+    public abstract void deletePreset(@NonNull Preset preset);
+
+    public interface UIImpl extends GenerationPresenter.UIImpl {
         void onPresetsFetched(@Nullable Preset pendingPreset, @NonNull List<Preset> presets);
 
         void onFailedToFetchPresets();

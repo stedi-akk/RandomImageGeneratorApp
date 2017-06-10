@@ -28,8 +28,11 @@ import rx.Scheduler;
 @Module
 public class GenerationModule {
     @Provides
-    GenerationStepsPresenter provideGenerationStepsPresenter(PendingPreset pendingPreset, Logger logger) {
-        return new GenerationStepsPresenterImpl(pendingPreset, logger);
+    GenerationStepsPresenter provideGenerationStepsPresenter(PendingPreset pendingPreset,
+                                                             @Named("DefaultScheduler") Scheduler subscribeOn,
+                                                             @Named("UiScheduler") Scheduler observeOn,
+                                                             CachedBus bus, Logger logger) {
+        return new GenerationStepsPresenterImpl(pendingPreset, subscribeOn, observeOn, bus, logger);
     }
 
     @Provides

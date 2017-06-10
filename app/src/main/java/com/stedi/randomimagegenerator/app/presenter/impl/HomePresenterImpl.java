@@ -17,7 +17,7 @@ import java.util.List;
 import rx.Observable;
 import rx.Scheduler;
 
-public class HomePresenterImpl implements HomePresenter {
+public class HomePresenterImpl extends HomePresenter {
     private final PresetRepository presetRepository;
     private final PendingPreset pendingPreset;
     private final Scheduler subscribeOn;
@@ -41,6 +41,7 @@ public class HomePresenterImpl implements HomePresenter {
     public HomePresenterImpl(@NonNull PresetRepository presetRepository, @NonNull PendingPreset pendingPreset,
                              @NonNull Scheduler subscribeOn, @NonNull Scheduler observeOn,
                              @NonNull CachedBus bus, @NonNull Logger logger) {
+        super(subscribeOn, observeOn, bus, logger);
         this.presetRepository = presetRepository;
         this.pendingPreset = pendingPreset;
         this.subscribeOn = subscribeOn;
@@ -118,12 +119,14 @@ public class HomePresenterImpl implements HomePresenter {
 
     @Override
     public void onAttach(@NonNull UIImpl ui) {
+        super.onAttach(ui);
         this.ui = ui;
         bus.register(this);
     }
 
     @Override
     public void onDetach() {
+        super.onDetach();
         bus.unregister(this);
         ui = null;
     }

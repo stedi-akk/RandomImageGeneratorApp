@@ -138,6 +138,11 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     }
 
     @Override
+    public void onGenerationUnknownError() {
+
+    }
+
+    @Override
     public void onFailedToGenerate(@NonNull ImageParams imageParams) {
 
     }

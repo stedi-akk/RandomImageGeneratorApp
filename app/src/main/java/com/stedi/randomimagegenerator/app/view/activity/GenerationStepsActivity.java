@@ -80,7 +80,6 @@ public class GenerationStepsActivity extends BaseActivity implements
     @Override
     public void onCompleted(View completeButton) {
         presenter.startGeneration(presenter.getCandidate());
-        finish();
     }
 
     @Override
@@ -116,6 +115,11 @@ public class GenerationStepsActivity extends BaseActivity implements
 
     @Override
     public void onGenerated(@NonNull ImageParams imageParams) {
+
+    }
+
+    @Override
+    public void onGenerationUnknownError() {
 
     }
 
