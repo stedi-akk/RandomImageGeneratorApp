@@ -26,7 +26,7 @@ public class DatabasePresetRepository implements PresetRepository {
     }
 
     @Override
-    public boolean save(@NonNull Preset preset) throws Exception {
+    public synchronized boolean save(@NonNull Preset preset) throws Exception {
         Utils.sleep(100);
         preset.setId(fakeDatabase.size() + 1);
         preset.setTimestamp(System.currentTimeMillis());
@@ -35,7 +35,7 @@ public class DatabasePresetRepository implements PresetRepository {
     }
 
     @Override
-    public boolean remove(int id) throws Exception {
+    public synchronized boolean remove(int id) throws Exception {
         Utils.sleep(100);
         fakeDatabase.remove(id);
         return true;
@@ -43,14 +43,14 @@ public class DatabasePresetRepository implements PresetRepository {
 
     @Override
     @Nullable
-    public Preset get(int id) throws Exception {
+    public synchronized Preset get(int id) throws Exception {
         Utils.sleep(100);
         return fakeDatabase.get(id);
     }
 
     @Override
     @NonNull
-    public List<Preset> getAll() throws Exception {
+    public synchronized List<Preset> getAll() throws Exception {
         Utils.sleep(100);
         return Utils.sparseArrayToList(fakeDatabase);
     }
