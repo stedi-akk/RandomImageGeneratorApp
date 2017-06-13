@@ -81,11 +81,6 @@ public class HomePresenterImpl extends HomePresenter {
     }
 
     @Override
-    public void openFolder(@NonNull Preset preset) {
-
-    }
-
-    @Override
     public void deletePreset(@NonNull Preset preset) {
 
     }
@@ -131,12 +126,14 @@ public class HomePresenterImpl extends HomePresenter {
     public void onRestore(@NonNull Serializable state) {
         ChainSerializable chainSerializable = (ChainSerializable) state;
         super.onRestore(chainSerializable.getState());
+        //noinspection ConstantConditions
         fetchInProgress = (boolean) chainSerializable.getNext().getState();
     }
 
     @Nullable
     @Override
     public Serializable onRetain() {
+        //noinspection ConstantConditions
         ChainSerializable chainSerializable = new ChainSerializable(super.onRetain());
         chainSerializable.createNext(fetchInProgress);
         return chainSerializable;

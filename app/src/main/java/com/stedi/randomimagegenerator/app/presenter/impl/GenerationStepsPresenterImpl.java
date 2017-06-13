@@ -58,6 +58,7 @@ public class GenerationStepsPresenterImpl extends GenerationStepsPresenter {
         this.ui = null;
     }
 
+    @SuppressWarnings("MissingPermission")
     @Override
     public void startGeneration(@NonNull Preset preset) {
         if (pendingPreset.getCandidate().getId() == 0)

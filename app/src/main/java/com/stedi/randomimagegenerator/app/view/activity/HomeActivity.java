@@ -103,11 +103,6 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     }
 
     @Override
-    public void onOpenFolderClick(@NonNull Preset preset) {
-
-    }
-
-    @Override
     public void onGenerateClick(@NonNull Preset preset) {
         if (checkForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_CODE_WRITE_EXTERNAL))
             presenter.startGeneration(preset);

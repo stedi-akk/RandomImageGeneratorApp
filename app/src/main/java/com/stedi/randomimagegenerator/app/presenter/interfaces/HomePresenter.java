@@ -24,8 +24,6 @@ public abstract class HomePresenter extends GenerationPresenter<HomePresenter.UI
 
     public abstract void cancelLastAction();
 
-    public abstract void openFolder(@NonNull Preset preset);
-
     public abstract void deletePreset(@NonNull Preset preset);
 
     public interface UIImpl extends GenerationPresenter.UIImpl {

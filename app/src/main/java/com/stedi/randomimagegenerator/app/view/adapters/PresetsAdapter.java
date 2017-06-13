@@ -29,8 +29,6 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
 
         void onDeleteClick(@NonNull Preset preset);
 
-        void onOpenFolderClick(@NonNull Preset preset);
-
         void onGenerateClick(@NonNull Preset preset);
     }
 
@@ -68,7 +66,6 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
         holder.tvName.setText(preset.getName());
         holder.tvFolder.setText(preset.getSaveFolder());
         setPresetBoundedClickListener(holder.itemView, preset);
-        setPresetBoundedClickListener(holder.btnOpenFolder, preset);
         setPresetBoundedClickListener(holder.btnGenerate, preset);
         setPresetBoundedClickListener(holder.btnDelete, preset);
     }
@@ -84,9 +81,6 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
         switch ((String) v.getTag()) {
             case ViewHolder.ITEM_VIEW_TAG:
                 listener.onCardClick(preset);
-                break;
-            case ViewHolder.BTN_OPEN_FOLDER_TAG:
-                listener.onOpenFolderClick(preset);
                 break;
             case ViewHolder.BTN_GENERATE_TAG:
                 listener.onGenerateClick(preset);
@@ -106,13 +100,11 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private static final String ITEM_VIEW_TAG = "ITEM_VIEW_TAG";
-        private static final String BTN_OPEN_FOLDER_TAG = "BTN_OPEN_FOLDER_TAG";
         private static final String BTN_GENERATE_TAG = "BTN_GENERATE_TAG";
         private static final String BTN_DELETE_TAG = "BTN_DELETE_TAG";
 
         @BindView(R.id.preset_item_tv_name) TextView tvName;
         @BindView(R.id.preset_item_tv_folder) TextView tvFolder;
-        @BindView(R.id.preset_item_btn_open_folder) Button btnOpenFolder;
         @BindView(R.id.preset_item_btn_generate) Button btnGenerate;
         @BindView(R.id.preset_item_btn_delete) Button btnDelete;
 
@@ -120,7 +112,6 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setTag(ITEM_VIEW_TAG);
-            btnOpenFolder.setTag(BTN_OPEN_FOLDER_TAG);
             btnGenerate.setTag(BTN_GENERATE_TAG);
             btnDelete.setTag(BTN_DELETE_TAG);
         }
