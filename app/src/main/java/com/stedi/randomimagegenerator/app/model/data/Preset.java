@@ -121,4 +121,12 @@ public class Preset {
     public String getSaveFolder() {
         return saveFolder;
     }
+
+    @Override
+    public String toString() {
+        return "Preset{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

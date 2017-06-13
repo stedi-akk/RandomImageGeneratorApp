@@ -31,7 +31,7 @@ public abstract class HomePresenter extends GenerationPresenter<HomePresenter.UI
 
         void onFailedToFetchPresets();
 
-        void onFailedToDeletePreset();
+        void onFailedToDeletePreset(@NonNull Preset preset);
 
         void showConfirmLastAction();
 

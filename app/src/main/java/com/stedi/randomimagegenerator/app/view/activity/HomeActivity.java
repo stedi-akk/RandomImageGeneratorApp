@@ -94,12 +94,19 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
 
     @Override
     public void onDeleteClick(@NonNull Preset preset) {
-
+        presenter.deletePreset(preset);
+        if (adapter.getPendingPreset() == preset) {
+            adapter.setPendingPreset(null);
+        } else {
+            adapter.get().remove(preset);
+        }
+        adapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onFailedToDeletePreset() {
-
+    public void onFailedToDeletePreset(@NonNull Preset preset) {
+        adapter.get().add(preset);
+        adapter.notifyDataSetChanged();
     }
 
     @Override

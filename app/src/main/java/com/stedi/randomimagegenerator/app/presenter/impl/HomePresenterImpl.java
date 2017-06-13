@@ -29,12 +29,22 @@ public class HomePresenterImpl extends HomePresenter {
     private UIImpl ui;
     private boolean fetchInProgress;
 
-    private static class Event {
+    private static class FetchPresetsEvent {
         private final List<Preset> presets;
         private final Throwable t;
 
-        Event(List<Preset> presets, Throwable t) {
+        FetchPresetsEvent(List<Preset> presets, Throwable t) {
             this.presets = presets;
+            this.t = t;
+        }
+    }
+
+    private static class DeletePresetFailedEvent {
+        private final Preset preset;
+        private final Throwable t;
+
+        DeletePresetFailedEvent(Preset preset, Throwable t) {
+            this.preset = preset;
             this.t = t;
         }
     }
@@ -59,8 +69,8 @@ public class HomePresenterImpl extends HomePresenter {
             Observable.fromCallable(presetRepository::getAll)
                     .subscribeOn(subscribeOn)
                     .observeOn(observeOn)
-                    .subscribe(presets -> bus.post(new Event(presets, null)),
-                            throwable -> bus.post(new Event(null, throwable)));
+                    .subscribe(presets -> bus.post(new FetchPresetsEvent(presets, null)),
+                            throwable -> bus.post(new FetchPresetsEvent(null, throwable)));
         }
     }
 
@@ -82,12 +92,18 @@ public class HomePresenterImpl extends HomePresenter {
 
     @Override
     public void deletePreset(@NonNull Preset preset) {
-
+        logger.log(this, "deletePreset " + preset);
+        Observable.fromCallable(() -> presetRepository.remove(preset.getId()))
+                .subscribeOn(subscribeOn)
+                .observeOn(observeOn)
+                .filter(aBoolean -> !aBoolean)
+                .subscribe(aBoolean -> bus.post(new DeletePresetFailedEvent(preset, null)),
+                        throwable -> bus.post(new DeletePresetFailedEvent(preset, throwable)));
     }
 
     @Subscribe
-    public void onEvent(Event event) {
-        logger.log(this, "onEvent");
+    public void onFetchPresetsEvent(FetchPresetsEvent event) {
+        logger.log(this, "onFetchPresetsEvent");
 
         if (!fetchInProgress) {
             logger.log(this, "ignoring event from not retained presenter!");
@@ -97,7 +113,7 @@ public class HomePresenterImpl extends HomePresenter {
         fetchInProgress = false;
 
         if (ui == null) {
-            logger.log(this, "onEvent when ui == null");
+            logger.log(this, "onFetchPresetsEvent when ui == null");
             return;
         }
 
@@ -106,6 +122,18 @@ public class HomePresenterImpl extends HomePresenter {
         } else {
             ui.onPresetsFetched(pendingPreset.get(), event.presets);
         }
+    }
+
+    @Subscribe
+    public void onDeletePresetFailedEvent(DeletePresetFailedEvent event) {
+        logger.log(this, "onDeletePresetFailedEvent", event.t);
+
+        if (ui == null) {
+            logger.log(this, "onDeletePresetFailedEvent when ui == null");
+            return;
+        }
+
+        ui.onFailedToDeletePreset(event.preset);
     }
 
     @Override

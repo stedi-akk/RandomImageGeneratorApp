@@ -41,8 +41,18 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
         presetsList.addAll(presets);
     }
 
+    @NonNull
+    public List<Preset> get() {
+        return presetsList;
+    }
+
     public void setPendingPreset(@Nullable Preset pendingPreset) {
         this.pendingPreset = pendingPreset;
+    }
+
+    @Nullable
+    public Preset getPendingPreset() {
+        return pendingPreset;
     }
 
     @Override
