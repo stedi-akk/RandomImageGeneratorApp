@@ -2,6 +2,7 @@ package com.stedi.randomimagegenerator.app.presenter.impl;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.util.ArrayMap;
 
 import com.squareup.otto.Subscribe;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
@@ -29,6 +30,9 @@ public class HomePresenterImpl extends HomePresenter {
     private UIImpl ui;
     private boolean fetchInProgress;
 
+    private Confirm lastActionConfirm;
+    private int lastActionPresetId;
+
     private static class FetchPresetsEvent {
         private final List<Preset> presets;
         private final Throwable t;
@@ -39,12 +43,14 @@ public class HomePresenterImpl extends HomePresenter {
         }
     }
 
-    private static class DeletePresetFailedEvent {
+    private static class DeletePresetEvent {
         private final Preset preset;
+        private final boolean success;
         private final Throwable t;
 
-        DeletePresetFailedEvent(Preset preset, Throwable t) {
+        DeletePresetEvent(Preset preset, boolean success, Throwable t) {
             this.preset = preset;
+            this.success = success;
             this.t = t;
         }
     }
@@ -82,23 +88,48 @@ public class HomePresenterImpl extends HomePresenter {
 
     @Override
     public void confirmLastAction() {
+        logger.log(this, "confirmLastAction " + lastActionConfirm);
+        if (lastActionConfirm == Confirm.DELETE_PRESET) {
+            int lastActionPresetIdRef = lastActionPresetId;
+            Observable.fromCallable(() -> presetRepository.get(lastActionPresetIdRef))
+                    .zipWith(Observable.fromCallable(() -> presetRepository.remove(lastActionPresetIdRef)), (preset, aBoolean) -> {
+                        ArrayMap<Boolean, Preset> resultMap = new ArrayMap<>();
+                        resultMap.put(aBoolean, preset);
+                        return resultMap;
+                    })
+                    .subscribeOn(subscribeOn)
+                    .observeOn(observeOn)
+                    .subscribe(booleanPresetMap -> {
+                        boolean success = booleanPresetMap.keyAt(0);
+                        bus.post(new DeletePresetEvent(booleanPresetMap.get(success), success, null));
+                    }, throwable -> {
+                        bus.post(new DeletePresetEvent(null, false, throwable));
+                    });
+        } else if (lastActionConfirm == Confirm.GENERATE_FROM_PRESET) {
 
+        }
+        lastActionConfirm = null;
+        lastActionPresetId = 0;
     }
 
     @Override
     public void cancelLastAction() {
-
+        logger.log(this, "cancelLastAction " + lastActionConfirm);
+        lastActionConfirm = null;
+        lastActionPresetId = 0;
     }
 
     @Override
     public void deletePreset(@NonNull Preset preset) {
         logger.log(this, "deletePreset " + preset);
-        Observable.fromCallable(() -> presetRepository.remove(preset.getId()))
-                .subscribeOn(subscribeOn)
-                .observeOn(observeOn)
-                .filter(aBoolean -> !aBoolean)
-                .subscribe(aBoolean -> bus.post(new DeletePresetFailedEvent(preset, null)),
-                        throwable -> bus.post(new DeletePresetFailedEvent(preset, throwable)));
+        if (pendingPreset.get() == preset) {
+            pendingPreset.clear();
+            ui.onPresetDeleted(preset);
+            return;
+        }
+        lastActionConfirm = Confirm.DELETE_PRESET;
+        lastActionPresetId = preset.getId();
+        ui.showConfirmLastAction(lastActionConfirm);
     }
 
     @Subscribe
@@ -125,15 +156,19 @@ public class HomePresenterImpl extends HomePresenter {
     }
 
     @Subscribe
-    public void onDeletePresetFailedEvent(DeletePresetFailedEvent event) {
-        logger.log(this, "onDeletePresetFailedEvent", event.t);
+    public void onDeletePresetEvent(DeletePresetEvent event) {
+        logger.log(this, "onDeletePresetEvent");
 
         if (ui == null) {
-            logger.log(this, "onDeletePresetFailedEvent when ui == null");
+            logger.log(this, "onDeletePresetEvent when ui == null");
             return;
         }
 
-        ui.onFailedToDeletePreset(event.preset);
+        if (event.t != null || !event.success || event.preset == null) {
+            ui.onFailedToDeletePreset();
+        } else {
+            ui.onPresetDeleted(event.preset);
+        }
     }
 
     @Override
@@ -150,20 +185,25 @@ public class HomePresenterImpl extends HomePresenter {
         ui = null;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void onRestore(@NonNull Serializable state) {
         ChainSerializable chainSerializable = (ChainSerializable) state;
         super.onRestore(chainSerializable.getState());
-        //noinspection ConstantConditions
-        fetchInProgress = (boolean) chainSerializable.getNext().getState();
+        chainSerializable = chainSerializable.getNext();
+        fetchInProgress = (boolean) chainSerializable.getState();
+        chainSerializable = chainSerializable.getNext();
+        lastActionConfirm = (Confirm) chainSerializable.getState();
+        chainSerializable = chainSerializable.getNext();
+        lastActionPresetId = (int) chainSerializable.getState();
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Nullable
     @Override
     public Serializable onRetain() {
-        //noinspection ConstantConditions
         ChainSerializable chainSerializable = new ChainSerializable(super.onRetain());
-        chainSerializable.createNext(fetchInProgress);
+        chainSerializable.createNext(fetchInProgress).createNext(lastActionConfirm).createNext(lastActionPresetId);
         return chainSerializable;
     }
 }

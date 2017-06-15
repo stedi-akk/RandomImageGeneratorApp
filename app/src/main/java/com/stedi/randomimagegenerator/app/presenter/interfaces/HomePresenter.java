@@ -12,6 +12,11 @@ import java.util.List;
 import rx.Scheduler;
 
 public abstract class HomePresenter extends GenerationPresenter<HomePresenter.UIImpl> {
+    public enum Confirm {
+        DELETE_PRESET,
+        GENERATE_FROM_PRESET
+    }
+
     public HomePresenter(@NonNull Scheduler subscribeOn, @NonNull Scheduler observeOn, @NonNull CachedBus bus, @NonNull Logger logger) {
         super(subscribeOn, observeOn, bus, logger);
     }
@@ -31,9 +36,11 @@ public abstract class HomePresenter extends GenerationPresenter<HomePresenter.UI
 
         void onFailedToFetchPresets();
 
-        void onFailedToDeletePreset(@NonNull Preset preset);
+        void onPresetDeleted(@NonNull Preset preset);
 
-        void showConfirmLastAction();
+        void onFailedToDeletePreset();
+
+        void showConfirmLastAction(@NonNull Confirm confirm);
 
         void showEditPreset();
     }

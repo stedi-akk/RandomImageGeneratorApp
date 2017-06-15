@@ -8,14 +8,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.squareup.otto.Subscribe;
 import com.stedi.randomimagegenerator.ImageParams;
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.modules.HomeModule;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
+import com.stedi.randomimagegenerator.app.other.CachedBus;
 import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.HomePresenter;
 import com.stedi.randomimagegenerator.app.view.adapters.PresetsAdapter;
+import com.stedi.randomimagegenerator.app.view.dialogs.ConfirmDialog;
 
 import java.io.Serializable;
 import java.util.List;
@@ -28,10 +31,12 @@ import butterknife.OnClick;
 
 public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, PresetsAdapter.ClickListener {
     private static final String KEY_HOME_PRESENTER_STATE = "KEY_HOME_PRESENTER_STATE";
-    private static final int REQUEST_CODE_WRITE_EXTERNAL = 11;
+    private static final int REQUEST_CODE_WRITE_EXTERNAL = 123;
+    private static final int REQUEST_CONFIRM_DELETE = 321;
 
     @Inject HomePresenter presenter;
     @Inject Logger logger;
+    @Inject CachedBus bus;
 
     @BindView(R.id.home_activity_recycler_view) RecyclerView recyclerView;
 
@@ -61,7 +66,14 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     @Override
     protected void onStart() {
         super.onStart();
+        bus.register(this);
         presenter.fetchPresets();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        bus.unregister(this);
     }
 
     @Override
@@ -95,6 +107,11 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     @Override
     public void onDeleteClick(@NonNull Preset preset) {
         presenter.deletePreset(preset);
+    }
+
+    @Override
+    public void onPresetDeleted(@NonNull Preset preset) {
+        logger.log(this, "onPresetDeleted " + preset);
         if (adapter.getPendingPreset() == preset) {
             adapter.setPendingPreset(null);
         } else {
@@ -104,9 +121,8 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     }
 
     @Override
-    public void onFailedToDeletePreset(@NonNull Preset preset) {
-        adapter.get().add(preset);
-        adapter.notifyDataSetChanged();
+    public void onFailedToDeletePreset() {
+        Utils.toastLong(this, "onFailedToDeletePreset");
     }
 
     @Override
@@ -116,8 +132,25 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     }
 
     @Override
-    public void showConfirmLastAction() {
+    public void showConfirmLastAction(@NonNull HomePresenter.Confirm confirm) {
+        if (confirm == HomePresenter.Confirm.DELETE_PRESET) {
+            ConfirmDialog dlg = ConfirmDialog.newInstance(REQUEST_CONFIRM_DELETE, "title", "want to delete?");
+            dlg.show(getSupportFragmentManager(), ConfirmDialog.class.getSimpleName());
+        } else if (confirm == HomePresenter.Confirm.GENERATE_FROM_PRESET) {
 
+        }
+    }
+
+    @Subscribe
+    public void onConfirmDialogCallback(ConfirmDialog.Callback callback) {
+        logger.log(this, "onConfirmDialogCallback " + callback.confirm);
+        if (callback.requestCode == REQUEST_CONFIRM_DELETE) {
+            if (callback.confirm) {
+                presenter.confirmLastAction();
+            } else {
+                presenter.cancelLastAction();
+            }
+        }
     }
 
     @Override
