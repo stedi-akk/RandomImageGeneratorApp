@@ -47,7 +47,6 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         getActivityComponent().plus(new HomeModule()).inject(this);
         super.onCreate(savedInstanceState);
-        presenter.onAttach(this);
 
         setContentView(R.layout.home_activity);
         ButterKnife.bind(this);
@@ -67,6 +66,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     @Override
     protected void onStart() {
         super.onStart();
+        presenter.onAttach(this);
         bus.register(this);
         presenter.fetchPresets();
     }
@@ -75,6 +75,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     protected void onStop() {
         super.onStop();
         bus.unregister(this);
+        presenter.onDetach();
     }
 
     @Override
@@ -190,11 +191,5 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(KEY_HOME_PRESENTER_STATE, presenter.onRetain());
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        presenter.onDetach();
     }
 }
