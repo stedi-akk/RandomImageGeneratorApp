@@ -30,6 +30,8 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
         void onDeleteClick(@NonNull Preset preset);
 
         void onGenerateClick(@NonNull Preset preset);
+
+        void onSaveClick(@NonNull Preset preset);
     }
 
     public PresetsAdapter(@NonNull ClickListener listener) {
@@ -75,8 +77,9 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
 
         holder.tvName.setText(preset.getName());
         holder.tvFolder.setText(preset.getSaveFolder());
+        holder.btnAction.setText(preset == pendingPreset ? "save" : "generate");
         setPresetBoundedClickListener(holder.itemView, preset);
-        setPresetBoundedClickListener(holder.btnGenerate, preset);
+        setPresetBoundedClickListener(holder.btnAction, preset);
         setPresetBoundedClickListener(holder.btnDelete, preset);
     }
 
@@ -92,8 +95,12 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
             case ViewHolder.ITEM_VIEW_TAG:
                 listener.onCardClick(preset);
                 break;
-            case ViewHolder.BTN_GENERATE_TAG:
-                listener.onGenerateClick(preset);
+            case ViewHolder.BTN_ACTION_TAG:
+                if (preset == pendingPreset) {
+                    listener.onSaveClick(preset);
+                } else {
+                    listener.onGenerateClick(preset);
+                }
                 break;
             case ViewHolder.BTN_DELETE_TAG:
                 listener.onDeleteClick(preset);
@@ -110,19 +117,19 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private static final String ITEM_VIEW_TAG = "ITEM_VIEW_TAG";
-        private static final String BTN_GENERATE_TAG = "BTN_GENERATE_TAG";
+        private static final String BTN_ACTION_TAG = "BTN_ACTION_TAG";
         private static final String BTN_DELETE_TAG = "BTN_DELETE_TAG";
 
         @BindView(R.id.preset_item_tv_name) TextView tvName;
         @BindView(R.id.preset_item_tv_folder) TextView tvFolder;
-        @BindView(R.id.preset_item_btn_generate) Button btnGenerate;
+        @BindView(R.id.preset_item_btn_action) Button btnAction;
         @BindView(R.id.preset_item_btn_delete) Button btnDelete;
 
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setTag(ITEM_VIEW_TAG);
-            btnGenerate.setTag(BTN_GENERATE_TAG);
+            btnAction.setTag(BTN_ACTION_TAG);
             btnDelete.setTag(BTN_DELETE_TAG);
         }
     }

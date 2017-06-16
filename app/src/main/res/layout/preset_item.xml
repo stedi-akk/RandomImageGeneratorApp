@@ -27,12 +27,11 @@
             android:text="X" />
 
         <Button
-            android:id="@+id/preset_item_btn_generate"
+            android:id="@+id/preset_item_btn_action"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/preset_item_btn_delete"
-            android:text="Generate" />
+            android:layout_below="@+id/preset_item_btn_delete" />
 
     </RelativeLayout>
 

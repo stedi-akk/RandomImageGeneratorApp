@@ -106,6 +106,11 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     }
 
     @Override
+    public void onSaveClick(@NonNull Preset preset) {
+        presenter.editPreset(preset);
+    }
+
+    @Override
     public void onDeleteClick(@NonNull Preset preset) {
         presenter.deletePreset(preset);
     }
