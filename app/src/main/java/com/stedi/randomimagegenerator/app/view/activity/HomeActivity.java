@@ -33,6 +33,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     private static final String KEY_HOME_PRESENTER_STATE = "KEY_HOME_PRESENTER_STATE";
     private static final int REQUEST_CODE_WRITE_EXTERNAL = 123;
     private static final int REQUEST_CONFIRM_DELETE = 321;
+    private static final int REQUEST_CONFIRM_GENERATE = 231;
 
     @Inject HomePresenter presenter;
     @Inject Logger logger;
@@ -137,14 +138,16 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
             ConfirmDialog dlg = ConfirmDialog.newInstance(REQUEST_CONFIRM_DELETE, "title", "want to delete?");
             dlg.show(getSupportFragmentManager(), ConfirmDialog.class.getSimpleName());
         } else if (confirm == HomePresenter.Confirm.GENERATE_FROM_PRESET) {
-
+            ConfirmDialog dlg = ConfirmDialog.newInstance(REQUEST_CONFIRM_GENERATE, "title", "want to generate?");
+            dlg.show(getSupportFragmentManager(), ConfirmDialog.class.getSimpleName());
         }
     }
 
     @Subscribe
     public void onConfirmDialogCallback(ConfirmDialog.Callback callback) {
         logger.log(this, "onConfirmDialogCallback " + callback.confirm);
-        if (callback.requestCode == REQUEST_CONFIRM_DELETE) {
+        if (callback.requestCode == REQUEST_CONFIRM_DELETE ||
+                callback.requestCode == REQUEST_CONFIRM_GENERATE) {
             if (callback.confirm) {
                 presenter.confirmLastAction();
             } else {

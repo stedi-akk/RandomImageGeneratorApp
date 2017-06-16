@@ -106,7 +106,12 @@ public class HomePresenterImpl extends HomePresenter {
                         bus.post(new DeletePresetEvent(null, false, throwable));
                     });
         } else if (lastActionConfirm == Confirm.GENERATE_FROM_PRESET) {
-
+            int lastActionPresetIdRef = lastActionPresetId;
+            Observable.fromCallable(() -> presetRepository.get(lastActionPresetIdRef))
+                    .subscribeOn(subscribeOn)
+                    .observeOn(observeOn)
+                    .subscribe(super::startGeneration,
+                            throwable -> logger.log(this, throwable));
         }
         lastActionConfirm = null;
         lastActionPresetId = 0;
@@ -128,6 +133,14 @@ public class HomePresenterImpl extends HomePresenter {
             return;
         }
         lastActionConfirm = Confirm.DELETE_PRESET;
+        lastActionPresetId = preset.getId();
+        ui.showConfirmLastAction(lastActionConfirm);
+    }
+
+    @Override
+    public void startGeneration(@NonNull Preset preset) {
+        logger.log(this, "startGeneration " + preset);
+        lastActionConfirm = Confirm.GENERATE_FROM_PRESET;
         lastActionPresetId = preset.getId();
         ui.showConfirmLastAction(lastActionConfirm);
     }
