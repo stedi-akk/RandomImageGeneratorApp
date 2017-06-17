@@ -1,4 +1,4 @@
-package com.stedi.randomimagegenerator.app.view.fragments;
+package com.stedi.randomimagegenerator.app.view.fragments.base;
 
 import android.content.Context;
 import android.os.Bundle;

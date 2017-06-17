@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 
 import com.stedi.randomimagegenerator.app.di.Components;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
+import com.stedi.randomimagegenerator.app.view.dialogs.base.BaseDialogFragment;
 
 import javax.inject.Inject;
 

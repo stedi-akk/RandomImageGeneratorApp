@@ -1,4 +1,4 @@
-package com.stedi.randomimagegenerator.app.view.activity;
+package com.stedi.randomimagegenerator.app.view.activity.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

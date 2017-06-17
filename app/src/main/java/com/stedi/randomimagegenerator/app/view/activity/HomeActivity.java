@@ -17,6 +17,7 @@ import com.stedi.randomimagegenerator.app.other.CachedBus;
 import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.HomePresenter;
+import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity;
 import com.stedi.randomimagegenerator.app.view.adapters.PresetsAdapter;
 import com.stedi.randomimagegenerator.app.view.dialogs.ConfirmDialog;
 

@@ -17,17 +17,15 @@ import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseGeneratorPresenter;
 import com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapter;
 import com.stedi.randomimagegenerator.app.view.dialogs.EditColoredCirclesDialog;
-import com.stepstone.stepper.Step;
-import com.stepstone.stepper.VerificationError;
+import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class ChooseGeneratorFragment extends ButterKnifeFragment implements
+public class ChooseGeneratorFragment extends StepFragment implements
         ChooseGeneratorPresenter.UIImpl,
-        GeneratorTypeAdapter.ClickListener,
-        Step {
+        GeneratorTypeAdapter.ClickListener {
 
     @Inject ChooseGeneratorPresenter presenter;
 
@@ -92,21 +90,6 @@ public class ChooseGeneratorFragment extends ButterKnifeFragment implements
                 throw new IllegalStateException("incorrect behavior");
         }
         dialog.show(getFragmentManager(), "test");
-    }
-
-    @Override
-    public VerificationError verifyStep() {
-        return null;
-    }
-
-    @Override
-    public void onSelected() {
-
-    }
-
-    @Override
-    public void onError(@NonNull VerificationError error) {
-
     }
 
     @Override

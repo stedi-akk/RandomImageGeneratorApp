@@ -14,15 +14,14 @@ import com.stedi.randomimagegenerator.app.di.Components;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter;
-import com.stepstone.stepper.Step;
-import com.stepstone.stepper.VerificationError;
+import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ApplyGenerationFragment extends ButterKnifeFragment implements Step, ApplyGenerationPresenter.UIImpl {
+public class ApplyGenerationFragment extends StepFragment implements ApplyGenerationPresenter.UIImpl {
     @Inject ApplyGenerationPresenter presenter;
 
     @BindView(R.id.apply_generation_fragment_tv) TextView tvOut;
@@ -84,21 +83,6 @@ public class ApplyGenerationFragment extends ButterKnifeFragment implements Step
     @OnClick(R.id.apply_generation_fragment_btn_save_preset)
     public void onSavePresetClick(View v) {
         presenter.savePreset();
-    }
-
-    @Override
-    public VerificationError verifyStep() {
-        return null;
-    }
-
-    @Override
-    public void onSelected() {
-
-    }
-
-    @Override
-    public void onError(@NonNull VerificationError error) {
-
     }
 
     @Override

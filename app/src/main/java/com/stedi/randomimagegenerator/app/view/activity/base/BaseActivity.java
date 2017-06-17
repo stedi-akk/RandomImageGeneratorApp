@@ -1,4 +1,4 @@
-package com.stedi.randomimagegenerator.app.view.activity;
+package com.stedi.randomimagegenerator.app.view.activity.base;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;

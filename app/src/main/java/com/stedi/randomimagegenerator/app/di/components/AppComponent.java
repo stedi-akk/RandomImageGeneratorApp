@@ -3,9 +3,9 @@ package com.stedi.randomimagegenerator.app.di.components;
 import com.stedi.randomimagegenerator.app.di.modules.ActivityModule;
 import com.stedi.randomimagegenerator.app.di.modules.AppModule;
 import com.stedi.randomimagegenerator.app.di.modules.BuildTypeDependentModule;
-import com.stedi.randomimagegenerator.app.view.activity.LifeCycleActivity;
+import com.stedi.randomimagegenerator.app.view.activity.base.LifeCycleActivity;
 import com.stedi.randomimagegenerator.app.view.dialogs.ConfirmDialog;
-import com.stedi.randomimagegenerator.app.view.fragments.LifeCycleFragment;
+import com.stedi.randomimagegenerator.app.view.fragments.base.LifeCycleFragment;
 
 import javax.inject.Singleton;
 

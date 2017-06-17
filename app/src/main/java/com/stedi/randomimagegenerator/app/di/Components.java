@@ -9,8 +9,8 @@ import com.stedi.randomimagegenerator.app.App;
 import com.stedi.randomimagegenerator.app.di.components.ActivityComponent;
 import com.stedi.randomimagegenerator.app.di.components.AppComponent;
 import com.stedi.randomimagegenerator.app.di.components.GenerationComponent;
-import com.stedi.randomimagegenerator.app.view.activity.BaseActivity;
 import com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity;
+import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity;
 
 public final class Components {
     private Components() {

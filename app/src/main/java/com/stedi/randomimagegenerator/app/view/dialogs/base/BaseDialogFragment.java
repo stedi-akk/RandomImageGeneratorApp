@@ -1,10 +1,10 @@
-package com.stedi.randomimagegenerator.app.view.dialogs;
+package com.stedi.randomimagegenerator.app.view.dialogs.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 
-import com.stedi.randomimagegenerator.app.view.activity.BaseActivity;
+import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity;
 
 public abstract class BaseDialogFragment extends DialogFragment {
     @Override

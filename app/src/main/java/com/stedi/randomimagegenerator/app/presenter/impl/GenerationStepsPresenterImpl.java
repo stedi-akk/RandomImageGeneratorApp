@@ -30,7 +30,7 @@ public class GenerationStepsPresenterImpl extends GenerationStepsPresenter {
             pendingPreset.newCandidate();
             ui.showFirstStep();
         } else {
-            ui.showLastStep();
+            ui.showFinishStep();
         }
     }
 

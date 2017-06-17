@@ -15,17 +15,15 @@ import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseEffectPresenter;
 import com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapter;
-import com.stepstone.stepper.Step;
-import com.stepstone.stepper.VerificationError;
+import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class ChooseEffectFragment extends ButterKnifeFragment implements
+public class ChooseEffectFragment extends StepFragment implements
         GeneratorTypeAdapter.ClickListener,
-        ChooseEffectPresenter.UIImpl,
-        Step {
+        ChooseEffectPresenter.UIImpl {
 
     @Inject ChooseEffectPresenter presenter;
 
@@ -66,21 +64,6 @@ public class ChooseEffectFragment extends ButterKnifeFragment implements
 
     @Override
     public void onEditSelected() {
-
-    }
-
-    @Override
-    public VerificationError verifyStep() {
-        return null;
-    }
-
-    @Override
-    public void onSelected() {
-
-    }
-
-    @Override
-    public void onError(@NonNull VerificationError error) {
 
     }
 

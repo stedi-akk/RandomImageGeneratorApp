@@ -1,7 +1,6 @@
 package com.stedi.randomimagegenerator.app.view.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +9,11 @@ import android.view.ViewGroup;
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.Components;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSizeAndCountPresenter;
-import com.stepstone.stepper.Step;
-import com.stepstone.stepper.VerificationError;
+import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment;
 
 import javax.inject.Inject;
 
-public class ChooseSizeAndCountFragment extends ButterKnifeFragment implements
-        ChooseSizeAndCountPresenter.UIImpl,
-        Step {
+public class ChooseSizeAndCountFragment extends StepFragment implements ChooseSizeAndCountPresenter.UIImpl {
 
     @Inject ChooseSizeAndCountPresenter presenter;
 
@@ -52,21 +48,6 @@ public class ChooseSizeAndCountFragment extends ButterKnifeFragment implements
 
     @Override
     public void showErrorIncorrectSize() {
-
-    }
-
-    @Override
-    public VerificationError verifyStep() {
-        return null;
-    }
-
-    @Override
-    public void onSelected() {
-
-    }
-
-    @Override
-    public void onError(@NonNull VerificationError error) {
 
     }
 

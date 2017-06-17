@@ -3,7 +3,7 @@ package com.stedi.randomimagegenerator.app.di.modules;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.stedi.randomimagegenerator.app.view.activity.BaseActivity;
+import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity;
 
 import javax.inject.Named;
 

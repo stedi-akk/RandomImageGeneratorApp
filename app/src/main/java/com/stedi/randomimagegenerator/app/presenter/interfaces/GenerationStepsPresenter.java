@@ -23,6 +23,6 @@ public abstract class GenerationStepsPresenter extends GenerationPresenter<Gener
     public interface UIImpl extends GenerationPresenter.UIImpl {
         void showFirstStep();
 
-        void showLastStep();
+        void showFinishStep();
     }
 }

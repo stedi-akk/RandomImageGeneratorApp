@@ -13,7 +13,9 @@ import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.components.GenerationComponent;
 import com.stedi.randomimagegenerator.app.di.modules.GenerationModule;
 import com.stedi.randomimagegenerator.app.other.Utils;
+import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationStepsPresenter;
+import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity;
 import com.stedi.randomimagegenerator.app.view.adapters.GenerationStepperAdapter;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
@@ -37,6 +39,7 @@ public class GenerationStepsActivity extends BaseActivity implements
     private GenerationComponent component;
 
     @Inject GenerationStepsPresenter presenter;
+    @Inject Logger logger;
 
     @BindView(R.id.generation_steps_activity_stepper) StepperLayout stepper;
 
@@ -83,7 +86,7 @@ public class GenerationStepsActivity extends BaseActivity implements
     }
 
     @Override
-    public void showLastStep() {
+    public void showFinishStep() {
         stepper.setCurrentStepPosition(stepperAdapter.getCount() - 1);
     }
 
@@ -91,18 +94,6 @@ public class GenerationStepsActivity extends BaseActivity implements
     public void onCompleted(View completeButton) {
         if (checkForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_CODE_WRITE_EXTERNAL))
             presenter.startGeneration(presenter.getCandidate());
-    }
-
-    @Override
-    public void onError(VerificationError verificationError) {
-    }
-
-    @Override
-    public void onStepSelected(int newStepPosition) {
-    }
-
-    @Override
-    public void onReturn() {
     }
 
     @Override
@@ -143,5 +134,17 @@ public class GenerationStepsActivity extends BaseActivity implements
     @Override
     public void onFinishGeneration() {
         Utils.toastShort(this, getClass().getSimpleName() + " onFinishGeneration");
+    }
+
+    @Override
+    public void onError(VerificationError verificationError) {
+    }
+
+    @Override
+    public void onStepSelected(int newStepPosition) {
+    }
+
+    @Override
+    public void onReturn() {
     }
 }

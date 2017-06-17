@@ -14,14 +14,13 @@ import android.widget.RadioGroup;
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.Components;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSaveOptionsPresenter;
-import com.stepstone.stepper.Step;
-import com.stepstone.stepper.VerificationError;
+import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class ChooseSaveOptionsFragment extends ButterKnifeFragment implements Step, ChooseSaveOptionsPresenter.UIImpl {
+public class ChooseSaveOptionsFragment extends StepFragment implements ChooseSaveOptionsPresenter.UIImpl {
     @Inject ChooseSaveOptionsPresenter presenter;
 
     @BindView(R.id.choose_save_options_fragment_rg) RadioGroup radioGroup;
@@ -65,21 +64,6 @@ public class ChooseSaveOptionsFragment extends ButterKnifeFragment implements St
 
     @Override
     public void showSaveFolder(@NonNull String path) {
-
-    }
-
-    @Override
-    public VerificationError verifyStep() {
-        return null;
-    }
-
-    @Override
-    public void onSelected() {
-
-    }
-
-    @Override
-    public void onError(@NonNull VerificationError error) {
 
     }
 

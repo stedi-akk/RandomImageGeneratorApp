@@ -1,4 +1,4 @@
-package com.stedi.randomimagegenerator.app.view.dialogs;
+package com.stedi.randomimagegenerator.app.view.dialogs.base;
 
 import android.support.annotation.LayoutRes;
 import android.view.LayoutInflater;
