@@ -3,7 +3,7 @@ package com.stedi.randomimagegenerator.app.model.data;
 import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.Quality;
-import com.stedi.randomimagegenerator.app.model.data.generatorparams.GeneratorParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 
 public class Preset {
     private int id;

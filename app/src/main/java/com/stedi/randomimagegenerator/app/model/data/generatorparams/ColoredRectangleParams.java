@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 import com.stedi.randomimagegenerator.generators.ColoredRectangleGenerator;
 import com.stedi.randomimagegenerator.generators.Generator;
 

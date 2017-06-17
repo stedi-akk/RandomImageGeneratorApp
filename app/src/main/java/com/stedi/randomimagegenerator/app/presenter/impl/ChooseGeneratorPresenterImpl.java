@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
-import com.stedi.randomimagegenerator.app.model.data.generatorparams.GeneratorParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseGeneratorPresenter;
 

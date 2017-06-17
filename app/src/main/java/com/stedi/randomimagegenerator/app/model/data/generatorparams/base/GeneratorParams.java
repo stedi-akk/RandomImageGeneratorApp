@@ -1,8 +1,15 @@
-package com.stedi.randomimagegenerator.app.model.data.generatorparams;
+package com.stedi.randomimagegenerator.app.model.data.generatorparams.base;
 
 import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredCirclesParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredNoiseParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredPixelsParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredRectangleParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.FlatColorParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.MirroredParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.TextOverlayParams;
 import com.stedi.randomimagegenerator.generators.Generator;
 
 public abstract class GeneratorParams {

@@ -3,6 +3,7 @@ package com.stedi.randomimagegenerator.app.model.data.generatorparams;
 import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 import com.stedi.randomimagegenerator.generators.ColoredNoiseGenerator;
 import com.stedi.randomimagegenerator.generators.Generator;
 

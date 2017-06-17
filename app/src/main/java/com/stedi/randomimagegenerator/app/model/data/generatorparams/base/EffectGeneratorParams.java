@@ -1,4 +1,4 @@
-package com.stedi.randomimagegenerator.app.model.data.generatorparams;
+package com.stedi.randomimagegenerator.app.model.data.generatorparams.base;
 
 import android.support.annotation.NonNull;
 
