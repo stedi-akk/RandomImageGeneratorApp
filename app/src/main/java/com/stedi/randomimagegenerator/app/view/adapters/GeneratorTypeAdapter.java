@@ -15,8 +15,9 @@ import butterknife.ButterKnife;
 
 public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdapter.ViewHolder> implements View.OnClickListener {
     private final GeneratorType[] generatorType;
+    private final ClickListener listener;
 
-    private ClickListener listener;
+    private GeneratorType selectedType;
 
     public interface ClickListener {
         void onSelected(@NonNull GeneratorType type);
@@ -24,8 +25,9 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
         void onEditSelected();
     }
 
-    public GeneratorTypeAdapter(@NonNull GeneratorType[] generatorType, ClickListener listener) {
+    public GeneratorTypeAdapter(@NonNull GeneratorType[] generatorType, @NonNull GeneratorType selectedType, ClickListener listener) {
         this.generatorType = generatorType;
+        this.selectedType = selectedType;
         this.listener = listener;
     }
 
@@ -41,6 +43,7 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
         holder.itemView.setOnClickListener(this);
         holder.text.setText(type.name());
         holder.btnEdit.setOnClickListener(this);
+        holder.isSelected.setVisibility(type == selectedType ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override
@@ -51,7 +54,9 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
         if (v.getId() == R.id.generator_type_item_btn_edit) {
             listener.onEditSelected();
         } else {
-            listener.onSelected((GeneratorType) v.getTag());
+            selectedType = (GeneratorType) v.getTag();
+            listener.onSelected(selectedType);
+            notifyDataSetChanged();
         }
     }
 
@@ -63,6 +68,7 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
     class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.generator_type_item_text) TextView text;
         @BindView(R.id.generator_type_item_btn_edit) View btnEdit;
+        @BindView(R.id.generator_type_item_selected) View isSelected;
 
         ViewHolder(View itemView) {
             super(itemView);

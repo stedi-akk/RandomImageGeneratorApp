@@ -27,10 +27,10 @@ public class ChooseEffectPresenterImpl implements ChooseEffectPresenter {
 
     @Override
     public void getEffectTypes() {
-        ui.showTypesToChoose(new GeneratorType[]{
+        ui.showTypes(new GeneratorType[]{
                 GeneratorType.MIRRORED,
                 GeneratorType.TEXT_OVERLAY
-        });
+        }, pendingPreset.getCandidate().getGeneratorParams().getType());
     }
 
     @Override

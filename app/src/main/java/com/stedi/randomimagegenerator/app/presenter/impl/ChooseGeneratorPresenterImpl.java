@@ -26,13 +26,13 @@ public class ChooseGeneratorPresenterImpl implements ChooseGeneratorPresenter {
 
     @Override
     public void getGeneratorTypes() {
-        ui.showTypesToChoose(new GeneratorType[]{
+        ui.showTypes(new GeneratorType[]{
                 GeneratorType.FLAT_COLOR,
                 GeneratorType.COLORED_PIXELS,
                 GeneratorType.COLORED_CIRCLES,
                 GeneratorType.COLORED_RECTANGLE,
                 GeneratorType.COLORED_NOISE,
-        });
+        }, pendingPreset.getCandidate().getGeneratorParams().getType());
     }
 
     @Override

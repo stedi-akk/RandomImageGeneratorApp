@@ -8,7 +8,14 @@
         android:id="@+id/generator_type_item_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:layout_gravity="center_horizontal" />
+
+    <ImageView
+        android:id="@+id/generator_type_item_selected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@android:drawable/checkbox_on_background" />
 
     <ImageView
         android:id="@+id/generator_type_item_btn_edit"

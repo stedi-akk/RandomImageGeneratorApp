@@ -43,7 +43,7 @@ public abstract class GeneratorParams {
     }
 
     @NonNull
-    public static GeneratorParams createDefaultEffectParams(@NonNull GeneratorType effectType, @NonNull GeneratorParams target) {
+    public static EffectGeneratorParams createDefaultEffectParams(@NonNull GeneratorType effectType, @NonNull GeneratorParams target) {
         if (!effectType.isEffect())
             throw new IllegalArgumentException("type must be effect");
 

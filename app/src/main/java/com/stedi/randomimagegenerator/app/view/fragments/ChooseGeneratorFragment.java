@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.Components;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
-import com.stedi.randomimagegenerator.app.other.Utils;
+import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseGeneratorPresenter;
 import com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapter;
 import com.stedi.randomimagegenerator.app.view.dialogs.EditColoredCirclesDialog;
@@ -28,6 +28,7 @@ public class ChooseGeneratorFragment extends StepFragment implements
         GeneratorTypeAdapter.ClickListener {
 
     @Inject ChooseGeneratorPresenter presenter;
+    @Inject Logger logger;
 
     @BindView(R.id.choose_generator_fragment_recycler_view) RecyclerView recyclerView;
 
@@ -54,19 +55,19 @@ public class ChooseGeneratorFragment extends StepFragment implements
     }
 
     @Override
-    public void showTypesToChoose(@NonNull GeneratorType[] types) {
-        recyclerView.setAdapter(new GeneratorTypeAdapter(types, this));
+    public void showTypes(@NonNull GeneratorType[] types, @NonNull GeneratorType selectedType) {
+        recyclerView.setAdapter(new GeneratorTypeAdapter(types, selectedType, this));
     }
 
     @Override
     public void onSelected(@NonNull GeneratorType type) {
-        Utils.toastShort(getContext(), "onSelected: " + type.name());
+        logger.log(this, "onSelected: " + type.name());
         presenter.chooseGeneratorType(type);
     }
 
     @Override
     public void onEditSelected() {
-        Utils.toastShort(getContext(), "onEditSelected");
+        logger.log(this, "onEditSelected");
         presenter.editChoseGeneratorParams();
     }
 

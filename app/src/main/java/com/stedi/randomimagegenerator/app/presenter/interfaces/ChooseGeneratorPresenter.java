@@ -14,7 +14,7 @@ public interface ChooseGeneratorPresenter extends RetainedPresenter<ChooseGenera
     void editChoseGeneratorParams();
 
     interface UIImpl extends UI {
-        void showTypesToChoose(@NonNull GeneratorType[] types);
+        void showTypes(@NonNull GeneratorType[] types, @NonNull GeneratorType selectedType);
 
         void showEditGeneratorParams(@NonNull GeneratorType type);
     }

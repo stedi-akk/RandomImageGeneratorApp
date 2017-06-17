@@ -12,6 +12,6 @@ public interface ChooseEffectPresenter extends RetainedPresenter<ChooseEffectPre
     void chooseEffectType(@NonNull GeneratorType effectType);
 
     interface UIImpl extends UI {
-        void showTypesToChoose(@NonNull GeneratorType[] types);
+        void showTypes(@NonNull GeneratorType[] types, @NonNull GeneratorType selectedType);
     }
 }

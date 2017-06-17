@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.Components;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
-import com.stedi.randomimagegenerator.app.other.Utils;
+import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseEffectPresenter;
 import com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapter;
 import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment;
@@ -26,6 +26,7 @@ public class ChooseEffectFragment extends StepFragment implements
         ChooseEffectPresenter.UIImpl {
 
     @Inject ChooseEffectPresenter presenter;
+    @Inject Logger logger;
 
     @BindView(R.id.choose_effect_fragment_recycler_view) RecyclerView recyclerView;
 
@@ -52,13 +53,13 @@ public class ChooseEffectFragment extends StepFragment implements
     }
 
     @Override
-    public void showTypesToChoose(@NonNull GeneratorType[] types) {
-        recyclerView.setAdapter(new GeneratorTypeAdapter(types, this));
+    public void showTypes(@NonNull GeneratorType[] types, @NonNull GeneratorType selectedType) {
+        recyclerView.setAdapter(new GeneratorTypeAdapter(types, selectedType, this));
     }
 
     @Override
     public void onSelected(@NonNull GeneratorType type) {
-        Utils.toastShort(getContext(), "onSelected: " + type.name());
+        logger.log(this, "onSelected: " + type.name());
         presenter.chooseEffectType(type);
     }
 
