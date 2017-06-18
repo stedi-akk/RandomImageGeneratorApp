@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.stedi.randomimagegenerator.app.R;
@@ -14,6 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdapter.ViewHolder> implements View.OnClickListener {
+    private final GeneratorTypeAdapterImageLoader imageLoader;
     private final GeneratorType[] generatorType;
     private final ClickListener listener;
 
@@ -25,7 +27,11 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
         void onEditSelected();
     }
 
-    public GeneratorTypeAdapter(@NonNull GeneratorType[] generatorType, @NonNull GeneratorType selectedType, ClickListener listener) {
+    public GeneratorTypeAdapter(
+            @NonNull GeneratorTypeAdapterImageLoader imageLoader,
+            @NonNull GeneratorType[] generatorType, @NonNull GeneratorType selectedType,
+            @NonNull ClickListener listener) {
+        this.imageLoader = imageLoader;
         this.generatorType = generatorType;
         this.selectedType = selectedType;
         this.listener = listener;
@@ -44,13 +50,16 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
         holder.text.setText(type.name());
         holder.btnEdit.setOnClickListener(this);
         holder.isSelected.setVisibility(type == selectedType ? View.VISIBLE : View.INVISIBLE);
+        holder.btnEdit.setVisibility(View.INVISIBLE);
+        holder.image.setImageDrawable(null);
+        imageLoader.load(type, (params, bitmap) -> {
+            holder.btnEdit.setVisibility(params.isEditable() ? View.VISIBLE : View.INVISIBLE);
+            holder.image.setImageBitmap(bitmap);
+        });
     }
 
     @Override
     public void onClick(View v) {
-        if (listener == null)
-            return;
-
         if (v.getId() == R.id.generator_type_item_btn_edit) {
             listener.onEditSelected();
         } else {
@@ -69,6 +78,7 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
         @BindView(R.id.generator_type_item_text) TextView text;
         @BindView(R.id.generator_type_item_btn_edit) View btnEdit;
         @BindView(R.id.generator_type_item_selected) View isSelected;
+        @BindView(R.id.generator_type_item_image) ImageView image;
 
         ViewHolder(View itemView) {
             super(itemView);
