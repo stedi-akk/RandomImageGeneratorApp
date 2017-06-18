@@ -5,6 +5,9 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.app.App;
+import com.stedi.randomimagegenerator.app.di.qualifiers.DefaultScheduler;
+import com.stedi.randomimagegenerator.app.di.qualifiers.RigScheduler;
+import com.stedi.randomimagegenerator.app.di.qualifiers.UiScheduler;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
 
 import javax.inject.Named;
@@ -38,19 +41,19 @@ public class AppModule {
     }
 
     @Provides
-    @Named("DefaultScheduler")
+    @DefaultScheduler
     Scheduler provideDefaultScheduler() {
         return Schedulers.io();
     }
 
     @Provides
-    @Named("RigScheduler")
+    @RigScheduler
     Scheduler provideRigScheduler() {
         return Schedulers.computation();
     }
 
     @Provides
-    @Named("UiScheduler")
+    @UiScheduler
     Scheduler provideAndroidScheduler() {
         return AndroidSchedulers.mainThread();
     }

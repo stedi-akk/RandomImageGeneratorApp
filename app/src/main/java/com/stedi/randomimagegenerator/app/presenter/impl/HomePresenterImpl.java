@@ -5,6 +5,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
 
 import com.squareup.otto.Subscribe;
+import com.stedi.randomimagegenerator.app.di.qualifiers.DefaultScheduler;
+import com.stedi.randomimagegenerator.app.di.qualifiers.RigScheduler;
+import com.stedi.randomimagegenerator.app.di.qualifiers.UiScheduler;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.model.repository.PresetRepository;
@@ -56,9 +59,11 @@ public class HomePresenterImpl extends HomePresenter {
     }
 
     public HomePresenterImpl(@NonNull PresetRepository presetRepository, @NonNull PendingPreset pendingPreset,
-                             @NonNull Scheduler subscribeOn, @NonNull Scheduler observeOn,
+                             @NonNull @DefaultScheduler Scheduler subscribeOn,
+                             @NonNull @RigScheduler Scheduler superSubscribeOn,
+                             @NonNull @UiScheduler Scheduler observeOn,
                              @NonNull CachedBus bus, @NonNull Logger logger) {
-        super(subscribeOn, observeOn, bus, logger);
+        super(superSubscribeOn, observeOn, bus, logger);
         this.presetRepository = presetRepository;
         this.pendingPreset = pendingPreset;
         this.subscribeOn = subscribeOn;

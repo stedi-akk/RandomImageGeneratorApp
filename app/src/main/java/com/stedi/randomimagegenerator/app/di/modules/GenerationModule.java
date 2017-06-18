@@ -1,5 +1,8 @@
 package com.stedi.randomimagegenerator.app.di.modules;
 
+import com.stedi.randomimagegenerator.app.di.qualifiers.DefaultScheduler;
+import com.stedi.randomimagegenerator.app.di.qualifiers.RigScheduler;
+import com.stedi.randomimagegenerator.app.di.qualifiers.UiScheduler;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.repository.PresetRepository;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
@@ -19,8 +22,6 @@ import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSizeAndCoun
 import com.stedi.randomimagegenerator.app.presenter.interfaces.EditColoredCirclesPresenter;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationStepsPresenter;
 
-import javax.inject.Named;
-
 import dagger.Module;
 import dagger.Provides;
 import rx.Scheduler;
@@ -29,8 +30,8 @@ import rx.Scheduler;
 public class GenerationModule {
     @Provides
     GenerationStepsPresenter provideGenerationStepsPresenter(PendingPreset pendingPreset,
-                                                             @Named("DefaultScheduler") Scheduler subscribeOn,
-                                                             @Named("UiScheduler") Scheduler observeOn,
+                                                             @RigScheduler Scheduler subscribeOn,
+                                                             @UiScheduler Scheduler observeOn,
                                                              CachedBus bus, Logger logger) {
         return new GenerationStepsPresenterImpl(pendingPreset, subscribeOn, observeOn, bus, logger);
     }
@@ -63,8 +64,8 @@ public class GenerationModule {
     @Provides
     ApplyGenerationPresenter provideApplyGenerationPresenter(PendingPreset pendingPreset,
                                                              PresetRepository presetRepository,
-                                                             @Named("DefaultScheduler") Scheduler subscribeOn,
-                                                             @Named("UiScheduler") Scheduler observeOn,
+                                                             @DefaultScheduler Scheduler subscribeOn,
+                                                             @UiScheduler Scheduler observeOn,
                                                              CachedBus bus, Logger logger) {
         return new ApplyGenerationPresenterImpl(pendingPreset, presetRepository, subscribeOn, observeOn, bus, logger);
     }

@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.squareup.otto.Subscribe;
+import com.stedi.randomimagegenerator.app.di.qualifiers.DefaultScheduler;
+import com.stedi.randomimagegenerator.app.di.qualifiers.UiScheduler;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
@@ -35,7 +37,7 @@ public class ApplyGenerationPresenterImpl implements ApplyGenerationPresenter {
         private final boolean success;
         private final Throwable throwable;
 
-        public OnPresetSaveEvent(boolean success, Throwable throwable) {
+        OnPresetSaveEvent(boolean success, Throwable throwable) {
             this.success = success;
             this.throwable = throwable;
         }
@@ -43,7 +45,8 @@ public class ApplyGenerationPresenterImpl implements ApplyGenerationPresenter {
 
     public ApplyGenerationPresenterImpl(@NonNull PendingPreset pendingPreset,
                                         @NonNull PresetRepository presetRepository,
-                                        @NonNull Scheduler subscribeOn, @NonNull Scheduler observeOn,
+                                        @NonNull @DefaultScheduler Scheduler subscribeOn,
+                                        @NonNull @UiScheduler Scheduler observeOn,
                                         @NonNull CachedBus bus, @NonNull Logger logger) {
         if (pendingPreset.getCandidate() == null)
             throw new IllegalStateException("pending preset candidate must not be null");

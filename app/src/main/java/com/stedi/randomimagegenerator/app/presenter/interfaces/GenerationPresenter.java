@@ -10,6 +10,8 @@ import android.support.annotation.RequiresPermission;
 import com.squareup.otto.Subscribe;
 import com.stedi.randomimagegenerator.ImageParams;
 import com.stedi.randomimagegenerator.Rig;
+import com.stedi.randomimagegenerator.app.di.qualifiers.RigScheduler;
+import com.stedi.randomimagegenerator.app.di.qualifiers.UiScheduler;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
@@ -52,7 +54,9 @@ abstract class GenerationPresenter<T extends GenerationPresenter.UIImpl> impleme
         }
     }
 
-    GenerationPresenter(@NonNull Scheduler subscribeOn, @NonNull Scheduler observeOn, @NonNull CachedBus bus, @NonNull Logger logger) {
+    GenerationPresenter(@NonNull @RigScheduler Scheduler subscribeOn,
+                        @NonNull @UiScheduler Scheduler observeOn,
+                        @NonNull CachedBus bus, @NonNull Logger logger) {
         this.subscribeOn = subscribeOn;
         this.observeOn = observeOn;
         this.bus = bus;

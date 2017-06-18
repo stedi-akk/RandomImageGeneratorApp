@@ -2,6 +2,8 @@ package com.stedi.randomimagegenerator.app.presenter.impl;
 
 import android.support.annotation.NonNull;
 
+import com.stedi.randomimagegenerator.app.di.qualifiers.RigScheduler;
+import com.stedi.randomimagegenerator.app.di.qualifiers.UiScheduler;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
@@ -17,7 +19,8 @@ public class GenerationStepsPresenterImpl extends GenerationStepsPresenter {
     private UIImpl ui;
 
     public GenerationStepsPresenterImpl(@NonNull PendingPreset pendingPreset,
-                                        @NonNull Scheduler subscribeOn, @NonNull Scheduler observeOn,
+                                        @NonNull @RigScheduler Scheduler subscribeOn,
+                                        @NonNull @UiScheduler Scheduler observeOn,
                                         @NonNull CachedBus bus, @NonNull Logger logger) {
         super(subscribeOn, observeOn, bus, logger);
         this.pendingPreset = pendingPreset;

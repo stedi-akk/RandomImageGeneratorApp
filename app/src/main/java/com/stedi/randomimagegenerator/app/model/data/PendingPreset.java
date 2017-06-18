@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.model.data;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.stedi.randomimagegenerator.Quality;
@@ -17,7 +18,7 @@ public class PendingPreset {
     private Preset presetCandidate;
 
     @Inject
-    public PendingPreset(@Named("DefaultSavePath") String defaultSavePath) {
+    public PendingPreset(@NonNull @Named("DefaultSavePath") String defaultSavePath) {
         this.defaultSavePath = defaultSavePath;
     }
 

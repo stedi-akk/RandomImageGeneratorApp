@@ -6,13 +6,14 @@ import android.support.v4.util.LruCache;
 
 import com.stedi.randomimagegenerator.ImageParams;
 import com.stedi.randomimagegenerator.Rig;
+import com.stedi.randomimagegenerator.app.di.qualifiers.RigScheduler;
+import com.stedi.randomimagegenerator.app.di.qualifiers.UiScheduler;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.callbacks.GenerateCallback;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.inject.Singleton;
 
 import rx.Completable;
@@ -41,8 +42,8 @@ public class GeneratorTypeAdapterImageLoader {
     }
 
     @Inject
-    GeneratorTypeAdapterImageLoader(@Named("RigScheduler") Scheduler subscribeOn,
-                                    @Named("UiScheduler") Scheduler observeOn,
+    GeneratorTypeAdapterImageLoader(@NonNull @RigScheduler Scheduler subscribeOn,
+                                    @NonNull @UiScheduler Scheduler observeOn,
                                     Logger logger) {
         this.subscribeOn = subscribeOn;
         this.observeOn = observeOn;
