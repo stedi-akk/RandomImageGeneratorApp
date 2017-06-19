@@ -5,9 +5,13 @@ import android.support.annotation.NonNull;
 import com.stedi.randomimagegenerator.generators.Generator;
 
 public abstract class EffectGeneratorParams extends GeneratorParams {
-    private final GeneratorParams target;
+    private GeneratorParams target;
 
     public EffectGeneratorParams(@NonNull GeneratorParams target) {
+        this.target = target;
+    }
+
+    public void setTarget(@NonNull GeneratorParams target) {
         this.target = target;
     }
 
@@ -24,4 +28,13 @@ public abstract class EffectGeneratorParams extends GeneratorParams {
 
     @NonNull
     protected abstract Generator createEffectGenerator(@NonNull Generator target);
+
+    @Override
+    public String toString() {
+        return "EffectGeneratorParams{" +
+                "getType()=" + getType() +
+                ", isEditable()=" + isEditable() +
+                ", target=" + target +
+                '}';
+    }
 }

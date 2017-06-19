@@ -56,4 +56,12 @@ public abstract class GeneratorParams {
                 throw new IllegalStateException("unreachable code");
         }
     }
+
+    @Override
+    public String toString() {
+        return "GeneratorParams{" +
+                "getType()=" + getType() +
+                ", isEditable()=" + isEditable() +
+                '}';
+    }
 }

@@ -63,7 +63,6 @@ public class ChooseGeneratorFragment extends StepFragment implements
 
     @Override
     public void onSelected(@NonNull GeneratorType type) {
-        logger.log(this, "onSelected: " + type.name());
         presenter.chooseGeneratorType(type);
     }
 

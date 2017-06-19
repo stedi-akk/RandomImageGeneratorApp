@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseGeneratorPresenter;
@@ -26,23 +27,42 @@ public class ChooseGeneratorPresenterImpl implements ChooseGeneratorPresenter {
 
     @Override
     public void getGeneratorTypes() {
+        GeneratorType selectedType;
+        GeneratorParams selectedParams = pendingPreset.getCandidate().getGeneratorParams();
+        if (selectedParams instanceof EffectGeneratorParams) {
+            selectedType = ((EffectGeneratorParams) selectedParams).getTarget().getType();
+        } else {
+            selectedType = selectedParams.getType();
+        }
         ui.showTypes(new GeneratorType[]{
                 GeneratorType.FLAT_COLOR,
                 GeneratorType.COLORED_PIXELS,
                 GeneratorType.COLORED_CIRCLES,
                 GeneratorType.COLORED_RECTANGLE,
                 GeneratorType.COLORED_NOISE,
-        }, pendingPreset.getCandidate().getGeneratorParams().getType());
+        }, selectedType);
     }
 
     @Override
     public void chooseGeneratorType(@NonNull GeneratorType type) {
-        pendingPreset.getCandidate().setGeneratorParams(GeneratorParams.createDefaultParams(type));
+        GeneratorParams newParams = GeneratorParams.createDefaultParams(type);
+        GeneratorParams currentParams = pendingPreset.getCandidate().getGeneratorParams();
+        if (currentParams instanceof EffectGeneratorParams) {
+            ((EffectGeneratorParams) currentParams).setTarget(newParams);
+        } else {
+            pendingPreset.getCandidate().setGeneratorParams(newParams);
+        }
+        logger.log(this, "chooseGeneratorType result = " + pendingPreset.getCandidate().getGeneratorParams());
     }
 
     @Override
     public void editChoseGeneratorParams() {
-        ui.showEditGeneratorParams(pendingPreset.getCandidate().getGeneratorParams().getType());
+        GeneratorParams currentParams = pendingPreset.getCandidate().getGeneratorParams();
+        if (currentParams instanceof EffectGeneratorParams) {
+            ui.showEditGeneratorParams(((EffectGeneratorParams) currentParams).getTarget().getType());
+        } else {
+            ui.showEditGeneratorParams(currentParams.getType());
+        }
     }
 
     @Override
