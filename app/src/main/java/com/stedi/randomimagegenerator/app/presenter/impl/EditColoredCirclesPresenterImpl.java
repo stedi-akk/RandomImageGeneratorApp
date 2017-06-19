@@ -1,7 +1,6 @@
 package com.stedi.randomimagegenerator.app.presenter.impl;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredCirclesParams;
@@ -9,8 +8,6 @@ import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.Effect
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.EditColoredCirclesPresenter;
-
-import java.io.Serializable;
 
 public class EditColoredCirclesPresenterImpl implements EditColoredCirclesPresenter {
     private final PendingPreset pendingPreset;
@@ -36,19 +33,21 @@ public class EditColoredCirclesPresenterImpl implements EditColoredCirclesPresen
     }
 
     @Override
-    public void setRandomCount() {
+    public boolean setRandomCount() {
         logger.log(this, "setRandomCount");
         params.setRandomCount();
+        return true;
     }
 
     @Override
-    public void setCount(int count) {
+    public boolean setCount(int count) {
         if (count < 1) {
             ui.showErrorIncorrectCount();
-            return;
+            return false;
         }
         logger.log(this, "setCount " + count);
         params.setCount(count);
+        return true;
     }
 
     @Override
@@ -67,16 +66,5 @@ public class EditColoredCirclesPresenterImpl implements EditColoredCirclesPresen
     public void onDetach() {
         logger.log(this, "onDetach");
         this.ui = null;
-    }
-
-    @Override
-    public void onRestore(@NonNull Serializable state) {
-
-    }
-
-    @Nullable
-    @Override
-    public Serializable onRetain() {
-        return null;
     }
 }

@@ -1,6 +1,7 @@
 package com.stedi.randomimagegenerator.app.view.dialogs;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,7 +14,6 @@ import android.widget.EditText;
 
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.Components;
-import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.EditColoredCirclesPresenter;
 import com.stedi.randomimagegenerator.app.view.dialogs.base.ButterKnifeDialogFragment;
@@ -44,14 +44,18 @@ public class EditColoredCirclesDialog extends ButterKnifeDialogFragment implemen
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setPositiveButton("OK", (dialog, which) -> apply());
+        builder.setPositiveButton("OK", null);
         builder.setTitle("Edit colored circles");
         builder.setView(inflateAndBind(R.layout.edit_colored_circles_dialog));
         etCount.addTextChangedListener(this);
         cbRandom.setOnCheckedChangeListener(this);
+        AlertDialog dialog = builder.create();
+        dialog.setOnShowListener(dialog1 -> {
+            dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v -> apply());
+        });
         if (savedInstanceState == null)
             presenter.getValues();
-        return builder.create();
+        return dialog;
     }
 
     @Override
@@ -82,7 +86,7 @@ public class EditColoredCirclesDialog extends ButterKnifeDialogFragment implemen
 
     @Override
     public void showErrorIncorrectCount() {
-        Utils.toastLong(getContext(), "count must be > 0");
+        etCount.setError("count must be > 0");
     }
 
     @Override
@@ -92,22 +96,32 @@ public class EditColoredCirclesDialog extends ButterKnifeDialogFragment implemen
     }
 
     private void apply() {
+        boolean success;
         if (cbRandom.isChecked()) {
-            presenter.setRandomCount();
+            success = presenter.setRandomCount();
         } else {
+            String input = etCount.getText().toString();
+            if (input.isEmpty()) {
+                showErrorIncorrectCount();
+                return;
+            }
             try {
-                int count = Integer.parseInt(etCount.getText().toString());
-                presenter.setCount(count);
+                int count = Integer.parseInt(input);
+                success = presenter.setCount(count);
             } catch (NumberFormatException e) {
                 logger.log(this, e);
                 showErrorIncorrectCount();
+                return;
             }
         }
+        if (success)
+            dismiss();
     }
 
     private void setCountTextSilently(String text) {
         etCount.removeTextChangedListener(this);
         etCount.setText(text);
+        etCount.setError(null);
         etCount.addTextChangedListener(this);
     }
 
