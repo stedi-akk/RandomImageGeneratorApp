@@ -53,7 +53,7 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
         holder.btnEdit.setVisibility(View.INVISIBLE);
         holder.image.setImageDrawable(null);
         imageLoader.load(type, (params, bitmap) -> {
-            holder.btnEdit.setVisibility(params.isEditable() ? View.VISIBLE : View.INVISIBLE);
+            holder.btnEdit.setVisibility(params.isEditable() && type == selectedType ? View.VISIBLE : View.INVISIBLE);
             holder.image.setImageBitmap(bitmap);
         });
     }

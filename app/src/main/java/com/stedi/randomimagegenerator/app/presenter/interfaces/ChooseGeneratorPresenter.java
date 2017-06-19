@@ -3,10 +3,10 @@ package com.stedi.randomimagegenerator.app.presenter.interfaces;
 import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
-import com.stedi.randomimagegenerator.app.presenter.interfaces.core.RetainedPresenter;
+import com.stedi.randomimagegenerator.app.presenter.interfaces.core.Presenter;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.core.UI;
 
-public interface ChooseGeneratorPresenter extends RetainedPresenter<ChooseGeneratorPresenter.UIImpl> {
+public interface ChooseGeneratorPresenter extends Presenter<ChooseGeneratorPresenter.UIImpl> {
     void getGeneratorTypes();
 
     void chooseGeneratorType(@NonNull GeneratorType type);
