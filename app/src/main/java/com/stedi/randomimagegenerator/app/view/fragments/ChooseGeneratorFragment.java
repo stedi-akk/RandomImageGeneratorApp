@@ -68,7 +68,6 @@ public class ChooseGeneratorFragment extends StepFragment implements
 
     @Override
     public void onEditSelected() {
-        logger.log(this, "onEditSelected");
         presenter.editChoseGeneratorParams();
     }
 
@@ -91,7 +90,7 @@ public class ChooseGeneratorFragment extends StepFragment implements
             default:
                 throw new IllegalStateException("incorrect behavior");
         }
-        dialog.show(getFragmentManager(), "test");
+        dialog.show(getFragmentManager(), EditColoredCirclesDialog.class.getSimpleName());
     }
 
     @Override

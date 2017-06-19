@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredCirclesParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.EditColoredCirclesPresenter;
 
@@ -25,33 +27,45 @@ public class EditColoredCirclesPresenterImpl implements EditColoredCirclesPresen
     }
 
     @Override
+    public void getValues() {
+        if (params.getCount() == null) {
+            ui.showRandomCount();
+        } else {
+            ui.showCount(params.getCount());
+        }
+    }
+
+    @Override
     public void setRandomCount() {
+        logger.log(this, "setRandomCount");
         params.setRandomCount();
-        ui.showRandomCount();
     }
 
     @Override
     public void setCount(int count) {
-    }
-
-    @Override
-    public void confirm() {
-
-    }
-
-    @Override
-    public void cancel() {
-
+        if (count < 1) {
+            ui.showErrorIncorrectCount();
+            return;
+        }
+        logger.log(this, "setCount " + count);
+        params.setCount(count);
     }
 
     @Override
     public void onAttach(@NonNull UIImpl ui) {
+        logger.log(this, "onAttach");
         this.ui = ui;
-        this.params = (ColoredCirclesParams) pendingPreset.getCandidate().getGeneratorParams();
+        GeneratorParams currentParams = pendingPreset.getCandidate().getGeneratorParams();
+        if (currentParams instanceof EffectGeneratorParams) {
+            params = (ColoredCirclesParams) ((EffectGeneratorParams) currentParams).getTarget();
+        } else {
+            params = (ColoredCirclesParams) currentParams;
+        }
     }
 
     @Override
     public void onDetach() {
+        logger.log(this, "onDetach");
         this.ui = null;
     }
 
