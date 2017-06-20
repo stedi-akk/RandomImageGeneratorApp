@@ -12,15 +12,15 @@ import com.stedi.randomimagegenerator.app.presenter.impl.ChooseEffectPresenterIm
 import com.stedi.randomimagegenerator.app.presenter.impl.ChooseGeneratorPresenterImpl;
 import com.stedi.randomimagegenerator.app.presenter.impl.ChooseSaveOptionsPresenterImpl;
 import com.stedi.randomimagegenerator.app.presenter.impl.ChooseSizeAndCountPresenterImpl;
-import com.stedi.randomimagegenerator.app.presenter.impl.EditColoredCirclesPresenterImpl;
 import com.stedi.randomimagegenerator.app.presenter.impl.GenerationStepsPresenterImpl;
+import com.stedi.randomimagegenerator.app.presenter.impl.SimpleIntegerParamsPresenterImpl;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseEffectPresenter;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseGeneratorPresenter;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSaveOptionsPresenter;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSizeAndCountPresenter;
-import com.stedi.randomimagegenerator.app.presenter.interfaces.EditColoredCirclesPresenter;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationStepsPresenter;
+import com.stedi.randomimagegenerator.app.presenter.interfaces.SimpleIntegerParamsPresenter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -42,8 +42,8 @@ public class GenerationModule {
     }
 
     @Provides
-    EditColoredCirclesPresenter provideEditColoredCirclesPresenter(PendingPreset pendingPreset, Logger logger) {
-        return new EditColoredCirclesPresenterImpl(pendingPreset, logger);
+    SimpleIntegerParamsPresenter provideEditColoredCirclesPresenter(PendingPreset pendingPreset, Logger logger) {
+        return new SimpleIntegerParamsPresenterImpl(pendingPreset, logger);
     }
 
     @Provides

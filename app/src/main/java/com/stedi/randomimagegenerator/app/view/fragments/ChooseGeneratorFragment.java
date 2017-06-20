@@ -3,7 +3,6 @@ package com.stedi.randomimagegenerator.app.view.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,7 +16,7 @@ import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseGeneratorPresenter;
 import com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapter;
 import com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapterImageLoader;
-import com.stedi.randomimagegenerator.app.view.dialogs.EditColoredCirclesDialog;
+import com.stedi.randomimagegenerator.app.view.dialogs.SimpleIntegerParamsDialog;
 import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment;
 
 import javax.inject.Inject;
@@ -73,24 +72,17 @@ public class ChooseGeneratorFragment extends StepFragment implements
 
     @Override
     public void showEditGeneratorParams(@NonNull GeneratorType type) {
-        DialogFragment dialog;
         switch (type) {
+            case COLORED_PIXELS:
             case COLORED_CIRCLES:
-                dialog = new EditColoredCirclesDialog();
+            case COLORED_RECTANGLE:
+                SimpleIntegerParamsDialog.newInstance(type).show(getFragmentManager(), SimpleIntegerParamsDialog.class.getSimpleName());
                 break;
             case COLORED_NOISE:
-                dialog = new EditColoredCirclesDialog();
-                break;
-            case COLORED_PIXELS:
-                dialog = new EditColoredCirclesDialog();
-                break;
-            case COLORED_RECTANGLE:
-                dialog = new EditColoredCirclesDialog();
-                break;
+                throw new IllegalStateException("todo");
             default:
                 throw new IllegalStateException("incorrect behavior");
         }
-        dialog.show(getFragmentManager(), EditColoredCirclesDialog.class.getSimpleName());
     }
 
     @Override

@@ -3,20 +3,20 @@ package com.stedi.randomimagegenerator.app.presenter.impl;
 import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
-import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredCirclesParams;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.SimpleIntegerParams;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
-import com.stedi.randomimagegenerator.app.presenter.interfaces.EditColoredCirclesPresenter;
+import com.stedi.randomimagegenerator.app.presenter.interfaces.SimpleIntegerParamsPresenter;
 
-public class EditColoredCirclesPresenterImpl implements EditColoredCirclesPresenter {
+public class SimpleIntegerParamsPresenterImpl implements SimpleIntegerParamsPresenter {
     private final PendingPreset pendingPreset;
     private final Logger logger;
 
     private UIImpl ui;
-    private ColoredCirclesParams params;
+    private SimpleIntegerParams params;
 
-    public EditColoredCirclesPresenterImpl(@NonNull PendingPreset pendingPreset, @NonNull Logger logger) {
+    public SimpleIntegerParamsPresenterImpl(@NonNull PendingPreset pendingPreset, @NonNull Logger logger) {
         if (pendingPreset.getCandidate() == null)
             throw new IllegalStateException("pending preset candidate must not be null");
         this.pendingPreset = pendingPreset;
@@ -25,28 +25,33 @@ public class EditColoredCirclesPresenterImpl implements EditColoredCirclesPresen
 
     @Override
     public void getValues() {
-        if (params.getCount() == null) {
-            ui.showRandomCount();
+        if (params.getValue() == null) {
+            ui.showRandomValue();
         } else {
-            ui.showCount(params.getCount());
+            ui.showValue(params.getValue());
         }
     }
 
     @Override
-    public boolean setRandomCount() {
-        logger.log(this, "setRandomCount");
-        params.setRandomCount();
+    public boolean canBeRandom() {
+        return params.canBeRandom();
+    }
+
+    @Override
+    public boolean setRandomValue() {
+        logger.log(this, "setRandomValue");
+        params.setRandomValue();
         return true;
     }
 
     @Override
-    public boolean setCount(int count) {
-        if (count < 1) {
-            ui.showErrorIncorrectCount();
+    public boolean setValue(int value) {
+        if (value < 1) {
+            ui.showErrorIncorrectValue();
             return false;
         }
-        logger.log(this, "setCount " + count);
-        params.setCount(count);
+        logger.log(this, "setValue " + value);
+        params.setValue(value);
         return true;
     }
 
@@ -56,9 +61,9 @@ public class EditColoredCirclesPresenterImpl implements EditColoredCirclesPresen
         this.ui = ui;
         GeneratorParams currentParams = pendingPreset.getCandidate().getGeneratorParams();
         if (currentParams instanceof EffectGeneratorParams) {
-            params = (ColoredCirclesParams) ((EffectGeneratorParams) currentParams).getTarget();
+            params = (SimpleIntegerParams) ((EffectGeneratorParams) currentParams).getTarget();
         } else {
-            params = (ColoredCirclesParams) currentParams;
+            params = (SimpleIntegerParams) currentParams;
         }
     }
 
