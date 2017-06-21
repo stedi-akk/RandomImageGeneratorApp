@@ -16,6 +16,7 @@ import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseGeneratorPresenter;
 import com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapter;
 import com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapterImageLoader;
+import com.stedi.randomimagegenerator.app.view.dialogs.ColoredNoiseParamsDialog;
 import com.stedi.randomimagegenerator.app.view.dialogs.SimpleIntegerParamsDialog;
 import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment;
 
@@ -79,7 +80,8 @@ public class ChooseGeneratorFragment extends StepFragment implements
                 SimpleIntegerParamsDialog.newInstance(type).show(getFragmentManager(), SimpleIntegerParamsDialog.class.getSimpleName());
                 break;
             case COLORED_NOISE:
-                throw new IllegalStateException("todo");
+                new ColoredNoiseParamsDialog().show(getFragmentManager(), ColoredNoiseParamsDialog.class.getSimpleName());
+                break;
             default:
                 throw new IllegalStateException("incorrect behavior");
         }

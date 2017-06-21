@@ -12,6 +12,7 @@ import com.stedi.randomimagegenerator.app.presenter.impl.ChooseEffectPresenterIm
 import com.stedi.randomimagegenerator.app.presenter.impl.ChooseGeneratorPresenterImpl;
 import com.stedi.randomimagegenerator.app.presenter.impl.ChooseSaveOptionsPresenterImpl;
 import com.stedi.randomimagegenerator.app.presenter.impl.ChooseSizeAndCountPresenterImpl;
+import com.stedi.randomimagegenerator.app.presenter.impl.ColoredNoiseParamsPresenterImpl;
 import com.stedi.randomimagegenerator.app.presenter.impl.GenerationStepsPresenterImpl;
 import com.stedi.randomimagegenerator.app.presenter.impl.SimpleIntegerParamsPresenterImpl;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter;
@@ -19,6 +20,7 @@ import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseEffectPrese
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseGeneratorPresenter;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSaveOptionsPresenter;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSizeAndCountPresenter;
+import com.stedi.randomimagegenerator.app.presenter.interfaces.ColoredNoiseParamsPresenter;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationStepsPresenter;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.SimpleIntegerParamsPresenter;
 
@@ -44,6 +46,11 @@ public class GenerationModule {
     @Provides
     SimpleIntegerParamsPresenter provideEditColoredCirclesPresenter(PendingPreset pendingPreset, Logger logger) {
         return new SimpleIntegerParamsPresenterImpl(pendingPreset, logger);
+    }
+
+    @Provides
+    ColoredNoiseParamsPresenter provideColoredNoiseParamsPresenter(PendingPreset pendingPreset, Logger logger) {
+        return new ColoredNoiseParamsPresenterImpl(pendingPreset, logger);
     }
 
     @Provides

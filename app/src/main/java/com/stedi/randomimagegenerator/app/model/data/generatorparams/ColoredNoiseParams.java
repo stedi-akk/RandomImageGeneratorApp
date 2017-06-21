@@ -11,9 +11,11 @@ public class ColoredNoiseParams extends GeneratorParams {
     private ColoredNoiseGenerator.Orientation orientation = ColoredNoiseGenerator.Orientation.RANDOM;
     private ColoredNoiseGenerator.Type type = ColoredNoiseGenerator.Type.RANDOM;
 
-    public void setOrientationAndType(@NonNull ColoredNoiseGenerator.Orientation orientation,
-                                      @NonNull ColoredNoiseGenerator.Type type) {
+    public void setNoiseOrientation(@NonNull ColoredNoiseGenerator.Orientation orientation) {
         this.orientation = orientation;
+    }
+
+    public void setNoiseType(@NonNull ColoredNoiseGenerator.Type type) {
         this.type = type;
     }
 

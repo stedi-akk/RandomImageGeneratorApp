@@ -2,6 +2,7 @@ package com.stedi.randomimagegenerator.app.di.components;
 
 import com.stedi.randomimagegenerator.app.di.modules.GenerationModule;
 import com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity;
+import com.stedi.randomimagegenerator.app.view.dialogs.ColoredNoiseParamsDialog;
 import com.stedi.randomimagegenerator.app.view.dialogs.SimpleIntegerParamsDialog;
 import com.stedi.randomimagegenerator.app.view.fragments.ApplyGenerationFragment;
 import com.stedi.randomimagegenerator.app.view.fragments.ChooseEffectFragment;
@@ -18,6 +19,8 @@ public interface GenerationComponent {
     void inject(ChooseGeneratorFragment fragment);
 
     void inject(SimpleIntegerParamsDialog dialog);
+
+    void inject(ColoredNoiseParamsDialog dialog);
 
     void inject(ChooseEffectFragment fragment);
 
