@@ -72,9 +72,11 @@ public class SimpleIntegerParamsDialog extends ButterKnifeDialogFragment impleme
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        GeneratorType type = (GeneratorType) getArguments().getSerializable(KEY_TYPE);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setPositiveButton("OK", null);
-        builder.setTitle("Edit");
+        //noinspection ConstantConditions
+        builder.setTitle("Edit " + type.name());
         builder.setView(inflateAndBind(R.layout.simple_integer_params_dialog));
         canBeRandom = presenter.canBeRandom();
         if (canBeRandom) {

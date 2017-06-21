@@ -63,9 +63,12 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
         if (v.getId() == R.id.generator_type_item_btn_edit) {
             listener.onEditSelected();
         } else {
-            selectedType = (GeneratorType) v.getTag();
-            listener.onSelected(selectedType);
-            notifyDataSetChanged();
+            GeneratorType clickedType = (GeneratorType) v.getTag();
+            if (selectedType != clickedType) {
+                selectedType = clickedType;
+                listener.onSelected(selectedType);
+                notifyDataSetChanged();
+            }
         }
     }
 
