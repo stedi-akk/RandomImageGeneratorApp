@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import com.stedi.randomimagegenerator.Quality;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 
+import java.util.Arrays;
+
 public class Preset {
     private int id;
     private long timestamp;
@@ -101,6 +103,7 @@ public class Preset {
         if (step <= 0 || from <= 0 || to <= 0)
             throw new IllegalArgumentException("all width range args must be bigger than 0");
         widthRange = new int[]{from, to, step};
+        width = 0;
         count = 0;
     }
 
@@ -113,6 +116,7 @@ public class Preset {
         if (step <= 0 || from <= 0 || to <= 0)
             throw new IllegalArgumentException("all height range args must be bigger than 0");
         heightRange = new int[]{from, to, step};
+        height = 0;
         count = 0;
     }
 
@@ -158,6 +162,11 @@ public class Preset {
         return "Preset{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", count=" + count +
+                ", width=" + width +
+                ", height=" + height +
+                ", widthRange=" + Arrays.toString(widthRange) +
+                ", heightRange=" + Arrays.toString(heightRange) +
                 '}';
     }
 }

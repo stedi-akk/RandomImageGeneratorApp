@@ -49,6 +49,7 @@ public class ChooseSizeAndCountPresenterImpl implements ChooseSizeAndCountPresen
             return;
         }
         pendingPreset.getCandidate().setCount(count);
+        logger.log(this, "after setCount: " + pendingPreset.getCandidate().toString());
     }
 
     @Override
@@ -58,6 +59,7 @@ public class ChooseSizeAndCountPresenterImpl implements ChooseSizeAndCountPresen
             return;
         }
         pendingPreset.getCandidate().setWidth(width);
+        logger.log(this, "after setWidth: " + pendingPreset.getCandidate().toString());
     }
 
     @Override
@@ -67,6 +69,7 @@ public class ChooseSizeAndCountPresenterImpl implements ChooseSizeAndCountPresen
             return;
         }
         pendingPreset.getCandidate().setHeight(height);
+        logger.log(this, "after setHeight: " + pendingPreset.getCandidate().toString());
     }
 
     @Override
@@ -76,6 +79,7 @@ public class ChooseSizeAndCountPresenterImpl implements ChooseSizeAndCountPresen
             return;
         }
         pendingPreset.getCandidate().setWidthRange(from, to, step);
+        logger.log(this, "after setWidthRange: " + pendingPreset.getCandidate().toString());
     }
 
     @Override
@@ -85,6 +89,7 @@ public class ChooseSizeAndCountPresenterImpl implements ChooseSizeAndCountPresen
             return;
         }
         pendingPreset.getCandidate().setHeightRange(from, to, step);
+        logger.log(this, "after setHeightRange: " + pendingPreset.getCandidate().toString());
     }
 
     @Override
