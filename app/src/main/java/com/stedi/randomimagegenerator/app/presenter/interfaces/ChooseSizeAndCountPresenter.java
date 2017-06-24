@@ -6,7 +6,7 @@ import com.stedi.randomimagegenerator.app.presenter.interfaces.core.Presenter;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.core.UI;
 
 public interface ChooseSizeAndCountPresenter extends Presenter<ChooseSizeAndCountPresenter.UIImpl> {
-    public enum Error {
+    enum Error {
         INCORRECT_WIDTH,
         INCORRECT_HEIGHT,
         INCORRECT_WIDTH_RANGE,

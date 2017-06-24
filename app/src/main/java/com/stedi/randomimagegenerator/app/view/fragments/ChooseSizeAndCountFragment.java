@@ -74,15 +74,35 @@ public class ChooseSizeAndCountFragment extends StepFragment implements
         } else if (etHeight.hasFocus()) {
 
         } else if (etCount.hasFocus()) {
-
+            clearSilently(etWidthRangeFrom, etWidthRangeTo, etWidthRangeStep, etHeightRangeFrom, etHeightRangeTo, etHeightRangeStep);
+            fillIfEmptySilently(etWidth, etHeight);
+            presenter.setWidth(getValue(etWidth));
+            presenter.setHeight(getValue(etHeight));
+            if (isEmpty(etCount) || getValue(etCount) == 0) {
+                etCount.setError(ChooseSizeAndCountPresenter.Error.INCORRECT_COUNT.name());
+                return;
+            }
+            presenter.setCount(getValue(etCount));
         } else if (etWidthRangeFrom.hasFocus()) {
-
+            clearSilently(etWidth, etCount);
+            fillIfEmptySilently(etWidthRangeTo, etWidthRangeStep);
+            if (isEmpty(etWidthRangeFrom) || getValue(etWidthRangeFrom) == 0) {
+                etWidthRangeFrom.setError(ChooseSizeAndCountPresenter.Error.INCORRECT_WIDTH_RANGE.name());
+                return;
+            }
+            presenter.setWidthRange(getValue(etWidthRangeFrom), getValue(etWidthRangeTo), getValue(etWidthRangeStep));
         } else if (etWidthRangeTo.hasFocus()) {
 
         } else if (etWidthRangeStep.hasFocus()) {
 
         } else if (etHeightRangeFrom.hasFocus()) {
-
+            clearSilently(etHeight, etCount);
+            fillIfEmptySilently(etHeightRangeTo, etHeightRangeStep);
+            if (isEmpty(etHeightRangeFrom) || getValue(etHeightRangeFrom) == 0) {
+                etHeightRangeFrom.setError(ChooseSizeAndCountPresenter.Error.INCORRECT_HEIGHT_RANGE.name());
+                return;
+            }
+            presenter.setHeightRange(getValue(etHeightRangeFrom), getValue(etHeightRangeTo), getValue(etHeightRangeStep));
         } else if (etHeightRangeTo.hasFocus()) {
 
         } else if (etHeightRangeStep.hasFocus()) {
@@ -90,29 +110,72 @@ public class ChooseSizeAndCountFragment extends StepFragment implements
         }
     }
 
+    private boolean isEmpty(EditText et) {
+        return et.getText().toString().isEmpty();
+    }
+
+    private int getValue(EditText et) {
+        return Integer.parseInt(et.getText().toString());
+    }
+
+    private void fillIfEmptySilently(EditText... editTexts) {
+        for (EditText et : editTexts) {
+            if (!et.getText().toString().isEmpty())
+                continue;
+            et.removeTextChangedListener(this);
+            et.setText("1");
+            et.addTextChangedListener(this);
+        }
+    }
+
+    private void clearSilently(EditText... editTexts) {
+        for (EditText et : editTexts) {
+            et.removeTextChangedListener(this);
+            et.setText("");
+            et.setError(null);
+            et.addTextChangedListener(this);
+        }
+    }
+
+    private boolean isWidthRangeInEdit() {
+        return !etWidthRangeFrom.getText().toString().isEmpty() ||
+                !etWidthRangeTo.getText().toString().isEmpty() ||
+                !etWidthRangeStep.getText().toString().isEmpty();
+    }
+
+    private boolean isHeightRangeInEdit() {
+        return !etHeightRangeFrom.getText().toString().isEmpty() ||
+                !etHeightRangeTo.getText().toString().isEmpty() ||
+                !etHeightRangeStep.getText().toString().isEmpty();
+    }
+
     @Override
     public void showWidth(int width) {
-
+        etWidth.setText(String.valueOf(width));
     }
 
     @Override
     public void showHeight(int height) {
-
+        etHeight.setText(String.valueOf(height));
     }
 
     @Override
     public void showWidthRange(int from, int to, int step) {
-
+        etWidthRangeFrom.setText(String.valueOf(from));
+        etWidthRangeTo.setText(String.valueOf(to));
+        etWidthRangeStep.setText(String.valueOf(step));
     }
 
     @Override
     public void showHeightRange(int from, int to, int step) {
-
+        etHeightRangeFrom.setText(String.valueOf(from));
+        etHeightRangeTo.setText(String.valueOf(to));
+        etHeightRangeStep.setText(String.valueOf(step));
     }
 
     @Override
     public void showCount(int count) {
-
+        etCount.setText(String.valueOf(count));
     }
 
     @Override
