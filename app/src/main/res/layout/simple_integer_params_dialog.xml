@@ -6,9 +6,9 @@
 
     <EditText
         android:id="@+id/simple_integer_params_dialog_et_value"
+        style="@style/SignedIntegerInput"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="numberSigned" />
+        android:layout_height="wrap_content" />
 
     <CheckBox
         android:id="@+id/simple_integer_params_dialog_cb_random"

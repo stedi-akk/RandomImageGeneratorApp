@@ -142,14 +142,7 @@ public class SimpleIntegerParamsDialog extends ButterKnifeDialogFragment impleme
                 showErrorIncorrectValue();
                 return;
             }
-            try {
-                int value = Integer.parseInt(input);
-                success = presenter.setValue(value);
-            } catch (NumberFormatException e) {
-                logger.log(this, e);
-                showErrorIncorrectValue();
-                return;
-            }
+            success = presenter.setValue(Integer.parseInt(input));
         }
         if (success)
             dismiss();
