@@ -70,9 +70,35 @@ public class ChooseSizeAndCountFragment extends StepFragment implements
     @Override
     public void afterTextChanged(Editable s) {
         if (etWidth.hasFocus()) {
-
+            clearSilently(etWidthRangeFrom, etWidthRangeTo, etWidthRangeStep);
+            if (!isHeightRangeInEdit()) {
+                clearSilently(etHeightRangeFrom, etHeightRangeTo, etHeightRangeStep);
+                fillIfEmptySilently(etHeight);
+                fillIfEmptySilently(etCount);
+                presenter.setWidth(1);
+                presenter.setHeight(getValue(etHeight));
+                presenter.setCount(getValue(etCount));
+            }
+            if (isEmpty(etWidth) || getValue(etWidth) == 0) {
+                etWidth.setError(ChooseSizeAndCountPresenter.Error.INCORRECT_WIDTH.name());
+                return;
+            }
+            presenter.setWidth(getValue(etWidth));
         } else if (etHeight.hasFocus()) {
-
+            clearSilently(etHeightRangeFrom, etHeightRangeTo, etHeightRangeStep);
+            if (!isWidthRangeInEdit()) {
+                clearSilently(etWidthRangeFrom, etWidthRangeTo, etWidthRangeStep);
+                fillIfEmptySilently(etWidth);
+                fillIfEmptySilently(etCount);
+                presenter.setWidth(getValue(etWidth));
+                presenter.setHeight(1);
+                presenter.setCount(getValue(etCount));
+            }
+            if (isEmpty(etHeight) || getValue(etHeight) == 0) {
+                etHeight.setError(ChooseSizeAndCountPresenter.Error.INCORRECT_HEIGHT.name());
+                return;
+            }
+            presenter.setHeight(getValue(etHeight));
         } else if (etCount.hasFocus()) {
             clearSilently(etWidthRangeFrom, etWidthRangeTo, etWidthRangeStep, etHeightRangeFrom, etHeightRangeTo, etHeightRangeStep);
             fillIfEmptySilently(etWidth, etHeight);
