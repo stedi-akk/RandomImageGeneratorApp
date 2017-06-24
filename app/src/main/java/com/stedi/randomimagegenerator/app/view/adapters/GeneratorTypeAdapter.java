@@ -1,6 +1,7 @@
 package com.stedi.randomimagegenerator.app.view.adapters;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,23 +19,27 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
     private final GeneratorTypeAdapterImageLoader imageLoader;
     private final GeneratorType[] generatorType;
     private final ClickListener listener;
+    private final boolean deselect;
 
     private GeneratorType selectedType;
 
     public interface ClickListener {
         void onSelected(@NonNull GeneratorType type);
 
+        void onDeselected();
+
         void onEditSelected();
     }
 
     public GeneratorTypeAdapter(
             @NonNull GeneratorTypeAdapterImageLoader imageLoader,
-            @NonNull GeneratorType[] generatorType, @NonNull GeneratorType selectedType,
-            @NonNull ClickListener listener) {
+            @NonNull GeneratorType[] generatorType, @Nullable GeneratorType selectedType,
+            @NonNull ClickListener listener, boolean deselect) {
         this.imageLoader = imageLoader;
         this.generatorType = generatorType;
         this.selectedType = selectedType;
         this.listener = listener;
+        this.deselect = deselect;
     }
 
     @Override
@@ -67,6 +72,10 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
             if (selectedType != clickedType) {
                 selectedType = clickedType;
                 listener.onSelected(selectedType);
+                notifyDataSetChanged();
+            } else if (deselect) {
+                selectedType = null;
+                listener.onDeselected();
                 notifyDataSetChanged();
             }
         }

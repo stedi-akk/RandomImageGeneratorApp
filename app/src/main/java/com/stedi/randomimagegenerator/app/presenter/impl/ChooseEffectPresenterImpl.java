@@ -5,12 +5,10 @@ import android.support.annotation.Nullable;
 
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
-import com.stedi.randomimagegenerator.app.model.data.Preset;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseEffectPresenter;
-
-import java.io.Serializable;
 
 public class ChooseEffectPresenterImpl implements ChooseEffectPresenter {
     private final PendingPreset pendingPreset;
@@ -27,17 +25,27 @@ public class ChooseEffectPresenterImpl implements ChooseEffectPresenter {
 
     @Override
     public void getEffectTypes() {
+        GeneratorParams currentParams = pendingPreset.getCandidate().getGeneratorParams();
         ui.showTypes(new GeneratorType[]{
                 GeneratorType.MIRRORED,
                 GeneratorType.TEXT_OVERLAY
-        }, pendingPreset.getCandidate().getGeneratorParams().getType());
+        }, currentParams instanceof EffectGeneratorParams ? currentParams.getType() : null);
     }
 
     @Override
-    public void chooseEffectType(@NonNull GeneratorType effectType) {
-        Preset preset = pendingPreset.getCandidate();
-        GeneratorParams effectParams = GeneratorParams.createDefaultEffectParams(effectType, preset.getGeneratorParams());
-        preset.setGeneratorParams(effectParams);
+    public void chooseEffectType(@Nullable GeneratorType effectType) {
+        GeneratorParams newParams;
+        GeneratorParams prevParams = pendingPreset.getCandidate().getGeneratorParams();
+        if (prevParams instanceof EffectGeneratorParams) {
+            prevParams = ((EffectGeneratorParams) prevParams).getTarget();
+        }
+        if (effectType != null) {
+            newParams = GeneratorParams.createDefaultEffectParams(effectType, prevParams);
+        } else {
+            newParams = prevParams;
+        }
+        pendingPreset.getCandidate().setGeneratorParams(newParams);
+        logger.log(this, "chooseGeneratorType result = " + pendingPreset.getCandidate().getGeneratorParams());
     }
 
     @Override
@@ -48,16 +56,5 @@ public class ChooseEffectPresenterImpl implements ChooseEffectPresenter {
     @Override
     public void onDetach() {
         this.ui = null;
-    }
-
-    @Override
-    public void onRestore(@NonNull Serializable state) {
-
-    }
-
-    @Nullable
-    @Override
-    public Serializable onRetain() {
-        return null;
     }
 }
