@@ -6,11 +6,8 @@ import android.support.annotation.Nullable;
 import com.squareup.otto.Subscribe;
 import com.stedi.randomimagegenerator.app.di.qualifiers.DefaultScheduler;
 import com.stedi.randomimagegenerator.app.di.qualifiers.UiScheduler;
-import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
-import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams;
-import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 import com.stedi.randomimagegenerator.app.model.repository.PresetRepository;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
@@ -59,7 +56,18 @@ public class ApplyGenerationPresenterImpl implements ApplyGenerationPresenter {
     }
 
     @Override
-    public void savePreset() {
+    public void onAttach(@NonNull UIImpl ui) {
+        this.ui = ui;
+        bus.register(this);
+    }
+
+    @Override
+    public Preset getPreset() {
+        return pendingPreset.getCandidate();
+    }
+
+    @Override
+    public void savePreset(@NonNull String name) {
         if (saveInProgress)
             return;
         saveInProgress = true;
@@ -67,22 +75,15 @@ public class ApplyGenerationPresenterImpl implements ApplyGenerationPresenter {
         Observable.fromCallable(() -> presetRepository.save(pendingPreset.getCandidate()))
                 .subscribeOn(subscribeOn)
                 .observeOn(observeOn)
-                .subscribe(aBoolean ->
-                                bus.post(new OnPresetSaveEvent(true, null))
-                        , throwable ->
-                                bus.post(new OnPresetSaveEvent(false, throwable)));
-    }
-
-    @Override
-    public void onAttach(@NonNull UIImpl ui) {
-        this.ui = ui;
-        bus.register(this);
-        showPresetDetails();
+                .subscribe(aBoolean -> bus.post(new OnPresetSaveEvent(aBoolean, null)),
+                        throwable -> bus.post(new OnPresetSaveEvent(false, throwable)));
     }
 
     @Subscribe
     public void onPresetSaveEvent(OnPresetSaveEvent event) {
+        logger.log(this, "onPresetSaveEvent");
         saveInProgress = false;
+
         if (event.throwable == null && event.success) {
             if (pendingPreset.getCandidate() == pendingPreset.get())
                 pendingPreset.clear();
@@ -99,23 +100,6 @@ public class ApplyGenerationPresenterImpl implements ApplyGenerationPresenter {
         }
 
         ui.onPresetSaved();
-    }
-
-    private void showPresetDetails() {
-        Preset preset = pendingPreset.getCandidate();
-
-        GeneratorParams generatorParams = preset.getGeneratorParams();
-        if (generatorParams.getType().isEffect()) {
-            GeneratorType generatorType = ((EffectGeneratorParams) generatorParams).getTarget().getType();
-            ui.showGeneratorType(generatorType);
-            ui.showEffectType(generatorParams.getType());
-        } else {
-            ui.showGeneratorType(generatorParams.getType());
-        }
-
-        ui.showQuality(preset.getQuality());
-        ui.showSize(preset.getWidth(), preset.getHeight());
-        ui.showCount(preset.getCount());
     }
 
     @Override

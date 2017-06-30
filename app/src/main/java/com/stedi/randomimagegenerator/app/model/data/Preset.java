@@ -161,7 +161,11 @@ public class Preset {
     public String toString() {
         return "Preset{" +
                 "id=" + id +
+                ", timestamp=" + timestamp +
                 ", name='" + name + '\'' +
+                ", generatorParams=" + generatorParams +
+                ", quality=" + quality +
+                ", saveFolder='" + saveFolder + '\'' +
                 ", count=" + count +
                 ", width=" + width +
                 ", height=" + height +
