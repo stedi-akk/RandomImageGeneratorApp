@@ -5,19 +5,21 @@
     android:orientation="vertical">
 
     <RadioGroup
-        android:id="@+id/choose_save_options_fragment_rg"
+        android:id="@+id/choose_save_options_fragment_rg_format"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <EditText
         android:id="@+id/choose_save_options_fragment_et_quality"
+        style="@style/SignedIntegerInput"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/choose_save_options_fragment_btn_path"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Choose folder" />
+        android:maxLength="3" />
+
+    <TextView
+        android:id="@+id/choose_save_options_fragment_tv_folder"
+        android:freezesText="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
