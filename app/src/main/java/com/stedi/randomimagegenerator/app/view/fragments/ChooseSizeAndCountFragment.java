@@ -238,7 +238,12 @@ public class ChooseSizeAndCountFragment extends StepFragment implements
     }
 
     private int getValue(EditText et) {
-        return Integer.parseInt(et.getText().toString());
+        try {
+            return Integer.parseInt(et.getText().toString());
+        } catch (NumberFormatException e) {
+            logger.log(this, e);
+            return 0;
+        }
     }
 
     private void fillIfEmptySilently(EditText... editTexts) {

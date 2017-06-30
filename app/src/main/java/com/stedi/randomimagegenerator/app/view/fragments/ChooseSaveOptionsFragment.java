@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.Components;
 import com.stedi.randomimagegenerator.app.other.Utils;
+import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSaveOptionsPresenter;
 import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment;
 import com.stepstone.stepper.VerificationError;
@@ -32,6 +33,7 @@ public class ChooseSaveOptionsFragment extends StepFragment implements
         ChooseSaveOptionsPresenter.UIImpl {
 
     @Inject ChooseSaveOptionsPresenter presenter;
+    @Inject Logger logger;
 
     @BindView(R.id.choose_save_options_fragment_rg_format) RadioGroup rgFormat;
     @BindView(R.id.choose_save_options_fragment_et_quality) EditText etQuality;
@@ -71,8 +73,13 @@ public class ChooseSaveOptionsFragment extends StepFragment implements
         String input = etQuality.getText().toString();
         if (input.isEmpty()) {
             onIncorrectQualityValue();
-        } else {
+            return;
+        }
+        try {
             presenter.setQualityValue(Integer.parseInt(input));
+        } catch (NumberFormatException e) {
+            logger.log(this, e);
+            onIncorrectQualityValue();
         }
     }
 
