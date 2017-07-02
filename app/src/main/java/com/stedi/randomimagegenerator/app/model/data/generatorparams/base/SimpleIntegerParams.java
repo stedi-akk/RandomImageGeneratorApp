@@ -1,5 +1,7 @@
 package com.stedi.randomimagegenerator.app.model.data.generatorparams.base;
 
+import android.os.Parcel;
+
 public abstract class SimpleIntegerParams extends GeneratorParams {
     private Integer value;
 
@@ -28,5 +30,14 @@ public abstract class SimpleIntegerParams extends GeneratorParams {
     @Override
     public boolean isEditable() {
         return true;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.value);
+    }
+
+    protected SimpleIntegerParams(Parcel in) {
+        this.value = (Integer) in.readValue(Integer.class.getClassLoader());
     }
 }

@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.model.data.generatorparams;
 
+import android.os.Parcel;
 import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.DefaultFileNamePolicy;
@@ -33,4 +34,20 @@ public class TextOverlayParams extends EffectGeneratorParams {
     public GeneratorType getType() {
         return GeneratorType.TEXT_OVERLAY;
     }
+
+    protected TextOverlayParams(Parcel in) {
+        super(in);
+    }
+
+    public static final Creator<TextOverlayParams> CREATOR = new Creator<TextOverlayParams>() {
+        @Override
+        public TextOverlayParams createFromParcel(Parcel source) {
+            return new TextOverlayParams(source);
+        }
+
+        @Override
+        public TextOverlayParams[] newArray(int size) {
+            return new TextOverlayParams[size];
+        }
+    };
 }

@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.model.data.generatorparams;
 
+import android.os.Parcel;
 import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
@@ -10,6 +11,9 @@ import com.stedi.randomimagegenerator.generators.Generator;
 public class ColoredNoiseParams extends GeneratorParams {
     private ColoredNoiseGenerator.Orientation orientation = ColoredNoiseGenerator.Orientation.RANDOM;
     private ColoredNoiseGenerator.Type type = ColoredNoiseGenerator.Type.RANDOM;
+
+    public ColoredNoiseParams() {
+    }
 
     public void setNoiseOrientation(@NonNull ColoredNoiseGenerator.Orientation orientation) {
         this.orientation = orientation;
@@ -45,4 +49,29 @@ public class ColoredNoiseParams extends GeneratorParams {
     public GeneratorType getType() {
         return GeneratorType.COLORED_NOISE;
     }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.orientation == null ? -1 : this.orientation.ordinal());
+        dest.writeInt(this.type == null ? -1 : this.type.ordinal());
+    }
+
+    protected ColoredNoiseParams(Parcel in) {
+        int tmpOrientation = in.readInt();
+        this.orientation = tmpOrientation == -1 ? null : ColoredNoiseGenerator.Orientation.values()[tmpOrientation];
+        int tmpType = in.readInt();
+        this.type = tmpType == -1 ? null : ColoredNoiseGenerator.Type.values()[tmpType];
+    }
+
+    public static final Creator<ColoredNoiseParams> CREATOR = new Creator<ColoredNoiseParams>() {
+        @Override
+        public ColoredNoiseParams createFromParcel(Parcel source) {
+            return new ColoredNoiseParams(source);
+        }
+
+        @Override
+        public ColoredNoiseParams[] newArray(int size) {
+            return new ColoredNoiseParams[size];
+        }
+    };
 }

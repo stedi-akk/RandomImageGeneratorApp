@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.model.data.generatorparams.base;
 
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
@@ -12,7 +13,7 @@ import com.stedi.randomimagegenerator.app.model.data.generatorparams.MirroredPar
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.TextOverlayParams;
 import com.stedi.randomimagegenerator.generators.Generator;
 
-public abstract class GeneratorParams {
+public abstract class GeneratorParams implements Parcelable {
     @NonNull
     public abstract Generator createGenerator();
 
@@ -63,5 +64,10 @@ public abstract class GeneratorParams {
                 "getType()=" + getType() +
                 ", isEditable()=" + isEditable() +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 }

@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.model.data.generatorparams;
 
+import android.os.Parcel;
 import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
@@ -29,4 +30,20 @@ public class MirroredParams extends EffectGeneratorParams {
     public GeneratorType getType() {
         return GeneratorType.MIRRORED;
     }
+
+    protected MirroredParams(Parcel in) {
+        super(in);
+    }
+
+    public static final Creator<MirroredParams> CREATOR = new Creator<MirroredParams>() {
+        @Override
+        public MirroredParams createFromParcel(Parcel source) {
+            return new MirroredParams(source);
+        }
+
+        @Override
+        public MirroredParams[] newArray(int size) {
+            return new MirroredParams[size];
+        }
+    };
 }

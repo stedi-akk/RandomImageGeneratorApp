@@ -1,5 +1,8 @@
 package com.stedi.randomimagegenerator.app.model.data;
 
+import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -8,7 +11,7 @@ import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.Genera
 
 import java.util.Arrays;
 
-public class Preset {
+public class Preset implements Parcelable {
     private int id;
     private long timestamp;
 
@@ -173,4 +176,53 @@ public class Preset {
                 ", heightRange=" + Arrays.toString(heightRange) +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeLong(this.timestamp);
+        dest.writeString(this.name);
+        dest.writeParcelable(this.generatorParams, flags);
+        dest.writeInt(this.quality.getFormat().ordinal());
+        dest.writeInt(this.quality.getQualityValue());
+        dest.writeString(this.saveFolder);
+        dest.writeInt(this.count);
+        dest.writeInt(this.width);
+        dest.writeInt(this.height);
+        dest.writeIntArray(this.widthRange);
+        dest.writeIntArray(this.heightRange);
+    }
+
+    protected Preset(Parcel in) {
+        this.id = in.readInt();
+        this.timestamp = in.readLong();
+        this.name = in.readString();
+        this.generatorParams = in.readParcelable(GeneratorParams.class.getClassLoader());
+        Bitmap.CompressFormat compressFormat = Bitmap.CompressFormat.values()[in.readInt()];
+        int qualityValue = in.readInt();
+        this.quality = new Quality(compressFormat, qualityValue);
+        this.saveFolder = in.readString();
+        this.count = in.readInt();
+        this.width = in.readInt();
+        this.height = in.readInt();
+        this.widthRange = in.createIntArray();
+        this.heightRange = in.createIntArray();
+    }
+
+    public static final Creator<Preset> CREATOR = new Creator<Preset>() {
+        @Override
+        public Preset createFromParcel(Parcel source) {
+            return new Preset(source);
+        }
+
+        @Override
+        public Preset[] newArray(int size) {
+            return new Preset[size];
+        }
+    };
 }

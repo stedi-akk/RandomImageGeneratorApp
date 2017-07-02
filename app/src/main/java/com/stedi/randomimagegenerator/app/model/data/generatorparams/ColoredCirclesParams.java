@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.model.data.generatorparams;
 
+import android.os.Parcel;
 import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
@@ -8,6 +9,10 @@ import com.stedi.randomimagegenerator.generators.ColoredCirclesGenerator;
 import com.stedi.randomimagegenerator.generators.Generator;
 
 public class ColoredCirclesParams extends SimpleIntegerParams {
+    public ColoredCirclesParams() {
+        super();
+    }
+
     @NonNull
     @Override
     public Generator createGenerator() {
@@ -26,4 +31,20 @@ public class ColoredCirclesParams extends SimpleIntegerParams {
     public GeneratorType getType() {
         return GeneratorType.COLORED_CIRCLES;
     }
+
+    protected ColoredCirclesParams(Parcel in) {
+        super(in);
+    }
+
+    public static final Creator<ColoredCirclesParams> CREATOR = new Creator<ColoredCirclesParams>() {
+        @Override
+        public ColoredCirclesParams createFromParcel(Parcel source) {
+            return new ColoredCirclesParams(source);
+        }
+
+        @Override
+        public ColoredCirclesParams[] newArray(int size) {
+            return new ColoredCirclesParams[size];
+        }
+    };
 }

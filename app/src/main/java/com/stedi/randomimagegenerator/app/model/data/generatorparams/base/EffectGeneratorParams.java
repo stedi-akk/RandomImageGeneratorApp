@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.model.data.generatorparams.base;
 
+import android.os.Parcel;
 import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.generators.Generator;
@@ -36,5 +37,14 @@ public abstract class EffectGeneratorParams extends GeneratorParams {
                 ", isEditable()=" + isEditable() +
                 ", target=" + target +
                 '}';
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(this.target, flags);
+    }
+
+    protected EffectGeneratorParams(Parcel in) {
+        this.target = in.readParcelable(GeneratorParams.class.getClassLoader());
     }
 }
