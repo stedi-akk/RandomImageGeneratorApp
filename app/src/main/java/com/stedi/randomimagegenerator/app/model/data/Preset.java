@@ -40,6 +40,19 @@ public class Preset implements Parcelable {
         this.saveFolder = saveFolder;
     }
 
+    public Preset createCopy() {
+        Parcel parcel = null;
+        try {
+            parcel = Parcel.obtain();
+            writeToParcel(parcel, 0);
+            parcel.setDataPosition(0);
+            return CREATOR.createFromParcel(parcel);
+        } finally {
+            if (parcel != null)
+                parcel.recycle();
+        }
+    }
+
     public void setId(int id) {
         if (id < 1)
             throw new IllegalArgumentException("id must be > 0");
