@@ -87,6 +87,7 @@ public class ApplyGenerationPresenterImpl implements ApplyGenerationPresenter {
         if (event.throwable == null && event.success) {
             if (pendingPreset.getCandidate() == pendingPreset.get())
                 pendingPreset.clear();
+            pendingPreset.candidateSaved();
         }
 
         if (ui == null) {

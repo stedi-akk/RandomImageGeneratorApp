@@ -64,8 +64,11 @@ public class GenerationStepsPresenterImpl extends GenerationStepsPresenter {
     @SuppressWarnings("MissingPermission")
     @Override
     public void startGeneration(@NonNull Preset preset) {
-        if (pendingPreset.getCandidate().getId() == 0)
+        if (preset != pendingPreset.getCandidate())
+            throw new IllegalArgumentException("candidate preset is required");
+
+        if (pendingPreset.isCandidateNewOrWasEdited())
             pendingPreset.applyCandidate();
-        super.startGeneration(preset);
+        super.startGeneration(pendingPreset.getCandidate());
     }
 }

@@ -134,6 +134,7 @@ public class GenerationStepsActivity extends BaseActivity implements
     @Override
     public void onFinishGeneration() {
         Utils.toastShort(this, getClass().getSimpleName() + " onFinishGeneration");
+        finish();
     }
 
     @Override

@@ -16,6 +16,7 @@ public class PendingPreset {
 
     private Preset preset;
     private Preset presetCandidate;
+    private Preset candidateFrom;
 
     @Inject
     public PendingPreset(@NonNull @Named("DefaultSavePath") String defaultSavePath) {
@@ -28,6 +29,7 @@ public class PendingPreset {
     }
 
     public void newCandidate() {
+        candidateFrom = null;
         presetCandidate = new Preset(
                 "Unsaved preset",
                 new FlatColorParams(),
@@ -39,11 +41,28 @@ public class PendingPreset {
     }
 
     public void setCandidate(Preset candidate) {
-        presetCandidate = candidate;
+        if (candidate != null && candidate == preset) {
+            candidateFrom = null;
+            presetCandidate = candidate;
+        } else if (candidate != null) {
+            candidateFrom = candidate;
+            presetCandidate = candidate.createCopy();
+        } else {
+            candidateFrom = null;
+            presetCandidate = null;
+        }
+    }
+
+    public void candidateSaved() {
+        setCandidate(getCandidate());
     }
 
     public Preset getCandidate() {
         return presetCandidate;
+    }
+
+    public boolean isCandidateNewOrWasEdited() {
+        return presetCandidate != null && !presetCandidate.equals(candidateFrom);
     }
 
     public void applyCandidate() {
