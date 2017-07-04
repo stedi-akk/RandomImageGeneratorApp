@@ -51,6 +51,24 @@ public class ColoredNoiseParams extends GeneratorParams {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ColoredNoiseParams that = (ColoredNoiseParams) o;
+
+        if (orientation != that.orientation) return false;
+        return type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = orientation.hashCode();
+        result = 31 * result + type.hashCode();
+        return result;
+    }
+
+    @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.orientation == null ? -1 : this.orientation.ordinal());
         dest.writeInt(this.type == null ? -1 : this.type.ordinal());

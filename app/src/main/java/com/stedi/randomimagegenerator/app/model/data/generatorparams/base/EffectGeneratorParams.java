@@ -40,6 +40,21 @@ public abstract class EffectGeneratorParams extends GeneratorParams {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        EffectGeneratorParams that = (EffectGeneratorParams) o;
+
+        return target.equals(that.target);
+    }
+
+    @Override
+    public int hashCode() {
+        return target.hashCode();
+    }
+
+    @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeParcelable(this.target, flags);
     }

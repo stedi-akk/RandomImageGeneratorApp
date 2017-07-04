@@ -191,6 +191,42 @@ public class Preset implements Parcelable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Preset preset = (Preset) o;
+
+        if (id != preset.id) return false;
+        if (timestamp != preset.timestamp) return false;
+        if (count != preset.count) return false;
+        if (width != preset.width) return false;
+        if (height != preset.height) return false;
+        if (!name.equals(preset.name)) return false;
+        if (!generatorParams.equals(preset.generatorParams)) return false;
+        if (!quality.equals(preset.quality)) return false;
+        if (!saveFolder.equals(preset.saveFolder)) return false;
+        if (!Arrays.equals(widthRange, preset.widthRange)) return false;
+        return Arrays.equals(heightRange, preset.heightRange);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (int) (timestamp ^ (timestamp >>> 32));
+        result = 31 * result + name.hashCode();
+        result = 31 * result + generatorParams.hashCode();
+        result = 31 * result + quality.hashCode();
+        result = 31 * result + saveFolder.hashCode();
+        result = 31 * result + count;
+        result = 31 * result + width;
+        result = 31 * result + height;
+        result = 31 * result + Arrays.hashCode(widthRange);
+        result = 31 * result + Arrays.hashCode(heightRange);
+        return result;
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }
