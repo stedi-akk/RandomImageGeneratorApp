@@ -30,7 +30,7 @@ public class GenerationStepsPresenterImpl extends GenerationStepsPresenter {
     @Override
     public void setIsNew(boolean isNew) {
         if (isNew) {
-            pendingPreset.newCandidate();
+            pendingPreset.newDefaultCandidate();
             ui.showFirstStep();
         } else {
             ui.showFinishStep();
@@ -40,7 +40,7 @@ public class GenerationStepsPresenterImpl extends GenerationStepsPresenter {
     @Override
     public void release() {
         logger.log(this, "release called");
-        pendingPreset.setCandidate(null);
+        pendingPreset.killCandidate();
     }
 
     @NonNull
@@ -67,7 +67,7 @@ public class GenerationStepsPresenterImpl extends GenerationStepsPresenter {
         if (preset != pendingPreset.getCandidate())
             throw new IllegalArgumentException("candidate preset is required");
 
-        if (pendingPreset.isCandidateNewOrWasEdited())
+        if (pendingPreset.isCandidateNewOrChanged())
             pendingPreset.applyCandidate();
         super.startGeneration(pendingPreset.getCandidate());
     }

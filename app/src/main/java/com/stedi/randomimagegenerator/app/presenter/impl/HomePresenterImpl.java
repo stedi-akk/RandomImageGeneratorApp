@@ -87,7 +87,7 @@ public class HomePresenterImpl extends HomePresenter {
 
     @Override
     public void editPreset(@NonNull Preset preset) {
-        pendingPreset.setCandidate(preset);
+        pendingPreset.prepareCandidateFrom(preset);
         ui.showEditPreset();
     }
 
