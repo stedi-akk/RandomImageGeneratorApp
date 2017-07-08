@@ -2,18 +2,29 @@ package com.stedi.randomimagegenerator.app.presenter.interfaces;
 
 import android.support.annotation.NonNull;
 
+import com.stedi.randomimagegenerator.app.di.qualifiers.RigScheduler;
+import com.stedi.randomimagegenerator.app.di.qualifiers.UiScheduler;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
-import com.stedi.randomimagegenerator.app.presenter.interfaces.core.RetainedPresenter;
-import com.stedi.randomimagegenerator.app.presenter.interfaces.core.UI;
+import com.stedi.randomimagegenerator.app.other.CachedBus;
+import com.stedi.randomimagegenerator.app.other.logger.Logger;
 
-public interface ApplyGenerationPresenter extends RetainedPresenter<ApplyGenerationPresenter.UIImpl> {
-    Preset getPreset();
+import rx.Scheduler;
 
-    boolean isPresetNewOrChanged();
+public abstract class ApplyGenerationPresenter extends GenerationPresenter<ApplyGenerationPresenter.UIImpl> {
+    public ApplyGenerationPresenter(@NonNull @RigScheduler Scheduler subscribeOn,
+                                    @NonNull @UiScheduler Scheduler observeOn,
+                                    @NonNull CachedBus bus, @NonNull Logger logger) {
+        super(subscribeOn, observeOn, bus, logger);
+    }
 
-    void savePreset(@NonNull String name);
+    @NonNull
+    public abstract Preset getPreset();
 
-    interface UIImpl extends UI {
+    public abstract boolean isPresetNewOrChanged();
+
+    public abstract void savePreset(@NonNull String name);
+
+    public interface UIImpl extends GenerationPresenter.UIImpl {
         void onPresetSaved();
 
         void failedToSavePreset();

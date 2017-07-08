@@ -1,6 +1,8 @@
 package com.stedi.randomimagegenerator.app.view.fragments;
 
+import android.Manifest;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,11 +10,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.stedi.randomimagegenerator.ImageParams;
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.Components;
 import com.stedi.randomimagegenerator.app.other.Utils;
+import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter;
 import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment;
+import com.stepstone.stepper.StepperLayout;
+
+import java.io.Serializable;
 
 import javax.inject.Inject;
 
@@ -20,7 +27,11 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class ApplyGenerationFragment extends StepFragment implements ApplyGenerationPresenter.UIImpl {
+    private static final int REQUEST_CODE_WRITE_EXTERNAL = 22;
+    private static final String KEY_APPLY_GENERATION_PRESENTER_STATE = "KEY_APPLY_GENERATION_PRESENTER_STATE";
+
     @Inject ApplyGenerationPresenter presenter;
+    @Inject Logger logger;
 
     @BindView(R.id.apply_generation_fragment_tv) TextView tvOut;
     @BindView(R.id.apply_generation_fragment_btn_save_preset) Button btnSave;
@@ -30,6 +41,11 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
         super.onCreate(savedInstanceState);
         Components.getGenerationComponent(this).inject(this);
         presenter.onAttach(this);
+        if (savedInstanceState != null) {
+            Serializable state = savedInstanceState.getSerializable(KEY_APPLY_GENERATION_PRESENTER_STATE);
+            if (state != null)
+                presenter.onRestore(state);
+        }
     }
 
     @Nullable
@@ -42,19 +58,24 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        refresh();
+        refreshFromPreset();
     }
 
     @Override
     public void onSelected() {
-        refresh();
+        refreshFromPreset();
     }
 
-    private void refresh() {
+    private void refreshFromPreset() {
         if (getView() != null) {
             tvOut.setText(presenter.getPreset().toString());
             btnSave.setText(presenter.isPresetNewOrChanged() ? "SAVE" : "RENAME");
         }
+    }
+
+    @OnClick(R.id.apply_generation_fragment_btn_save_preset)
+    public void onSavePresetClick(View v) {
+
     }
 
     @Override
@@ -67,9 +88,43 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
         Utils.toastShort(getContext(), "failedToSavePreset");
     }
 
-    @OnClick(R.id.apply_generation_fragment_btn_save_preset)
-    public void onSavePresetClick(View v) {
+    @Override
+    public void onCompleteClicked(StepperLayout.OnCompleteClickedCallback callback) {
+        super.onCompleteClicked(callback);
+        if (checkForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_CODE_WRITE_EXTERNAL))
+            presenter.startGeneration(presenter.getPreset());
+    }
 
+    @Override
+    public void onStartGeneration() {
+        logger.log(this, "onStartGeneration");
+    }
+
+    @Override
+    public void onGenerated(@NonNull ImageParams imageParams) {
+        logger.log(this, "onGenerated");
+    }
+
+    @Override
+    public void onGenerationUnknownError() {
+        logger.log(this, "onGenerationUnknownError");
+    }
+
+    @Override
+    public void onFailedToGenerate(@NonNull ImageParams imageParams) {
+        logger.log(this, "onFailedToGenerate");
+    }
+
+    @Override
+    public void onFinishGeneration() {
+        Utils.toastShort(getContext(), getClass().getSimpleName() + " onFinishGeneration");
+        getActivity().finish();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(KEY_APPLY_GENERATION_PRESENTER_STATE, presenter.onRetain());
     }
 
     @Override

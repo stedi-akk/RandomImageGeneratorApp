@@ -69,6 +69,8 @@ public class PendingPreset {
 
     public void applyCandidate() {
         preset = presetCandidate;
+        if (candidateFrom != null)
+            preset.setName(String.format("Unsaved preset (from %s)", candidateFrom.getName()));
         logger.log(this, "after applyCandidate:" + this);
     }
 

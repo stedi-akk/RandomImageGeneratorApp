@@ -129,7 +129,7 @@ abstract class GenerationPresenter<T extends GenerationPresenter.UIImpl> impleme
     private Object busTarget = new Object() {
         @Subscribe
         public void onEvent(Event event) {
-            logger.log(this, "onEvent " + event.type.name());
+            logger.log(GenerationPresenter.this, "onEvent " + event.type.name());
             if (ui == null) {
                 generationInProgress = false;
                 logger.log(this, "busTarget onEvent ui == null");

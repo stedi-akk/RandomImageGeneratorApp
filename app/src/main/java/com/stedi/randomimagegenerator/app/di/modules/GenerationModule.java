@@ -31,11 +31,8 @@ import rx.Scheduler;
 @Module
 public class GenerationModule {
     @Provides
-    GenerationStepsPresenter provideGenerationStepsPresenter(PendingPreset pendingPreset,
-                                                             @RigScheduler Scheduler subscribeOn,
-                                                             @UiScheduler Scheduler observeOn,
-                                                             CachedBus bus, Logger logger) {
-        return new GenerationStepsPresenterImpl(pendingPreset, subscribeOn, observeOn, bus, logger);
+    GenerationStepsPresenter provideGenerationStepsPresenter(PendingPreset pendingPreset, Logger logger) {
+        return new GenerationStepsPresenterImpl(pendingPreset, logger);
     }
 
     @Provides
@@ -71,9 +68,10 @@ public class GenerationModule {
     @Provides
     ApplyGenerationPresenter provideApplyGenerationPresenter(PendingPreset pendingPreset,
                                                              PresetRepository presetRepository,
+                                                             @RigScheduler Scheduler superSubscribeOn,
                                                              @DefaultScheduler Scheduler subscribeOn,
                                                              @UiScheduler Scheduler observeOn,
                                                              CachedBus bus, Logger logger) {
-        return new ApplyGenerationPresenterImpl(pendingPreset, presetRepository, subscribeOn, observeOn, bus, logger);
+        return new ApplyGenerationPresenterImpl(pendingPreset, presetRepository, superSubscribeOn, subscribeOn, observeOn, bus, logger);
     }
 }

@@ -2,27 +2,17 @@ package com.stedi.randomimagegenerator.app.presenter.impl;
 
 import android.support.annotation.NonNull;
 
-import com.stedi.randomimagegenerator.app.di.qualifiers.RigScheduler;
-import com.stedi.randomimagegenerator.app.di.qualifiers.UiScheduler;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
-import com.stedi.randomimagegenerator.app.model.data.Preset;
-import com.stedi.randomimagegenerator.app.other.CachedBus;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationStepsPresenter;
 
-import rx.Scheduler;
-
-public class GenerationStepsPresenterImpl extends GenerationStepsPresenter {
+public class GenerationStepsPresenterImpl implements GenerationStepsPresenter {
     private final PendingPreset pendingPreset;
     private final Logger logger;
 
     private UIImpl ui;
 
-    public GenerationStepsPresenterImpl(@NonNull PendingPreset pendingPreset,
-                                        @NonNull @RigScheduler Scheduler subscribeOn,
-                                        @NonNull @UiScheduler Scheduler observeOn,
-                                        @NonNull CachedBus bus, @NonNull Logger logger) {
-        super(subscribeOn, observeOn, bus, logger);
+    public GenerationStepsPresenterImpl(@NonNull PendingPreset pendingPreset, @NonNull Logger logger) {
         this.pendingPreset = pendingPreset;
         this.logger = logger;
     }
@@ -33,6 +23,8 @@ public class GenerationStepsPresenterImpl extends GenerationStepsPresenter {
             pendingPreset.newDefaultCandidate();
             ui.showFirstStep();
         } else {
+            if (pendingPreset.getCandidate() == null)
+                throw new IllegalStateException("pending preset candidate must not be null");
             ui.showFinishStep();
         }
     }
@@ -43,32 +35,13 @@ public class GenerationStepsPresenterImpl extends GenerationStepsPresenter {
         pendingPreset.killCandidate();
     }
 
-    @NonNull
-    @Override
-    public Preset getCandidate() {
-        return pendingPreset.getCandidate();
-    }
-
     @Override
     public void onAttach(@NonNull UIImpl ui) {
-        super.onAttach(ui);
         this.ui = ui;
     }
 
     @Override
     public void onDetach() {
-        super.onDetach();
         this.ui = null;
-    }
-
-    @SuppressWarnings("MissingPermission")
-    @Override
-    public void startGeneration(@NonNull Preset preset) {
-        if (preset != pendingPreset.getCandidate())
-            throw new IllegalArgumentException("candidate preset is required");
-
-        if (pendingPreset.isCandidateNewOrChanged())
-            pendingPreset.applyCandidate();
-        super.startGeneration(pendingPreset.getCandidate());
     }
 }
