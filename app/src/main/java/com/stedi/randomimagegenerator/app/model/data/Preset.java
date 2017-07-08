@@ -204,7 +204,8 @@ public class Preset implements Parcelable {
         if (height != preset.height) return false;
         if (!name.equals(preset.name)) return false;
         if (!generatorParams.equals(preset.generatorParams)) return false;
-        if (!quality.equals(preset.quality)) return false;
+        if (quality.getFormat() != preset.quality.getFormat()) return false;
+        if (quality.getQualityValue() != preset.quality.getQualityValue()) return false;
         if (!saveFolder.equals(preset.saveFolder)) return false;
         if (!Arrays.equals(widthRange, preset.widthRange)) return false;
         return Arrays.equals(heightRange, preset.heightRange);
@@ -216,7 +217,8 @@ public class Preset implements Parcelable {
         result = 31 * result + (int) (timestamp ^ (timestamp >>> 32));
         result = 31 * result + name.hashCode();
         result = 31 * result + generatorParams.hashCode();
-        result = 31 * result + quality.hashCode();
+        result = 31 * result + quality.getFormat().ordinal();
+        result = 31 * result + quality.getQualityValue();
         result = 31 * result + saveFolder.hashCode();
         result = 31 * result + count;
         result = 31 * result + width;
