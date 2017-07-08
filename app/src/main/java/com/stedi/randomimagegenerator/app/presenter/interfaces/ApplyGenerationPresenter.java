@@ -9,6 +9,8 @@ import com.stedi.randomimagegenerator.app.presenter.interfaces.core.UI;
 public interface ApplyGenerationPresenter extends RetainedPresenter<ApplyGenerationPresenter.UIImpl> {
     Preset getPreset();
 
+    boolean isPresetNewOrChanged();
+
     void savePreset(@NonNull String name);
 
     interface UIImpl extends UI {

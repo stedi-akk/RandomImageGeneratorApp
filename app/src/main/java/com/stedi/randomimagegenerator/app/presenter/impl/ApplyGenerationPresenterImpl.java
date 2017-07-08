@@ -67,6 +67,11 @@ public class ApplyGenerationPresenterImpl implements ApplyGenerationPresenter {
     }
 
     @Override
+    public boolean isPresetNewOrChanged() {
+        return pendingPreset.isCandidateNewOrChanged();
+    }
+
+    @Override
     public void savePreset(@NonNull String name) {
         if (saveInProgress)
             return;

@@ -12,7 +12,6 @@
     <Button
         android:id="@+id/apply_generation_fragment_btn_save_preset"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save preset" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

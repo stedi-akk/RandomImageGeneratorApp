@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.stedi.randomimagegenerator.app.R;
@@ -22,6 +23,7 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
     @Inject ApplyGenerationPresenter presenter;
 
     @BindView(R.id.apply_generation_fragment_tv) TextView tvOut;
+    @BindView(R.id.apply_generation_fragment_btn_save_preset) Button btnSave;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,13 +42,19 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tvOut.setText(presenter.getPreset().toString());
+        refresh();
     }
 
     @Override
     public void onSelected() {
-        if (tvOut != null)
+        refresh();
+    }
+
+    private void refresh() {
+        if (getView() != null) {
             tvOut.setText(presenter.getPreset().toString());
+            btnSave.setText(presenter.isPresetNewOrChanged() ? "SAVE" : "RENAME");
+        }
     }
 
     @Override
