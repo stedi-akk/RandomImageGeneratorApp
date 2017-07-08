@@ -71,6 +71,7 @@ public class PendingPreset {
         preset = presetCandidate;
         if (candidateFrom != null)
             preset.setName(String.format("Unsaved preset (from %s)", candidateFrom.getName()));
+        preset.setTimestamp(System.currentTimeMillis());
         logger.log(this, "after applyCandidate:" + this);
     }
 

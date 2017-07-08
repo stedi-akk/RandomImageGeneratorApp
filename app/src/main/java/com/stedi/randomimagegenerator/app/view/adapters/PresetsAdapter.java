@@ -12,7 +12,9 @@ import android.widget.TextView;
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -77,6 +79,7 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
 
         holder.tvName.setText(preset.getName());
         holder.tvFolder.setText(preset.getSaveFolder());
+        holder.tvCreated.setText(DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(new Date(preset.getTimestamp())));
         holder.btnAction.setText(preset == pendingPreset ? "save" : "generate");
         setPresetBoundedClickListener(holder.itemView, preset);
         setPresetBoundedClickListener(holder.btnAction, preset);
@@ -122,6 +125,7 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
 
         @BindView(R.id.preset_item_tv_name) TextView tvName;
         @BindView(R.id.preset_item_tv_folder) TextView tvFolder;
+        @BindView(R.id.preset_item_tv_created) TextView tvCreated;
         @BindView(R.id.preset_item_btn_action) Button btnAction;
         @BindView(R.id.preset_item_btn_delete) Button btnDelete;
 

@@ -19,6 +19,12 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/preset_item_tv_name" />
 
+        <TextView
+            android:id="@+id/preset_item_tv_created"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/preset_item_tv_folder" />
+
         <Button
             android:id="@+id/preset_item_btn_delete"
             android:layout_width="wrap_content"
