@@ -10,12 +10,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.squareup.otto.Subscribe;
 import com.stedi.randomimagegenerator.ImageParams;
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.Components;
+import com.stedi.randomimagegenerator.app.other.CachedBus;
 import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter;
+import com.stedi.randomimagegenerator.app.view.dialogs.EditPresetNameDialog;
 import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment;
 import com.stepstone.stepper.StepperLayout;
 
@@ -31,6 +34,7 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
     private static final String KEY_APPLY_GENERATION_PRESENTER_STATE = "KEY_APPLY_GENERATION_PRESENTER_STATE";
 
     @Inject ApplyGenerationPresenter presenter;
+    @Inject CachedBus bus;
     @Inject Logger logger;
 
     @BindView(R.id.apply_generation_fragment_tv) TextView tvOut;
@@ -62,6 +66,18 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        bus.unregister(this);
+    }
+
+    @Override
     public void onSelected() {
         refreshFromPreset();
     }
@@ -75,7 +91,12 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
 
     @OnClick(R.id.apply_generation_fragment_btn_save_preset)
     public void onSavePresetClick(View v) {
+        EditPresetNameDialog.newInstance(presenter.getPreset().getName()).show(getFragmentManager());
+    }
 
+    @Subscribe
+    public void onEditedPresetName(EditPresetNameDialog.OnEdited onEdited) {
+        presenter.savePreset(onEdited.name);
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.stedi.randomimagegenerator.app.di.modules.AppModule;
 import com.stedi.randomimagegenerator.app.di.modules.BuildTypeDependentModule;
 import com.stedi.randomimagegenerator.app.view.activity.base.LifeCycleActivity;
 import com.stedi.randomimagegenerator.app.view.dialogs.ConfirmDialog;
+import com.stedi.randomimagegenerator.app.view.dialogs.EditPresetNameDialog;
 import com.stedi.randomimagegenerator.app.view.fragments.base.LifeCycleFragment;
 
 import javax.inject.Singleton;
@@ -21,4 +22,6 @@ public interface AppComponent {
     void inject(LifeCycleActivity fragment);
 
     void inject(ConfirmDialog dialog);
+
+    void inject(EditPresetNameDialog dialog);
 }

@@ -90,7 +90,9 @@ public class ApplyGenerationPresenterImpl extends ApplyGenerationPresenter {
             return;
         saveInProgress = true;
 
-        Observable.fromCallable(() -> presetRepository.save(pendingPreset.getCandidate()))
+        Preset preset = pendingPreset.getCandidate();
+        preset.setName(name);
+        Observable.fromCallable(() -> presetRepository.save(preset))
                 .subscribeOn(subscribeOn)
                 .observeOn(observeOn)
                 .subscribe(aBoolean -> bus.post(new OnPresetSaveEvent(aBoolean, null)),

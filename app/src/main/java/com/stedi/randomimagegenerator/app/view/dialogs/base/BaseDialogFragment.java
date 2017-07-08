@@ -3,6 +3,7 @@ package com.stedi.randomimagegenerator.app.view.dialogs.base;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 
 import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity;
 
@@ -18,6 +19,10 @@ public abstract class BaseDialogFragment extends DialogFragment {
         if (getDialog() != null && getRetainInstance())
             getDialog().setDismissMessage(null);
         super.onDestroyView();
+    }
+
+    public void show(FragmentManager manager) {
+        show(manager, getClass().getSimpleName());
     }
 
     public BaseActivity getBaseActivity() {
