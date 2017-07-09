@@ -77,7 +77,7 @@ abstract class GenerationPresenter<T extends GenerationPresenter.UIImpl> impleme
             public void call() {
                 runOnObserver(() -> bus.post(new Event(Event.Type.ON_START_GENERATION, null)));
                 new Rig.Builder()
-                        .setGenerator(preset.getGeneratorParams().createGenerator())
+                        .setGenerator(preset.getGeneratorParams().getGenerator())
                         .setCount(preset.getCount())
                         .setFixedSize(preset.getWidth(), preset.getHeight())
                         .setQuality(preset.getQuality())

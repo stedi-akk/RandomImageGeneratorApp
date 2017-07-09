@@ -15,7 +15,9 @@ import com.stedi.randomimagegenerator.generators.Generator;
 
 public abstract class GeneratorParams implements Parcelable {
     @NonNull
-    public abstract Generator createGenerator();
+    public Generator getGenerator() {
+        return GetGenerator.proxy(createGenerator());
+    }
 
     public abstract boolean isEditable();
 
@@ -57,6 +59,9 @@ public abstract class GeneratorParams implements Parcelable {
                 throw new IllegalStateException("unreachable code");
         }
     }
+
+    @NonNull
+    protected abstract Generator createGenerator();
 
     @Override
     public boolean equals(Object o) {

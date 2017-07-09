@@ -66,7 +66,7 @@ public class GeneratorTypeAdapterImageLoader {
                 params = GeneratorParams.createDefaultParams(type);
             }
             new Rig.Builder()
-                    .setGenerator(params.createGenerator())
+                    .setGenerator(params.getGenerator())
                     .setCount(1)
                     .setFixedSize(200, 200)
                     .setCallback(new GenerateCallback() {
