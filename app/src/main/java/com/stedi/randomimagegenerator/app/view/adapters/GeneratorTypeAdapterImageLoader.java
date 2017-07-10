@@ -1,17 +1,20 @@
 package com.stedi.randomimagegenerator.app.view.adapters;
 
 import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
-import android.support.v4.util.LruCache;
+import android.support.v4.util.ArrayMap;
 
 import com.stedi.randomimagegenerator.ImageParams;
 import com.stedi.randomimagegenerator.Rig;
 import com.stedi.randomimagegenerator.app.di.qualifiers.RigScheduler;
-import com.stedi.randomimagegenerator.app.di.qualifiers.UiScheduler;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.callbacks.GenerateCallback;
+
+import java.lang.ref.WeakReference;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -21,10 +24,11 @@ import rx.Scheduler;
 
 @Singleton
 public class GeneratorTypeAdapterImageLoader {
-    private final LruCache<GeneratorType, CacheItem> cache = new LruCache<>(GeneratorType.values().length);
+    private final ArrayMap<GeneratorType, CacheItem> cache = new ArrayMap<>(GeneratorType.values().length);
+
+    private final Handler uiHandler = new Handler(Looper.getMainLooper());
 
     private final Scheduler subscribeOn;
-    private final Scheduler observeOn;
     private final Logger logger;
 
     private static class CacheItem {
@@ -42,11 +46,8 @@ public class GeneratorTypeAdapterImageLoader {
     }
 
     @Inject
-    GeneratorTypeAdapterImageLoader(@NonNull @RigScheduler Scheduler subscribeOn,
-                                    @NonNull @UiScheduler Scheduler observeOn,
-                                    Logger logger) {
+    GeneratorTypeAdapterImageLoader(@NonNull @RigScheduler Scheduler subscribeOn, @NonNull Logger logger) {
         this.subscribeOn = subscribeOn;
-        this.observeOn = observeOn;
         this.logger = logger;
     }
 
@@ -57,6 +58,11 @@ public class GeneratorTypeAdapterImageLoader {
             return;
         }
 
+        if (cache.containsKey(type))
+            return;
+        cache.put(type, null);
+
+        WeakReference<Callback> callbackWeak = new WeakReference<>(callback);
         Completable.fromAction(() -> {
             GeneratorParams params;
             if (type.isEffect()) {
@@ -72,10 +78,12 @@ public class GeneratorTypeAdapterImageLoader {
                     .setCallback(new GenerateCallback() {
                         @Override
                         public void onGenerated(ImageParams imageParams, Bitmap bitmap) {
-                            cache.put(type, new CacheItem(params, bitmap));
-                            Completable.fromAction(() -> {
-                                callback.onLoaded(params, bitmap);
-                            }).subscribeOn(observeOn).subscribe();
+                            uiHandler.post(() -> {
+                                cache.put(type, new CacheItem(params, bitmap));
+                                Callback cb = callbackWeak.get();
+                                if (cb != null)
+                                    cb.onLoaded(params, bitmap);
+                            });
                         }
 
                         @Override

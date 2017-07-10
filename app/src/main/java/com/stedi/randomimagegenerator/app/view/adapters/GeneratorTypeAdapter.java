@@ -19,7 +19,7 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
     private final GeneratorTypeAdapterImageLoader imageLoader;
     private final GeneratorType[] generatorType;
     private final ClickListener listener;
-    private final boolean deselect;
+    private final boolean isDeselectAllowed;
 
     private GeneratorType selectedType;
 
@@ -34,12 +34,12 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
     public GeneratorTypeAdapter(
             @NonNull GeneratorTypeAdapterImageLoader imageLoader,
             @NonNull GeneratorType[] generatorType, @Nullable GeneratorType selectedType,
-            @NonNull ClickListener listener, boolean deselect) {
+            @NonNull ClickListener listener, boolean isDeselectAllowed) {
         this.imageLoader = imageLoader;
         this.generatorType = generatorType;
         this.selectedType = selectedType;
         this.listener = listener;
-        this.deselect = deselect;
+        this.isDeselectAllowed = isDeselectAllowed;
     }
 
     @Override
@@ -58,8 +58,11 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
         holder.btnEdit.setVisibility(View.INVISIBLE);
         holder.image.setImageDrawable(null);
         imageLoader.load(type, (params, bitmap) -> {
-            holder.btnEdit.setVisibility(params.isEditable() && type == selectedType ? View.VISIBLE : View.INVISIBLE);
-            holder.image.setImageBitmap(bitmap);
+            GeneratorType holderType = (GeneratorType) holder.itemView.getTag();
+            if (type == holderType) {
+                holder.btnEdit.setVisibility(params.isEditable() && holderType == selectedType ? View.VISIBLE : View.INVISIBLE);
+                holder.image.setImageBitmap(bitmap);
+            }
         });
     }
 
@@ -73,7 +76,7 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
                 selectedType = clickedType;
                 listener.onSelected(selectedType);
                 notifyDataSetChanged();
-            } else if (deselect) {
+            } else if (isDeselectAllowed) {
                 selectedType = null;
                 listener.onDeselected();
                 notifyDataSetChanged();

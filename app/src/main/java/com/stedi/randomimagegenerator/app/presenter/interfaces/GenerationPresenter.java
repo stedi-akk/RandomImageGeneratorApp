@@ -48,7 +48,7 @@ abstract class GenerationPresenter<T extends GenerationPresenter.UIImpl> impleme
         private final Type type;
         private final ImageParams imageParams;
 
-        private Event(Type type, ImageParams imageParams) {
+        Event(Type type, ImageParams imageParams) {
             this.type = type;
             this.imageParams = imageParams;
         }
