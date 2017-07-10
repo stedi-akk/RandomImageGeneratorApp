@@ -16,7 +16,7 @@ public class SlowGenerator implements Generator {
 
     @Override
     public Bitmap generate(ImageParams imageParams) throws Exception {
-        Utils.sleep(1000);
+        Utils.sleep(2000);
         return target.generate(imageParams);
     }
 }

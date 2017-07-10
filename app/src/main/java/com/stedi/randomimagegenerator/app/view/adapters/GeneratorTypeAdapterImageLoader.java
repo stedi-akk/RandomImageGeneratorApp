@@ -15,6 +15,8 @@ import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.callbacks.GenerateCallback;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -25,6 +27,7 @@ import rx.Scheduler;
 @Singleton
 public class GeneratorTypeAdapterImageLoader {
     private final ArrayMap<GeneratorType, CacheItem> cache = new ArrayMap<>(GeneratorType.values().length);
+    private final ArrayMap<GeneratorType, List<WeakReference<Callback>>> callbacks = new ArrayMap<>();
 
     private final Handler uiHandler = new Handler(Looper.getMainLooper());
 
@@ -58,11 +61,18 @@ public class GeneratorTypeAdapterImageLoader {
             return;
         }
 
+        if (callbacks.containsKey(type)) {
+            callbacks.get(type).add(new WeakReference<>(callback));
+        } else {
+            List<WeakReference<Callback>> list = new ArrayList<>();
+            list.add(new WeakReference<>(callback));
+            callbacks.put(type, list);
+        }
+
         if (cache.containsKey(type))
             return;
         cache.put(type, null);
 
-        WeakReference<Callback> callbackWeak = new WeakReference<>(callback);
         Completable.fromAction(() -> {
             GeneratorParams params;
             if (type.isEffect()) {
@@ -80,9 +90,12 @@ public class GeneratorTypeAdapterImageLoader {
                         public void onGenerated(ImageParams imageParams, Bitmap bitmap) {
                             uiHandler.post(() -> {
                                 cache.put(type, new CacheItem(params, bitmap));
-                                Callback cb = callbackWeak.get();
-                                if (cb != null)
-                                    cb.onLoaded(params, bitmap);
+                                for (WeakReference<Callback> weakCallback : callbacks.get(type)) {
+                                    Callback callback = weakCallback.get();
+                                    if (callback != null)
+                                        callback.onLoaded(params, bitmap);
+                                }
+                                callbacks.remove(type);
                             });
                         }
 
