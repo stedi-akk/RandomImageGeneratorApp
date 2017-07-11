@@ -185,7 +185,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
 
     @Override
     public void onFinishGeneration() {
-        Utils.toastShort(this, getClass().getSimpleName() + " onFinishGeneration");
+        Utils.toastShort(this, "onFinishGeneration");
     }
 
     @Override

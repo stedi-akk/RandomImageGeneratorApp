@@ -138,7 +138,7 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
 
     @Override
     public void onFinishGeneration() {
-        Utils.toastShort(getContext(), getClass().getSimpleName() + " onFinishGeneration");
+        Utils.toastShort(getContext(), "onFinishGeneration");
         getActivity().finish();
     }
 

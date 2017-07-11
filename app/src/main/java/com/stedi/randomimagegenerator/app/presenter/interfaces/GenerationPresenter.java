@@ -67,59 +67,70 @@ abstract class GenerationPresenter<T extends GenerationPresenter.UIImpl> impleme
     public void startGeneration(@NonNull Preset preset) {
         if (generationInProgress)
             return;
-
-        logger.log(this, "GENERATION STARTED");
         generationInProgress = true;
+        logger.log(this, "GENERATION STARTED");
+        bus.post(new Event(Event.Type.ON_START_GENERATION, null));
+
         Completable.fromAction(new Action0() {
             private ImageParams generationFor;
 
             @Override
             public void call() {
-                runOnObserver(() -> bus.post(new Event(Event.Type.ON_START_GENERATION, null)));
-                new Rig.Builder()
-                        .setGenerator(preset.getGeneratorParams().getGenerator())
-                        .setCount(preset.getCount())
-                        .setFixedSize(preset.getWidth(), preset.getHeight())
-                        .setQuality(preset.getQuality())
-                        .setFileSavePath(preset.getSaveFolder())
-                        .setCallback(new GenerateCallback() {
-                            @Override
-                            public void onGenerated(ImageParams imageParams, Bitmap bitmap) {
-                                generationFor = imageParams;
-                            }
+                Rig.Builder builder = new Rig.Builder();
+                builder.setGenerator(preset.getGeneratorParams().getGenerator());
 
-                            @Override
-                            public void onFailedToGenerate(ImageParams imageParams, Exception e) {
-                                logger.log(this, e);
-                                generationFor = imageParams;
-                            }
-                        })
-                        .setFileSaveCallback(new SaveCallback() {
-                            @Override
-                            public void onSaved(Bitmap bitmap, File file) {
-                                final ImageParams generationForRef = generationFor;
-                                runOnObserver(() -> bus.post(new Event(Event.Type.ON_GENERATED, generationForRef)));
-                            }
+                if (preset.getWidth() != 0)
+                    builder.setFixedWidth(preset.getWidth());
+                if (preset.getHeight() != 0)
+                    builder.setFixedHeight(preset.getHeight());
+                if (preset.getCount() != 0)
+                    builder.setCount(preset.getCount());
 
-                            @Override
-                            public void onFailedToSave(Bitmap bitmap, Exception e) {
-                                logger.log(this, e);
-                                final ImageParams generationForRef = generationFor;
-                                runOnObserver(() -> bus.post(new Event(Event.Type.ON_FAILED_TO_GENERATE, generationForRef)));
-                            }
-                        })
-                        .build().generate();
-                runOnObserver(() -> bus.post(new Event(Event.Type.ON_FINISH_GENERATION, null)));
-            }
+                if (preset.getWidthRange() != null) {
+                    int[] a = preset.getWidthRange();
+                    builder.setWidthRange(a[0], a[1], a[2]);
+                }
 
-            private void runOnObserver(Action0 action) {
-                Completable.fromAction(action)
-                        .subscribeOn(observeOn)
-                        .subscribe();
+                if (preset.getHeightRange() != null) {
+                    int[] a = preset.getHeightRange();
+                    builder.setHeightRange(a[0], a[1], a[2]);
+                }
+
+                builder.setQuality(preset.getQuality());
+                builder.setFileSavePath(preset.getSaveFolder());
+                builder.setCallback(new GenerateCallback() {
+                    @Override
+                    public void onGenerated(ImageParams imageParams, Bitmap bitmap) {
+                        generationFor = imageParams;
+                    }
+
+                    @Override
+                    public void onFailedToGenerate(ImageParams imageParams, Exception e) {
+                        logger.log(this, e);
+                        generationFor = imageParams;
+                    }
+                });
+                builder.setFileSaveCallback(new SaveCallback() {
+                    @Override
+                    public void onSaved(Bitmap bitmap, File file) {
+                        final ImageParams generationForRef = generationFor;
+                        Completable.fromAction(() -> bus.post(new Event(Event.Type.ON_GENERATED, generationForRef))).subscribeOn(observeOn).subscribe();
+                    }
+
+                    @Override
+                    public void onFailedToSave(Bitmap bitmap, Exception e) {
+                        logger.log(this, e);
+                        final ImageParams generationForRef = generationFor;
+                        Completable.fromAction(() -> bus.post(new Event(Event.Type.ON_FAILED_TO_GENERATE, generationForRef))).subscribeOn(observeOn).subscribe();
+                    }
+                });
+                builder.build().generate();
             }
         }).subscribeOn(subscribeOn)
                 .observeOn(observeOn)
                 .subscribe(() -> {
+                    logger.log(this, "GENERATION FINISHED");
+                    bus.post(new Event(Event.Type.ON_FINISH_GENERATION, null));
                 }, throwable -> {
                     logger.log(this, throwable);
                     bus.post(new Event(Event.Type.ON_GENERATION_UNKNOWN_ERROR, null));
@@ -129,10 +140,9 @@ abstract class GenerationPresenter<T extends GenerationPresenter.UIImpl> impleme
     private Object busTarget = new Object() {
         @Subscribe
         public void onEvent(Event event) {
-            logger.log(GenerationPresenter.this, "onEvent " + event.type.name());
             if (ui == null) {
                 generationInProgress = false;
-                logger.log(this, "busTarget onEvent ui == null");
+                logger.log(GenerationPresenter.this, "busTarget onEvent ui == null");
                 return;
             }
 
