@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import com.stedi.randomimagegenerator.app.di.Components;
 import com.stedi.randomimagegenerator.app.di.components.ActivityComponent;
 import com.stedi.randomimagegenerator.app.di.modules.ActivityModule;
+import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
 import com.stedi.randomimagegenerator.app.other.Utils;
 
@@ -18,11 +19,18 @@ import javax.inject.Inject;
 public abstract class BaseActivity extends LifeCycleActivity {
     private ActivityComponent component;
 
+    @Inject PendingPreset pendingPreset;
     @Inject CachedBus bus;
+
+    private static boolean mustRestorePendingPreset = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         getActivityComponent().inject(this);
+        if (mustRestorePendingPreset && savedInstanceState != null) {
+            pendingPreset.restore(savedInstanceState);
+        }
+        mustRestorePendingPreset = false;
         super.onCreate(savedInstanceState);
     }
 
@@ -43,6 +51,12 @@ public abstract class BaseActivity extends LifeCycleActivity {
     protected void onPause() {
         super.onPause();
         bus.lock();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        pendingPreset.retain(outState);
     }
 
     @Override
