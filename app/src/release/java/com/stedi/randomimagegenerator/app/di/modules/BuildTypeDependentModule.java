@@ -1,5 +1,8 @@
 package com.stedi.randomimagegenerator.app.di.modules;
 
+import com.stedi.randomimagegenerator.app.model.repository.CachedPresetRepository;
+import com.stedi.randomimagegenerator.app.model.repository.DatabasePresetRepository;
+import com.stedi.randomimagegenerator.app.model.repository.PresetRepository;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.other.logger.NullLogger;
 
