@@ -21,21 +21,15 @@ public class CachedPresetRepository implements PresetRepository {
     }
 
     @Override
-    public synchronized boolean save(@NonNull Preset preset) throws Exception {
-        if (target.save(preset)) {
-            cache.put(preset.getId(), preset);
-            return true;
-        }
-        return false;
+    public synchronized void save(@NonNull Preset preset) throws Exception {
+        target.save(preset);
+        cache.put(preset.getId(), preset);
     }
 
     @Override
-    public synchronized boolean remove(int id) throws Exception {
-        if (target.remove(id)) {
-            cache.remove(id);
-            return true;
-        }
-        return false;
+    public synchronized void remove(int id) throws Exception {
+        target.remove(id);
+        cache.remove(id);
     }
 
     @Override

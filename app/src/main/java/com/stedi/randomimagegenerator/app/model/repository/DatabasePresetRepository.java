@@ -26,20 +26,18 @@ public class DatabasePresetRepository implements PresetRepository {
     }
 
     @Override
-    public synchronized boolean save(@NonNull Preset preset) throws Exception {
+    public synchronized void save(@NonNull Preset preset) throws Exception {
         Utils.sleep(100);
         if (preset.getId() == 0)
             preset.setId(fakeDatabase.size() + 1);
         preset.setTimestamp(System.currentTimeMillis());
         fakeDatabase.put(preset.getId(), preset);
-        return true;
     }
 
     @Override
-    public synchronized boolean remove(int id) throws Exception {
+    public synchronized void remove(int id) throws Exception {
         Utils.sleep(100);
         fakeDatabase.remove(id);
-        return true;
     }
 
     @Override

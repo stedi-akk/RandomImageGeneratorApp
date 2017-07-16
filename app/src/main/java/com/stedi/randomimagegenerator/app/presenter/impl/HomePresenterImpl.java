@@ -2,7 +2,6 @@ package com.stedi.randomimagegenerator.app.presenter.impl;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.util.ArrayMap;
 
 import com.squareup.otto.Subscribe;
 import com.stedi.randomimagegenerator.app.di.qualifiers.DefaultScheduler;
@@ -48,13 +47,11 @@ public class HomePresenterImpl extends HomePresenter {
 
     private static class DeletePresetEvent {
         private final Preset preset;
-        private final boolean success;
-        private final Throwable t;
+        private final Throwable throwable;
 
-        DeletePresetEvent(Preset preset, boolean success, Throwable t) {
+        DeletePresetEvent(Preset preset, Throwable throwable) {
             this.preset = preset;
-            this.success = success;
-            this.t = t;
+            this.throwable = throwable;
         }
     }
 
@@ -96,20 +93,14 @@ public class HomePresenterImpl extends HomePresenter {
         logger.log(this, "confirmLastAction " + lastActionConfirm);
         if (lastActionConfirm == Confirm.DELETE_PRESET) {
             int lastActionPresetIdRef = lastActionPresetId;
-            Observable.fromCallable(() -> presetRepository.get(lastActionPresetIdRef))
-                    .zipWith(Observable.fromCallable(() -> presetRepository.remove(lastActionPresetIdRef)), (preset, aBoolean) -> {
-                        ArrayMap<Boolean, Preset> resultMap = new ArrayMap<>();
-                        resultMap.put(aBoolean, preset);
-                        return resultMap;
-                    })
-                    .subscribeOn(subscribeOn)
+            Observable.fromCallable(() -> {
+                Preset preset = presetRepository.get(lastActionPresetIdRef);
+                presetRepository.remove(lastActionPresetIdRef);
+                return preset;
+            }).subscribeOn(subscribeOn)
                     .observeOn(observeOn)
-                    .subscribe(booleanPresetMap -> {
-                        boolean success = booleanPresetMap.keyAt(0);
-                        bus.post(new DeletePresetEvent(booleanPresetMap.get(success), success, null));
-                    }, throwable -> {
-                        bus.post(new DeletePresetEvent(null, false, throwable));
-                    });
+                    .subscribe(preset -> bus.post(new DeletePresetEvent(preset, null)),
+                            throwable -> bus.post(new DeletePresetEvent(null, throwable)));
         } else if (lastActionConfirm == Confirm.GENERATE_FROM_PRESET) {
             int lastActionPresetIdRef = lastActionPresetId;
             Observable.fromCallable(() -> presetRepository.get(lastActionPresetIdRef))
@@ -182,7 +173,7 @@ public class HomePresenterImpl extends HomePresenter {
             return;
         }
 
-        if (event.t != null || !event.success || event.preset == null) {
+        if (event.throwable != null || event.preset == null) {
             ui.onFailedToDeletePreset();
         } else {
             ui.onPresetDeleted(event.preset);

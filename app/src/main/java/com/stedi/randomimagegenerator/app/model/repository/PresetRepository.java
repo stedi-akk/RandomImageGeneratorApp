@@ -8,9 +8,9 @@ import com.stedi.randomimagegenerator.app.model.data.Preset;
 import java.util.List;
 
 public interface PresetRepository {
-    boolean save(@NonNull Preset preset) throws Exception;
+    void save(@NonNull Preset preset) throws Exception;
 
-    boolean remove(int id) throws Exception;
+    void remove(int id) throws Exception;
 
     @Nullable
     Preset get(int id) throws Exception;

@@ -17,7 +17,7 @@ import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPr
 
 import java.io.Serializable;
 
-import rx.Observable;
+import rx.Completable;
 import rx.Scheduler;
 
 public class ApplyGenerationPresenterImpl extends ApplyGenerationPresenter {
@@ -33,11 +33,9 @@ public class ApplyGenerationPresenterImpl extends ApplyGenerationPresenter {
     private boolean saveInProgress;
 
     private static class OnPresetSaveEvent {
-        private final boolean success;
         private final Throwable throwable;
 
-        OnPresetSaveEvent(boolean success, Throwable throwable) {
-            this.success = success;
+        OnPresetSaveEvent(Throwable throwable) {
             this.throwable = throwable;
         }
     }
@@ -92,11 +90,14 @@ public class ApplyGenerationPresenterImpl extends ApplyGenerationPresenter {
 
         Preset preset = pendingPreset.getCandidate();
         preset.setName(name);
-        Observable.fromCallable(() -> presetRepository.save(preset))
-                .subscribeOn(subscribeOn)
+
+        Completable.fromCallable(() -> {
+            presetRepository.save(preset);
+            return true;
+        }).subscribeOn(subscribeOn)
                 .observeOn(observeOn)
-                .subscribe(aBoolean -> bus.post(new OnPresetSaveEvent(aBoolean, null)),
-                        throwable -> bus.post(new OnPresetSaveEvent(false, throwable)));
+                .subscribe(() -> bus.post(new OnPresetSaveEvent(null)),
+                        throwable -> bus.post(new OnPresetSaveEvent(throwable)));
     }
 
     @Subscribe
@@ -104,7 +105,7 @@ public class ApplyGenerationPresenterImpl extends ApplyGenerationPresenter {
         logger.log(this, "onPresetSaveEvent");
         saveInProgress = false;
 
-        if (event.throwable == null && event.success) {
+        if (event.throwable == null) {
             if (pendingPreset.getCandidate() == pendingPreset.get())
                 pendingPreset.clear();
             pendingPreset.candidateSaved();
@@ -115,7 +116,7 @@ public class ApplyGenerationPresenterImpl extends ApplyGenerationPresenter {
             return;
         }
 
-        if (event.throwable != null || !event.success) {
+        if (event.throwable != null) {
             ui.failedToSavePreset();
             return;
         }
