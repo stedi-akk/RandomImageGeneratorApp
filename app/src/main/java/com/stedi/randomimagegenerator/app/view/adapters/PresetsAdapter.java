@@ -78,7 +78,7 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
         }
 
         holder.tvName.setText(preset.getName());
-        holder.tvFolder.setText(preset.getSaveFolder());
+        holder.tvFolder.setText(preset.getPathToSave());
         holder.tvCreated.setText(DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(new Date(preset.getTimestamp())));
         holder.btnAction.setText(preset == pendingPreset ? "save" : "generate");
         setPresetBoundedClickListener(holder.itemView, preset);

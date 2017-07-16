@@ -18,7 +18,7 @@ public class Preset implements Parcelable {
     private String name;
     private GeneratorParams generatorParams;
     private Quality quality;
-    private String saveFolder;
+    private String pathToSave;
 
     private int count = 1;
     private int width = 1;
@@ -29,15 +29,15 @@ public class Preset implements Parcelable {
     public Preset(@NonNull String name,
                   @NonNull GeneratorParams generatorParams,
                   @NonNull Quality quality,
-                  @NonNull String saveFolder) {
+                  @NonNull String pathToSave) {
         if (name.isEmpty())
             throw new IllegalArgumentException("name must not be empty");
-        if (saveFolder.isEmpty())
-            throw new IllegalArgumentException("saveFolder must not be empty");
+        if (pathToSave.isEmpty())
+            throw new IllegalArgumentException("pathToSave must not be empty");
         this.name = name;
         this.generatorParams = generatorParams;
         this.quality = quality;
-        this.saveFolder = saveFolder;
+        this.pathToSave = pathToSave;
     }
 
     public Preset createCopy() {
@@ -162,15 +162,15 @@ public class Preset implements Parcelable {
         return quality;
     }
 
-    public void setSaveFolder(@NonNull String saveFolder) {
-        if (saveFolder.isEmpty())
-            throw new IllegalArgumentException("saveFolder must not be empty");
-        this.saveFolder = saveFolder;
+    public void setPathToSave(@NonNull String pathToSave) {
+        if (pathToSave.isEmpty())
+            throw new IllegalArgumentException("pathToSave must not be empty");
+        this.pathToSave = pathToSave;
     }
 
     @NonNull
-    public String getSaveFolder() {
-        return saveFolder;
+    public String getPathToSave() {
+        return pathToSave;
     }
 
     @Override
@@ -181,7 +181,7 @@ public class Preset implements Parcelable {
                 ", name='" + name + '\'' +
                 ", generatorParams=" + generatorParams +
                 ", quality=" + quality +
-                ", saveFolder='" + saveFolder + '\'' +
+                ", pathToSave='" + pathToSave + '\'' +
                 ", count=" + count +
                 ", width=" + width +
                 ", height=" + height +
@@ -206,7 +206,7 @@ public class Preset implements Parcelable {
         if (!generatorParams.equals(preset.generatorParams)) return false;
         if (quality.getFormat() != preset.quality.getFormat()) return false;
         if (quality.getQualityValue() != preset.quality.getQualityValue()) return false;
-        if (!saveFolder.equals(preset.saveFolder)) return false;
+        if (!pathToSave.equals(preset.pathToSave)) return false;
         if (!Arrays.equals(widthRange, preset.widthRange)) return false;
         return Arrays.equals(heightRange, preset.heightRange);
     }
@@ -219,7 +219,7 @@ public class Preset implements Parcelable {
         result = 31 * result + generatorParams.hashCode();
         result = 31 * result + quality.getFormat().ordinal();
         result = 31 * result + quality.getQualityValue();
-        result = 31 * result + saveFolder.hashCode();
+        result = 31 * result + pathToSave.hashCode();
         result = 31 * result + count;
         result = 31 * result + width;
         result = 31 * result + height;
@@ -241,7 +241,7 @@ public class Preset implements Parcelable {
         dest.writeParcelable(this.generatorParams, flags);
         dest.writeInt(this.quality.getFormat().ordinal());
         dest.writeInt(this.quality.getQualityValue());
-        dest.writeString(this.saveFolder);
+        dest.writeString(this.pathToSave);
         dest.writeInt(this.count);
         dest.writeInt(this.width);
         dest.writeInt(this.height);
@@ -257,7 +257,7 @@ public class Preset implements Parcelable {
         Bitmap.CompressFormat compressFormat = Bitmap.CompressFormat.values()[in.readInt()];
         int qualityValue = in.readInt();
         this.quality = new Quality(compressFormat, qualityValue);
-        this.saveFolder = in.readString();
+        this.pathToSave = in.readString();
         this.count = in.readInt();
         this.width = in.readInt();
         this.height = in.readInt();

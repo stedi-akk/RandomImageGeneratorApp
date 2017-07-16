@@ -4,7 +4,9 @@ import android.graphics.Bitmap;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.stedi.randomimagegenerator.Quality;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredNoiseParams;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
+import com.stedi.randomimagegenerator.generators.ColoredNoiseGenerator;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,16 +16,16 @@ import static junit.framework.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
 public class PresetTest {
-    private GeneratorParams generatorParams;
+    private ColoredNoiseParams generatorParams;
     private Preset preset;
 
     @Before
     public void before() {
-        generatorParams = GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR);
+        generatorParams = (ColoredNoiseParams) GeneratorParams.createDefaultParams(GeneratorType.COLORED_NOISE);
         preset = new Preset("ololo",
                 generatorParams,
                 Quality.png(),
-                "null");
+                "path");
     }
 
     @Test
@@ -45,13 +47,14 @@ public class PresetTest {
         assertTrue(copy.getCount() == 666);
         assertTrue(copy.getQuality().getFormat() == Bitmap.CompressFormat.PNG);
         assertTrue(copy.getQuality().getQualityValue() == 100);
-        assertTrue(copy.getSaveFolder().equals("null"));
+        assertTrue(copy.getPathToSave().equals("path"));
         assertNull(copy.getWidthRange());
         assertNull(copy.getHeightRange());
 
         assertTrue(copy.equals(preset));
 
-        copy.setName("trololo");
+        generatorParams.setNoiseOrientation(ColoredNoiseGenerator.Orientation.VERTICAL);
+        generatorParams.setNoiseType(ColoredNoiseGenerator.Type.TYPE_6);
         assertFalse(copy.equals(preset));
     }
 
@@ -98,7 +101,7 @@ public class PresetTest {
         } catch (IllegalArgumentException e) {
         }
         try {
-            preset.setSaveFolder("");
+            preset.setPathToSave("");
             fail();
         } catch (IllegalArgumentException e) {
         }

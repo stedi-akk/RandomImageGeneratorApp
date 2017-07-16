@@ -8,7 +8,9 @@ import com.stedi.randomimagegenerator.app.App;
 import com.stedi.randomimagegenerator.app.di.qualifiers.DefaultScheduler;
 import com.stedi.randomimagegenerator.app.di.qualifiers.RigScheduler;
 import com.stedi.randomimagegenerator.app.di.qualifiers.UiScheduler;
+import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
+import com.stedi.randomimagegenerator.app.other.logger.Logger;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -59,8 +61,8 @@ public class AppModule {
     }
 
     @Provides
-    @Named("DefaultSavePath")
-    String provideDefaultSavePath() {
-        return Environment.getExternalStorageDirectory().getPath();
+    @Singleton
+    PendingPreset providePendingPreset(Logger logger) {
+        return new PendingPreset("Unsaved preset", Environment.getExternalStorageDirectory().getPath(), logger);
     }
 }

@@ -97,7 +97,7 @@ abstract class GenerationPresenter<T extends GenerationPresenter.UIImpl> impleme
                 }
 
                 builder.setQuality(preset.getQuality());
-                builder.setFileSavePath(preset.getSaveFolder());
+                builder.setFileSavePath(preset.getPathToSave());
                 builder.setCallback(new GenerateCallback() {
                     @Override
                     public void onGenerated(ImageParams imageParams, Bitmap bitmap) {
