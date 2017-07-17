@@ -2,6 +2,7 @@ package com.stedi.randomimagegenerator.app.model.repository;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.util.SparseArray;
 
 import com.stedi.randomimagegenerator.app.model.data.Preset;
@@ -39,7 +40,8 @@ public class CachedPresetRepository implements PresetRepository {
             return cache.get(id);
         } else {
             Preset preset = target.get(id);
-            cache.put(id, preset);
+            if (preset != null)
+                cache.put(id, preset);
             return preset;
         }
     }
@@ -56,5 +58,10 @@ public class CachedPresetRepository implements PresetRepository {
             isActual = true;
             return result;
         }
+    }
+
+    @VisibleForTesting
+    synchronized SparseArray<Preset> getCache() {
+        return cache;
     }
 }
