@@ -3,11 +3,13 @@ package com.stedi.randomimagegenerator.app.model.data.generatorparams;
 import android.os.Parcel;
 import android.support.annotation.NonNull;
 
+import com.j256.ormlite.table.DatabaseTable;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 import com.stedi.randomimagegenerator.generators.FlatColorGenerator;
 import com.stedi.randomimagegenerator.generators.Generator;
 
+@DatabaseTable(tableName = "flat_color_params")
 public class FlatColorParams extends GeneratorParams {
     public FlatColorParams() {
     }

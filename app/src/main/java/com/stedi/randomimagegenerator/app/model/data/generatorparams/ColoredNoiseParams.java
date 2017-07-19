@@ -3,13 +3,18 @@ package com.stedi.randomimagegenerator.app.model.data.generatorparams;
 import android.os.Parcel;
 import android.support.annotation.NonNull;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 import com.stedi.randomimagegenerator.generators.ColoredNoiseGenerator;
 import com.stedi.randomimagegenerator.generators.Generator;
 
+@DatabaseTable(tableName = "colored_noise_params")
 public class ColoredNoiseParams extends GeneratorParams {
+    @DatabaseField(columnName = "orientation", canBeNull = false)
     private ColoredNoiseGenerator.Orientation orientation = ColoredNoiseGenerator.Orientation.RANDOM;
+    @DatabaseField(columnName = "type", canBeNull = false)
     private ColoredNoiseGenerator.Type type = ColoredNoiseGenerator.Type.RANDOM;
 
     public ColoredNoiseParams() {

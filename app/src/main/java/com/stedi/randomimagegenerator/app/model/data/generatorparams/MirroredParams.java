@@ -3,13 +3,18 @@ package com.stedi.randomimagegenerator.app.model.data.generatorparams;
 import android.os.Parcel;
 import android.support.annotation.NonNull;
 
+import com.j256.ormlite.table.DatabaseTable;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 import com.stedi.randomimagegenerator.generators.Generator;
 import com.stedi.randomimagegenerator.generators.MirroredGenerator;
 
+@DatabaseTable(tableName = "mirrored_params")
 public class MirroredParams extends EffectGeneratorParams {
+    public MirroredParams() {
+    }
+
     public MirroredParams(@NonNull GeneratorParams target) {
         super(target);
     }

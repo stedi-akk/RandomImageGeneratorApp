@@ -6,25 +6,46 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.j256.ormlite.field.DataType;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 import com.stedi.randomimagegenerator.Quality;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 
 import java.util.Arrays;
 
+@DatabaseTable(tableName = "preset")
 public class Preset implements Parcelable {
+    @DatabaseField(columnName = "id", generatedId = true)
     private int id;
+    @DatabaseField(columnName = "timestamp")
     private long timestamp;
 
+    @DatabaseField(columnName = "name", canBeNull = false)
     private String name;
+    @DatabaseField(columnName = "generator_params", foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true)
     private GeneratorParams generatorParams;
+    @DatabaseField(columnName = "quality_format", canBeNull = false)
+    private Bitmap.CompressFormat qualityFormat;
+    @DatabaseField(columnName = "quality_value")
+    private int qualityValue;
     private Quality quality;
+    @DatabaseField(columnName = "path_to_save", canBeNull = false)
     private String pathToSave;
 
+    @DatabaseField(columnName = "count")
     private int count = 1;
+    @DatabaseField(columnName = "width")
     private int width = 1;
+    @DatabaseField(columnName = "height")
     private int height = 1;
+    @DatabaseField(columnName = "width_range", dataType = DataType.SERIALIZABLE)
     private int[] widthRange;
+    @DatabaseField(columnName = "height_range", dataType = DataType.SERIALIZABLE)
     private int[] heightRange;
+
+    public Preset() {
+    }
 
     public Preset(@NonNull String name,
                   @NonNull GeneratorParams generatorParams,
@@ -155,10 +176,14 @@ public class Preset implements Parcelable {
 
     public void setQuality(@NonNull Quality quality) {
         this.quality = quality;
+        this.qualityFormat = quality.getFormat();
+        this.qualityValue = quality.getQualityValue();
     }
 
     @NonNull
     public Quality getQuality() {
+        if (quality == null)
+            quality = new Quality(qualityFormat, qualityValue);
         return quality;
     }
 

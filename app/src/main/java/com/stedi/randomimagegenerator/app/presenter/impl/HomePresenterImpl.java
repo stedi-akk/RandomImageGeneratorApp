@@ -37,11 +37,11 @@ public class HomePresenterImpl extends HomePresenter {
 
     private static class FetchPresetsEvent {
         private final List<Preset> presets;
-        private final Throwable t;
+        private final Throwable throwable;
 
-        FetchPresetsEvent(List<Preset> presets, Throwable t) {
+        FetchPresetsEvent(List<Preset> presets, Throwable throwable) {
             this.presets = presets;
-            this.t = t;
+            this.throwable = throwable;
         }
     }
 
@@ -157,7 +157,8 @@ public class HomePresenterImpl extends HomePresenter {
             return;
         }
 
-        if (event.t != null) {
+        if (event.throwable != null) {
+            logger.log(this, event.throwable);
             ui.onFailedToFetchPresets();
         } else {
             ui.onPresetsFetched(pendingPreset.get(), event.presets);
@@ -174,6 +175,7 @@ public class HomePresenterImpl extends HomePresenter {
         }
 
         if (event.throwable != null || event.preset == null) {
+            logger.log(this, "failed to delete preset", event.throwable);
             ui.onFailedToDeletePreset();
         } else {
             ui.onPresetDeleted(event.preset);

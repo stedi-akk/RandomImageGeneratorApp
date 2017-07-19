@@ -92,6 +92,7 @@ public class ApplyGenerationPresenterImpl extends ApplyGenerationPresenter {
         preset.setName(name);
 
         Completable.fromCallable(() -> {
+            preset.setTimestamp(System.currentTimeMillis());
             presetRepository.save(preset);
             return true;
         }).subscribeOn(subscribeOn)
@@ -117,6 +118,7 @@ public class ApplyGenerationPresenterImpl extends ApplyGenerationPresenter {
         }
 
         if (event.throwable != null) {
+            logger.log(this, event.throwable);
             ui.failedToSavePreset();
             return;
         }

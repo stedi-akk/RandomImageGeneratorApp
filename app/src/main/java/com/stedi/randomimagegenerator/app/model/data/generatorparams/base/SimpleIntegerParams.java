@@ -2,7 +2,10 @@ package com.stedi.randomimagegenerator.app.model.data.generatorparams.base;
 
 import android.os.Parcel;
 
+import com.j256.ormlite.field.DatabaseField;
+
 public abstract class SimpleIntegerParams extends GeneratorParams {
+    @DatabaseField(columnName = "integer_value")
     private Integer value;
 
     public SimpleIntegerParams() {

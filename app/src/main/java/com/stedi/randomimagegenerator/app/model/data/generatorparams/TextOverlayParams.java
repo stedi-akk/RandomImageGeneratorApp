@@ -3,6 +3,7 @@ package com.stedi.randomimagegenerator.app.model.data.generatorparams;
 import android.os.Parcel;
 import android.support.annotation.NonNull;
 
+import com.j256.ormlite.table.DatabaseTable;
 import com.stedi.randomimagegenerator.DefaultFileNamePolicy;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams;
@@ -10,7 +11,11 @@ import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.Genera
 import com.stedi.randomimagegenerator.generators.Generator;
 import com.stedi.randomimagegenerator.generators.TextOverlayGenerator;
 
+@DatabaseTable(tableName = "text_overlay_params")
 public class TextOverlayParams extends EffectGeneratorParams {
+    public TextOverlayParams() {
+    }
+
     public TextOverlayParams(@NonNull GeneratorParams target) {
         super(target);
     }

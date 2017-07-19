@@ -1,56 +1,92 @@
 package com.stedi.randomimagegenerator.app.model.repository;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.SparseArray;
 
-import com.stedi.randomimagegenerator.Quality;
+import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.table.TableUtils;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredCirclesParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredNoiseParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredPixelsParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredRectangleParams;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.FlatColorParams;
-import com.stedi.randomimagegenerator.app.other.Utils;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.MirroredParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.TextOverlayParams;
+import com.stedi.randomimagegenerator.app.other.logger.Logger;
 
+import java.sql.SQLException;
 import java.util.List;
 
-public class DatabasePresetRepository implements PresetRepository {
-    private final SparseArray<Preset> fakeDatabase = new SparseArray<>();
+import javax.inject.Named;
 
-    {
-        Preset[] fakePresets = new Preset[]{new Preset("Fake 1", new FlatColorParams(), Quality.jpg(100), "/sdcard/"),
-                new Preset("Fake 2", new FlatColorParams(), Quality.jpg(100), "/sdcard/"),
-                new Preset("Fake 3", new FlatColorParams(), Quality.jpg(100), "/sdcard/")};
-        for (Preset fakePreset : fakePresets) {
-            fakePreset.setId(fakeDatabase.size() + 1);
-            fakePreset.setTimestamp(System.currentTimeMillis());
-            fakeDatabase.put(fakePreset.getId(), fakePreset);
+public class DatabasePresetRepository extends OrmLiteSqliteOpenHelper implements PresetRepository {
+    private static final String DATABASE_NAME = "presets_database";
+    private static final int DATABASE_VERSION = 1;
+
+    private final Logger logger;
+
+    public DatabasePresetRepository(@Named("AppContext") Context context, @NonNull Logger logger) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.logger = logger;
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
+        try {
+            TableUtils.createTable(connectionSource, Preset.class);
+            TableUtils.createTable(connectionSource, ColoredCirclesParams.class);
+            TableUtils.createTable(connectionSource, ColoredNoiseParams.class);
+            TableUtils.createTable(connectionSource, ColoredPixelsParams.class);
+            TableUtils.createTable(connectionSource, ColoredRectangleParams.class);
+            TableUtils.createTable(connectionSource, FlatColorParams.class);
+            TableUtils.createTable(connectionSource, MirroredParams.class);
+            TableUtils.createTable(connectionSource, TextOverlayParams.class);
+        } catch (SQLException e) {
+            logger.log(this, e);
+        }
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
+        try {
+            TableUtils.dropTable(connectionSource, Preset.class, false);
+            onCreate(database, connectionSource);
+        } catch (SQLException e) {
+            logger.log(this, e);
         }
     }
 
     @Override
     public synchronized void save(@NonNull Preset preset) throws Exception {
-        Utils.sleep(100);
-        if (preset.getId() == 0)
-            preset.setId(fakeDatabase.size() + 1);
-        preset.setTimestamp(System.currentTimeMillis());
-        fakeDatabase.put(preset.getId(), preset);
+        Dao<Preset, Integer> dao = getDao(Preset.class);
+        Dao.CreateOrUpdateStatus status = dao.createOrUpdate(preset);
+        if (!status.isCreated() && !status.isUpdated())
+            throw new SQLException("failed to save preset");
     }
 
     @Override
     public synchronized void remove(int id) throws Exception {
-        Utils.sleep(100);
-        fakeDatabase.remove(id);
+        Dao<Preset, Integer> dao = getDao(Preset.class);
+        if (dao.deleteById(id) != 1)
+            throw new SQLException("failed to delete preset with id=" + id);
     }
 
-    @Override
     @Nullable
+    @Override
     public synchronized Preset get(int id) throws Exception {
-        Utils.sleep(100);
-        return fakeDatabase.get(id);
+        Dao<Preset, Integer> dao = getDao(Preset.class);
+        return dao.queryForId(id);
     }
 
-    @Override
     @NonNull
+    @Override
     public synchronized List<Preset> getAll() throws Exception {
-        Utils.sleep(100);
-        return Utils.sparseArrayToList(fakeDatabase);
+        Dao<Preset, Integer> dao = getDao(Preset.class);
+        return dao.queryForAll();
     }
 }
