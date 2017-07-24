@@ -3,7 +3,6 @@ package com.stedi.randomimagegenerator.app.model.data.generatorparams.base;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import com.j256.ormlite.field.DatabaseField;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredCirclesParams;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredNoiseParams;
@@ -15,13 +14,12 @@ import com.stedi.randomimagegenerator.app.model.data.generatorparams.TextOverlay
 import com.stedi.randomimagegenerator.generators.Generator;
 
 public abstract class GeneratorParams implements Parcelable {
-    @DatabaseField(columnName = "id", generatedId = true)
-    private int id;
-
     @NonNull
     public Generator getGenerator() {
         return GetGenerator.proxy(createGenerator());
     }
+
+    public abstract int getId();
 
     public abstract boolean isEditable();
 

@@ -3,11 +3,9 @@ package com.stedi.randomimagegenerator.app.model.data.generatorparams.base;
 import android.os.Parcel;
 import android.support.annotation.NonNull;
 
-import com.j256.ormlite.field.DatabaseField;
 import com.stedi.randomimagegenerator.generators.Generator;
 
 public abstract class EffectGeneratorParams extends GeneratorParams {
-    @DatabaseField(columnName = "generator_params_target", foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true)
     private GeneratorParams target;
 
     public EffectGeneratorParams() {

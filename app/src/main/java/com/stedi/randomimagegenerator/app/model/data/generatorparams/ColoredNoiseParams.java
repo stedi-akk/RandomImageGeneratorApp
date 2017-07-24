@@ -12,6 +12,8 @@ import com.stedi.randomimagegenerator.generators.Generator;
 
 @DatabaseTable(tableName = "colored_noise_params")
 public class ColoredNoiseParams extends GeneratorParams {
+    @DatabaseField(generatedId = true)
+    private int id;
     @DatabaseField(columnName = "orientation", canBeNull = false)
     private ColoredNoiseGenerator.Orientation orientation = ColoredNoiseGenerator.Orientation.RANDOM;
     @DatabaseField(columnName = "type", canBeNull = false)
@@ -45,6 +47,11 @@ public class ColoredNoiseParams extends GeneratorParams {
     }
 
     @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
     public boolean isEditable() {
         return true;
     }
@@ -62,6 +69,7 @@ public class ColoredNoiseParams extends GeneratorParams {
         ColoredNoiseParams that = (ColoredNoiseParams) o;
 
         if (orientation != that.orientation) return false;
+        if (id != that.id) return false;
         return type == that.type;
     }
 
@@ -69,6 +77,7 @@ public class ColoredNoiseParams extends GeneratorParams {
     public int hashCode() {
         int result = orientation.hashCode();
         result = 31 * result + type.hashCode();
+        result = 31 * result + id;
         return result;
     }
 
@@ -76,6 +85,7 @@ public class ColoredNoiseParams extends GeneratorParams {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.orientation == null ? -1 : this.orientation.ordinal());
         dest.writeInt(this.type == null ? -1 : this.type.ordinal());
+        dest.writeInt(this.id);
     }
 
     protected ColoredNoiseParams(Parcel in) {
@@ -83,6 +93,7 @@ public class ColoredNoiseParams extends GeneratorParams {
         this.orientation = tmpOrientation == -1 ? null : ColoredNoiseGenerator.Orientation.values()[tmpOrientation];
         int tmpType = in.readInt();
         this.type = tmpType == -1 ? null : ColoredNoiseGenerator.Type.values()[tmpType];
+        this.id = in.readInt();
     }
 
     public static final Creator<ColoredNoiseParams> CREATOR = new Creator<ColoredNoiseParams>() {

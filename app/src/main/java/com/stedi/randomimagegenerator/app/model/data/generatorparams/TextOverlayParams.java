@@ -3,6 +3,7 @@ package com.stedi.randomimagegenerator.app.model.data.generatorparams;
 import android.os.Parcel;
 import android.support.annotation.NonNull;
 
+import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import com.stedi.randomimagegenerator.DefaultFileNamePolicy;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
@@ -13,6 +14,9 @@ import com.stedi.randomimagegenerator.generators.TextOverlayGenerator;
 
 @DatabaseTable(tableName = "text_overlay_params")
 public class TextOverlayParams extends EffectGeneratorParams {
+    @DatabaseField(generatedId = true)
+    private int id;
+
     public TextOverlayParams() {
     }
 
@@ -30,6 +34,11 @@ public class TextOverlayParams extends EffectGeneratorParams {
     }
 
     @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
     public boolean isEditable() {
         return false;
     }
@@ -40,8 +49,30 @@ public class TextOverlayParams extends EffectGeneratorParams {
         return GeneratorType.TEXT_OVERLAY;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (!super.equals(o)) return false;
+
+        TextOverlayParams that = (TextOverlayParams) o;
+
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + id;
+        return result;
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeInt(this.id);
+    }
+
     protected TextOverlayParams(Parcel in) {
         super(in);
+        this.id = in.readInt();
     }
 
     public static final Creator<TextOverlayParams> CREATOR = new Creator<TextOverlayParams>() {

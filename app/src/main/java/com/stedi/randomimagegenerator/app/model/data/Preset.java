@@ -16,19 +16,22 @@ import java.util.Arrays;
 
 @DatabaseTable(tableName = "preset")
 public class Preset implements Parcelable {
-    @DatabaseField(columnName = "id", generatedId = true)
-    private int id;
-    @DatabaseField(columnName = "timestamp")
-    private long timestamp;
-
-    @DatabaseField(columnName = "name", canBeNull = false)
-    private String name;
-    @DatabaseField(columnName = "generator_params", foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true)
-    private GeneratorParams generatorParams;
+    @DatabaseField(columnName = "generator_type", canBeNull = false)
+    private GeneratorType generatorType;
+    @DatabaseField(columnName = "generator_params_id")
+    private int generatorParamsId;
     @DatabaseField(columnName = "quality_format", canBeNull = false)
     private Bitmap.CompressFormat qualityFormat;
     @DatabaseField(columnName = "quality_value")
     private int qualityValue;
+
+    @DatabaseField(generatedId = true)
+    private int id;
+    @DatabaseField(columnName = "timestamp")
+    private long timestamp;
+    @DatabaseField(columnName = "name", canBeNull = false)
+    private String name;
+    private GeneratorParams generatorParams;
     private Quality quality;
     @DatabaseField(columnName = "path_to_save", canBeNull = false)
     private String pathToSave;
@@ -56,8 +59,8 @@ public class Preset implements Parcelable {
         if (pathToSave.isEmpty())
             throw new IllegalArgumentException("pathToSave must not be empty");
         this.name = name;
-        this.generatorParams = generatorParams;
-        this.quality = quality;
+        setGeneratorParams(generatorParams);
+        setQuality(quality);
         this.pathToSave = pathToSave;
     }
 
@@ -72,6 +75,16 @@ public class Preset implements Parcelable {
             if (parcel != null)
                 parcel.recycle();
         }
+    }
+
+    public int getGeneratorParamsId() {
+        return generatorParamsId;
+    }
+
+    public void setGeneratorParamsId(int generatorParamsId) {
+        if (generatorParamsId < 1)
+            throw new IllegalArgumentException("id must be > 0");
+        this.generatorParamsId = generatorParamsId;
     }
 
     public void setId(int id) {
@@ -107,6 +120,7 @@ public class Preset implements Parcelable {
 
     public void setGeneratorParams(@NonNull GeneratorParams generatorParams) {
         this.generatorParams = generatorParams;
+        this.generatorType = generatorParams.getType();
     }
 
     @NonNull
@@ -205,7 +219,7 @@ public class Preset implements Parcelable {
                 ", timestamp=" + timestamp +
                 ", name='" + name + '\'' +
                 ", generatorParams=" + generatorParams +
-                ", quality=" + quality +
+                ", quality=" + getQuality() +
                 ", pathToSave='" + pathToSave + '\'' +
                 ", count=" + count +
                 ", width=" + width +
@@ -223,14 +237,15 @@ public class Preset implements Parcelable {
         Preset preset = (Preset) o;
 
         if (id != preset.id) return false;
+        if (generatorParamsId != preset.generatorParamsId) return false;
         if (timestamp != preset.timestamp) return false;
         if (count != preset.count) return false;
         if (width != preset.width) return false;
         if (height != preset.height) return false;
         if (!name.equals(preset.name)) return false;
         if (!generatorParams.equals(preset.generatorParams)) return false;
-        if (quality.getFormat() != preset.quality.getFormat()) return false;
-        if (quality.getQualityValue() != preset.quality.getQualityValue()) return false;
+        if (getQuality().getFormat() != preset.getQuality().getFormat()) return false;
+        if (getQuality().getQualityValue() != preset.getQuality().getQualityValue()) return false;
         if (!pathToSave.equals(preset.pathToSave)) return false;
         if (!Arrays.equals(widthRange, preset.widthRange)) return false;
         return Arrays.equals(heightRange, preset.heightRange);
@@ -239,11 +254,12 @@ public class Preset implements Parcelable {
     @Override
     public int hashCode() {
         int result = id;
+        result = 31 * result + generatorParamsId;
         result = 31 * result + (int) (timestamp ^ (timestamp >>> 32));
         result = 31 * result + name.hashCode();
         result = 31 * result + generatorParams.hashCode();
-        result = 31 * result + quality.getFormat().ordinal();
-        result = 31 * result + quality.getQualityValue();
+        result = 31 * result + getQuality().getFormat().ordinal();
+        result = 31 * result + getQuality().getQualityValue();
         result = 31 * result + pathToSave.hashCode();
         result = 31 * result + count;
         result = 31 * result + width;
@@ -261,11 +277,12 @@ public class Preset implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.id);
+        dest.writeInt(this.generatorParamsId);
         dest.writeLong(this.timestamp);
         dest.writeString(this.name);
         dest.writeParcelable(this.generatorParams, flags);
-        dest.writeInt(this.quality.getFormat().ordinal());
-        dest.writeInt(this.quality.getQualityValue());
+        dest.writeInt(this.getQuality().getFormat().ordinal());
+        dest.writeInt(this.getQuality().getQualityValue());
         dest.writeString(this.pathToSave);
         dest.writeInt(this.count);
         dest.writeInt(this.width);
@@ -276,12 +293,11 @@ public class Preset implements Parcelable {
 
     protected Preset(Parcel in) {
         this.id = in.readInt();
+        this.generatorParamsId = in.readInt();
         this.timestamp = in.readLong();
         this.name = in.readString();
-        this.generatorParams = in.readParcelable(GeneratorParams.class.getClassLoader());
-        Bitmap.CompressFormat compressFormat = Bitmap.CompressFormat.values()[in.readInt()];
-        int qualityValue = in.readInt();
-        this.quality = new Quality(compressFormat, qualityValue);
+        setGeneratorParams(in.readParcelable(GeneratorParams.class.getClassLoader()));
+        setQuality(new Quality(Bitmap.CompressFormat.values()[in.readInt()], in.readInt()));
         this.pathToSave = in.readString();
         this.count = in.readInt();
         this.width = in.readInt();

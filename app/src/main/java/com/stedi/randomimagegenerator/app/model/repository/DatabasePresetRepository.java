@@ -17,6 +17,7 @@ import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredRect
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.FlatColorParams;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.MirroredParams;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.TextOverlayParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 
 import java.sql.SQLException;
@@ -63,8 +64,14 @@ public class DatabasePresetRepository extends OrmLiteSqliteOpenHelper implements
 
     @Override
     public synchronized void save(@NonNull Preset preset) throws Exception {
+        Class presetClass = preset.getGeneratorParams().getClass();
+        Dao<GeneratorParams, Integer> daoParams = getDao(presetClass);
+        Dao.CreateOrUpdateStatus status = daoParams.createOrUpdate(preset.getGeneratorParams());
+        if (!status.isCreated() && !status.isUpdated())
+            throw new SQLException("failed to save preset");
+        preset.setGeneratorParamsId(preset.getGeneratorParams().getId());
         Dao<Preset, Integer> dao = getDao(Preset.class);
-        Dao.CreateOrUpdateStatus status = dao.createOrUpdate(preset);
+        status = dao.createOrUpdate(preset);
         if (!status.isCreated() && !status.isUpdated())
             throw new SQLException("failed to save preset");
     }
