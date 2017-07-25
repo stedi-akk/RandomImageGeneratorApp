@@ -9,6 +9,7 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredCirclesParams;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredNoiseParams;
@@ -64,36 +65,75 @@ public class DatabasePresetRepository extends OrmLiteSqliteOpenHelper implements
 
     @Override
     public synchronized void save(@NonNull Preset preset) throws Exception {
-        Class presetClass = preset.getGeneratorParams().getClass();
-        Dao<GeneratorParams, Integer> daoParams = getDao(presetClass);
+        Class paramsClass = preset.getGeneratorParams().getClass();
+
+        Dao<GeneratorParams, Integer> daoParams = getDao(paramsClass);
         Dao.CreateOrUpdateStatus status = daoParams.createOrUpdate(preset.getGeneratorParams());
         if (!status.isCreated() && !status.isUpdated())
             throw new SQLException("failed to save preset");
+
         preset.setGeneratorParamsId(preset.getGeneratorParams().getId());
-        Dao<Preset, Integer> dao = getDao(Preset.class);
-        status = dao.createOrUpdate(preset);
+
+        Dao<Preset, Integer> daoPreset = getDao(Preset.class);
+        status = daoPreset.createOrUpdate(preset);
         if (!status.isCreated() && !status.isUpdated())
             throw new SQLException("failed to save preset");
     }
 
     @Override
     public synchronized void remove(int id) throws Exception {
-        Dao<Preset, Integer> dao = getDao(Preset.class);
-        if (dao.deleteById(id) != 1)
+        Dao<Preset, Integer> daoPreset = getDao(Preset.class);
+        Preset preset = daoPreset.queryForId(id);
+        Class paramsClass = getGeneratorParamsClassFromType(preset.getGeneratorType());
+        Dao<GeneratorParams, Integer> daoParams = getDao(paramsClass);
+        if (daoParams.deleteById(preset.getGeneratorParamsId()) != 1 || daoPreset.deleteById(id) != 1)
             throw new SQLException("failed to delete preset with id=" + id);
     }
 
     @Nullable
     @Override
     public synchronized Preset get(int id) throws Exception {
-        Dao<Preset, Integer> dao = getDao(Preset.class);
-        return dao.queryForId(id);
+        Dao<Preset, Integer> daoPreset = getDao(Preset.class);
+        Preset preset = daoPreset.queryForId(id);
+        Class paramsClass = getGeneratorParamsClassFromType(preset.getGeneratorType());
+        Dao<GeneratorParams, Integer> daoParams = getDao(paramsClass);
+        GeneratorParams generatorParams = daoParams.queryForId(preset.getGeneratorParamsId());
+        preset.setGeneratorParams(generatorParams);
+        return preset;
     }
 
     @NonNull
     @Override
     public synchronized List<Preset> getAll() throws Exception {
         Dao<Preset, Integer> dao = getDao(Preset.class);
-        return dao.queryForAll();
+        List<Preset> presets = dao.queryForAll();
+        for (Preset preset : presets) {
+            Class paramsClass = getGeneratorParamsClassFromType(preset.getGeneratorType());
+            Dao<GeneratorParams, Integer> daoParams = getDao(paramsClass);
+            GeneratorParams generatorParams = daoParams.queryForId(preset.getGeneratorParamsId());
+            preset.setGeneratorParams(generatorParams);
+        }
+        return presets;
+    }
+
+    private Class<? extends GeneratorParams> getGeneratorParamsClassFromType(GeneratorType type) throws Exception {
+        switch (type) {
+            case FLAT_COLOR:
+                return FlatColorParams.class;
+            case COLORED_PIXELS:
+                return ColoredPixelsParams.class;
+            case COLORED_CIRCLES:
+                return ColoredCirclesParams.class;
+            case COLORED_RECTANGLE:
+                return ColoredRectangleParams.class;
+            case COLORED_NOISE:
+                return ColoredNoiseParams.class;
+            case MIRRORED:
+                return MirroredParams.class;
+            case TEXT_OVERLAY:
+                return TextOverlayParams.class;
+            default:
+                throw new IllegalStateException("unreachable code");
+        }
     }
 }

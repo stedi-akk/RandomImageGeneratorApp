@@ -128,6 +128,14 @@ public class Preset implements Parcelable {
         return generatorParams;
     }
 
+    public GeneratorType getGeneratorType() {
+        return generatorType;
+    }
+
+    public void setGeneratorType(GeneratorType generatorType) {
+        this.generatorType = generatorType;
+    }
+
     public void setWidth(int width) {
         if (width < 1)
             throw new IllegalArgumentException("width must be > 0");
