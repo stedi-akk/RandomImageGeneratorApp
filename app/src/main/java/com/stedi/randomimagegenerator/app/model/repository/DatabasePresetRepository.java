@@ -18,6 +18,7 @@ import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredRect
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.FlatColorParams;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.MirroredParams;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.TextOverlayParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 
@@ -65,17 +66,10 @@ public class DatabasePresetRepository extends OrmLiteSqliteOpenHelper implements
 
     @Override
     public synchronized void save(@NonNull Preset preset) throws Exception {
-        Class paramsClass = preset.getGeneratorParams().getClass();
-
-        Dao<GeneratorParams, Integer> daoParams = getDao(paramsClass);
-        Dao.CreateOrUpdateStatus status = daoParams.createOrUpdate(preset.getGeneratorParams());
-        if (!status.isCreated() && !status.isUpdated())
-            throw new SQLException("failed to save preset");
-
+        saveGeneratorParamsRecursively(preset.getGeneratorParams());
         preset.setGeneratorParamsId(preset.getGeneratorParams().getId());
-
         Dao<Preset, Integer> daoPreset = getDao(Preset.class);
-        status = daoPreset.createOrUpdate(preset);
+        Dao.CreateOrUpdateStatus status = daoPreset.createOrUpdate(preset);
         if (!status.isCreated() && !status.isUpdated())
             throw new SQLException("failed to save preset");
     }
@@ -114,6 +108,22 @@ public class DatabasePresetRepository extends OrmLiteSqliteOpenHelper implements
             preset.setGeneratorParams(generatorParams);
         }
         return presets;
+    }
+
+    private void saveGeneratorParamsRecursively(GeneratorParams generatorParams) throws Exception {
+        if (generatorParams instanceof EffectGeneratorParams) {
+            EffectGeneratorParams effectGeneratorParams = (EffectGeneratorParams) generatorParams;
+            GeneratorParams targetParams = effectGeneratorParams.getTarget();
+            saveGeneratorParamsRecursively(targetParams);
+            effectGeneratorParams.setTargetGeneratorParamsId(targetParams.getId());
+        }
+
+        Class paramsClass = generatorParams.getClass();
+
+        Dao<GeneratorParams, Integer> daoParams = getDao(paramsClass);
+        Dao.CreateOrUpdateStatus status = daoParams.createOrUpdate(generatorParams);
+        if (!status.isCreated() && !status.isUpdated())
+            throw new SQLException("failed to save preset");
     }
 
     private Class<? extends GeneratorParams> getGeneratorParamsClassFromType(GeneratorType type) throws Exception {
