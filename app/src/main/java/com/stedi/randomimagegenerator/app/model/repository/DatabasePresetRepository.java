@@ -95,7 +95,9 @@ public class DatabasePresetRepository extends OrmLiteSqliteOpenHelper implements
     public synchronized Preset get(int id) throws Exception {
         Dao<Preset, Integer> daoPreset = getDao(Preset.class);
         Preset preset = daoPreset.queryForId(id);
-        preset.setGeneratorParams(queryGeneratorParamsById(preset.getGeneratorType(), preset.getGeneratorParamsId()));
+        GeneratorParams generatorParams = queryGeneratorParamsById(preset.getGeneratorType(), preset.getGeneratorParamsId());
+        fillGeneratorParamsRecursively(generatorParams);
+        preset.setGeneratorParams(generatorParams);
         return preset;
     }
 
@@ -105,7 +107,9 @@ public class DatabasePresetRepository extends OrmLiteSqliteOpenHelper implements
         Dao<Preset, Integer> dao = getDao(Preset.class);
         List<Preset> presets = dao.queryForAll();
         for (Preset preset : presets) {
-            preset.setGeneratorParams(queryGeneratorParamsById(preset.getGeneratorType(), preset.getGeneratorParamsId()));
+            GeneratorParams generatorParams = queryGeneratorParamsById(preset.getGeneratorType(), preset.getGeneratorParamsId());
+            fillGeneratorParamsRecursively(generatorParams);
+            preset.setGeneratorParams(generatorParams);
         }
         return presets;
     }
@@ -133,6 +137,15 @@ public class DatabasePresetRepository extends OrmLiteSqliteOpenHelper implements
         Dao<GeneratorParams, Integer> daoParams = getDao(paramsClass);
         if (daoParams.delete(generatorParams) != 1)
             throw new SQLException("failed to delete generator params " + generatorParams);
+    }
+
+    private void fillGeneratorParamsRecursively(GeneratorParams generatorParams) throws Exception {
+        if (generatorParams instanceof EffectGeneratorParams) {
+            EffectGeneratorParams effectParams = (EffectGeneratorParams) generatorParams;
+            GeneratorParams targetParams = queryGeneratorParamsById(effectParams.getTargetGeneratorType(), effectParams.getTargetGeneratorParamsId());
+            fillGeneratorParamsRecursively(targetParams);
+            effectParams.setTarget(targetParams);
+        }
     }
 
     private GeneratorParams queryGeneratorParamsById(GeneratorType type, int id) throws Exception {
