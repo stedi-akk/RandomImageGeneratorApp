@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.misc.TransactionManager;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
@@ -41,15 +42,10 @@ public class DatabasePresetRepository extends OrmLiteSqliteOpenHelper implements
     @Override
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         try {
-            TableUtils.createTable(connectionSource, Preset.class);
-            TableUtils.createTable(connectionSource, ColoredCirclesParams.class);
-            TableUtils.createTable(connectionSource, ColoredNoiseParams.class);
-            TableUtils.createTable(connectionSource, ColoredPixelsParams.class);
-            TableUtils.createTable(connectionSource, ColoredRectangleParams.class);
-            TableUtils.createTable(connectionSource, FlatColorParams.class);
-            TableUtils.createTable(connectionSource, MirroredParams.class);
-            TableUtils.createTable(connectionSource, TextOverlayParams.class);
-        } catch (SQLException e) {
+            TableUtils.createTableIfNotExists(connectionSource, Preset.class);
+            for (GeneratorType type : GeneratorType.values())
+                TableUtils.createTableIfNotExists(connectionSource, getGeneratorParamsClassFromType(type));
+        } catch (Exception e) {
             logger.log(this, e);
         }
     }
@@ -58,36 +54,37 @@ public class DatabasePresetRepository extends OrmLiteSqliteOpenHelper implements
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
         try {
             TableUtils.dropTable(connectionSource, Preset.class, false);
-            TableUtils.dropTable(connectionSource, ColoredCirclesParams.class, false);
-            TableUtils.dropTable(connectionSource, ColoredNoiseParams.class, false);
-            TableUtils.dropTable(connectionSource, ColoredPixelsParams.class, false);
-            TableUtils.dropTable(connectionSource, ColoredRectangleParams.class, false);
-            TableUtils.dropTable(connectionSource, FlatColorParams.class, false);
-            TableUtils.dropTable(connectionSource, MirroredParams.class, false);
-            TableUtils.dropTable(connectionSource, TextOverlayParams.class, false);
+            for (GeneratorType type : GeneratorType.values())
+                TableUtils.dropTable(connectionSource, getGeneratorParamsClassFromType(type), false);
             onCreate(database, connectionSource);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             logger.log(this, e);
         }
     }
 
     @Override
     public synchronized void save(@NonNull Preset preset) throws Exception {
-        saveGeneratorParamsRecursively(preset.getGeneratorParams());
-        preset.setGeneratorParamsId(preset.getGeneratorParams().getId());
-        Dao<Preset, Integer> daoPreset = getDao(Preset.class);
-        Dao.CreateOrUpdateStatus status = daoPreset.createOrUpdate(preset);
-        if (!status.isCreated() && !status.isUpdated())
-            throw new SQLException("failed to save or update preset");
+        TransactionManager.callInTransaction(getConnectionSource(), () -> {
+            saveGeneratorParamsRecursively(preset.getGeneratorParams());
+            preset.setGeneratorParamsId(preset.getGeneratorParams().getId());
+            Dao<Preset, Integer> daoPreset = getDao(Preset.class);
+            Dao.CreateOrUpdateStatus status = daoPreset.createOrUpdate(preset);
+            if (!status.isCreated() && !status.isUpdated())
+                throw new SQLException("failed to save or update preset");
+            return true;
+        });
     }
 
     @Override
     public synchronized void remove(int id) throws Exception {
-        Dao<Preset, Integer> daoPreset = getDao(Preset.class);
-        Preset preset = daoPreset.queryForId(id);
-        deleteGeneratorParamsRecursively(queryGeneratorParamsById(preset.getGeneratorType(), preset.getGeneratorParamsId()));
-        if (daoPreset.delete(preset) != 1)
-            throw new SQLException("failed to delete preset with id=" + id);
+        TransactionManager.callInTransaction(getConnectionSource(), () -> {
+            Dao<Preset, Integer> daoPreset = getDao(Preset.class);
+            Preset preset = daoPreset.queryForId(id);
+            deleteGeneratorParamsRecursively(queryGeneratorParamsById(preset.getGeneratorType(), preset.getGeneratorParamsId()));
+            if (daoPreset.delete(preset) != 1)
+                throw new SQLException("failed to delete preset with id=" + id);
+            return true;
+        });
     }
 
     @Nullable
