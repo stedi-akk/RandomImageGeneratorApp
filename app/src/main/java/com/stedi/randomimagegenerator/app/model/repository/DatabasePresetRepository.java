@@ -58,6 +58,13 @@ public class DatabasePresetRepository extends OrmLiteSqliteOpenHelper implements
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
         try {
             TableUtils.dropTable(connectionSource, Preset.class, false);
+            TableUtils.dropTable(connectionSource, ColoredCirclesParams.class, false);
+            TableUtils.dropTable(connectionSource, ColoredNoiseParams.class, false);
+            TableUtils.dropTable(connectionSource, ColoredPixelsParams.class, false);
+            TableUtils.dropTable(connectionSource, ColoredRectangleParams.class, false);
+            TableUtils.dropTable(connectionSource, FlatColorParams.class, false);
+            TableUtils.dropTable(connectionSource, MirroredParams.class, false);
+            TableUtils.dropTable(connectionSource, TextOverlayParams.class, false);
             onCreate(database, connectionSource);
         } catch (SQLException e) {
             logger.log(this, e);
@@ -71,16 +78,15 @@ public class DatabasePresetRepository extends OrmLiteSqliteOpenHelper implements
         Dao<Preset, Integer> daoPreset = getDao(Preset.class);
         Dao.CreateOrUpdateStatus status = daoPreset.createOrUpdate(preset);
         if (!status.isCreated() && !status.isUpdated())
-            throw new SQLException("failed to save preset");
+            throw new SQLException("failed to save or update preset");
     }
 
     @Override
     public synchronized void remove(int id) throws Exception {
         Dao<Preset, Integer> daoPreset = getDao(Preset.class);
         Preset preset = daoPreset.queryForId(id);
-        Class paramsClass = getGeneratorParamsClassFromType(preset.getGeneratorType());
-        Dao<GeneratorParams, Integer> daoParams = getDao(paramsClass);
-        if (daoParams.deleteById(preset.getGeneratorParamsId()) != 1 || daoPreset.deleteById(id) != 1)
+        deleteGeneratorParamsRecursively(queryGeneratorParamsById(preset.getGeneratorType(), preset.getGeneratorParamsId()));
+        if (daoPreset.delete(preset) != 1)
             throw new SQLException("failed to delete preset with id=" + id);
     }
 
@@ -89,10 +95,7 @@ public class DatabasePresetRepository extends OrmLiteSqliteOpenHelper implements
     public synchronized Preset get(int id) throws Exception {
         Dao<Preset, Integer> daoPreset = getDao(Preset.class);
         Preset preset = daoPreset.queryForId(id);
-        Class paramsClass = getGeneratorParamsClassFromType(preset.getGeneratorType());
-        Dao<GeneratorParams, Integer> daoParams = getDao(paramsClass);
-        GeneratorParams generatorParams = daoParams.queryForId(preset.getGeneratorParamsId());
-        preset.setGeneratorParams(generatorParams);
+        preset.setGeneratorParams(queryGeneratorParamsById(preset.getGeneratorType(), preset.getGeneratorParamsId()));
         return preset;
     }
 
@@ -102,28 +105,40 @@ public class DatabasePresetRepository extends OrmLiteSqliteOpenHelper implements
         Dao<Preset, Integer> dao = getDao(Preset.class);
         List<Preset> presets = dao.queryForAll();
         for (Preset preset : presets) {
-            Class paramsClass = getGeneratorParamsClassFromType(preset.getGeneratorType());
-            Dao<GeneratorParams, Integer> daoParams = getDao(paramsClass);
-            GeneratorParams generatorParams = daoParams.queryForId(preset.getGeneratorParamsId());
-            preset.setGeneratorParams(generatorParams);
+            preset.setGeneratorParams(queryGeneratorParamsById(preset.getGeneratorType(), preset.getGeneratorParamsId()));
         }
         return presets;
     }
 
     private void saveGeneratorParamsRecursively(GeneratorParams generatorParams) throws Exception {
         if (generatorParams instanceof EffectGeneratorParams) {
-            EffectGeneratorParams effectGeneratorParams = (EffectGeneratorParams) generatorParams;
-            GeneratorParams targetParams = effectGeneratorParams.getTarget();
+            EffectGeneratorParams effectParams = (EffectGeneratorParams) generatorParams;
+            GeneratorParams targetParams = effectParams.getTarget();
             saveGeneratorParamsRecursively(targetParams);
-            effectGeneratorParams.setTargetGeneratorParamsId(targetParams.getId());
+            effectParams.setTargetGeneratorParamsId(targetParams.getId());
         }
-
         Class paramsClass = generatorParams.getClass();
-
         Dao<GeneratorParams, Integer> daoParams = getDao(paramsClass);
         Dao.CreateOrUpdateStatus status = daoParams.createOrUpdate(generatorParams);
         if (!status.isCreated() && !status.isUpdated())
-            throw new SQLException("failed to save preset");
+            throw new SQLException("failed to save generator params " + generatorParams);
+    }
+
+    private void deleteGeneratorParamsRecursively(GeneratorParams generatorParams) throws Exception {
+        if (generatorParams instanceof EffectGeneratorParams) {
+            EffectGeneratorParams effectParams = (EffectGeneratorParams) generatorParams;
+            deleteGeneratorParamsRecursively(queryGeneratorParamsById(effectParams.getTargetGeneratorType(), effectParams.getTargetGeneratorParamsId()));
+        }
+        Class paramsClass = generatorParams.getClass();
+        Dao<GeneratorParams, Integer> daoParams = getDao(paramsClass);
+        if (daoParams.delete(generatorParams) != 1)
+            throw new SQLException("failed to delete generator params " + generatorParams);
+    }
+
+    private GeneratorParams queryGeneratorParamsById(GeneratorType type, int id) throws Exception {
+        Class paramsClass = getGeneratorParamsClassFromType(type);
+        Dao<GeneratorParams, Integer> daoParams = getDao(paramsClass);
+        return daoParams.queryForId(id);
     }
 
     private Class<? extends GeneratorParams> getGeneratorParamsClassFromType(GeneratorType type) throws Exception {
