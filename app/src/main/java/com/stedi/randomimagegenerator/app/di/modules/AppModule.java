@@ -5,6 +5,7 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.app.App;
+import com.stedi.randomimagegenerator.app.di.qualifiers.AppContext;
 import com.stedi.randomimagegenerator.app.di.qualifiers.DefaultScheduler;
 import com.stedi.randomimagegenerator.app.di.qualifiers.RigScheduler;
 import com.stedi.randomimagegenerator.app.di.qualifiers.UiScheduler;
@@ -12,7 +13,6 @@ import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 
-import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -31,7 +31,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    @Named("AppContext")
+    @AppContext
     Context provideAppContext() {
         return app;
     }

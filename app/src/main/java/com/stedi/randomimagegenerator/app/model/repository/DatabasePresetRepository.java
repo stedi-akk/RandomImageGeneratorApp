@@ -10,6 +10,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.misc.TransactionManager;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import com.stedi.randomimagegenerator.app.di.qualifiers.AppContext;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredCirclesParams;
@@ -26,15 +27,13 @@ import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.inject.Named;
-
 public class DatabasePresetRepository extends OrmLiteSqliteOpenHelper implements PresetRepository {
     private static final String DATABASE_NAME = "presets_database";
     private static final int DATABASE_VERSION = 1;
 
     private final Logger logger;
 
-    public DatabasePresetRepository(@Named("AppContext") Context context, @NonNull Logger logger) {
+    public DatabasePresetRepository(@NonNull @AppContext Context context, @NonNull Logger logger) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.logger = logger;
     }

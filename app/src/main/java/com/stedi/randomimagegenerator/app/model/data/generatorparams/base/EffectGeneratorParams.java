@@ -12,6 +12,7 @@ public abstract class EffectGeneratorParams extends GeneratorParams {
     private GeneratorType targetGeneratorType;
     @DatabaseField(columnName = "target_generator_params_id")
     private int targetGeneratorParamsId;
+
     private GeneratorParams target;
 
     public EffectGeneratorParams() {
@@ -33,10 +34,6 @@ public abstract class EffectGeneratorParams extends GeneratorParams {
 
     public GeneratorType getTargetGeneratorType() {
         return targetGeneratorType;
-    }
-
-    public void setTargetGeneratorType(GeneratorType targetGeneratorType) {
-        this.targetGeneratorType = targetGeneratorType;
     }
 
     public int getTargetGeneratorParamsId() {

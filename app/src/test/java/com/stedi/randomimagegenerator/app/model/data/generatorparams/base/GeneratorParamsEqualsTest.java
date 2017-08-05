@@ -15,6 +15,11 @@ public class GeneratorParamsEqualsTest {
     @SuppressLint("ParcelCreator")
     private class GeneratorParams1 extends GeneratorParams {
         @Override
+        public int getId() {
+            return 0;
+        }
+
+        @Override
         public boolean isEditable() {
             return false;
         }

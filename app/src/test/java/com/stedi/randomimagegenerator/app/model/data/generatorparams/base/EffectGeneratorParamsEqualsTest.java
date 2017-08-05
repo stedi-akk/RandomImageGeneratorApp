@@ -24,6 +24,11 @@ public class EffectGeneratorParamsEqualsTest {
         }
 
         @Override
+        public int getId() {
+            return 0;
+        }
+
+        @Override
         public boolean isEditable() {
             return false;
         }

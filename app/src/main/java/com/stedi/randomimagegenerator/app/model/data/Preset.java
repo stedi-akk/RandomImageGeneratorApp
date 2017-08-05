@@ -54,14 +54,10 @@ public class Preset implements Parcelable {
                   @NonNull GeneratorParams generatorParams,
                   @NonNull Quality quality,
                   @NonNull String pathToSave) {
-        if (name.isEmpty())
-            throw new IllegalArgumentException("name must not be empty");
-        if (pathToSave.isEmpty())
-            throw new IllegalArgumentException("pathToSave must not be empty");
-        this.name = name;
+        setName(name);
         setGeneratorParams(generatorParams);
         setQuality(quality);
-        this.pathToSave = pathToSave;
+        setPathToSave(pathToSave);
     }
 
     public Preset createCopy() {
@@ -130,10 +126,6 @@ public class Preset implements Parcelable {
 
     public GeneratorType getGeneratorType() {
         return generatorType;
-    }
-
-    public void setGeneratorType(GeneratorType generatorType) {
-        this.generatorType = generatorType;
     }
 
     public void setWidth(int width) {

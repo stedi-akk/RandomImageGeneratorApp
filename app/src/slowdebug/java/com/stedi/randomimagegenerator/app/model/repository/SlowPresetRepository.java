@@ -16,15 +16,15 @@ public class SlowPresetRepository implements PresetRepository {
     }
 
     @Override
-    public boolean save(@NonNull Preset preset) throws Exception {
+    public void save(@NonNull Preset preset) throws Exception {
         Utils.sleep(3000);
-        return target.save(preset);
+        target.save(preset);
     }
 
     @Override
-    public boolean remove(int id) throws Exception {
+    public void remove(int id) throws Exception {
         Utils.sleep(3000);
-        return target.remove(id);
+        target.remove(id);
     }
 
     @Nullable

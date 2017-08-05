@@ -18,6 +18,11 @@ public class SimpleIntegerParamsTest {
             return false;
         }
 
+        @Override
+        public int getId() {
+            return 0;
+        }
+
         @NonNull
         @Override
         public GeneratorType getType() {
@@ -36,6 +41,11 @@ public class SimpleIntegerParamsTest {
         @Override
         public boolean canBeRandom() {
             return true;
+        }
+
+        @Override
+        public int getId() {
+            return 0;
         }
 
         @NonNull
