@@ -1,6 +1,10 @@
 package com.stedi.randomimagegenerator.app.other;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
+
 import com.squareup.otto.Bus;
+import com.squareup.otto.ThreadEnforcer;
 
 import java.util.LinkedList;
 
@@ -10,6 +14,13 @@ public class CachedBus extends Bus {
     private final Thread creationThread = Thread.currentThread();
 
     private boolean locked;
+
+    public CachedBus() {
+    }
+
+    public CachedBus(@NonNull ThreadEnforcer enforcer) {
+        super(enforcer);
+    }
 
     public void lock() {
         ensureCreationThread();
@@ -44,5 +55,10 @@ public class CachedBus extends Bus {
     private void ensureCreationThread() {
         if (Thread.currentThread() != creationThread)
             throw new IllegalStateException("CachedBus requires the thread from which it was created");
+    }
+
+    @VisibleForTesting
+    LinkedList<Runnable> getCache() {
+        return cache;
     }
 }

@@ -7,7 +7,7 @@ import android.util.Log;
 public class LogCatLogger implements Logger {
     private final String tag;
 
-    public LogCatLogger(String tag) {
+    public LogCatLogger(@NonNull String tag) {
         this.tag = tag;
     }
 
