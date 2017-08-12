@@ -25,6 +25,6 @@ public class BuildTypeDependentModule {
     @Provides
     @Singleton
     PresetRepository providePresetRepository(@AppContext Context context, Logger logger) {
-        return new CachedPresetRepository(new DatabasePresetRepository(context, logger));
+        return new CachedPresetRepository(new DatabasePresetRepository(context, "presets_database_dbg", logger));
     }
 }

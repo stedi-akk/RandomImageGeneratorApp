@@ -28,13 +28,12 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class DatabasePresetRepository extends OrmLiteSqliteOpenHelper implements PresetRepository {
-    private static final String DATABASE_NAME = "presets_database";
     private static final int DATABASE_VERSION = 1;
 
     private final Logger logger;
 
-    public DatabasePresetRepository(@NonNull @AppContext Context context, @NonNull Logger logger) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    public DatabasePresetRepository(@NonNull @AppContext Context context, @NonNull String databaseName, @NonNull Logger logger) {
+        super(context, databaseName, null, DATABASE_VERSION);
         this.logger = logger;
     }
 
@@ -91,9 +90,11 @@ public class DatabasePresetRepository extends OrmLiteSqliteOpenHelper implements
     public synchronized Preset get(int id) throws Exception {
         Dao<Preset, Integer> daoPreset = getDao(Preset.class);
         Preset preset = daoPreset.queryForId(id);
-        GeneratorParams generatorParams = queryGeneratorParamsById(preset.getGeneratorType(), preset.getGeneratorParamsId());
-        fillGeneratorParamsRecursively(generatorParams);
-        preset.setGeneratorParams(generatorParams);
+        if (preset != null) {
+            GeneratorParams generatorParams = queryGeneratorParamsById(preset.getGeneratorType(), preset.getGeneratorParamsId());
+            fillGeneratorParamsRecursively(generatorParams);
+            preset.setGeneratorParams(generatorParams);
+        }
         return preset;
     }
 
