@@ -8,28 +8,40 @@ import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredNois
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 import com.stedi.randomimagegenerator.generators.ColoredNoiseGenerator;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static junit.framework.Assert.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
 public class PresetTest {
-    private ColoredNoiseParams generatorParams;
-    private Preset preset;
+    private static List<GeneratorType> nonEffectTypes = new ArrayList<>();
+    private static List<GeneratorType> effectTypes = new ArrayList<>();
+    private static List<Quality> qualities = new ArrayList<>();
 
-    @Before
-    public void before() {
-        generatorParams = (ColoredNoiseParams) GeneratorParams.createDefaultParams(GeneratorType.COLORED_NOISE);
-        preset = new Preset("ololo",
-                generatorParams,
-                Quality.png(),
-                "path");
+    @BeforeClass
+    public static void beforeClass() {
+        for (GeneratorType gt : GeneratorType.values()) {
+            if (gt.isEffect()) {
+                effectTypes.add(gt);
+            } else {
+                nonEffectTypes.add(gt);
+            }
+        }
+        qualities.add(Quality.png());
+        qualities.add(Quality.jpg(100));
+        qualities.add(new Quality(Bitmap.CompressFormat.WEBP, 100));
     }
 
     @Test
     public void testCreateCopyAndEquals() {
+        ColoredNoiseParams generatorParams = (ColoredNoiseParams) GeneratorParams.createDefaultParams(GeneratorType.COLORED_NOISE);
+        Preset preset = new Preset("ololo", generatorParams, Quality.png(), "path");
+
         preset.setId(1);
         preset.setTimestamp(1337L);
         preset.setWidth(100);
@@ -59,7 +71,79 @@ public class PresetTest {
     }
 
     @Test
+    public void testCreateCopyAndEqualsNonEffectParams() {
+        int ids = 1;
+        for (GeneratorType generatorType : nonEffectTypes) {
+            for (Quality quality : qualities) {
+                GeneratorParams generatorParams = GeneratorParams.createDefaultParams(generatorType);
+                String name = "name" + ids;
+                Preset preset = new Preset(name, generatorParams, quality, "path");
+
+                preset.setId(ids);
+                long timestamp = System.currentTimeMillis();
+                preset.setTimestamp(timestamp);
+                preset.setWidth(100);
+                preset.setHeightRange(10, 100, 10);
+
+                Preset copy = preset.createCopy();
+
+                assertTrue(copy.getId() == ids);
+                assertTrue(copy.getTimestamp() == timestamp);
+                assertTrue(copy.getName().equals(name));
+                assertTrue(copy.getGeneratorParams().equals(generatorParams));
+                assertTrue(copy.getWidth() == 100);
+                assertArrayEquals(copy.getHeightRange(), new int[] {10, 100, 10});
+                assertTrue(copy.getQuality().getFormat() == quality.getFormat());
+                assertTrue(copy.getQuality().getQualityValue() == quality.getQualityValue());
+                assertTrue(copy.getPathToSave().equals("path"));
+                assertNull(copy.getWidthRange());
+
+                assertTrue(copy.equals(preset));
+
+                ids++;
+            }
+        }
+    }
+
+    @Test
+    public void testCreateCopyAndEqualsEffectParams() {
+        int ids = 1;
+        for (GeneratorType effectType : effectTypes) {
+            for (GeneratorType nonEffectType : nonEffectTypes) {
+                for (Quality quality : qualities) {
+                    GeneratorParams generatorParams = GeneratorParams.createDefaultEffectParams(effectType, GeneratorParams.createDefaultParams(nonEffectType));
+                    String name = "name" + ids;
+                    Preset preset = new Preset(name, generatorParams, quality, "path");
+
+                    preset.setId(ids);
+                    long timestamp = System.currentTimeMillis();
+                    preset.setTimestamp(timestamp);
+                    preset.setWidthRange(100, 10, 10);
+                    preset.setHeightRange(10, 1000, 10);
+
+                    Preset copy = preset.createCopy();
+
+                    assertTrue(copy.getId() == ids);
+                    assertTrue(copy.getTimestamp() == timestamp);
+                    assertTrue(copy.getName().equals(name));
+                    assertTrue(copy.getGeneratorParams().equals(generatorParams));
+                    assertArrayEquals(copy.getWidthRange(), new int[] {100, 10, 10});
+                    assertArrayEquals(copy.getHeightRange(), new int[] {10, 1000, 10});
+                    assertTrue(copy.getQuality().getFormat() == quality.getFormat());
+                    assertTrue(copy.getQuality().getQualityValue() == quality.getQualityValue());
+                    assertTrue(copy.getPathToSave().equals("path"));
+
+                    assertTrue(copy.equals(preset));
+
+                    ids++;
+                }
+            }
+        }
+    }
+
+    @Test
     public void testSettersExceptions() {
+        Preset preset = new Preset("ololo", GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), "path");
         try {
             preset.setId(0);
             fail();
