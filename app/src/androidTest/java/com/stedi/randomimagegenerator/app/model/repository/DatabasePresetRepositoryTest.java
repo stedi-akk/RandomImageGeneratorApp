@@ -84,6 +84,20 @@ public class DatabasePresetRepositoryTest {
     }
 
     @Test
+    public void saveUpdateTest() throws Exception {
+        Preset preset = new Preset("name", GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), "folder");
+
+        repository.save(preset);
+        Preset databasePreset = repository.get(1);
+        assertEquals(databasePreset, preset);
+
+        preset.setName("changed name");
+        repository.save(preset);
+        databasePreset = repository.get(1);
+        assertEquals(databasePreset, preset);
+    }
+
+    @Test
     public void nonEffectParamsTest() throws Exception {
         int ids = 1;
         for (GeneratorType type : nonEffectTypes) {
