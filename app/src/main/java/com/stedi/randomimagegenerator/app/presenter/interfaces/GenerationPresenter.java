@@ -106,8 +106,8 @@ abstract class GenerationPresenter<T extends GenerationPresenter.UIImpl> impleme
 
                     @Override
                     public void onFailedToGenerate(ImageParams imageParams, Exception e) {
-                        logger.log(this, e);
-                        generationFor = imageParams;
+                        logger.log(GenerationPresenter.this, e);
+                        Completable.fromAction(() -> bus.post(new Event(Event.Type.ON_FAILED_TO_GENERATE, imageParams))).subscribeOn(observeOn).subscribe();
                     }
                 });
                 builder.setFileSaveCallback(new SaveCallback() {
@@ -119,7 +119,7 @@ abstract class GenerationPresenter<T extends GenerationPresenter.UIImpl> impleme
 
                     @Override
                     public void onFailedToSave(Bitmap bitmap, Exception e) {
-                        logger.log(this, e);
+                        logger.log(GenerationPresenter.this, e);
                         final ImageParams generationForRef = generationFor;
                         Completable.fromAction(() -> bus.post(new Event(Event.Type.ON_FAILED_TO_GENERATE, generationForRef))).subscribeOn(observeOn).subscribe();
                     }
