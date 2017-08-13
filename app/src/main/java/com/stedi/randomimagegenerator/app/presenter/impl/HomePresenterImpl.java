@@ -122,6 +122,10 @@ public class HomePresenterImpl extends HomePresenter {
 
     @Override
     public void deletePreset(@NonNull Preset preset) {
+        if (lastActionConfirm != null) {
+            logger.log(this, "ignoring deletePreset, because last action " + lastActionConfirm + " is not confirmed/canceled");
+            return;
+        }
         logger.log(this, "deletePreset " + preset);
         if (pendingPreset.get() == preset) {
             pendingPreset.clear();
@@ -135,6 +139,10 @@ public class HomePresenterImpl extends HomePresenter {
 
     @Override
     public void startGeneration(@NonNull Preset preset) {
+        if (lastActionConfirm != null) {
+            logger.log(this, "ignoring startGeneration, because last action " + lastActionConfirm + " is not confirmed/canceled");
+            return;
+        }
         logger.log(this, "startGeneration " + preset);
         lastActionConfirm = Confirm.GENERATE_FROM_PRESET;
         lastActionPresetId = preset.getId();

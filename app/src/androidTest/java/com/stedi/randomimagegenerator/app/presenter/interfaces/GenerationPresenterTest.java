@@ -2,20 +2,19 @@ package com.stedi.randomimagegenerator.app.presenter.interfaces;
 
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.squareup.otto.ThreadEnforcer;
 import com.stedi.randomimagegenerator.ImageParams;
 import com.stedi.randomimagegenerator.Quality;
 import com.stedi.randomimagegenerator.Rig;
+import com.stedi.randomimagegenerator.app.TestUtils;
 import com.stedi.randomimagegenerator.app.di.qualifiers.RigScheduler;
 import com.stedi.randomimagegenerator.app.di.qualifiers.UiScheduler;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
-import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.other.logger.SoutLogger;
 import com.stedi.randomimagegenerator.generators.FlatColorGenerator;
@@ -27,8 +26,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import rx.Scheduler;
@@ -61,12 +58,7 @@ public class GenerationPresenterTest {
 
     @AfterClass
     public static void afterClass() {
-        try {
-            Utils.deleteRecursively(getTestFolder());
-            System.out.println("test folder successfully deleted");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        TestUtils.deleteTestFolder();
     }
 
     @Test
@@ -74,7 +66,7 @@ public class GenerationPresenterTest {
         GeneratorParams generatorParams = mock(GeneratorParams.class);
         when(generatorParams.getGenerator()).thenReturn(null);
 
-        Preset preset = new Preset("name", generatorParams, Quality.png(), getTestFolder().getAbsolutePath());
+        Preset preset = new Preset("name", generatorParams, Quality.png(), TestUtils.getTestFolder().getAbsolutePath());
 
         presenter.startGeneration(preset);
         verify(ui, times(1)).onStartGeneration();
@@ -84,7 +76,7 @@ public class GenerationPresenterTest {
 
     @Test
     public void testOneSimple() {
-        Preset preset = new Preset("name", GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), getTestFolder().getAbsolutePath());
+        Preset preset = new Preset("name", GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), TestUtils.getTestFolder().getAbsolutePath());
         preset.setWidth(100);
         preset.setHeight(200);
         preset.setCount(1);
@@ -96,7 +88,7 @@ public class GenerationPresenterTest {
         assertTrue(ip.getWidth() == 100);
         assertTrue(ip.getHeight() == 200);
         assertTrue(ip.getQuality().getFormat() == Quality.png().getFormat());
-        assertTrue(ip.getPath().getAbsolutePath().equals(getTestFolder().getAbsolutePath()));
+        assertTrue(ip.getPath().getAbsolutePath().equals(TestUtils.getTestFolder().getAbsolutePath()));
         assertTrue(ip.getId() == 1);
         verify(ui, times(1)).onFinishGeneration();
         verifyNoMoreInteractions(ui);
@@ -109,7 +101,7 @@ public class GenerationPresenterTest {
         GeneratorParams generatorParams = mock(GeneratorParams.class);
         when(generatorParams.getGenerator()).thenReturn(generator);
 
-        Preset preset = new Preset("name", generatorParams, Quality.png(), getTestFolder().getAbsolutePath());
+        Preset preset = new Preset("name", generatorParams, Quality.png(), TestUtils.getTestFolder().getAbsolutePath());
         preset.setWidth(100);
         preset.setHeight(200);
         preset.setCount(1);
@@ -121,7 +113,7 @@ public class GenerationPresenterTest {
         assertTrue(ip.getWidth() == 100);
         assertTrue(ip.getHeight() == 200);
         assertTrue(ip.getQuality().getFormat() == Quality.png().getFormat());
-        assertTrue(ip.getPath().getAbsolutePath().equals(getTestFolder().getAbsolutePath()));
+        assertTrue(ip.getPath().getAbsolutePath().equals(TestUtils.getTestFolder().getAbsolutePath()));
         assertTrue(ip.getId() == 1);
         verify(ui, times(1)).onFinishGeneration();
         verifyNoMoreInteractions(ui);
@@ -134,7 +126,7 @@ public class GenerationPresenterTest {
         GeneratorParams generatorParams = mock(GeneratorParams.class);
         when(generatorParams.getGenerator()).thenReturn(generator);
 
-        Preset preset = new Preset("name", generatorParams, Quality.jpg(77), getTestFolder().getAbsolutePath());
+        Preset preset = new Preset("name", generatorParams, Quality.jpg(77), TestUtils.getTestFolder().getAbsolutePath());
         preset.setWidth(666);
         preset.setHeight(777);
         preset.setCount(1);
@@ -147,7 +139,7 @@ public class GenerationPresenterTest {
         assertTrue(ip.getHeight() == 777);
         assertTrue(ip.getQuality().getFormat() == Quality.jpg(77).getFormat());
         assertTrue(ip.getQuality().getQualityValue() == 77);
-        assertTrue(ip.getPath().getAbsolutePath().equals(getTestFolder().getAbsolutePath()));
+        assertTrue(ip.getPath().getAbsolutePath().equals(TestUtils.getTestFolder().getAbsolutePath()));
         assertTrue(ip.getId() == 1);
         verify(ui, times(1)).onFinishGeneration();
         verifyNoMoreInteractions(ui);
@@ -155,7 +147,7 @@ public class GenerationPresenterTest {
 
     @Test
     public void testMany() {
-        Preset preset = new Preset("name", GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), getTestFolder().getAbsolutePath());
+        Preset preset = new Preset("name", GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), TestUtils.getTestFolder().getAbsolutePath());
         preset.setWidth(66);
         preset.setHeight(99);
         preset.setCount(6);
@@ -170,7 +162,7 @@ public class GenerationPresenterTest {
             assertTrue(ip.getWidth() == 66);
             assertTrue(ip.getHeight() == 99);
             assertTrue(ip.getQuality().getFormat() == Quality.png().getFormat());
-            assertTrue(ip.getPath().getAbsolutePath().equals(getTestFolder().getAbsolutePath()));
+            assertTrue(ip.getPath().getAbsolutePath().equals(TestUtils.getTestFolder().getAbsolutePath()));
             assertTrue(ip.getId() == id);
             id++;
         }
@@ -191,7 +183,7 @@ public class GenerationPresenterTest {
         GeneratorParams generatorParams = mock(GeneratorParams.class);
         when(generatorParams.getGenerator()).thenReturn(generator);
 
-        Preset preset = new Preset("name", generatorParams, Quality.jpg(11), getTestFolder().getAbsolutePath());
+        Preset preset = new Preset("name", generatorParams, Quality.jpg(11), TestUtils.getTestFolder().getAbsolutePath());
         preset.setWidth(100);
         preset.setHeight(100);
         preset.setCount(4);
@@ -206,7 +198,7 @@ public class GenerationPresenterTest {
             assertTrue(ip.getHeight() == 100);
             assertTrue(ip.getQuality().getFormat() == Quality.jpg(11).getFormat());
             assertTrue(ip.getQuality().getQualityValue() == 11);
-            assertTrue(ip.getPath().getAbsolutePath().equals(getTestFolder().getAbsolutePath()));
+            assertTrue(ip.getPath().getAbsolutePath().equals(TestUtils.getTestFolder().getAbsolutePath()));
         }
         verify(ui, times(1)).onFailedToGenerate(imageParamsCaptor.capture());
         ImageParams ip = imageParamsCaptor.getValue();
@@ -217,7 +209,7 @@ public class GenerationPresenterTest {
 
     @Test
     public void testManyRange() {
-        Preset preset = new Preset("name", GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR), new Quality(Bitmap.CompressFormat.WEBP, 100), getTestFolder().getAbsolutePath());
+        Preset preset = new Preset("name", GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR), new Quality(Bitmap.CompressFormat.WEBP, 100), TestUtils.getTestFolder().getAbsolutePath());
         preset.setWidthRange(10, 100, 50);
         preset.setHeightRange(100, 10, 50);
 
@@ -247,7 +239,7 @@ public class GenerationPresenterTest {
         GeneratorParams generatorParams = mock(GeneratorParams.class);
         when(generatorParams.getGenerator()).thenReturn(generator);
 
-        Preset preset = new Preset("name", generatorParams, new Quality(Bitmap.CompressFormat.WEBP, 100), getTestFolder().getAbsolutePath());
+        Preset preset = new Preset("name", generatorParams, new Quality(Bitmap.CompressFormat.WEBP, 100), TestUtils.getTestFolder().getAbsolutePath());
         preset.setWidthRange(10, 100, 25);
         preset.setHeight(200);
 
@@ -267,9 +259,5 @@ public class GenerationPresenterTest {
         assertTrue(ip.getHeight() == 200);
         verify(ui, times(1)).onFinishGeneration();
         verifyNoMoreInteractions(ui);
-    }
-
-    private static File getTestFolder() {
-        return new File(InstrumentationRegistry.getTargetContext().getApplicationInfo().dataDir, "tests");
     }
 }
