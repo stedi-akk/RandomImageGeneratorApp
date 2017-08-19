@@ -38,10 +38,11 @@ public class SimpleIntegerParamsPresenterImpl implements SimpleIntegerParamsPres
     }
 
     @Override
-    public boolean setRandomValue() {
+    public void setRandomValue() {
+        if (!params.canBeRandom())
+            throw new IllegalStateException("setRandomValue called when canBeRandom is false");
         logger.log(this, "setRandomValue");
         params.setRandomValue();
-        return true;
     }
 
     @Override

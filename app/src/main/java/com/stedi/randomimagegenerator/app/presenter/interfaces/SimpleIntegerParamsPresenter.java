@@ -8,7 +8,7 @@ public interface SimpleIntegerParamsPresenter extends Presenter<SimpleIntegerPar
 
     boolean canBeRandom();
 
-    boolean setRandomValue();
+    void setRandomValue();
 
     boolean setValue(int value);
 

@@ -135,7 +135,8 @@ public class SimpleIntegerParamsDialog extends ButterKnifeDialogFragment impleme
     private void apply() {
         boolean success;
         if (canBeRandom && cbRandom.isChecked()) {
-            success = presenter.setRandomValue();
+            presenter.setRandomValue();
+            success = true;
         } else {
             String input = etValue.getText().toString();
             if (input.isEmpty()) {
