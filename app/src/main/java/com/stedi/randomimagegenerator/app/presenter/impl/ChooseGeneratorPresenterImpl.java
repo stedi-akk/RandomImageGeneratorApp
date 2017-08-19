@@ -31,13 +31,7 @@ public class ChooseGeneratorPresenterImpl implements ChooseGeneratorPresenter {
         } else {
             selectedType = selectedParams.getType();
         }
-        ui.showTypes(new GeneratorType[]{
-                GeneratorType.FLAT_COLOR,
-                GeneratorType.COLORED_PIXELS,
-                GeneratorType.COLORED_CIRCLES,
-                GeneratorType.COLORED_RECTANGLE,
-                GeneratorType.COLORED_NOISE,
-        }, selectedType);
+        ui.showTypes(GeneratorType.nonEffectTypes(), selectedType);
     }
 
     @Override
