@@ -2,32 +2,14 @@ package com.stedi.randomimagegenerator.app.model.data.generatorparams.base;
 
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static junit.framework.Assert.*;
 
 public class GeneratorParamsCreateDefaultTest {
-    private static List<GeneratorType> nonEffectTypes = new ArrayList<>();
-    private static List<GeneratorType> effectTypes = new ArrayList<>();
-
-    @BeforeClass
-    public static void beforeClass() {
-        for (GeneratorType gt : GeneratorType.values()) {
-            if (gt.isEffect()) {
-                effectTypes.add(gt);
-            } else {
-                nonEffectTypes.add(gt);
-            }
-        }
-    }
-
     @Test
     public void testCreateDefaultParams() {
-        for (GeneratorType gt : nonEffectTypes) {
+        for (GeneratorType gt : GeneratorType.nonEffectTypes()) {
             GeneratorParams gp = GeneratorParams.createDefaultParams(gt);
             assertNotNull(gp);
         }
@@ -35,7 +17,7 @@ public class GeneratorParamsCreateDefaultTest {
 
     @Test
     public void testCreateDefaultParamsFail() {
-        for (GeneratorType gt : effectTypes) {
+        for (GeneratorType gt : GeneratorType.effectTypes()) {
             try {
                 GeneratorParams.createDefaultParams(gt);
                 fail();
@@ -46,8 +28,8 @@ public class GeneratorParamsCreateDefaultTest {
 
     @Test
     public void testCreateDefaultEffectParams() {
-        GeneratorParams target = GeneratorParams.createDefaultParams(nonEffectTypes.get(0));
-        for (GeneratorType gt : effectTypes) {
+        GeneratorParams target = GeneratorParams.createDefaultParams(GeneratorType.nonEffectTypes()[0]);
+        for (GeneratorType gt : GeneratorType.effectTypes()) {
             GeneratorParams gp = GeneratorParams.createDefaultEffectParams(gt, target);
             assertNotNull(gp);
         }
@@ -55,8 +37,8 @@ public class GeneratorParamsCreateDefaultTest {
 
     @Test
     public void testCreateDefaultEffectParamsFail() {
-        GeneratorParams target = GeneratorParams.createDefaultParams(nonEffectTypes.get(0));
-        for (GeneratorType gt : nonEffectTypes) {
+        GeneratorParams target = GeneratorParams.createDefaultParams(GeneratorType.nonEffectTypes()[0]);
+        for (GeneratorType gt : GeneratorType.nonEffectTypes()) {
             try {
                 GeneratorParams.createDefaultEffectParams(gt, target);
                 fail();

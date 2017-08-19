@@ -2,10 +2,8 @@ package com.stedi.randomimagegenerator.app.model.repository;
 
 import android.support.test.runner.AndroidJUnit4;
 
-import com.stedi.randomimagegenerator.Quality;
-import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
+import com.stedi.randomimagegenerator.app.TestUtils;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
-import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +27,7 @@ public class CachedPresetRepositoryTest {
 
     @Test
     public void test1() throws Exception {
-        Preset preset = createPreset();
+        Preset preset = TestUtils.newSimplePreset();
 
         cachedPresetRepository.remove(20);
         verify(target, times(1)).remove(20);
@@ -58,7 +56,7 @@ public class CachedPresetRepositoryTest {
 
     @Test
     public void test2() throws Exception {
-        Preset preset = createPreset();
+        Preset preset = TestUtils.newSimplePreset();
 
         assertTrue(cachedPresetRepository.get(20) == null);
         verify(target, times(1)).get(20);
@@ -93,7 +91,7 @@ public class CachedPresetRepositoryTest {
 
     @Test
     public void test3() throws Exception {
-        Preset preset = createPreset();
+        Preset preset = TestUtils.newSimplePreset();
 
         assertTrue(cachedPresetRepository.getAll().size() == 0);
         verify(target, times(1)).getAll();
@@ -131,7 +129,7 @@ public class CachedPresetRepositoryTest {
         target = spy(new FakePresetRepository(10));
         cachedPresetRepository = new CachedPresetRepository(target);
 
-        Preset preset = createPreset();
+        Preset preset = TestUtils.newSimplePreset();
 
         cachedPresetRepository.save(preset);
         verify(target, times(1)).save(preset);
@@ -169,7 +167,7 @@ public class CachedPresetRepositoryTest {
         assertNotNull(cachedPresetRepository.get(11));
         verifyZeroInteractions(target);
 
-        preset = createPreset();
+        preset = TestUtils.newSimplePreset();
         cachedPresetRepository.save(preset);
         verify(target, times(1)).save(preset);
 
@@ -181,13 +179,5 @@ public class CachedPresetRepositoryTest {
 
         assertTrue(cachedPresetRepository.getAll().size() == 10);
         verifyZeroInteractions(target);
-    }
-
-    private Preset createPreset() {
-        Preset preset = new Preset("name",
-                GeneratorParams.createDefaultParams(GeneratorType.COLORED_NOISE),
-                Quality.png(), "path");
-        preset.setTimestamp(System.currentTimeMillis());
-        return preset;
     }
 }

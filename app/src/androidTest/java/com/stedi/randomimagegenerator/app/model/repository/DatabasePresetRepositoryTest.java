@@ -9,36 +9,20 @@ import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 import com.stedi.randomimagegenerator.app.other.logger.SoutLogger;
 
-import static junit.framework.Assert.*;
-
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import static junit.framework.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
 public class DatabasePresetRepositoryTest {
     private static final String DATABASE_NAME = "presets_database_test";
 
-    private static List<GeneratorType> nonEffectTypes = new ArrayList<>();
-    private static List<GeneratorType> effectTypes = new ArrayList<>();
-
     private DatabasePresetRepository repository;
-
-    @BeforeClass
-    public static void beforeClass() {
-        for (GeneratorType gt : GeneratorType.values()) {
-            if (gt.isEffect()) {
-                effectTypes.add(gt);
-            } else {
-                nonEffectTypes.add(gt);
-            }
-        }
-    }
 
     @Before
     public void before() {
@@ -100,7 +84,7 @@ public class DatabasePresetRepositoryTest {
     @Test
     public void nonEffectParamsTest() throws Exception {
         int ids = 1;
-        for (GeneratorType type : nonEffectTypes) {
+        for (GeneratorType type : GeneratorType.nonEffectTypes()) {
             Preset preset = new Preset("name", GeneratorParams.createDefaultParams(type), Quality.png(), "folder");
 
             repository.save(preset);
@@ -114,7 +98,7 @@ public class DatabasePresetRepositoryTest {
         }
 
         List<Preset> presets = repository.getAll();
-        assertTrue(presets.size() == nonEffectTypes.size());
+        assertTrue(presets.size() == GeneratorType.nonEffectTypes().length);
 
         for (Preset preset : presets) {
             repository.remove(preset.getId());
@@ -126,8 +110,8 @@ public class DatabasePresetRepositoryTest {
     @Test
     public void effectParamsTest() throws Exception {
         int ids = 1;
-        for (GeneratorType effectType : effectTypes) {
-            for (GeneratorType nonEffecttype : nonEffectTypes) {
+        for (GeneratorType effectType : GeneratorType.effectTypes()) {
+            for (GeneratorType nonEffecttype : GeneratorType.nonEffectTypes()) {
                 Preset preset = new Preset("name", GeneratorParams.createDefaultEffectParams(effectType, GeneratorParams.createDefaultParams(nonEffecttype)), Quality.png(), "folder");
 
                 repository.save(preset);
@@ -142,7 +126,7 @@ public class DatabasePresetRepositoryTest {
         }
 
         List<Preset> presets = repository.getAll();
-        assertTrue(presets.size() == (nonEffectTypes.size() * effectTypes.size()));
+        assertTrue(presets.size() == (GeneratorType.nonEffectTypes().length * GeneratorType.effectTypes().length));
 
         for (Preset preset : presets) {
             repository.remove(preset.getId());

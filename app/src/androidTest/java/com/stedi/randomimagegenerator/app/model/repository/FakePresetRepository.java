@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.SparseArray;
 
-import com.stedi.randomimagegenerator.Quality;
 import com.stedi.randomimagegenerator.app.TestUtils;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
@@ -61,8 +60,9 @@ public class FakePresetRepository implements PresetRepository {
     }
 
     private Preset createTestPreset(int id, GeneratorParams generatorParams) {
-        Preset preset = new Preset("test" + id, generatorParams, Quality.png(), TestUtils.getTestFolder().getAbsolutePath());
-        preset.setTimestamp(System.currentTimeMillis());
+        Preset preset = TestUtils.newSimplePreset();
+        preset.setName("test" + id);
+        preset.setGeneratorParams(generatorParams);
         preset.setId(id);
         return preset;
     }

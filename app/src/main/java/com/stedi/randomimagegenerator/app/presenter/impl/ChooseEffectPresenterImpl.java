@@ -26,10 +26,7 @@ public class ChooseEffectPresenterImpl implements ChooseEffectPresenter {
     @Override
     public void getEffectTypes() {
         GeneratorParams currentParams = pendingPreset.getCandidate().getGeneratorParams();
-        ui.showTypes(new GeneratorType[]{
-                GeneratorType.MIRRORED,
-                GeneratorType.TEXT_OVERLAY
-        }, currentParams instanceof EffectGeneratorParams ? currentParams.getType() : null);
+        ui.showTypes(GeneratorType.effectTypes(), currentParams instanceof EffectGeneratorParams ? currentParams.getType() : null);
     }
 
     @Override

@@ -19,19 +19,10 @@ import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
 public class PresetTest {
-    private static List<GeneratorType> nonEffectTypes = new ArrayList<>();
-    private static List<GeneratorType> effectTypes = new ArrayList<>();
     private static List<Quality> qualities = new ArrayList<>();
 
     @BeforeClass
     public static void beforeClass() {
-        for (GeneratorType gt : GeneratorType.values()) {
-            if (gt.isEffect()) {
-                effectTypes.add(gt);
-            } else {
-                nonEffectTypes.add(gt);
-            }
-        }
         qualities.add(Quality.png());
         qualities.add(Quality.jpg(100));
         qualities.add(new Quality(Bitmap.CompressFormat.WEBP, 100));
@@ -73,7 +64,7 @@ public class PresetTest {
     @Test
     public void testCreateCopyAndEqualsNonEffectParams() {
         int ids = 1;
-        for (GeneratorType generatorType : nonEffectTypes) {
+        for (GeneratorType generatorType : GeneratorType.nonEffectTypes()) {
             for (Quality quality : qualities) {
                 GeneratorParams generatorParams = GeneratorParams.createDefaultParams(generatorType);
                 String name = "name" + ids;
@@ -92,7 +83,7 @@ public class PresetTest {
                 assertTrue(copy.getName().equals(name));
                 assertTrue(copy.getGeneratorParams().equals(generatorParams));
                 assertTrue(copy.getWidth() == 100);
-                assertArrayEquals(copy.getHeightRange(), new int[] {10, 100, 10});
+                assertArrayEquals(copy.getHeightRange(), new int[]{10, 100, 10});
                 assertTrue(copy.getQuality().getFormat() == quality.getFormat());
                 assertTrue(copy.getQuality().getQualityValue() == quality.getQualityValue());
                 assertTrue(copy.getPathToSave().equals("path"));
@@ -108,8 +99,8 @@ public class PresetTest {
     @Test
     public void testCreateCopyAndEqualsEffectParams() {
         int ids = 1;
-        for (GeneratorType effectType : effectTypes) {
-            for (GeneratorType nonEffectType : nonEffectTypes) {
+        for (GeneratorType effectType : GeneratorType.effectTypes()) {
+            for (GeneratorType nonEffectType : GeneratorType.nonEffectTypes()) {
                 for (Quality quality : qualities) {
                     GeneratorParams generatorParams = GeneratorParams.createDefaultEffectParams(effectType, GeneratorParams.createDefaultParams(nonEffectType));
                     String name = "name" + ids;
@@ -127,8 +118,8 @@ public class PresetTest {
                     assertTrue(copy.getTimestamp() == timestamp);
                     assertTrue(copy.getName().equals(name));
                     assertTrue(copy.getGeneratorParams().equals(generatorParams));
-                    assertArrayEquals(copy.getWidthRange(), new int[] {100, 10, 10});
-                    assertArrayEquals(copy.getHeightRange(), new int[] {10, 1000, 10});
+                    assertArrayEquals(copy.getWidthRange(), new int[]{100, 10, 10});
+                    assertArrayEquals(copy.getHeightRange(), new int[]{10, 1000, 10});
                     assertTrue(copy.getQuality().getFormat() == quality.getFormat());
                     assertTrue(copy.getQuality().getQualityValue() == quality.getQualityValue());
                     assertTrue(copy.getPathToSave().equals("path"));
