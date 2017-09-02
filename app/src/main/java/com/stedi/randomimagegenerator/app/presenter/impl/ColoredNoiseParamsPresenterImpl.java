@@ -6,20 +6,17 @@ import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredNoiseParams;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
-import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ColoredNoiseParamsPresenter;
 import com.stedi.randomimagegenerator.generators.ColoredNoiseGenerator;
 
 public class ColoredNoiseParamsPresenterImpl implements ColoredNoiseParamsPresenter {
     private final PendingPreset pendingPreset;
-    private final Logger logger;
 
     private UIImpl ui;
     private ColoredNoiseParams params;
 
-    public ColoredNoiseParamsPresenterImpl(@NonNull PendingPreset pendingPreset, @NonNull Logger logger) {
+    public ColoredNoiseParamsPresenterImpl(@NonNull PendingPreset pendingPreset) {
         this.pendingPreset = pendingPreset;
-        this.logger = logger;
     }
 
     @Override

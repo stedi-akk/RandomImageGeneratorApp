@@ -46,8 +46,8 @@ public class GenerationModule {
     }
 
     @Provides
-    ColoredNoiseParamsPresenter provideColoredNoiseParamsPresenter(PendingPreset pendingPreset, Logger logger) {
-        return new ColoredNoiseParamsPresenterImpl(pendingPreset, logger);
+    ColoredNoiseParamsPresenter provideColoredNoiseParamsPresenter(PendingPreset pendingPreset) {
+        return new ColoredNoiseParamsPresenterImpl(pendingPreset);
     }
 
     @Provides
