@@ -24,6 +24,7 @@ public class ChooseSizeAndCountPresenterImpl implements ChooseSizeAndCountPresen
     public void getValues() {
         Preset preset = pendingPreset.getCandidate();
         boolean showCount = true;
+
         int[] widthRange = preset.getWidthRange();
         if (widthRange != null) {
             ui.showWidthRange(widthRange[0], widthRange[1], widthRange[2]);
@@ -31,6 +32,7 @@ public class ChooseSizeAndCountPresenterImpl implements ChooseSizeAndCountPresen
         } else {
             ui.showWidth(preset.getWidth());
         }
+
         int[] heightRange = preset.getHeightRange();
         if (heightRange != null) {
             ui.showHeightRange(heightRange[0], heightRange[1], heightRange[2]);
@@ -38,13 +40,15 @@ public class ChooseSizeAndCountPresenterImpl implements ChooseSizeAndCountPresen
         } else {
             ui.showHeight(preset.getHeight());
         }
+
         if (showCount)
             ui.showCount(preset.getCount());
     }
 
     @Override
     public void setCount(int count) {
-        if (count < 1) {
+        if (count < 1 || pendingPreset.getCandidate().getWidthRange() != null
+                || pendingPreset.getCandidate().getHeightRange() != null) {
             ui.onError(Error.INCORRECT_COUNT);
             return;
         }
