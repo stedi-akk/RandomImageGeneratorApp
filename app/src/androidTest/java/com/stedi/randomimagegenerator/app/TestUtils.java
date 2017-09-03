@@ -7,7 +7,6 @@ import com.stedi.randomimagegenerator.Quality;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
-import com.stedi.randomimagegenerator.app.other.Utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +19,7 @@ public class TestUtils {
 
     public static void deleteTestFolder() {
         try {
-            Utils.deleteRecursively(TestUtils.getTestFolder());
+            deleteRecursively(TestUtils.getTestFolder());
             System.out.println("test folder successfully deleted");
         } catch (IOException e) {
             e.printStackTrace();
@@ -32,5 +31,17 @@ public class TestUtils {
         Preset preset = new Preset("name", GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), TestUtils.getTestFolder().getAbsolutePath());
         preset.setTimestamp(System.currentTimeMillis());
         return preset;
+    }
+
+    private static void deleteRecursively(File fileOrDirectory) throws IOException {
+        if (!fileOrDirectory.exists())
+            return;
+
+        if (fileOrDirectory.isDirectory())
+            for (File child : fileOrDirectory.listFiles())
+                deleteRecursively(child);
+
+        if (!fileOrDirectory.delete())
+            throw new IOException("failed to delete: " + fileOrDirectory.getAbsolutePath());
     }
 }

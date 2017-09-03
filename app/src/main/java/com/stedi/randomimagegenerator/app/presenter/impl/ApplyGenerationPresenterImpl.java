@@ -89,9 +89,8 @@ public class ApplyGenerationPresenterImpl extends ApplyGenerationPresenter {
         saveInProgress = true;
 
         Preset preset = pendingPreset.getCandidate();
-        preset.setName(name);
-
         Completable.fromCallable(() -> {
+            preset.setName(name);
             preset.setTimestamp(System.currentTimeMillis());
             presetRepository.save(preset);
             return true;

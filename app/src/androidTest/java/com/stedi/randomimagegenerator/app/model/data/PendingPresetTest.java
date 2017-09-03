@@ -4,14 +4,13 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.stedi.randomimagegenerator.Quality;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
-import com.stedi.randomimagegenerator.app.other.logger.Logger;
+import com.stedi.randomimagegenerator.app.other.logger.SoutLogger;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static junit.framework.Assert.*;
-import static org.mockito.Mockito.mock;
 
 @RunWith(AndroidJUnit4.class)
 public class PendingPresetTest {
@@ -19,7 +18,7 @@ public class PendingPresetTest {
 
     @Before
     public void before() {
-        pendingPreset = new PendingPreset("name", "path", mock(Logger.class));
+        pendingPreset = new PendingPreset("name", "path", new SoutLogger("PendingPresetTest"));
     }
 
     @Test
