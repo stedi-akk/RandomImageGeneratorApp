@@ -12,7 +12,6 @@ import com.stedi.randomimagegenerator.app.di.components.ActivityComponent;
 import com.stedi.randomimagegenerator.app.di.modules.ActivityModule;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
-import com.stedi.randomimagegenerator.app.other.Utils;
 
 import javax.inject.Inject;
 
@@ -23,6 +22,18 @@ public abstract class BaseActivity extends LifeCycleActivity {
     @Inject CachedBus bus;
 
     private static boolean mustRestorePendingPreset = true;
+
+    public static class PermissionEvent {
+        public final String permission;
+        public final int requestCode;
+        public final boolean isGranted;
+
+        PermissionEvent(String permission, int requestCode, boolean isGranted) {
+            this.permission = permission;
+            this.requestCode = requestCode;
+            this.isGranted = isGranted;
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,8 +73,8 @@ public abstract class BaseActivity extends LifeCycleActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED)
-            Utils.toastShort(this, "permission " + permissions[0] + " is required");
+        boolean isGranted = grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
+        bus.post(new PermissionEvent(permissions[0], requestCode, isGranted));
     }
 
     public boolean checkForPermission(@NonNull String permission, int requestCode) {

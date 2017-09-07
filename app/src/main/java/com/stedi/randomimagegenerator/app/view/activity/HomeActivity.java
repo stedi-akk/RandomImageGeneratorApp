@@ -43,6 +43,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     @BindView(R.id.home_activity_recycler_view) RecyclerView recyclerView;
 
     private PresetsAdapter adapter;
+    private Preset startGenerationPreset;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -135,8 +136,11 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
 
     @Override
     public void onGenerateClick(@NonNull Preset preset) {
-        if (checkForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_CODE_WRITE_EXTERNAL))
+        if (checkForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_CODE_WRITE_EXTERNAL)) {
             presenter.startGeneration(preset);
+        } else {
+            startGenerationPreset = preset;
+        }
     }
 
     @Override
@@ -147,6 +151,17 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
         } else if (confirm == HomePresenter.Confirm.GENERATE_FROM_PRESET) {
             ConfirmDialog dlg = ConfirmDialog.newInstance(REQUEST_CONFIRM_GENERATE, "title", "want to generate?");
             dlg.show(getSupportFragmentManager(), ConfirmDialog.class.getSimpleName());
+        }
+    }
+
+    @Subscribe
+    public void onPermissionEvent(PermissionEvent event) {
+        if (event.requestCode == REQUEST_CODE_WRITE_EXTERNAL) {
+            if (event.isGranted && startGenerationPreset != null) {
+                //noinspection MissingPermission
+                presenter.startGeneration(startGenerationPreset);
+            }
+            startGenerationPreset = null;
         }
     }
 

@@ -14,10 +14,12 @@ import com.squareup.otto.Subscribe;
 import com.stedi.randomimagegenerator.ImageParams;
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.Components;
+import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
 import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter;
+import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity;
 import com.stedi.randomimagegenerator.app.view.dialogs.EditPresetNameDialog;
 import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment;
 import com.stepstone.stepper.StepperLayout;
@@ -39,6 +41,8 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
 
     @BindView(R.id.apply_generation_fragment_tv) TextView tvOut;
     @BindView(R.id.apply_generation_fragment_btn_save_preset) Button btnSave;
+
+    private Preset startGenerationPreset;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,6 +103,17 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
         presenter.savePreset(onEdited.name);
     }
 
+    @Subscribe
+    public void onPermissionEvent(BaseActivity.PermissionEvent event) {
+        if (event.requestCode == REQUEST_CODE_WRITE_EXTERNAL) {
+            if (event.isGranted && startGenerationPreset != null) {
+                //noinspection MissingPermission
+                presenter.startGeneration(startGenerationPreset);
+            }
+            startGenerationPreset = null;
+        }
+    }
+
     @Override
     public void onPresetSaved() {
         getActivity().finish();
@@ -112,8 +127,11 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
     @Override
     public void onCompleteClicked(StepperLayout.OnCompleteClickedCallback callback) {
         super.onCompleteClicked(callback);
-        if (checkForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_CODE_WRITE_EXTERNAL))
+        if (checkForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_CODE_WRITE_EXTERNAL)) {
             presenter.startGeneration(presenter.getPreset());
+        } else {
+            startGenerationPreset = presenter.getPreset();
+        }
     }
 
     @Override
