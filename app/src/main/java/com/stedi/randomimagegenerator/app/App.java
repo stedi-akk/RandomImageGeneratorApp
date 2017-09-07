@@ -1,6 +1,7 @@
 package com.stedi.randomimagegenerator.app;
 
 import android.app.Application;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.Rig;
@@ -13,12 +14,25 @@ public final class App extends Application {
 
     @Override
     public void onCreate() {
+        boolean debug = !BuildConfig.BUILD_TYPE.equals("release");
+
+        if (debug) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyDeath()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectAll()
+                    .penaltyDeath()
+                    .build());
+        }
+
         super.onCreate();
         component = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
                 .build();
 
-        Rig.enableDebugLogging(!BuildConfig.BUILD_TYPE.equals("release"));
+        Rig.enableDebugLogging(debug);
     }
 
     @NonNull
