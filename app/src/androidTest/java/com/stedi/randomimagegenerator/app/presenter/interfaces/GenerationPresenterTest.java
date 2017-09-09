@@ -51,7 +51,8 @@ public class GenerationPresenterTest {
     public void before() {
         Rig.enableDebugLogging(true);
         ui = mock(GenerationPresenter.UIImpl.class);
-        presenter = new GenerationPresenterImpl(Schedulers.immediate(), Schedulers.immediate(), new CachedBus(ThreadEnforcer.ANY), new SoutLogger("GenerationPresenterTest"));
+        Logger logger = new SoutLogger("GenerationPresenterTest");
+        presenter = new GenerationPresenterImpl(Schedulers.immediate(), Schedulers.immediate(), new CachedBus(ThreadEnforcer.ANY, logger), logger);
         imageParamsCaptor = ArgumentCaptor.forClass(ImageParams.class);
         presenter.onAttach(ui);
     }

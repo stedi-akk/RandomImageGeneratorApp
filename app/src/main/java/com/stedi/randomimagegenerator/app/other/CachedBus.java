@@ -5,29 +5,35 @@ import android.support.annotation.VisibleForTesting;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
+import com.stedi.randomimagegenerator.app.other.logger.Logger;
 
 import java.util.LinkedList;
 
 public class CachedBus extends Bus {
     private final LinkedList<Runnable> cache = new LinkedList<>();
-
     private final Thread creationThread = Thread.currentThread();
+
+    private final Logger logger;
 
     private boolean locked;
 
-    public CachedBus() {
+    public CachedBus(@NonNull Logger logger) {
+        this(ThreadEnforcer.MAIN, logger);
     }
 
-    public CachedBus(@NonNull ThreadEnforcer enforcer) {
+    public CachedBus(@NonNull ThreadEnforcer enforcer, @NonNull Logger logger) {
         super(enforcer);
+        this.logger = logger;
     }
 
     public void lock() {
+        logger.log(this, "lock");
         ensureCreationThread();
         locked = true;
     }
 
     public void unlock() {
+        logger.log(this, "unlock");
         ensureCreationThread();
         locked = false;
         releaseCache();
@@ -35,10 +41,13 @@ public class CachedBus extends Bus {
 
     @Override
     public void post(final Object event) {
+        logger.log(this, "posting " + event);
         ensureCreationThread();
         if (!locked) {
+            logger.log(this, "posting " + event + " successfully");
             super.post(event);
         } else {
+            logger.log(this, "posting " + event + " failed because of lock, adding to the cache");
             cache.add(() -> post(event));
         }
     }

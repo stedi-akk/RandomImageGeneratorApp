@@ -41,7 +41,7 @@ public class ApplyGenerationPresenterImplTest {
         pendingPreset.prepareCandidateFrom(TestUtils.newSimplePreset());
         presetRepository = spy(new FakePresetRepository(0));
         presenter = new ApplyGenerationPresenterImpl(pendingPreset, presetRepository,
-                Schedulers.immediate(), Schedulers.immediate(), Schedulers.immediate(), new CachedBus(ThreadEnforcer.ANY), logger);
+                Schedulers.immediate(), Schedulers.immediate(), Schedulers.immediate(), new CachedBus(ThreadEnforcer.ANY, logger), logger);
         ui = mock(ApplyGenerationPresenterImpl.UIImpl.class);
     }
 

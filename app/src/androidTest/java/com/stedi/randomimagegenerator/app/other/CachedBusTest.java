@@ -4,6 +4,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.squareup.otto.Subscribe;
 import com.squareup.otto.ThreadEnforcer;
+import com.stedi.randomimagegenerator.app.other.logger.SoutLogger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +27,7 @@ public class CachedBusTest {
 
     @Test
     public void unlockedTest() {
-        CachedBus bus = new CachedBus(ThreadEnforcer.ANY);
+        CachedBus bus = new CachedBus(ThreadEnforcer.ANY, new SoutLogger("CachedBusTest"));
         TestTarget testTarget = new TestTarget();
 
         bus.unlock();
@@ -47,7 +48,7 @@ public class CachedBusTest {
 
     @Test
     public void lockedTest() {
-        CachedBus bus = new CachedBus(ThreadEnforcer.ANY);
+        CachedBus bus = new CachedBus(ThreadEnforcer.ANY, new SoutLogger("CachedBusTest"));
         TestTarget testTarget = new TestTarget();
 
         bus.lock();
@@ -68,7 +69,7 @@ public class CachedBusTest {
 
     @Test
     public void lockedUnlockedTest() {
-        CachedBus bus = new CachedBus(ThreadEnforcer.ANY);
+        CachedBus bus = new CachedBus(ThreadEnforcer.ANY, new SoutLogger("CachedBusTest"));
         TestTarget testTarget = new TestTarget();
 
         bus.lock();

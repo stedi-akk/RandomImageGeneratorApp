@@ -19,11 +19,11 @@ public final class App extends Application {
         if (debug) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                     .detectAll()
-                    .penaltyDeath()
+                    .penaltyLog()
                     .build());
             StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
                     .detectAll()
-                    .penaltyDeath()
+                    .penaltyLog()
                     .build());
         }
 

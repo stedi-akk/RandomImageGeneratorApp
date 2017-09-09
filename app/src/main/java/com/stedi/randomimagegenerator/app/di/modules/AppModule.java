@@ -38,8 +38,8 @@ public class AppModule {
 
     @Provides
     @Singleton
-    CachedBus provideBus() {
-        return new CachedBus();
+    CachedBus provideBus(Logger logger) {
+        return new CachedBus(logger);
     }
 
     @Provides

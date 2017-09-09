@@ -45,7 +45,7 @@ public class HomePresenterImplTest {
         SoutLogger logger = new SoutLogger("HomePresenterImplTest");
         pendingPreset = new PendingPreset("unsaved", TestUtils.getTestFolder().getAbsolutePath(), logger);
         presenter = new HomePresenterImpl(repository, pendingPreset, Schedulers.immediate(), Schedulers.immediate(), Schedulers.immediate(),
-                new CachedBus(ThreadEnforcer.ANY), logger);
+                new CachedBus(ThreadEnforcer.ANY, logger), logger);
         ui = mock(HomePresenterImpl.UIImpl.class);
         pendingPresetCaptor = ArgumentCaptor.forClass(Preset.class);
         presetsCaptor = ArgumentCaptor.forClass((Class) List.class);

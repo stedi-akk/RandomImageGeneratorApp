@@ -40,7 +40,7 @@ public class PendingPreset {
         candidate.setWidth(100);
         candidate.setHeight(100);
         candidate.setCount(1);
-        logger.log(this, "after newDefaultCandidate:" + this);
+        logger.log(this, "after newDefaultCandidate: " + this);
     }
 
     public void prepareCandidateFrom(@NonNull Preset candidate) {
@@ -51,7 +51,7 @@ public class PendingPreset {
             this.candidateFrom = candidate;
             this.candidate = candidate.createCopy();
         }
-        logger.log(this, "after prepareCandidateFrom:" + this);
+        logger.log(this, "after prepareCandidateFrom: " + this);
     }
 
     public void candidateSaved() {
@@ -77,32 +77,32 @@ public class PendingPreset {
         if (candidateFrom != null)
             preset.setName(String.format(unsavedName + " (%s)", candidateFrom.getName()));
         preset.setTimestamp(System.currentTimeMillis());
-        logger.log(this, "after applyCandidate:" + this);
+        logger.log(this, "after applyCandidate: " + this);
     }
 
     public void killCandidate() {
         candidateFrom = null;
         candidate = null;
-        logger.log(this, "after killCandidate:" + this);
+        logger.log(this, "after killCandidate: " + this);
     }
 
     public void clear() {
         preset = null;
-        logger.log(this, "after clear:" + this);
+        logger.log(this, "after clear: " + this);
     }
 
     public void retain(@NonNull Bundle bundle) {
         bundle.putParcelable(KEY_MAIN_PRESET, preset);
         bundle.putParcelable(KEY_CANDIDATE_FROM_PRESET, candidateFrom);
         bundle.putParcelable(KEY_CANDIDATE_PRESET, candidate);
-        logger.log(this, "after retain:" + this);
+        logger.log(this, "after retain: " + this);
     }
 
     public void restore(@NonNull Bundle bundle) {
         preset = bundle.getParcelable(KEY_MAIN_PRESET);
         candidateFrom = bundle.getParcelable(KEY_CANDIDATE_FROM_PRESET);
         candidate = bundle.getParcelable(KEY_CANDIDATE_PRESET);
-        logger.log(this, "after restore:" + this);
+        logger.log(this, "after restore: " + this);
     }
 
     @Override
