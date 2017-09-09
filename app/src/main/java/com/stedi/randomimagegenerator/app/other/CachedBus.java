@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
 import com.squareup.otto.Bus;
+import com.squareup.otto.DeadEvent;
 import com.squareup.otto.ThreadEnforcer;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 
@@ -43,12 +44,12 @@ public class CachedBus extends Bus {
     public void post(final Object event) {
         logger.log(this, "posting " + event);
         ensureCreationThread();
-        if (!locked) {
+        if (!locked && !(event instanceof DeadEvent)) {
             logger.log(this, "posting " + event + " successfully");
             super.post(event);
         } else {
-            logger.log(this, "posting " + event + " failed because of lock, adding to the cache");
-            cache.add(() -> post(event));
+            logger.log(this, "posting " + event + " failed because of lock or it is a DeadEvent, adding to the cache");
+            cache.add(() -> post(event instanceof DeadEvent ? ((DeadEvent) event).event : event));
         }
     }
 
