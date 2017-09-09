@@ -14,7 +14,6 @@ import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.Genera
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.callbacks.GenerateCallback;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +26,7 @@ import rx.Scheduler;
 @Singleton
 public class GeneratorTypeImageLoader {
     private final ArrayMap<GeneratorType, CacheItem> cache = new ArrayMap<>(GeneratorType.values().length);
-    private final ArrayMap<GeneratorType, List<WeakReference<Callback>>> callbacks = new ArrayMap<>();
+    private final ArrayMap<GeneratorType, List<Callback>> callbacks = new ArrayMap<>();
 
     private final Handler uiHandler = new Handler(Looper.getMainLooper());
 
@@ -62,10 +61,10 @@ public class GeneratorTypeImageLoader {
         }
 
         if (callbacks.containsKey(type)) {
-            callbacks.get(type).add(new WeakReference<>(callback));
+            callbacks.get(type).add(callback);
         } else {
-            List<WeakReference<Callback>> list = new ArrayList<>();
-            list.add(new WeakReference<>(callback));
+            List<Callback> list = new ArrayList<>();
+            list.add(callback);
             callbacks.put(type, list);
         }
 
@@ -90,10 +89,8 @@ public class GeneratorTypeImageLoader {
                         public void onGenerated(ImageParams imageParams, Bitmap bitmap) {
                             uiHandler.post(() -> {
                                 cache.put(type, new CacheItem(params, bitmap));
-                                for (WeakReference<Callback> weakCallback : callbacks.get(type)) {
-                                    Callback callback = weakCallback.get();
-                                    if (callback != null)
-                                        callback.onLoaded(params, bitmap);
+                                for (Callback callback : callbacks.get(type)) {
+                                    callback.onLoaded(params, bitmap);
                                 }
                                 callbacks.remove(type);
                             });
@@ -101,7 +98,7 @@ public class GeneratorTypeImageLoader {
 
                         @Override
                         public void onFailedToGenerate(ImageParams imageParams, Exception e) {
-                            logger.log(this, "onFailedToGenerate", e);
+                            logger.log(GeneratorTypeImageLoader.this, "onFailedToGenerate", e);
                         }
                     }).build().generate();
         }).subscribeOn(subscribeOn).subscribe();

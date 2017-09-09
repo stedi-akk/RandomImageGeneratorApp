@@ -95,14 +95,14 @@ public class PendingPreset {
         bundle.putParcelable(KEY_MAIN_PRESET, preset);
         bundle.putParcelable(KEY_CANDIDATE_FROM_PRESET, candidateFrom);
         bundle.putParcelable(KEY_CANDIDATE_PRESET, candidate);
-        logger.log(this, "after retain: " + this);
+        logger.log(this, "after retain:" + this);
     }
 
     public void restore(@NonNull Bundle bundle) {
         preset = bundle.getParcelable(KEY_MAIN_PRESET);
         candidateFrom = bundle.getParcelable(KEY_CANDIDATE_FROM_PRESET);
         candidate = bundle.getParcelable(KEY_CANDIDATE_PRESET);
-        logger.log(this, "after restore: " + this);
+        logger.log(this, "after restore:" + this);
     }
 
     @Override
