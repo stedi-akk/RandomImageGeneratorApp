@@ -15,7 +15,7 @@ import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseEffectPresenter;
 import com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapter;
-import com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapterImageLoader;
+import com.stedi.randomimagegenerator.app.view.components.GeneratorTypeImageLoader;
 import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment;
 
 import javax.inject.Inject;
@@ -28,7 +28,7 @@ public class ChooseEffectFragment extends StepFragment implements
 
     @Inject ChooseEffectPresenter presenter;
     @Inject Logger logger;
-    @Inject GeneratorTypeAdapterImageLoader adapterImageLoader;
+    @Inject GeneratorTypeImageLoader adapterImageLoader;
 
     @BindView(R.id.choose_effect_fragment_recycler_view) RecyclerView recyclerView;
 

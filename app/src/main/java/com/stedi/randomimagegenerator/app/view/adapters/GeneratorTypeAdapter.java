@@ -11,12 +11,13 @@ import android.widget.TextView;
 
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
+import com.stedi.randomimagegenerator.app.view.components.GeneratorTypeImageLoader;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdapter.ViewHolder> implements View.OnClickListener {
-    private final GeneratorTypeAdapterImageLoader imageLoader;
+    private final GeneratorTypeImageLoader imageLoader;
     private final GeneratorType[] generatorType;
     private final ClickListener listener;
     private final boolean isDeselectAllowed;
@@ -32,7 +33,7 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
     }
 
     public GeneratorTypeAdapter(
-            @NonNull GeneratorTypeAdapterImageLoader imageLoader,
+            @NonNull GeneratorTypeImageLoader imageLoader,
             @NonNull GeneratorType[] generatorType, @Nullable GeneratorType selectedType,
             @NonNull ClickListener listener, boolean isDeselectAllowed) {
         this.imageLoader = imageLoader;

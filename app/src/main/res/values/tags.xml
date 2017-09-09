@@ -3,4 +3,7 @@
     <item
         name="tag_preset"
         type="id" />
+    <item
+        name="tag_key"
+        type="id" />
 </resources>

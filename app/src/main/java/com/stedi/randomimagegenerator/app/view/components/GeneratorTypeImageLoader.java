@@ -1,4 +1,4 @@
-package com.stedi.randomimagegenerator.app.view.adapters;
+package com.stedi.randomimagegenerator.app.view.components;
 
 import android.graphics.Bitmap;
 import android.os.Handler;
@@ -25,7 +25,7 @@ import rx.Completable;
 import rx.Scheduler;
 
 @Singleton
-public class GeneratorTypeAdapterImageLoader {
+public class GeneratorTypeImageLoader {
     private final ArrayMap<GeneratorType, CacheItem> cache = new ArrayMap<>(GeneratorType.values().length);
     private final ArrayMap<GeneratorType, List<WeakReference<Callback>>> callbacks = new ArrayMap<>();
 
@@ -44,17 +44,17 @@ public class GeneratorTypeAdapterImageLoader {
         }
     }
 
-    interface Callback {
+    public interface Callback {
         void onLoaded(@NonNull GeneratorParams params, @NonNull Bitmap bitmap);
     }
 
     @Inject
-    GeneratorTypeAdapterImageLoader(@NonNull @RigScheduler Scheduler subscribeOn, @NonNull Logger logger) {
+    public GeneratorTypeImageLoader(@NonNull @RigScheduler Scheduler subscribeOn, @NonNull Logger logger) {
         this.subscribeOn = subscribeOn;
         this.logger = logger;
     }
 
-    void load(@NonNull GeneratorType type, @NonNull Callback callback) {
+    public void load(@NonNull GeneratorType type, @NonNull Callback callback) {
         CacheItem cacheItem = cache.get(type);
         if (cacheItem != null) {
             callback.onLoaded(cacheItem.params, cacheItem.bitmap);

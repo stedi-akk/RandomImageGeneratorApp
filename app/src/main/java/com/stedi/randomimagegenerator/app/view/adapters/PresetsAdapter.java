@@ -7,10 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.stedi.randomimagegenerator.app.R;
+import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
+import com.stedi.randomimagegenerator.app.view.components.GeneratorTypeImageLoader;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -22,6 +25,7 @@ import butterknife.ButterKnife;
 
 public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHolder> implements View.OnClickListener {
     private final List<Preset> presetsList = new ArrayList<>();
+    private final GeneratorTypeImageLoader imageLoader;
     private final ClickListener listener;
 
     private Preset pendingPreset;
@@ -36,7 +40,8 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
         void onSaveClick(@NonNull Preset preset);
     }
 
-    public PresetsAdapter(@NonNull ClickListener listener) {
+    public PresetsAdapter(@NonNull GeneratorTypeImageLoader imageLoader, @NonNull ClickListener listener) {
+        this.imageLoader = imageLoader;
         this.listener = listener;
     }
 
@@ -77,10 +82,18 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
             preset = presetsList.get(position);
         }
 
+        GeneratorType type = preset.getGeneratorParams().getType();
+        holder.itemView.setTag(type);
         holder.tvName.setText(preset.getName());
         holder.tvFolder.setText(preset.getPathToSave());
         holder.tvCreated.setText(DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(new Date(preset.getTimestamp())));
         holder.btnAction.setText(preset == pendingPreset ? "save" : "generate");
+        imageLoader.load(type, (params, bitmap) -> {
+            GeneratorType holderType = (GeneratorType) holder.itemView.getTag();
+            if (type == holderType) {
+                holder.imageView.setImageBitmap(bitmap);
+            }
+        });
         setPresetBoundedClickListener(holder.itemView, preset);
         setPresetBoundedClickListener(holder.btnAction, preset);
         setPresetBoundedClickListener(holder.btnDelete, preset);
@@ -94,7 +107,7 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
     @Override
     public void onClick(View v) {
         Preset preset = (Preset) v.getTag(R.id.tag_preset);
-        switch ((String) v.getTag()) {
+        switch ((String) v.getTag(R.id.tag_key)) {
             case ViewHolder.ITEM_VIEW_TAG:
                 listener.onCardClick(preset);
                 break;
@@ -126,15 +139,16 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
         @BindView(R.id.preset_item_tv_name) TextView tvName;
         @BindView(R.id.preset_item_tv_folder) TextView tvFolder;
         @BindView(R.id.preset_item_tv_created) TextView tvCreated;
+        @BindView(R.id.preset_item_image) ImageView imageView;
         @BindView(R.id.preset_item_btn_action) Button btnAction;
         @BindView(R.id.preset_item_btn_delete) Button btnDelete;
 
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setTag(ITEM_VIEW_TAG);
-            btnAction.setTag(BTN_ACTION_TAG);
-            btnDelete.setTag(BTN_DELETE_TAG);
+            itemView.setTag(R.id.tag_key, ITEM_VIEW_TAG);
+            btnAction.setTag(R.id.tag_key, BTN_ACTION_TAG);
+            btnDelete.setTag(R.id.tag_key, BTN_DELETE_TAG);
         }
     }
 }

@@ -15,7 +15,7 @@ import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseGeneratorPresenter;
 import com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapter;
-import com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapterImageLoader;
+import com.stedi.randomimagegenerator.app.view.components.GeneratorTypeImageLoader;
 import com.stedi.randomimagegenerator.app.view.dialogs.ColoredNoiseParamsDialog;
 import com.stedi.randomimagegenerator.app.view.dialogs.SimpleIntegerParamsDialog;
 import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment;
@@ -30,7 +30,7 @@ public class ChooseGeneratorFragment extends StepFragment implements
 
     @Inject ChooseGeneratorPresenter presenter;
     @Inject Logger logger;
-    @Inject GeneratorTypeAdapterImageLoader adapterImageLoader;
+    @Inject GeneratorTypeImageLoader adapterImageLoader;
 
     @BindView(R.id.choose_generator_fragment_recycler_view) RecyclerView recyclerView;
 
