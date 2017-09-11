@@ -89,15 +89,22 @@ public class ApplyGenerationPresenterImpl extends ApplyGenerationPresenter {
         saveInProgress = true;
 
         Preset preset = pendingPreset.getCandidate();
+        String originalName = preset.getName();
+        long originalTimestamp = preset.getTimestamp();
+        preset.setName(name);
+        preset.setTimestamp(System.currentTimeMillis());
+
         Completable.fromCallable(() -> {
-            preset.setName(name);
-            preset.setTimestamp(System.currentTimeMillis());
             presetRepository.save(preset);
             return true;
         }).subscribeOn(subscribeOn)
                 .observeOn(observeOn)
                 .subscribe(() -> bus.post(new OnPresetSaveEvent(null)),
-                        throwable -> bus.post(new OnPresetSaveEvent(throwable)));
+                        throwable -> {
+                            preset.setName(originalName);
+                            preset.setTimestamp(originalTimestamp);
+                            bus.post(new OnPresetSaveEvent(throwable));
+                        });
     }
 
     @Subscribe
