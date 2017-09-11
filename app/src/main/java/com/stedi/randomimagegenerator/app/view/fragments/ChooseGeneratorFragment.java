@@ -58,7 +58,7 @@ public class ChooseGeneratorFragment extends StepFragment implements
 
     @Override
     public void showTypes(@NonNull GeneratorType[] types, @NonNull GeneratorType selectedType) {
-        recyclerView.setAdapter(new GeneratorTypeAdapter(adapterImageLoader, types, selectedType, this, false));
+        recyclerView.setAdapter(new GeneratorTypeAdapter(adapterImageLoader, types, selectedType, null, this, false));
     }
 
     @Override

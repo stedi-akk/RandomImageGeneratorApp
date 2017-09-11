@@ -23,6 +23,7 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
     private final boolean isDeselectAllowed;
 
     private GeneratorType selectedType;
+    private GeneratorType targetType;
 
     public interface ClickListener {
         void onSelected(@NonNull GeneratorType type);
@@ -34,11 +35,12 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
 
     public GeneratorTypeAdapter(
             @NonNull GeneratorTypeImageLoader imageLoader,
-            @NonNull GeneratorType[] generatorType, @Nullable GeneratorType selectedType,
+            @NonNull GeneratorType[] generatorType, @Nullable GeneratorType selectedType, @Nullable GeneratorType targetType,
             @NonNull ClickListener listener, boolean isDeselectAllowed) {
         this.imageLoader = imageLoader;
         this.generatorType = generatorType;
         this.selectedType = selectedType;
+        this.targetType = targetType;
         this.listener = listener;
         this.isDeselectAllowed = isDeselectAllowed;
     }
@@ -58,7 +60,7 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
         holder.isSelected.setVisibility(type == selectedType ? View.VISIBLE : View.INVISIBLE);
         holder.btnEdit.setVisibility(View.INVISIBLE);
         holder.image.setImageDrawable(null);
-        imageLoader.load(type, (params, bitmap) -> {
+        imageLoader.load(type, targetType, (params, bitmap) -> {
             GeneratorType holderType = (GeneratorType) holder.itemView.getTag();
             if (type == holderType) {
                 holder.btnEdit.setVisibility(params.isEditable() && holderType == selectedType ? View.VISIBLE : View.INVISIBLE);

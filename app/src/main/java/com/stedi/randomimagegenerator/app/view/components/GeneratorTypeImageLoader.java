@@ -4,7 +4,8 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
-import android.support.v4.util.ArrayMap;
+import android.support.annotation.Nullable;
+import android.util.SparseArray;
 
 import com.stedi.randomimagegenerator.ImageParams;
 import com.stedi.randomimagegenerator.Rig;
@@ -25,8 +26,8 @@ import rx.Scheduler;
 
 @Singleton
 public class GeneratorTypeImageLoader {
-    private final ArrayMap<GeneratorType, CacheItem> cache = new ArrayMap<>(GeneratorType.values().length);
-    private final ArrayMap<GeneratorType, List<Callback>> callbacks = new ArrayMap<>();
+    private final SparseArray<CacheItem> cache = new SparseArray<>();
+    private final SparseArray<List<Callback>> callbacks = new SparseArray<>();
 
     private final Handler uiHandler = new Handler(Looper.getMainLooper());
 
@@ -53,33 +54,29 @@ public class GeneratorTypeImageLoader {
         this.logger = logger;
     }
 
-    public void load(@NonNull GeneratorType type, @NonNull Callback callback) {
-        CacheItem cacheItem = cache.get(type);
+    public void load(@NonNull GeneratorType mainType, @Nullable GeneratorType secondType, @NonNull Callback callback) {
+        int key = createCacheKey(mainType, secondType);
+
+        CacheItem cacheItem = cache.get(key);
         if (cacheItem != null) {
             callback.onLoaded(cacheItem.params, cacheItem.bitmap);
             return;
         }
 
-        if (callbacks.containsKey(type)) {
-            callbacks.get(type).add(callback);
+        if (callbacks.indexOfKey(key) >= 0) {
+            callbacks.get(key).add(callback);
         } else {
             List<Callback> list = new ArrayList<>();
             list.add(callback);
-            callbacks.put(type, list);
+            callbacks.put(key, list);
         }
 
-        if (cache.containsKey(type))
+        if (cache.indexOfKey(key) >= 0)
             return;
-        cache.put(type, null);
+        cache.put(key, null);
 
         Completable.fromAction(() -> {
-            GeneratorParams params;
-            if (type.isEffect()) {
-                params = GeneratorParams.createDefaultEffectParams(type,
-                        GeneratorParams.createDefaultParams(GeneratorType.COLORED_CIRCLES));
-            } else {
-                params = GeneratorParams.createDefaultParams(type);
-            }
+            GeneratorParams params = createGeneratorParams(mainType, secondType);
             new Rig.Builder()
                     .setGenerator(params.getGenerator())
                     .setCount(1)
@@ -88,11 +85,11 @@ public class GeneratorTypeImageLoader {
                         @Override
                         public void onGenerated(ImageParams imageParams, Bitmap bitmap) {
                             uiHandler.post(() -> {
-                                cache.put(type, new CacheItem(params, bitmap));
-                                for (Callback callback : callbacks.get(type)) {
+                                cache.put(key, new CacheItem(params, bitmap));
+                                for (Callback callback : callbacks.get(key)) {
                                     callback.onLoaded(params, bitmap);
                                 }
-                                callbacks.remove(type);
+                                callbacks.remove(key);
                             });
                         }
 
@@ -102,5 +99,25 @@ public class GeneratorTypeImageLoader {
                         }
                     }).build().generate();
         }).subscribeOn(subscribeOn).subscribe();
+    }
+
+    private int createCacheKey(GeneratorType mainType, GeneratorType secondType) {
+        if (secondType == null) {
+            if (mainType.isEffect())
+                throw new IllegalStateException("incorrect behavior");
+            return mainType.ordinal();
+        } else {
+            if (!mainType.isEffect() || secondType.isEffect())
+                throw new IllegalStateException("incorrect behavior");
+            return Integer.parseInt(mainType.ordinal() + "" + secondType.ordinal());
+        }
+    }
+
+    private GeneratorParams createGeneratorParams(GeneratorType mainType, GeneratorType secondType) {
+        if (secondType == null) {
+            return GeneratorParams.createDefaultParams(mainType);
+        } else {
+            return GeneratorParams.createDefaultEffectParams(mainType, GeneratorParams.createDefaultParams(secondType));
+        }
     }
 }

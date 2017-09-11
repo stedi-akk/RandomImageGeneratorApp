@@ -39,7 +39,7 @@ public class ChooseEffectPresenterImplTest {
         pendingPreset.getCandidate().setGeneratorParams(GeneratorParams.createDefaultParams(GeneratorType.COLORED_RECTANGLE));
         presenter.onAttach(ui);
         presenter.getEffectTypes();
-        verify(ui, times(1)).showTypes(GeneratorType.effectTypes(), null);
+        verify(ui, times(1)).showTypes(GeneratorType.effectTypes(), null, GeneratorType.COLORED_RECTANGLE);
         verifyNoMoreInteractions(ui);
     }
 
@@ -48,7 +48,7 @@ public class ChooseEffectPresenterImplTest {
         pendingPreset.getCandidate().setGeneratorParams(GeneratorParams.createDefaultEffectParams(GeneratorType.MIRRORED, GeneratorParams.createDefaultParams(GeneratorType.COLORED_CIRCLES)));
         presenter.onAttach(ui);
         presenter.getEffectTypes();
-        verify(ui, times(1)).showTypes(GeneratorType.effectTypes(), GeneratorType.MIRRORED);
+        verify(ui, times(1)).showTypes(GeneratorType.effectTypes(), GeneratorType.MIRRORED, GeneratorType.COLORED_CIRCLES);
         verifyNoMoreInteractions(ui);
     }
 

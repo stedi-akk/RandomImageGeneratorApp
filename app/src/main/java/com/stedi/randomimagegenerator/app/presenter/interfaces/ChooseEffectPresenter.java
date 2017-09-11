@@ -13,6 +13,6 @@ public interface ChooseEffectPresenter extends Presenter<ChooseEffectPresenter.U
     void chooseEffectType(@Nullable GeneratorType effectType);
 
     interface UIImpl extends UI {
-        void showTypes(@NonNull GeneratorType[] types, @Nullable GeneratorType selectedType);
+        void showTypes(@NonNull GeneratorType[] types, @Nullable GeneratorType selectedType, @NonNull GeneratorType targetType);
     }
 }

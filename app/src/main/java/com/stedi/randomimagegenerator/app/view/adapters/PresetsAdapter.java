@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams;
 import com.stedi.randomimagegenerator.app.view.components.GeneratorTypeImageLoader;
 
 import java.text.DateFormat;
@@ -82,15 +83,19 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
             preset = presetsList.get(position);
         }
 
-        GeneratorType type = preset.getGeneratorParams().getType();
-        holder.itemView.setTag(type);
+        GeneratorType mainType = preset.getGeneratorParams().getType();
+        GeneratorType secondType = null;
+        if (preset.getGeneratorParams() instanceof EffectGeneratorParams)
+            secondType = ((EffectGeneratorParams) preset.getGeneratorParams()).getTarget().getType();
+
+        holder.itemView.setTag(mainType);
         holder.tvName.setText(preset.getName());
         holder.tvFolder.setText(preset.getPathToSave());
         holder.tvCreated.setText(DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(new Date(preset.getTimestamp())));
         holder.btnAction.setText(preset == pendingPreset ? "save" : "generate");
-        imageLoader.load(type, (params, bitmap) -> {
+        imageLoader.load(mainType, secondType, (params, bitmap) -> {
             GeneratorType holderType = (GeneratorType) holder.itemView.getTag();
-            if (type == holderType) {
+            if (mainType == holderType) {
                 holder.imageView.setImageBitmap(bitmap);
             }
         });
