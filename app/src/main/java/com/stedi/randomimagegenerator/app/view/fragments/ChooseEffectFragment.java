@@ -55,6 +55,13 @@ public class ChooseEffectFragment extends StepFragment implements
     }
 
     @Override
+    public void onSelected() {
+        if (getView() != null) {
+            presenter.getEffectTypes();
+        }
+    }
+
+    @Override
     public void showTypes(@NonNull GeneratorType[] types, @Nullable GeneratorType selectedType, @NonNull GeneratorType targetType) {
         recyclerView.setAdapter(new GeneratorTypeAdapter(adapterImageLoader, types, selectedType, targetType, this, true));
     }
