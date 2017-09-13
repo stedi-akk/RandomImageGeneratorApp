@@ -18,19 +18,16 @@ import com.stedi.randomimagegenerator.callbacks.GenerateCallback;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import rx.Completable;
 import rx.Scheduler;
 
-@Singleton
 public class GeneratorTypeImageLoader {
     private final SparseArray<CacheItem> cache = new SparseArray<>();
     private final SparseArray<List<Callback>> callbacks = new SparseArray<>();
 
     private final Handler uiHandler = new Handler(Looper.getMainLooper());
 
+    private final int imageSize;
     private final Scheduler subscribeOn;
     private final Logger logger;
 
@@ -48,8 +45,8 @@ public class GeneratorTypeImageLoader {
         void onLoaded(@NonNull GeneratorParams params, @NonNull Bitmap bitmap);
     }
 
-    @Inject
-    public GeneratorTypeImageLoader(@NonNull @RigScheduler Scheduler subscribeOn, @NonNull Logger logger) {
+    public GeneratorTypeImageLoader(int imageSize, @NonNull @RigScheduler Scheduler subscribeOn, @NonNull Logger logger) {
+        this.imageSize = imageSize;
         this.subscribeOn = subscribeOn;
         this.logger = logger;
     }
@@ -80,7 +77,7 @@ public class GeneratorTypeImageLoader {
             new Rig.Builder()
                     .setGenerator(params.getGenerator())
                     .setCount(1)
-                    .setFixedSize(200, 200)
+                    .setFixedSize(imageSize, imageSize)
                     .setCallback(new GenerateCallback() {
                         @Override
                         public void onGenerated(ImageParams imageParams, Bitmap bitmap) {

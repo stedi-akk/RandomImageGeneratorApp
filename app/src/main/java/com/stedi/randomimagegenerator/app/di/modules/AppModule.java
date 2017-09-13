@@ -5,13 +5,16 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.app.App;
+import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.qualifiers.AppContext;
 import com.stedi.randomimagegenerator.app.di.qualifiers.DefaultScheduler;
 import com.stedi.randomimagegenerator.app.di.qualifiers.RigScheduler;
 import com.stedi.randomimagegenerator.app.di.qualifiers.UiScheduler;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
+import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
+import com.stedi.randomimagegenerator.app.view.components.GeneratorTypeImageLoader;
 
 import javax.inject.Singleton;
 
@@ -64,5 +67,11 @@ public class AppModule {
     @Singleton
     PendingPreset providePendingPreset(Logger logger) {
         return new PendingPreset("Unsaved preset", Environment.getExternalStorageDirectory().getPath(), logger);
+    }
+
+    @Provides
+    @Singleton
+    GeneratorTypeImageLoader provideGeneratorTypeImageLoader(@AppContext Context context, @RigScheduler Scheduler scheduler, Logger logger) {
+        return new GeneratorTypeImageLoader(Utils.dp2pxi(context, R.dimen.adapter_rig_image_size), scheduler, logger);
     }
 }

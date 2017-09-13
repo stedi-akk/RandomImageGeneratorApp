@@ -2,6 +2,7 @@ package com.stedi.randomimagegenerator.app.other;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.annotation.DimenRes;
 import android.support.annotation.NonNull;
 import android.util.SparseArray;
@@ -17,12 +18,13 @@ public final class Utils {
     private Utils() {
     }
 
-    public static int dimen2pxi(@NonNull Context context, @DimenRes int id) {
-        return dp2pxi(context, context.getResources().getDimensionPixelSize(id));
+    public static int dp2pxi(@NonNull Context context, @DimenRes int id) {
+        return (int) dp2px(context, id);
     }
 
-    public static float dimen2px(@NonNull Context context, @DimenRes int id) {
-        return dp2px(context, context.getResources().getDimensionPixelSize(id));
+    public static float dp2px(@NonNull Context context, @DimenRes int id) {
+        Resources res = context.getResources();
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, res.getDimensionPixelOffset(id), res.getDisplayMetrics());
     }
 
     public static int dp2pxi(@NonNull Context context, float dp) {

@@ -44,6 +44,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     @Inject GeneratorTypeImageLoader adapterImageLoader;
 
     @BindView(R.id.home_activity_recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.home_activity_fab) View fab;
 
     private PresetsAdapter adapter;
     private Preset startGenerationPreset;
@@ -62,10 +63,11 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
                 presenter.onRestore(state);
         }
 
+        fab.setVisibility(View.INVISIBLE);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new SpaceItemDecoration(
-                Utils.dimen2pxi(this, R.dimen.adapter_v_spacing), Utils.dimen2pxi(this, R.dimen.adapter_lr_spacing)));
+                Utils.dp2pxi(this, R.dimen.adapter_v_spacing), Utils.dp2pxi(this, R.dimen.adapter_lr_spacing)));
         adapter = new PresetsAdapter(adapterImageLoader, this);
         recyclerView.setAdapter(adapter);
     }
@@ -88,6 +90,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     @Override
     public void onPresetsFetched(@Nullable Preset pendingPreset, @NonNull List<Preset> presets) {
         logger.log(this, "onPresetsFetched");
+        fab.setVisibility(View.VISIBLE);
         adapter.set(presets);
         adapter.setPendingPreset(pendingPreset);
         adapter.notifyDataSetChanged();
