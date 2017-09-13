@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="adapter_v_spacing">16dp</dimen>
+    <dimen name="adapter_lr_spacing">32dp</dimen>
+    <dimen name="fab_margin">24dp</dimen>
 </resources>
