@@ -1,3 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="adapter_v_spacing">8dp</dimen>
+    <dimen name="adapter_rl_spacing">24dp</dimen>
 </resources>

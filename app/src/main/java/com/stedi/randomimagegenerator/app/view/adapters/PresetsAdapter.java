@@ -146,7 +146,7 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
         @BindView(R.id.preset_item_tv_created) TextView tvCreated;
         @BindView(R.id.preset_item_image) ImageView imageView;
         @BindView(R.id.preset_item_btn_action) Button btnAction;
-        @BindView(R.id.preset_item_btn_delete) Button btnDelete;
+        @BindView(R.id.preset_item_btn_delete) View btnDelete;
 
         ViewHolder(View itemView) {
             super(itemView);

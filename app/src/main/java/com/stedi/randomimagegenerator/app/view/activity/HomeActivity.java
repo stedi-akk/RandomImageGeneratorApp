@@ -20,6 +20,7 @@ import com.stedi.randomimagegenerator.app.presenter.interfaces.HomePresenter;
 import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity;
 import com.stedi.randomimagegenerator.app.view.adapters.PresetsAdapter;
 import com.stedi.randomimagegenerator.app.view.components.GeneratorTypeImageLoader;
+import com.stedi.randomimagegenerator.app.view.components.SpaceItemDecoration;
 import com.stedi.randomimagegenerator.app.view.dialogs.ConfirmDialog;
 
 import java.io.Serializable;
@@ -63,6 +64,8 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new SpaceItemDecoration(
+                Utils.dimen2pxi(this, R.dimen.adapter_v_spacing), Utils.dimen2pxi(this, R.dimen.adapter_rl_spacing)));
         adapter = new PresetsAdapter(adapterImageLoader, this);
         recyclerView.setAdapter(adapter);
     }

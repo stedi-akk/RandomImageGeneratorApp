@@ -2,8 +2,10 @@ package com.stedi.randomimagegenerator.app.other;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.DimenRes;
 import android.support.annotation.NonNull;
 import android.util.SparseArray;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -13,6 +15,22 @@ import java.util.List;
 
 public final class Utils {
     private Utils() {
+    }
+
+    public static int dimen2pxi(@NonNull Context context, @DimenRes int id) {
+        return dp2pxi(context, context.getResources().getDimensionPixelSize(id));
+    }
+
+    public static float dimen2px(@NonNull Context context, @DimenRes int id) {
+        return dp2px(context, context.getResources().getDimensionPixelSize(id));
+    }
+
+    public static int dp2pxi(@NonNull Context context, float dp) {
+        return (int) dp2px(context, dp);
+    }
+
+    public static float dp2px(@NonNull Context context, float dp) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
     }
 
     public static void sleep(long millis) {
@@ -31,11 +49,11 @@ public final class Utils {
         return result;
     }
 
-    public static void toastLong(Context context, String message) {
+    public static void toastLong(@NonNull Context context, @NonNull String message) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 
-    public static void toastShort(Context context, String message) {
+    public static void toastShort(@NonNull Context context, @NonNull String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
