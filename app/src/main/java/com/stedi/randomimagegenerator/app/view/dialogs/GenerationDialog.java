@@ -25,7 +25,8 @@ public class GenerationDialog extends BaseDialogFragment implements GenerationPr
     private enum State {
         START,
         PROGRESS,
-        FINISH
+        FINISH,
+        ERROR
     }
 
     @NonNull
@@ -42,6 +43,7 @@ public class GenerationDialog extends BaseDialogFragment implements GenerationPr
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCancelable(false);
+        progressDialog.setTitle(R.string.please_wait);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.ok), (dialog, which) -> {
         });
@@ -74,7 +76,7 @@ public class GenerationDialog extends BaseDialogFragment implements GenerationPr
 
     @Override
     public void onGenerationUnknownError() {
-        changeStateTo(State.FINISH);
+        changeStateTo(State.ERROR);
     }
 
     @Override
@@ -89,7 +91,7 @@ public class GenerationDialog extends BaseDialogFragment implements GenerationPr
     }
 
     private void changeStateTo(State state) {
-        if (currentState.ordinal() > state.ordinal())
+        if (currentState == State.ERROR || currentState.ordinal() > state.ordinal())
             throw new IllegalStateException("incorrect behavior");
         currentState = state;
         if (isAdded())
@@ -99,20 +101,21 @@ public class GenerationDialog extends BaseDialogFragment implements GenerationPr
     private void invalidate() {
         switch (currentState) {
             case START:
-                progressDialog.setTitle(R.string.please_wait);
-                progressDialog.setMessage(getString(R.string.generating));
-                progressDialog.getButton(DialogInterface.BUTTON_POSITIVE).setVisibility(View.GONE);
-                break;
             case PROGRESS:
                 progressDialog.setTitle(R.string.please_wait);
-                progressDialog.setMessage(getString(R.string.generating));
+                progressDialog.setMessage(getString(R.string.generating_image, String.valueOf(generatedCount + failedCount + 1)));
                 progressDialog.getButton(DialogInterface.BUTTON_POSITIVE).setVisibility(View.GONE);
                 break;
             case FINISH:
+            case ERROR:
                 progressDialog.setTitle(R.string.generation_results);
-                progressDialog.setMessage(getString(R.string.generated_stats, String.valueOf(generatedCount), String.valueOf(failedCount)));
-                progressDialog.findViewById(android.R.id.progress).setVisibility(View.GONE);
+                if (currentState == State.FINISH) {
+                    progressDialog.setMessage(getString(R.string.generated_stats, String.valueOf(generatedCount), String.valueOf(failedCount)));
+                } else if (currentState == State.ERROR) {
+                    progressDialog.setMessage(getString(R.string.generation_error));
+                }
                 progressDialog.getButton(DialogInterface.BUTTON_POSITIVE).setVisibility(View.VISIBLE);
+                progressDialog.findViewById(android.R.id.progress).setVisibility(View.GONE);
                 break;
             default:
                 throw new IllegalStateException("unreachable code");
