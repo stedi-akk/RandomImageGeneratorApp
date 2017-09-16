@@ -5,16 +5,21 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.support.annotation.DimenRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public final class Utils {
+    private static DateFormat dateFormat;
+
     private Utils() {
     }
 
@@ -51,8 +56,16 @@ public final class Utils {
         return result;
     }
 
+    public static void toastLong(@NonNull Context context, @StringRes int id) {
+        toastLong(context, context.getString(id));
+    }
+
     public static void toastLong(@NonNull Context context, @NonNull String message) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    }
+
+    public static void toastShort(@NonNull Context context, @StringRes int id) {
+        toastShort(context, context.getString(id));
     }
 
     public static void toastShort(@NonNull Context context, @NonNull String message) {
@@ -65,5 +78,12 @@ public final class Utils {
             InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    @NonNull
+    public static String formatTime(long millis) {
+        if (dateFormat == null)
+            dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
+        return dateFormat.format(new Date(millis));
     }
 }

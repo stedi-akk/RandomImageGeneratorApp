@@ -14,11 +14,10 @@ import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams;
+import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.view.components.GeneratorTypeImageLoader;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -75,10 +74,7 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
         Preset preset;
 
         if (pendingPreset != null) {
-            if (position == 0)
-                preset = pendingPreset;
-            else
-                preset = presetsList.get(position - 1);
+            preset = position == 0 ? pendingPreset : presetsList.get(position - 1);
         } else {
             preset = presetsList.get(position);
         }
@@ -91,17 +87,19 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
         holder.itemView.setTag(mainType);
         holder.tvName.setText(preset.getName());
         holder.tvFolder.setText(preset.getPathToSave());
-        holder.tvCreated.setText(DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(new Date(preset.getTimestamp())));
-        holder.btnAction.setText(preset == pendingPreset ? "save" : "generate");
+        holder.tvCreated.setText(Utils.formatTime(preset.getTimestamp()));
+        holder.btnAction.setText(preset == pendingPreset ? R.string.save : R.string.generate);
+
+        setPresetBoundedClickListener(holder.itemView, preset);
+        setPresetBoundedClickListener(holder.btnAction, preset);
+        setPresetBoundedClickListener(holder.btnDelete, preset);
+
         imageLoader.load(mainType, secondType, (params, bitmap) -> {
             GeneratorType holderType = (GeneratorType) holder.itemView.getTag();
             if (mainType == holderType) {
                 holder.imageView.setImageBitmap(bitmap);
             }
         });
-        setPresetBoundedClickListener(holder.itemView, preset);
-        setPresetBoundedClickListener(holder.btnAction, preset);
-        setPresetBoundedClickListener(holder.btnDelete, preset);
     }
 
     private void setPresetBoundedClickListener(View view, Preset preset) {

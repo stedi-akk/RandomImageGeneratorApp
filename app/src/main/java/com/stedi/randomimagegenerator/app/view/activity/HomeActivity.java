@@ -100,7 +100,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
 
     @Override
     public void onFailedToFetchPresets() {
-        Utils.toastLong(this, "onFailedToFetch");
+        Utils.toastLong(this, R.string.failed_fetch_presets);
     }
 
     @OnClick(R.id.home_activity_fab)
@@ -141,7 +141,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
 
     @Override
     public void onFailedToDeletePreset() {
-        Utils.toastLong(this, "onFailedToDeletePreset");
+        Utils.toastLong(this, R.string.failed_delete_preset);
     }
 
     @Override
