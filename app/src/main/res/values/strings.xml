@@ -5,4 +5,9 @@
     <string name="generate">Generate</string>
     <string name="failed_fetch_presets">Failed to fetch presets</string>
     <string name="failed_delete_preset">Failed to delete preset</string>
+    <string name="confirm_action">Confirm action</string>
+    <string name="are_you_sure_delete_preset">Are you sure you want to delete \"%s\" preset?</string>
+    <string name="are_you_sure_generate_preset">Are you sure you want to start generation from \"%s\" preset?</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 </resources>

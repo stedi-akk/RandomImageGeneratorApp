@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 
+import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.Components;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
 import com.stedi.randomimagegenerator.app.view.dialogs.base.BaseDialogFragment;
@@ -60,11 +61,11 @@ public class ConfirmDialog extends BaseDialogFragment {
         String message = getArguments().getString(KEY_MESSAGE, null);
         if (message != null)
             builder.setMessage(message);
-        builder.setPositiveButton("OK", (dialog, which) -> {
+        builder.setPositiveButton(R.string.ok, (dialog, which) -> {
             posted = true;
             bus.post(new Callback(requestCode, true));
         });
-        builder.setNegativeButton("CANCEL", null);
+        builder.setNegativeButton(R.string.cancel, null);
         return builder.create();
     }
 

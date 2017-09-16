@@ -49,6 +49,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
 
     private PresetsAdapter adapter;
     private Preset startGenerationPreset;
+    private String confirmPresetName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -125,6 +126,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
 
     @Override
     public void onDeleteClick(@NonNull Preset preset) {
+        confirmPresetName = preset.getName();
         presenter.deletePreset(preset);
     }
 
@@ -147,6 +149,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     @Override
     public void onGenerateClick(@NonNull Preset preset) {
         if (checkForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_CODE_WRITE_EXTERNAL)) {
+            confirmPresetName = preset.getName();
             presenter.startGeneration(preset);
         } else {
             startGenerationPreset = preset;
@@ -156,11 +159,13 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     @Override
     public void showConfirmLastAction(@NonNull HomePresenter.Confirm confirm) {
         if (confirm == HomePresenter.Confirm.DELETE_PRESET) {
-            ConfirmDialog dlg = ConfirmDialog.newInstance(REQUEST_CONFIRM_DELETE, "title", "want to delete?");
-            dlg.show(getSupportFragmentManager(), ConfirmDialog.class.getSimpleName());
+            ConfirmDialog.newInstance(REQUEST_CONFIRM_DELETE,
+                    getString(R.string.confirm_action), getString(R.string.are_you_sure_delete_preset, confirmPresetName))
+                    .show(getSupportFragmentManager(), ConfirmDialog.class.getSimpleName());
         } else if (confirm == HomePresenter.Confirm.GENERATE_FROM_PRESET) {
-            ConfirmDialog dlg = ConfirmDialog.newInstance(REQUEST_CONFIRM_GENERATE, "title", "want to generate?");
-            dlg.show(getSupportFragmentManager(), ConfirmDialog.class.getSimpleName());
+            ConfirmDialog.newInstance(REQUEST_CONFIRM_GENERATE,
+                    getString(R.string.confirm_action), getString(R.string.are_you_sure_generate_preset, confirmPresetName))
+                    .show(getSupportFragmentManager(), ConfirmDialog.class.getSimpleName());
         }
     }
 
@@ -168,6 +173,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     public void onPermissionEvent(PermissionEvent event) {
         if (event.requestCode == REQUEST_CODE_WRITE_EXTERNAL) {
             if (event.isGranted && startGenerationPreset != null) {
+                confirmPresetName = startGenerationPreset.getName();
                 //noinspection MissingPermission
                 presenter.startGeneration(startGenerationPreset);
             }
