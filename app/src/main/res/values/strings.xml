@@ -10,4 +10,8 @@
     <string name="are_you_sure_generate_preset">Are you sure you want to start generation from \"%s\" preset?</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="please_wait">Please wait</string>
+    <string name="generation_results">Generation results</string>
+    <string name="generating">Generating…</string>
+    <string name="generated_stats">Successfully generated - %1$s\nFailed to generate - %2$s</string>
 </resources>

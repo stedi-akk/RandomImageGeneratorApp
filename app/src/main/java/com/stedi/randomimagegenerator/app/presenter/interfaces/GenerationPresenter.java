@@ -27,7 +27,7 @@ import rx.Completable;
 import rx.Scheduler;
 import rx.functions.Action0;
 
-abstract class GenerationPresenter<T extends GenerationPresenter.UIImpl> implements RetainedPresenter<T> {
+public abstract class GenerationPresenter<T extends GenerationPresenter.UIImpl> implements RetainedPresenter<T> {
     private final Scheduler subscribeOn;
     private final Scheduler observeOn;
     private final CachedBus bus;
@@ -197,7 +197,7 @@ abstract class GenerationPresenter<T extends GenerationPresenter.UIImpl> impleme
         generationInProgress = (boolean) state;
     }
 
-    interface UIImpl extends UI {
+    public interface UIImpl extends UI {
         void onStartGeneration();
 
         void onGenerated(@NonNull ImageParams imageParams);

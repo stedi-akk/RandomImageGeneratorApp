@@ -58,7 +58,7 @@ public class CachedBus extends Bus {
             LinkedList<Runnable> release = new LinkedList<>(cache);
             cache.clear();
             while (!release.isEmpty())
-                release.pollLast().run();
+                release.pollFirst().run();
         }
     }
 

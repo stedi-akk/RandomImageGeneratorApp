@@ -22,6 +22,7 @@ import com.stedi.randomimagegenerator.app.view.adapters.PresetsAdapter;
 import com.stedi.randomimagegenerator.app.view.components.GeneratorTypeImageLoader;
 import com.stedi.randomimagegenerator.app.view.components.SpaceItemDecoration;
 import com.stedi.randomimagegenerator.app.view.dialogs.ConfirmDialog;
+import com.stedi.randomimagegenerator.app.view.dialogs.GenerationDialog;
 
 import java.io.Serializable;
 import java.util.List;
@@ -197,26 +198,31 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     @Override
     public void onStartGeneration() {
         logger.log(this, "onStartGeneration");
+        GenerationDialog.getInstance(getSupportFragmentManager()).onStartGeneration();
     }
 
     @Override
     public void onGenerated(@NonNull ImageParams imageParams) {
         logger.log(this, "onGenerated");
+        GenerationDialog.getInstance(getSupportFragmentManager()).onGenerated(imageParams);
     }
 
     @Override
     public void onGenerationUnknownError() {
         logger.log(this, "onGenerationUnknownError");
+        GenerationDialog.getInstance(getSupportFragmentManager()).onGenerationUnknownError();
     }
 
     @Override
     public void onFailedToGenerate(@NonNull ImageParams imageParams) {
         logger.log(this, "onFailedToGenerate");
+        GenerationDialog.getInstance(getSupportFragmentManager()).onFailedToGenerate(imageParams);
     }
 
     @Override
     public void onFinishGeneration() {
-        Utils.toastShort(this, "onFinishGeneration");
+        logger.log(this, "onFinishGeneration");
+        GenerationDialog.getInstance(getSupportFragmentManager()).onFinishGeneration();
     }
 
     @Override
