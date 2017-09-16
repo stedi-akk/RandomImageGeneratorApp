@@ -4,8 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.generators.Generator;
 
-class GetGenerator {
-    private GetGenerator() {
+class GeneratorProxy {
+    private GeneratorProxy() {
     }
 
     @NonNull
