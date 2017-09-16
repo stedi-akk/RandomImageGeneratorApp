@@ -44,6 +44,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     @Inject GeneratorTypeImageLoader adapterImageLoader;
 
     @BindView(R.id.home_activity_recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.home_activity_empty_view) View emptyView;
     @BindView(R.id.home_activity_fab) View fab;
 
     private PresetsAdapter adapter;
@@ -91,6 +92,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     public void onPresetsFetched(@Nullable Preset pendingPreset, @NonNull List<Preset> presets) {
         logger.log(this, "onPresetsFetched");
         fab.setVisibility(View.VISIBLE);
+        emptyView.setVisibility(pendingPreset == null && presets.isEmpty() ? View.VISIBLE : View.GONE);
         adapter.set(presets);
         adapter.setPendingPreset(pendingPreset);
         adapter.notifyDataSetChanged();
