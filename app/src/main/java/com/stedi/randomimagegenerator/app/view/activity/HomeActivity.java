@@ -4,6 +4,7 @@ import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -46,7 +47,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
 
     @BindView(R.id.home_activity_recycler_view) RecyclerView recyclerView;
     @BindView(R.id.home_activity_empty_view) View emptyView;
-    @BindView(R.id.home_activity_fab) View fab;
+    @BindView(R.id.home_activity_fab) FloatingActionButton fab;
 
     private PresetsAdapter adapter;
     private Preset startGenerationPreset;
@@ -73,6 +74,16 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
                 Utils.dp2pxi(this, R.dimen.adapter_v_spacing), Utils.dp2pxi(this, R.dimen.adapter_lr_spacing)));
         adapter = new PresetsAdapter(adapterImageLoader, this);
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    fab.hide();
+                } else {
+                    fab.show();
+                }
+            }
+        });
     }
 
     @Override
@@ -95,9 +106,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
         logger.log(this, "onPresetsFetched");
         fab.setVisibility(View.VISIBLE);
         emptyView.setVisibility(pendingPreset == null && presets.isEmpty() ? View.VISIBLE : View.GONE);
-        adapter.set(presets);
-        adapter.setPendingPreset(pendingPreset);
-        adapter.notifyDataSetChanged();
+        adapter.set(presets, pendingPreset);
     }
 
     @Override
@@ -134,12 +143,8 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     @Override
     public void onPresetDeleted(@NonNull Preset preset) {
         logger.log(this, "onPresetDeleted " + preset);
-        if (adapter.getPendingPreset() == preset) {
-            adapter.setPendingPreset(null);
-        } else {
-            adapter.get().remove(preset);
-        }
-        adapter.notifyDataSetChanged();
+        adapter.remove(preset);
+        emptyView.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
     @Override

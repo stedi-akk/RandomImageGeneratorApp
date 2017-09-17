@@ -45,23 +45,24 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
         this.listener = listener;
     }
 
-    public void set(@NonNull List<Preset> presets) {
+    public void set(@NonNull List<Preset> presets, @Nullable Preset pendingPreset) {
         presetsList.clear();
         presetsList.addAll(presets);
-    }
-
-    @NonNull
-    public List<Preset> get() {
-        return presetsList;
-    }
-
-    public void setPendingPreset(@Nullable Preset pendingPreset) {
         this.pendingPreset = pendingPreset;
+        notifyDataSetChanged();
     }
 
-    @Nullable
-    public Preset getPendingPreset() {
-        return pendingPreset;
+    public void remove(@NonNull Preset preset) {
+        if (pendingPreset == preset) {
+            pendingPreset = null;
+            notifyItemRemoved(0);
+        } else {
+            int listIndex = presetsList.indexOf(preset);
+            if (listIndex >= 0) {
+                presetsList.remove(listIndex);
+                notifyItemRemoved(pendingPreset == null ? listIndex : listIndex + 1);
+            }
+        }
     }
 
     @Override
