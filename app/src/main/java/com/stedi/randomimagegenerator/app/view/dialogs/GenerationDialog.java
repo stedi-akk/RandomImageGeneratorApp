@@ -5,13 +5,18 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 
 import com.stedi.randomimagegenerator.ImageParams;
 import com.stedi.randomimagegenerator.app.R;
+import com.stedi.randomimagegenerator.app.di.Components;
+import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationPresenter;
 import com.stedi.randomimagegenerator.app.view.dialogs.base.BaseDialogFragment;
+
+import javax.inject.Inject;
 
 public class GenerationDialog extends BaseDialogFragment implements GenerationPresenter.UIImpl {
     private static GenerationDialog instance;
@@ -29,6 +34,8 @@ public class GenerationDialog extends BaseDialogFragment implements GenerationPr
         ERROR
     }
 
+    @Inject Logger logger;
+
     @NonNull
     public static GenerationDialog getInstance(@NonNull FragmentManager fm) {
         if (instance == null) {
@@ -38,9 +45,19 @@ public class GenerationDialog extends BaseDialogFragment implements GenerationPr
         return instance;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Components.getAppComponent(getContext()).inject(this);
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        if (instance == null) {
+            logger.log(this, "dismissing non instance dialog");
+            dismiss();
+        }
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCancelable(false);
         progressDialog.setTitle(R.string.please_wait);
@@ -99,6 +116,7 @@ public class GenerationDialog extends BaseDialogFragment implements GenerationPr
     }
 
     private void invalidate() {
+        logger.log(this, "invalidate state " + currentState);
         switch (currentState) {
             case START:
             case PROGRESS:
