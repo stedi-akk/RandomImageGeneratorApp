@@ -4,6 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        style="@style/GenerationStepHeaderText"
+        android:text="@string/choose_quality" />
+
     <RadioGroup
         android:id="@+id/choose_save_options_fragment_rg_format"
         android:layout_width="match_parent"

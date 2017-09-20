@@ -19,7 +19,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.activity.GenerationStepsActivity" />
+        <activity
+            android:name=".view.activity.GenerationStepsActivity"
+            android:parentActivityName=".view.activity.HomeActivity" />
     </application>
 
 </manifest>

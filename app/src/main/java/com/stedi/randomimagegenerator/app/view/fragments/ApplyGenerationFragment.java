@@ -22,7 +22,6 @@ import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPr
 import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity;
 import com.stedi.randomimagegenerator.app.view.dialogs.EditPresetNameDialog;
 import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment;
-import com.stepstone.stepper.StepperLayout;
 
 import java.io.Serializable;
 
@@ -98,6 +97,15 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
         EditPresetNameDialog.newInstance(presenter.getPreset().getName()).show(getFragmentManager());
     }
 
+    @OnClick(R.id.apply_generation_fragment_btn_generate)
+    public void onGenerateClick(View v) {
+        if (checkForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_CODE_WRITE_EXTERNAL)) {
+            presenter.startGeneration(presenter.getPreset());
+        } else {
+            startGenerationPreset = presenter.getPreset();
+        }
+    }
+
     @Subscribe
     public void onEditedPresetName(EditPresetNameDialog.OnEdited onEdited) {
         presenter.savePreset(onEdited.name);
@@ -122,16 +130,6 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
     @Override
     public void failedToSavePreset() {
         Utils.toastShort(getContext(), "failedToSavePreset");
-    }
-
-    @Override
-    public void onCompleteClicked(StepperLayout.OnCompleteClickedCallback callback) {
-        super.onCompleteClicked(callback);
-        if (checkForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_CODE_WRITE_EXTERNAL)) {
-            presenter.startGeneration(presenter.getPreset());
-        } else {
-            startGenerationPreset = presenter.getPreset();
-        }
     }
 
     @Override

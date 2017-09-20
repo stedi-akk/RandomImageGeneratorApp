@@ -15,4 +15,16 @@
     <string name="generation_error">An unknown error occurred during generation</string>
     <string name="generating_image">Generating image #%s…</string>
     <string name="generated_stats">Successfully generated - %1$s\nFailed to generate - %2$s</string>
+    <string name="generator">Generator</string>
+    <string name="choose_generator">Choose generator:</string>
+    <string name="effect">Effect</string>
+    <string name="choose_effect">Choose effect:</string>
+    <string name="size_count">Size/count</string>
+    <string name="choose_size_count">Choose size/count:</string>
+    <string name="quality">Quality</string>
+    <string name="choose_quality">Choose quality:</string>
+    <string name="summary">Summary</string>
+    <string name="configure">Configure</string>
+    <string name="new_preset">New preset</string>
+    <string name="preset_edit">Preset edit</string>
 </resources>
