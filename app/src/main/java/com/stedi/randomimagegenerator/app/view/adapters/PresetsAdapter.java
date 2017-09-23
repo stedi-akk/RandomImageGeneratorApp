@@ -41,6 +41,7 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
     }
 
     public PresetsAdapter(@NonNull GeneratorTypeImageLoader imageLoader, @NonNull ClickListener listener) {
+        setHasStableIds(true);
         this.imageLoader = imageLoader;
         this.listener = listener;
     }
@@ -90,6 +91,7 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
         holder.tvFolder.setText(preset.getPathToSave());
         holder.tvCreated.setText(Utils.formatTime(preset.getTimestamp()));
         holder.btnAction.setText(preset == pendingPreset ? R.string.save : R.string.generate);
+        holder.imageView.setImageResource(R.drawable.ic_texture_gray_medium_semi_24dp);
 
         setPresetBoundedClickListener(holder.itemView, preset);
         setPresetBoundedClickListener(holder.btnAction, preset);

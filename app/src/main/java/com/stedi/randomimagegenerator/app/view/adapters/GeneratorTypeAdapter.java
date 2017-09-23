@@ -37,6 +37,7 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
             @NonNull GeneratorTypeImageLoader imageLoader,
             @NonNull GeneratorType[] generatorType, @Nullable GeneratorType selectedType, @Nullable GeneratorType targetType,
             @NonNull ClickListener listener, boolean isDeselectAllowed) {
+        setHasStableIds(true);
         this.imageLoader = imageLoader;
         this.generatorType = generatorType;
         this.selectedType = selectedType;
@@ -53,15 +54,17 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
     @Override
     public void onBindViewHolder(GeneratorTypeAdapter.ViewHolder holder, int position) {
         GeneratorType type = generatorType[position];
-        holder.itemView.setTag(type);
-        holder.itemView.setOnClickListener(this);
-        holder.text.setText(type.name());
+
+        holder.card.setTag(type);
+        holder.card.setOnClickListener(this);
+        holder.text.setText(type.getStringRes());
         holder.btnEdit.setOnClickListener(this);
         holder.isSelected.setVisibility(type == selectedType ? View.VISIBLE : View.INVISIBLE);
         holder.btnEdit.setVisibility(View.INVISIBLE);
-        holder.image.setImageDrawable(null);
+        holder.image.setImageResource(R.drawable.ic_texture_gray_medium_semi_24dp);
+
         imageLoader.load(type, targetType, (params, bitmap) -> {
-            GeneratorType holderType = (GeneratorType) holder.itemView.getTag();
+            GeneratorType holderType = (GeneratorType) holder.card.getTag();
             if (type == holderType) {
                 holder.btnEdit.setVisibility(params.isEditable() && holderType == selectedType ? View.VISIBLE : View.INVISIBLE);
                 holder.image.setImageBitmap(bitmap);
@@ -73,7 +76,7 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
     public void onClick(View v) {
         if (v.getId() == R.id.generator_type_item_btn_edit) {
             listener.onEditSelected();
-        } else {
+        } else if (v.getId() == R.id.generator_type_item_card) {
             GeneratorType clickedType = (GeneratorType) v.getTag();
             if (selectedType != clickedType) {
                 selectedType = clickedType;
@@ -93,6 +96,7 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.generator_type_item_card) View card;
         @BindView(R.id.generator_type_item_text) TextView text;
         @BindView(R.id.generator_type_item_btn_edit) View btnEdit;
         @BindView(R.id.generator_type_item_selected) View isSelected;

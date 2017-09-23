@@ -51,7 +51,7 @@ public class ChooseGeneratorFragment extends StepFragment implements
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), getResources().getInteger(R.integer.generator_type_adapter_grid_items)));
         recyclerView.setHasFixedSize(true);
         presenter.getGeneratorTypes();
     }

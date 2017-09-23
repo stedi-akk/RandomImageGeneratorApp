@@ -44,7 +44,9 @@ public class GenerationStepperAdapter extends AbstractFragmentStepAdapter {
         StepViewModel.Builder builder = new StepViewModel.Builder(context);
         switch (position) {
             case 0:
-                return builder.setEndButtonLabel(R.string.effect).create();
+                return builder.setEndButtonLabel(R.string.effect)
+                        .setBackButtonLabel(R.string.generator)
+                        .setBackButtonVisible(false).create();
             case 1:
                 return builder.setBackButtonLabel(R.string.generator)
                         .setEndButtonLabel(R.string.size_count).create();
@@ -56,6 +58,7 @@ public class GenerationStepperAdapter extends AbstractFragmentStepAdapter {
                         .setEndButtonLabel(R.string.summary).create();
             case 4:
                 return builder.setBackButtonLabel(R.string.configure)
+                        .setEndButtonLabel(R.string.summary)
                         .setEndButtonVisible(false).create();
             default:
                 throw new IllegalStateException("unreachable code");

@@ -1,56 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:foreground="?selectableItemBackground">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <android.support.constraint.ConstraintLayout
+    <android.support.v7.widget.CardView
+        android:id="@+id/generator_type_item_card"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/adapter_v_spacing"
+        android:layout_marginTop="@dimen/adapter_v_spacing"
+        android:foreground="?selectableItemBackground">
 
-        <ImageView
-            android:id="@+id/generator_type_item_image"
-            android:layout_width="@dimen/adapter_rig_image_size"
-            android:layout_height="@dimen/adapter_rig_image_size"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_texture_gray_medium_semi_24dp" />
-
-        <TextView
-            android:id="@+id/generator_type_item_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/common_margin"
-            android:ellipsize="end"
-            android:gravity="center_horizontal"
-            android:maxLines="1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/generator_type_item_image"
-            tools:text="generator" />
-
-        <ImageView
-            android:id="@+id/generator_type_item_selected"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/generator_type_item_image"
-            app:layout_constraintLeft_toLeftOf="@+id/generator_type_item_image"
-            app:layout_constraintRight_toRightOf="@+id/generator_type_item_image"
-            app:layout_constraintTop_toTopOf="@+id/generator_type_item_image"
-            app:srcCompat="@drawable/ic_check_circle_accent_80_48dp" />
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/generator_type_item_btn_edit"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:background="?selectableItemBackgroundBorderless"
-            android:scaleType="center"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_settings_black_semi_24dp" />
+            <ImageView
+                android:id="@+id/generator_type_item_image"
+                android:layout_width="@dimen/adapter_rig_image_size_big"
+                android:layout_height="@dimen/adapter_rig_image_size_big"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_texture_gray_medium_semi_24dp" />
 
-    </android.support.constraint.ConstraintLayout>
-</android.support.v7.widget.CardView>
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@android:color/transparent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/generator_type_item_btn_edit"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="right"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:scaleType="center"
+                    app:srcCompat="@drawable/ic_settings_black_semi_24dp" />
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/generator_type_item_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/common_margin"
+                android:ellipsize="end"
+                android:gravity="center_horizontal"
+                android:maxLines="1"
+                android:textAllCaps="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/generator_type_item_image"
+                tools:text="generator" />
+
+            <ImageView
+                android:id="@+id/generator_type_item_selected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/generator_type_item_image"
+                app:layout_constraintLeft_toLeftOf="@+id/generator_type_item_image"
+                app:layout_constraintRight_toRightOf="@+id/generator_type_item_image"
+                app:layout_constraintTop_toTopOf="@+id/generator_type_item_image"
+                app:srcCompat="@drawable/ic_check_circle_accent_80_48dp" />
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+</FrameLayout>

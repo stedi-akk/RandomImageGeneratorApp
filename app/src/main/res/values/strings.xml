@@ -26,5 +26,12 @@
     <string name="summary">Summary</string>
     <string name="configure">Configure</string>
     <string name="new_preset">New preset</string>
-    <string name="preset_edit">Preset edit</string>
+    <string name="preset_edit">Edit preset</string>
+    <string name="generator_flat_color">Flat color</string>
+    <string name="generator_colored_pixels">Pixelation</string>
+    <string name="generator_colored_circles">Circles</string>
+    <string name="generator_colored_rectangle">Rectangles</string>
+    <string name="generator_colored_noise">Noise</string>
+    <string name="effect_mirrored">Mirror</string>
+    <string name="effect_text_overlay">File name</string>
 </resources>

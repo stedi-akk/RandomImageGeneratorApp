@@ -6,5 +6,6 @@
     <dimen name="card_padding">4dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="adapter_rig_image_size">120dp</dimen>
-    <dimen name="generation_step_header_margin">16dp</dimen>
+    <dimen name="adapter_rig_image_size_big">160dp</dimen>
+    <dimen name="generation_step_header_margin">12dp</dimen>
 </resources>
