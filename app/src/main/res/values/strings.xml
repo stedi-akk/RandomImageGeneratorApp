@@ -50,4 +50,5 @@
     <string name="from">from</string>
     <string name="to">to</string>
     <string name="step">step</string>
+    <string name="correct_errors">Please correct all errors</string>
 </resources>

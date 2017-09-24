@@ -65,8 +65,10 @@ public class ChooseSizeAndCountFragment extends StepFragment implements
         etHeightRangeFrom.addTextChangedListener(this);
         etHeightRangeTo.addTextChangedListener(this);
         etHeightRangeStep.addTextChangedListener(this);
-        if (savedInstanceState == null)
+        if (savedInstanceState == null) {
             presenter.getValues();
+            etWidth.setSelection(etWidth.getText().length());
+        }
     }
 
     @Override
@@ -76,15 +78,14 @@ public class ChooseSizeAndCountFragment extends StepFragment implements
             clearSilently(etWidthRangeFrom, etWidthRangeTo, etWidthRangeStep);
             if (!isHeightRangeInEdit()) {
                 clearSilently(etHeightRangeFrom, etHeightRangeTo, etHeightRangeStep);
-                fillIfEmptySilently(etHeight);
-                fillIfEmptySilently(etCount);
+                fillIfEmptySilently(etHeight, etCount);
                 presenter.setWidth(1);
                 presenter.setHeight(getValue(etHeight));
                 presenter.setCount(getValue(etCount));
             }
             if (isEmpty(etWidth) || getValue(etWidth) == 0) {
                 presenter.setWidth(1);
-                etWidth.setError(ChooseSizeAndCountPresenter.Error.INCORRECT_WIDTH.name());
+                etWidth.setError(getErrorString(ChooseSizeAndCountPresenter.Error.INCORRECT_WIDTH));
                 return;
             }
             presenter.setWidth(getValue(etWidth));
@@ -93,15 +94,14 @@ public class ChooseSizeAndCountFragment extends StepFragment implements
             clearSilently(etHeightRangeFrom, etHeightRangeTo, etHeightRangeStep);
             if (!isWidthRangeInEdit()) {
                 clearSilently(etWidthRangeFrom, etWidthRangeTo, etWidthRangeStep);
-                fillIfEmptySilently(etWidth);
-                fillIfEmptySilently(etCount);
+                fillIfEmptySilently(etWidth, etCount);
                 presenter.setWidth(getValue(etWidth));
                 presenter.setHeight(1);
                 presenter.setCount(getValue(etCount));
             }
             if (isEmpty(etHeight) || getValue(etHeight) == 0) {
                 presenter.setHeight(1);
-                etHeight.setError(ChooseSizeAndCountPresenter.Error.INCORRECT_HEIGHT.name());
+                etHeight.setError(getErrorString(ChooseSizeAndCountPresenter.Error.INCORRECT_HEIGHT));
                 return;
             }
             presenter.setHeight(getValue(etHeight));
@@ -112,7 +112,7 @@ public class ChooseSizeAndCountFragment extends StepFragment implements
             presenter.setWidth(getValue(etWidth));
             presenter.setHeight(getValue(etHeight));
             if (isEmpty(etCount) || getValue(etCount) == 0) {
-                etCount.setError(ChooseSizeAndCountPresenter.Error.INCORRECT_COUNT.name());
+                etCount.setError(getErrorString(ChooseSizeAndCountPresenter.Error.INCORRECT_COUNT));
                 return;
             }
             presenter.setCount(getValue(etCount));
@@ -146,7 +146,7 @@ public class ChooseSizeAndCountFragment extends StepFragment implements
     private void afterWidthRangeTextChanged(EditText etRangeType) {
         clearSilently(etWidth, etCount);
         if (isEmpty(etRangeType) || getValue(etRangeType) == 0) {
-            etRangeType.setError(ChooseSizeAndCountPresenter.Error.INCORRECT_WIDTH_RANGE.name());
+            etRangeType.setError(getErrorString(ChooseSizeAndCountPresenter.Error.INCORRECT_WIDTH_RANGE));
             return;
         }
         presenter.setWidthRange(getValue(etWidthRangeFrom), getValue(etWidthRangeTo), getValue(etWidthRangeStep));
@@ -155,7 +155,7 @@ public class ChooseSizeAndCountFragment extends StepFragment implements
     private void afterHeightRangeTextChanged(EditText etRangeType) {
         clearSilently(etHeight, etCount);
         if (isEmpty(etRangeType) || getValue(etRangeType) == 0) {
-            etRangeType.setError(ChooseSizeAndCountPresenter.Error.INCORRECT_HEIGHT_RANGE.name());
+            etRangeType.setError(getErrorString(ChooseSizeAndCountPresenter.Error.INCORRECT_HEIGHT_RANGE));
             return;
         }
         presenter.setHeightRange(getValue(etHeightRangeFrom), getValue(etHeightRangeTo), getValue(etHeightRangeStep));
@@ -192,25 +192,26 @@ public class ChooseSizeAndCountFragment extends StepFragment implements
 
     @Override
     public void onError(@NonNull ChooseSizeAndCountPresenter.Error error) {
+        String errorString = getErrorString(error);
         switch (error) {
             case INCORRECT_COUNT:
-                etCount.setError(error.name());
+                etCount.setError(errorString);
                 break;
             case INCORRECT_WIDTH:
-                etWidth.setError(error.name());
+                etWidth.setError(errorString);
                 break;
             case INCORRECT_HEIGHT:
-                etHeight.setError(error.name());
+                etHeight.setError(errorString);
                 break;
             case INCORRECT_WIDTH_RANGE:
-                etWidthRangeFrom.setError(error.name());
-                etWidthRangeTo.setError(error.name());
-                etWidthRangeStep.setError(error.name());
+                etWidthRangeFrom.setError(errorString);
+                etWidthRangeTo.setError(errorString);
+                etWidthRangeStep.setError(errorString);
                 break;
             case INCORRECT_HEIGHT_RANGE:
-                etHeightRangeFrom.setError(error.name());
-                etHeightRangeTo.setError(error.name());
-                etHeightRangeStep.setError(error.name());
+                etHeightRangeFrom.setError(errorString);
+                etHeightRangeTo.setError(errorString);
+                etHeightRangeStep.setError(errorString);
                 break;
             default:
                 throw new IllegalStateException("unreachable code");
@@ -219,7 +220,7 @@ public class ChooseSizeAndCountFragment extends StepFragment implements
 
     @Override
     public VerificationError verifyStep() {
-        return hasAnyErrors() ? new VerificationError("you shall not pass!") : null;
+        return hasAnyErrors() ? new VerificationError(getString(R.string.correct_errors)) : null;
     }
 
     @Override
@@ -252,6 +253,7 @@ public class ChooseSizeAndCountFragment extends StepFragment implements
                 continue;
             et.removeTextChangedListener(this);
             et.setText("1");
+            et.setError(null);
             et.addTextChangedListener(this);
         }
     }
@@ -281,6 +283,19 @@ public class ChooseSizeAndCountFragment extends StepFragment implements
         return etWidth.getError() != null || etHeight.getError() != null || etCount.getError() != null ||
                 etWidthRangeFrom.getError() != null || etWidthRangeTo.getError() != null || etWidthRangeStep.getError() != null ||
                 etHeightRangeFrom.getError() != null || etHeightRangeTo.getError() != null || etHeightRangeStep.getError() != null;
+    }
+
+    private String getErrorString(ChooseSizeAndCountPresenter.Error error) {
+        switch (error) {
+            case INCORRECT_WIDTH:
+            case INCORRECT_HEIGHT:
+            case INCORRECT_WIDTH_RANGE:
+            case INCORRECT_HEIGHT_RANGE:
+            case INCORRECT_COUNT:
+                return getString(R.string.value_bigger_zero);
+            default:
+                throw new IllegalStateException("unreachable code");
+        }
     }
 
     @Override
