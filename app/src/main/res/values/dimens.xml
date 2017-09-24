@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="adapter_v_spacing">8dp</dimen>
-    <dimen name="adapter_lr_spacing">8dp</dimen>
-    <dimen name="common_margin">4dp</dimen>
-    <dimen name="card_padding">4dp</dimen>
+    <dimen name="common_v_spacing">8dp</dimen>
+    <dimen name="common_lr_spacing">8dp</dimen>
+    <dimen name="common_views_spacing">4dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="adapter_rig_image_size">120dp</dimen>
     <dimen name="adapter_rig_image_size_big">160dp</dimen>
     <dimen name="generation_step_header_margin">12dp</dimen>
     <dimen name="dialog_top_padding">20dp</dimen>
+    <dimen name="dialog_lr_padding">?dialogPreferredPadding</dimen>
 </resources>

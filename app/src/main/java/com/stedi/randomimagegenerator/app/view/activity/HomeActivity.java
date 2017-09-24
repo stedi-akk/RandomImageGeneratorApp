@@ -71,7 +71,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new ListSpaceDecoration(
-                Utils.dp2pxi(this, R.dimen.adapter_v_spacing), Utils.dp2pxi(this, R.dimen.adapter_lr_spacing)));
+                Utils.dp2pxi(this, R.dimen.common_v_spacing), Utils.dp2pxi(this, R.dimen.common_lr_spacing)));
         adapter = new PresetsAdapter(adapterImageLoader, this);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

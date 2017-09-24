@@ -42,4 +42,12 @@
     <string name="pixel_multiplier">Pixel multiplier:</string>
     <string name="rectangles_count">Rectangles count:</string>
     <string name="value_bigger_zero">Value must be greater than zero</string>
+    <string name="width">width</string>
+    <string name="width_range">Width range:</string>
+    <string name="height">height</string>
+    <string name="height_range">Height range:</string>
+    <string name="count">count</string>
+    <string name="from">from</string>
+    <string name="to">to</string>
+    <string name="step">step</string>
 </resources>

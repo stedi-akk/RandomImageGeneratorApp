@@ -25,6 +25,6 @@
         android:id="@+id/simple_integer_params_dialog_cb_random"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/common_margin"
+        android:layout_marginTop="@dimen/common_views_spacing"
         android:text="@string/random" />
 </LinearLayout>

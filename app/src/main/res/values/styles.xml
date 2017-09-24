@@ -19,8 +19,8 @@
     </style>
 
     <style name="DialogPadding">
-        <item name="android:paddingLeft">?dialogPreferredPadding</item>
-        <item name="android:paddingRight">?dialogPreferredPadding</item>
+        <item name="android:paddingLeft">@dimen/dialog_lr_padding</item>
+        <item name="android:paddingRight">@dimen/dialog_lr_padding</item>
         <item name="android:paddingTop">@dimen/dialog_top_padding</item>
     </style>
 

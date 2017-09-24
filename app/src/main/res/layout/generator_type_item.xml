@@ -10,8 +10,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/adapter_v_spacing"
-        android:layout_marginTop="@dimen/adapter_v_spacing"
+        android:layout_marginBottom="@dimen/common_v_spacing"
+        android:layout_marginTop="@dimen/common_v_spacing"
         android:foreground="?selectableItemBackground">
 
         <android.support.constraint.ConstraintLayout
@@ -50,7 +50,7 @@
                 android:id="@+id/generator_type_item_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/common_margin"
+                android:layout_margin="@dimen/common_views_spacing"
                 android:ellipsize="end"
                 android:gravity="center_horizontal"
                 android:maxLines="1"
