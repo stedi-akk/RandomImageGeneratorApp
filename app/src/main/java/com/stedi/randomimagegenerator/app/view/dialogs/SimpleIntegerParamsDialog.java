@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.Components;
@@ -29,11 +30,18 @@ public class SimpleIntegerParamsDialog extends ButterKnifeDialogFragment impleme
         CompoundButton.OnCheckedChangeListener,
         SimpleIntegerParamsPresenter.UIImpl {
 
+    private static GeneratorType[] supportedTypes = new GeneratorType[]{
+            GeneratorType.COLORED_CIRCLES,
+            GeneratorType.COLORED_RECTANGLE,
+            GeneratorType.COLORED_PIXELS
+    };
+
     private static final String KEY_TYPE = "KEY_TYPE";
 
     @Inject SimpleIntegerParamsPresenter presenter;
     @Inject Logger logger;
 
+    @BindView(R.id.simple_integer_params_tv_input) TextView tvInput;
     @BindView(R.id.simple_integer_params_dialog_et_value) EditText etValue;
     @BindView(R.id.simple_integer_params_dialog_cb_random) CheckBox cbRandom;
 
@@ -41,11 +49,7 @@ public class SimpleIntegerParamsDialog extends ButterKnifeDialogFragment impleme
 
     public static SimpleIntegerParamsDialog newInstance(@NonNull GeneratorType type) {
         boolean supported = false;
-        for (GeneratorType supportedType : new GeneratorType[]{
-                GeneratorType.COLORED_CIRCLES,
-                GeneratorType.COLORED_RECTANGLE,
-                GeneratorType.COLORED_PIXELS
-        }) {
+        for (GeneratorType supportedType : supportedTypes) {
             if (type == supportedType) {
                 supported = true;
                 break;
@@ -74,10 +78,22 @@ public class SimpleIntegerParamsDialog extends ButterKnifeDialogFragment impleme
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         GeneratorType type = (GeneratorType) getArguments().getSerializable(KEY_TYPE);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setPositiveButton("OK", null);
+        builder.setPositiveButton(R.string.ok, null);
         //noinspection ConstantConditions
-        builder.setTitle("Edit " + type.name());
+        builder.setTitle(getString(R.string.s_parameters, getString(type.getStringRes())));
         builder.setView(inflateAndBind(R.layout.simple_integer_params_dialog));
+
+        switch (type) {
+            case COLORED_CIRCLES:
+                tvInput.setText(R.string.circles_count);
+                break;
+            case COLORED_RECTANGLE:
+                tvInput.setText(R.string.rectangles_count);
+                break;
+            case COLORED_PIXELS:
+                tvInput.setText(R.string.pixel_multiplier);
+        }
+
         canBeRandom = presenter.canBeRandom();
         if (canBeRandom) {
             etValue.addTextChangedListener(this);
@@ -85,10 +101,12 @@ public class SimpleIntegerParamsDialog extends ButterKnifeDialogFragment impleme
         } else {
             cbRandom.setVisibility(View.GONE);
         }
+
         AlertDialog dialog = builder.create();
         dialog.setOnShowListener(dialog1 -> {
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v -> apply());
         });
+
         if (savedInstanceState == null)
             presenter.getValues();
         return dialog;
@@ -123,7 +141,7 @@ public class SimpleIntegerParamsDialog extends ButterKnifeDialogFragment impleme
 
     @Override
     public void showErrorIncorrectValue() {
-        etValue.setError("value must be > 0");
+        etValue.setError(getString(R.string.value_bigger_zero));
     }
 
     @Override
@@ -159,6 +177,7 @@ public class SimpleIntegerParamsDialog extends ButterKnifeDialogFragment impleme
         if (canBeRandom)
             etValue.removeTextChangedListener(this);
         etValue.setText(text);
+        etValue.setSelection(text.length());
         etValue.setError(null);
         if (canBeRandom)
             etValue.addTextChangedListener(this);

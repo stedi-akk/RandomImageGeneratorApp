@@ -10,6 +10,7 @@ import android.widget.Spinner;
 
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.Components;
+import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ColoredNoiseParamsPresenter;
 import com.stedi.randomimagegenerator.app.view.dialogs.base.ButterKnifeDialogFragment;
 import com.stedi.randomimagegenerator.generators.ColoredNoiseGenerator;
@@ -35,11 +36,11 @@ public class ColoredNoiseParamsDialog extends ButterKnifeDialogFragment implemen
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setPositiveButton("OK", (dialog, which) -> {
+        builder.setPositiveButton(R.string.ok, (dialog, which) -> {
             presenter.setOrientation(ColoredNoiseGenerator.Orientation.values()[spOrientation.getSelectedItemPosition()]);
             presenter.setType(ColoredNoiseGenerator.Type.values()[spType.getSelectedItemPosition()]);
         });
-        builder.setTitle("Edit colored noise params");
+        builder.setTitle(getString(R.string.s_parameters, getString(GeneratorType.COLORED_NOISE.getStringRes())));
         builder.setView(inflateAndBind(R.layout.colored_noise_params_dialog));
         spOrientation.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, ColoredNoiseGenerator.Orientation.values()));
         spType.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, ColoredNoiseGenerator.Type.values()));

@@ -1,18 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout style="@style/DialogPadding"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/simple_integer_params_tv_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
+        tools:text="@string/lorem_ipsum" />
 
     <EditText
         android:id="@+id/simple_integer_params_dialog_et_value"
         style="@style/SignedIntegerInput"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:text="123" />
 
     <CheckBox
         android:id="@+id/simple_integer_params_dialog_cb_random"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Random" />
+        android:layout_marginTop="@dimen/common_margin"
+        android:text="@string/random" />
 </LinearLayout>

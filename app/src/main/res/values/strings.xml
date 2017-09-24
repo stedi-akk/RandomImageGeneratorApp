@@ -34,4 +34,12 @@
     <string name="generator_colored_noise">Noise</string>
     <string name="effect_mirrored">Mirror</string>
     <string name="effect_text_overlay">File name</string>
+    <string name="s_parameters">%s parameters</string>
+    <string name="type">Type:</string>
+    <string name="orientation">Orientation:</string>
+    <string name="random">Random</string>
+    <string name="circles_count">Circles count:</string>
+    <string name="pixel_multiplier">Pixel multiplier:</string>
+    <string name="rectangles_count">Rectangles count:</string>
+    <string name="value_bigger_zero">Value must be greater than zero</string>
 </resources>
