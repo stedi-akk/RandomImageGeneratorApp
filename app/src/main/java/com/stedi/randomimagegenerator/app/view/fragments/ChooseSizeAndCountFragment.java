@@ -77,7 +77,6 @@ public class ChooseSizeAndCountFragment extends StepFragment implements
             logger.log(this, "afterTextChanged for etWidth");
             clearSilently(etWidthRangeFrom, etWidthRangeTo, etWidthRangeStep);
             if (!isHeightRangeInEdit()) {
-                clearSilently(etHeightRangeFrom, etHeightRangeTo, etHeightRangeStep);
                 fillIfEmptySilently(etHeight, etCount);
                 presenter.setWidth(1);
                 presenter.setHeight(getValue(etHeight));
@@ -93,7 +92,6 @@ public class ChooseSizeAndCountFragment extends StepFragment implements
             logger.log(this, "afterTextChanged for etHeight");
             clearSilently(etHeightRangeFrom, etHeightRangeTo, etHeightRangeStep);
             if (!isWidthRangeInEdit()) {
-                clearSilently(etWidthRangeFrom, etWidthRangeTo, etWidthRangeStep);
                 fillIfEmptySilently(etWidth, etCount);
                 presenter.setWidth(getValue(etWidth));
                 presenter.setHeight(1);
@@ -249,7 +247,8 @@ public class ChooseSizeAndCountFragment extends StepFragment implements
 
     private void fillIfEmptySilently(EditText... editTexts) {
         for (EditText et : editTexts) {
-            if (!et.getText().toString().isEmpty())
+            String text = et.getText().toString();
+            if (!text.isEmpty() && getValue(et) > 0)
                 continue;
             et.removeTextChangedListener(this);
             et.setText("1");

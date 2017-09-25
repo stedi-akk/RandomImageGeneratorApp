@@ -21,13 +21,23 @@
             android:paddingRight="@dimen/common_lr_spacing"
             android:paddingTop="@dimen/common_v_spacing">
 
+            <TextView
+                android:id="@+id/choose_size_and_count_fixed_size_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/common_views_spacing"
+                android:text="@string/fixed_size"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/choose_size_and_count_et_width_holder"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/common_views_spacing"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintRight_toLeftOf="@+id/choose_size_and_count_et_height_holder"
+                app:layout_constraintTop_toBottomOf="@+id/choose_size_and_count_fixed_size_title">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/choose_size_and_count_et_width"
@@ -42,9 +52,11 @@
                 android:id="@+id/choose_size_and_count_et_height_holder"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/choose_size_and_count_et_width_holder">
+                android:layout_marginLeft="@dimen/common_views_spacing"
+                android:layout_marginRight="@dimen/common_views_spacing"
+                app:layout_constraintLeft_toRightOf="@+id/choose_size_and_count_et_width_holder"
+                app:layout_constraintRight_toLeftOf="@+id/choose_size_and_count_et_count_holder"
+                app:layout_constraintTop_toBottomOf="@+id/choose_size_and_count_fixed_size_title">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/choose_size_and_count_et_height"
@@ -59,9 +71,10 @@
                 android:id="@+id/choose_size_and_count_et_count_holder"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginLeft="@dimen/common_views_spacing"
+                app:layout_constraintLeft_toRightOf="@+id/choose_size_and_count_et_height_holder"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/choose_size_and_count_et_height_holder">
+                app:layout_constraintTop_toBottomOf="@+id/choose_size_and_count_fixed_size_title">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/choose_size_and_count_et_count"
