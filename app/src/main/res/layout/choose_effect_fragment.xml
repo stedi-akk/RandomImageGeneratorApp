@@ -11,7 +11,6 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/choose_effect_fragment_recycler_view"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical" />
