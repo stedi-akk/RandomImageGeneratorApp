@@ -7,7 +7,7 @@
 
     <TextView
         style="@style/GenerationStepHeaderText"
-        android:text="@string/choose_size_count" />
+        android:text="@string/n_choose_size_count" />
 
     <ScrollView
         android:layout_width="match_parent"

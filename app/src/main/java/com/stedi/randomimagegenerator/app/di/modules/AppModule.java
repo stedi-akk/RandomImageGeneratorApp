@@ -66,7 +66,8 @@ public class AppModule {
     @Provides
     @Singleton
     PendingPreset providePendingPreset(Logger logger) {
-        return new PendingPreset("Unsaved preset", Environment.getExternalStorageDirectory().getPath(), logger);
+        return new PendingPreset(app.getResources().getString(R.string.unsaved_preset_name),
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath(), logger);
     }
 
     @Provides

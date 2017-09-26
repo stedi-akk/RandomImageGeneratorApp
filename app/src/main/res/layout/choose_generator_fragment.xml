@@ -7,7 +7,7 @@
 
     <TextView
         style="@style/GenerationStepHeaderText"
-        android:text="@string/choose_generator" />
+        android:text="@string/n_choose_generator" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/choose_generator_fragment_recycler_view"

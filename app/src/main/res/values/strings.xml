@@ -16,13 +16,13 @@
     <string name="generating_image">Generating image #%s…</string>
     <string name="generated_stats">Successfully generated - %1$s\nFailed to generate - %2$s</string>
     <string name="generator">Generator</string>
-    <string name="choose_generator">Choose generator:</string>
+    <string name="n_choose_generator">1. Choose generator:</string>
     <string name="effect">Effect</string>
-    <string name="choose_effect">Choose effect:</string>
+    <string name="n_choose_effect">2. Choose effect:</string>
     <string name="size_count">Size/count</string>
-    <string name="choose_size_count">Choose size/count:</string>
+    <string name="n_choose_size_count">3. Choose size/count:</string>
     <string name="quality">Quality</string>
-    <string name="choose_quality">Choose quality:</string>
+    <string name="n_choose_quality">4. Choose quality:</string>
     <string name="summary">Summary</string>
     <string name="configure">Configure</string>
     <string name="new_preset">New preset</string>
@@ -52,4 +52,8 @@
     <string name="step">step</string>
     <string name="correct_errors">Please correct all errors</string>
     <string name="fixed_size">Fixed size:</string>
+    <string name="format">Format:</string>
+    <string name="percent_quality">Quality (%):</string>
+    <string name="save_folder">Save folder:</string>
+    <string name="unsaved_preset_name">*unsaved</string>
 </resources>

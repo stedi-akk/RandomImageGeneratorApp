@@ -1,29 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <TextView
         style="@style/GenerationStepHeaderText"
-        android:text="@string/choose_quality" />
+        android:text="@string/n_choose_quality" />
 
-    <RadioGroup
-        android:id="@+id/choose_save_options_fragment_rg_format"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/choose_save_options_fragment_et_quality"
-        style="@style/SignedIntegerInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxLength="3" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/common_v_spacing"
+            android:paddingLeft="@dimen/common_lr_spacing"
+            android:paddingRight="@dimen/common_lr_spacing"
+            android:paddingTop="@dimen/common_v_spacing">
 
-    <TextView
-        android:id="@+id/choose_save_options_fragment_tv_folder"
-        android:freezesText="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/choose_save_options_fragment_rg_format_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/common_views_spacing"
+                android:text="@string/format"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/choose_save_options_fragment_value_picker_title"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/choose_save_options_fragment_value_picker_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/common_views_spacing"
+                android:text="@string/percent_quality"
+                app:layout_constraintLeft_toRightOf="@+id/choose_save_options_fragment_rg_format_title"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <FrameLayout
+                android:id="@+id/choose_save_options_fragment_rg_format_holder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/choose_save_options_fragment_value_picker_holder"
+                app:layout_constraintTop_toBottomOf="@+id/choose_save_options_fragment_rg_format_title"
+                tools:background="@color/black_semi_transparent"
+                tools:minHeight="120dp">
+
+                <RadioGroup
+                    android:id="@+id/choose_save_options_fragment_rg_format"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/choose_save_options_fragment_value_picker_holder"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="@+id/choose_save_options_fragment_rg_format_holder"
+                app:layout_constraintLeft_toRightOf="@+id/choose_save_options_fragment_rg_format_holder"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/choose_save_options_fragment_value_picker_title">
+
+                <NumberPicker
+                    android:id="@+id/choose_save_options_fragment_value_picker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/choose_save_options_fragment_tv_folder_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/common_views_spacing"
+                android:paddingTop="@dimen/common_views_spacing"
+                android:text="@string/save_folder"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/choose_save_options_fragment_rg_format_holder" />
+
+            <TextView
+                android:id="@+id/choose_save_options_fragment_tv_folder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:freezesText="true"
+                android:maxLines="2"
+                android:padding="@dimen/common_views_spacing"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@android:color/black"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/choose_save_options_fragment_tv_folder_title"
+                tools:text="123" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
 
 </LinearLayout>
