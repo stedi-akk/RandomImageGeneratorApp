@@ -1,23 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/apply_generation_fragment_tv"
+        style="@style/GenerationStepHeaderText"
+        android:text="@string/n_summary" />
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/apply_generation_fragment_btn_save_preset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/common_v_spacing"
+            android:paddingLeft="@dimen/common_lr_spacing"
+            android:paddingRight="@dimen/common_lr_spacing"
+            android:paddingTop="@dimen/common_v_spacing">
 
-    <Button
-        android:id="@+id/apply_generation_fragment_btn_generate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/generate" />
+            <TextView
+                android:id="@+id/apply_generation_fragment_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="@string/lorem_ipsum" />
 
+            <Button
+                android:id="@+id/apply_generation_fragment_btn_save_rename"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="@dimen/common_views_spacing"
+                tools:text="@string/save" />
+
+            <Button
+                android:id="@+id/apply_generation_fragment_btn_generate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="48dp"
+                android:text="@string/generate" />
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

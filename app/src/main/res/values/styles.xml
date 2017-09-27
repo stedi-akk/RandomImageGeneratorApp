@@ -18,10 +18,10 @@
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Large</item>
     </style>
 
-    <style name="DialogPadding">
-        <item name="android:paddingLeft">@dimen/dialog_lr_padding</item>
-        <item name="android:paddingRight">@dimen/dialog_lr_padding</item>
-        <item name="android:paddingTop">@dimen/dialog_top_padding</item>
+    <style name="CommonDialogPadding">
+        <item name="android:paddingLeft">?dialogPreferredPadding</item>
+        <item name="android:paddingRight">?dialogPreferredPadding</item>
+        <item name="android:paddingTop">20dp</item>
     </style>
 
 </resources>

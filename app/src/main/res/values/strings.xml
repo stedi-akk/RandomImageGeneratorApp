@@ -24,6 +24,7 @@
     <string name="quality">Quality</string>
     <string name="n_choose_quality">4. Choose quality:</string>
     <string name="summary">Summary</string>
+    <string name="n_summary">5. Summary</string>
     <string name="configure">Configure</string>
     <string name="new_preset">New preset</string>
     <string name="preset_edit">Edit preset</string>
@@ -56,4 +57,8 @@
     <string name="percent_quality">Quality (%):</string>
     <string name="save_folder">Save folder:</string>
     <string name="unsaved_preset_name">*unsaved</string>
+    <string name="rename">Rename</string>
+    <string name="failed_save_preset">Failed to save preset</string>
+    <string name="set_preset_name">Set preset name</string>
+    <string name="preset_name_empty">Preset name is empty</string>
 </resources>

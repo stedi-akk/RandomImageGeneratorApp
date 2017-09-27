@@ -21,6 +21,7 @@ import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter;
 import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity;
 import com.stedi.randomimagegenerator.app.view.dialogs.EditPresetNameDialog;
+import com.stedi.randomimagegenerator.app.view.dialogs.GenerationDialog;
 import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment;
 
 import java.io.Serializable;
@@ -39,7 +40,7 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
     @Inject Logger logger;
 
     @BindView(R.id.apply_generation_fragment_tv) TextView tvOut;
-    @BindView(R.id.apply_generation_fragment_btn_save_preset) Button btnSave;
+    @BindView(R.id.apply_generation_fragment_btn_save_rename) Button btnSaveRename;
 
     private Preset startGenerationPreset;
 
@@ -88,12 +89,12 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
     private void refreshFromPreset() {
         if (getView() != null) {
             tvOut.setText(presenter.getPreset().toString());
-            btnSave.setText(presenter.isPresetNewOrChanged() ? "SAVE" : "RENAME");
+            btnSaveRename.setText(presenter.isPresetNewOrChanged() ? getString(R.string.save) : getString(R.string.rename));
         }
     }
 
-    @OnClick(R.id.apply_generation_fragment_btn_save_preset)
-    public void onSavePresetClick(View v) {
+    @OnClick(R.id.apply_generation_fragment_btn_save_rename)
+    public void onSaveRenameClick(View v) {
         EditPresetNameDialog.newInstance(presenter.getPreset().getName()).show(getFragmentManager());
     }
 
@@ -129,33 +130,37 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
 
     @Override
     public void failedToSavePreset() {
-        Utils.toastShort(getContext(), "failedToSavePreset");
+        Utils.toastLong(getContext(), R.string.failed_save_preset);
     }
 
     @Override
     public void onStartGeneration() {
         logger.log(this, "onStartGeneration");
+        GenerationDialog.getInstance(getFragmentManager()).onStartGeneration();
     }
 
     @Override
     public void onGenerated(@NonNull ImageParams imageParams) {
         logger.log(this, "onGenerated");
+        GenerationDialog.getInstance(getFragmentManager()).onGenerated(imageParams);
     }
 
     @Override
     public void onGenerationUnknownError() {
         logger.log(this, "onGenerationUnknownError");
+        GenerationDialog.getInstance(getFragmentManager()).onGenerationUnknownError();
     }
 
     @Override
     public void onFailedToGenerate(@NonNull ImageParams imageParams) {
         logger.log(this, "onFailedToGenerate");
+        GenerationDialog.getInstance(getFragmentManager()).onFailedToGenerate(imageParams);
     }
 
     @Override
     public void onFinishGeneration() {
-        Utils.toastShort(getContext(), "onFinishGeneration");
-        getActivity().finish();
+        logger.log(this, "onFinishGeneration");
+        GenerationDialog.getInstance(getFragmentManager()).onFinishGeneration();
     }
 
     @Override

@@ -32,7 +32,8 @@ public class EditPresetNameDialog extends ButterKnifeDialogFragment {
         }
     }
 
-    public static EditPresetNameDialog newInstance(String presetName) {
+    @NonNull
+    public static EditPresetNameDialog newInstance(@NonNull String presetName) {
         Bundle args = new Bundle();
         args.putString(KEY_PRESET_NAME, presetName);
         EditPresetNameDialog dlg = new EditPresetNameDialog();
@@ -51,22 +52,21 @@ public class EditPresetNameDialog extends ButterKnifeDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         String fromName = getArguments().getString(KEY_PRESET_NAME);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Edit name");
+        builder.setTitle(R.string.set_preset_name);
         builder.setView(inflateAndBind(R.layout.edit_preset_name_dialog));
         etName.setText(fromName);
-        builder.setPositiveButton("OK", null);
+        etName.setSelection(fromName.length());
+        builder.setPositiveButton(R.string.ok, null);
         AlertDialog dialog = builder.create();
-        dialog.setOnShowListener(dialog1 -> {
-            dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v -> apply());
-        });
+        dialog.setOnShowListener(dialog1 -> dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v -> apply()));
         return dialog;
     }
 
     private void apply() {
-        String name = etName.getText().toString();
+        String name = etName.getText().toString().trim();
 
         if (name.isEmpty()) {
-            etName.setError("empty");
+            etName.setError(getString(R.string.preset_name_empty));
             return;
         }
 
