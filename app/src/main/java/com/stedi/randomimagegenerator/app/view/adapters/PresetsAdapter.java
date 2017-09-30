@@ -47,22 +47,19 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
     }
 
     public void set(@NonNull List<Preset> presets, @Nullable Preset pendingPreset) {
+        this.pendingPreset = pendingPreset;
         presetsList.clear();
         presetsList.addAll(presets);
-        this.pendingPreset = pendingPreset;
+        if (pendingPreset != null)
+            presetsList.set(0, pendingPreset);
         notifyDataSetChanged();
     }
 
     public void remove(@NonNull Preset preset) {
-        if (pendingPreset == preset) {
-            pendingPreset = null;
-            notifyItemRemoved(0);
-        } else {
-            int listIndex = presetsList.indexOf(preset);
-            if (listIndex >= 0) {
-                presetsList.remove(listIndex);
-                notifyItemRemoved(pendingPreset == null ? listIndex : listIndex + 1);
-            }
+        int listIndex = presetsList.indexOf(preset);
+        if (listIndex >= 0) {
+            presetsList.remove(listIndex);
+            notifyItemRemoved(listIndex);
         }
     }
 
@@ -73,13 +70,7 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Preset preset;
-
-        if (pendingPreset != null) {
-            preset = position == 0 ? pendingPreset : presetsList.get(position - 1);
-        } else {
-            preset = presetsList.get(position);
-        }
+        Preset preset = presetsList.get(position);
 
         GeneratorType mainType = preset.getGeneratorParams().getType();
         GeneratorType secondType = null;
@@ -134,7 +125,7 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return pendingPreset == null ? presetsList.size() : presetsList.size() + 1;
+        return presetsList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

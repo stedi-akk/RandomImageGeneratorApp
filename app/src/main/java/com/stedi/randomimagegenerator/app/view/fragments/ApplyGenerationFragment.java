@@ -123,6 +123,11 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
         }
     }
 
+    @Subscribe
+    public void onOkClickedEvent(GenerationDialog.OkClicked event) {
+        getActivity().finish();
+    }
+
     @Override
     public void onPresetSaved() {
         getActivity().finish();

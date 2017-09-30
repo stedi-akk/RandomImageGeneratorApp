@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.squareup.otto.Subscribe;
+import com.stedi.randomimagegenerator.app.BuildConfig;
 import com.stedi.randomimagegenerator.app.di.qualifiers.DefaultScheduler;
 import com.stedi.randomimagegenerator.app.di.qualifiers.RigScheduler;
 import com.stedi.randomimagegenerator.app.di.qualifiers.UiScheduler;
@@ -169,6 +170,12 @@ public class HomePresenterImpl extends HomePresenter {
             logger.log(this, event.throwable);
             ui.onFailedToFetchPresets();
         } else {
+            if (!BuildConfig.BUILD_TYPE.equals("release")) {
+                logger.log(this, "onPresetsFetched " + pendingPreset);
+                for (Preset preset : event.presets) {
+                    logger.log(this, "onPresetsFetched " + preset);
+                }
+            }
             ui.onPresetsFetched(pendingPreset.get(), event.presets);
         }
     }

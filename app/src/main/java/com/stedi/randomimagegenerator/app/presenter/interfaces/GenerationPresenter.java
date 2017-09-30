@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresPermission;
 
 import com.squareup.otto.Subscribe;
+import com.stedi.randomimagegenerator.DefaultFileNamePolicy;
 import com.stedi.randomimagegenerator.ImageParams;
 import com.stedi.randomimagegenerator.Rig;
 import com.stedi.randomimagegenerator.app.di.qualifiers.RigScheduler;
@@ -97,6 +98,7 @@ public abstract class GenerationPresenter<T extends GenerationPresenter.UIImpl> 
                 }
 
                 builder.setQuality(preset.getQuality());
+                builder.setFileNamePolicy(new DefaultFileNamePolicy());
                 builder.setFileSavePath(preset.getPathToSave());
                 builder.setCallback(new GenerateCallback() {
                     @Override

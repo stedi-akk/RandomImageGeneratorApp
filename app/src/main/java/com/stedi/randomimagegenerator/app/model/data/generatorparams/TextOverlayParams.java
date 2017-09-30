@@ -27,9 +27,10 @@ public class TextOverlayParams extends EffectGeneratorParams {
     @NonNull
     @Override
     protected Generator createEffectGenerator(@NonNull Generator target) {
+        DefaultFileNamePolicy fileNamePolicy = new DefaultFileNamePolicy();
         return new TextOverlayGenerator.Builder()
                 .setGenerator(target)
-                .setTextPolicy(imageParams -> new DefaultFileNamePolicy().getName(imageParams))
+                .setTextPolicy(fileNamePolicy::getName)
                 .build();
     }
 

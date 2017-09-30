@@ -75,7 +75,7 @@ public class PendingPreset {
             throw new IllegalStateException("candidate is null");
         preset = candidate;
         if (candidateFrom != null)
-            preset.setName(String.format(unsavedName + " (%s)", candidateFrom.getName()));
+            preset.setName(unsavedName);
         preset.setTimestamp(System.currentTimeMillis());
         logger.log(this, "after applyCandidate: " + this);
     }

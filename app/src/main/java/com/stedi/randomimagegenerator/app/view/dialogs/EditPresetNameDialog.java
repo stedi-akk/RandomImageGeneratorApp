@@ -64,12 +64,10 @@ public class EditPresetNameDialog extends ButterKnifeDialogFragment {
 
     private void apply() {
         String name = etName.getText().toString().trim();
-
         if (name.isEmpty()) {
             etName.setError(getString(R.string.preset_name_empty));
             return;
         }
-
         bus.post(new OnEdited(name));
         dismiss();
     }

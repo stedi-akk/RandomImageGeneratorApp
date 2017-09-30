@@ -12,6 +12,7 @@ import android.view.View;
 import com.stedi.randomimagegenerator.ImageParams;
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.Components;
+import com.stedi.randomimagegenerator.app.other.CachedBus;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationPresenter;
 import com.stedi.randomimagegenerator.app.view.dialogs.base.BaseDialogFragment;
@@ -34,6 +35,10 @@ public class GenerationDialog extends BaseDialogFragment implements GenerationPr
         ERROR
     }
 
+    public static class OkClicked {
+    }
+
+    @Inject CachedBus bus;
     @Inject Logger logger;
 
     @NonNull
@@ -63,6 +68,7 @@ public class GenerationDialog extends BaseDialogFragment implements GenerationPr
         progressDialog.setTitle(R.string.please_wait);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.ok), (dialog, which) -> {
+            bus.post(new OkClicked());
         });
         setCancelable(false);
         return progressDialog;
