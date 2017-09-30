@@ -54,12 +54,11 @@
                 android:ellipsize="end"
                 android:gravity="center_horizontal"
                 android:maxLines="1"
-                android:textAllCaps="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/generator_type_item_image"
-                tools:text="generator" />
+                tools:text="GENERATOR" />
 
             <ImageView
                 android:id="@+id/generator_type_item_selected"

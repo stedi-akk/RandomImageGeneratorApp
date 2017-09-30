@@ -127,7 +127,7 @@ public class GenerationDialog extends BaseDialogFragment implements GenerationPr
             case START:
             case PROGRESS:
                 progressDialog.setTitle(R.string.please_wait);
-                progressDialog.setMessage(getString(R.string.generating_image, String.valueOf(generatedCount + failedCount + 1)));
+                progressDialog.setMessage(getString(R.string.generating_image_s, String.valueOf(generatedCount + failedCount + 1)));
                 progressDialog.getButton(DialogInterface.BUTTON_POSITIVE).setVisibility(View.GONE);
                 break;
             case FINISH:

@@ -166,11 +166,11 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     public void showConfirmLastAction(@NonNull HomePresenter.Confirm confirm) {
         if (confirm == HomePresenter.Confirm.DELETE_PRESET) {
             ConfirmDialog.newInstance(REQUEST_CONFIRM_DELETE,
-                    getString(R.string.confirm_action), getString(R.string.are_you_sure_delete_preset, confirmPresetName))
+                    getString(R.string.confirm_action), getString(R.string.are_you_sure_delete_s_preset, confirmPresetName))
                     .show(getSupportFragmentManager(), ConfirmDialog.class.getSimpleName());
         } else if (confirm == HomePresenter.Confirm.GENERATE_FROM_PRESET) {
             ConfirmDialog.newInstance(REQUEST_CONFIRM_GENERATE,
-                    getString(R.string.confirm_action), getString(R.string.are_you_sure_generate_preset, confirmPresetName))
+                    getString(R.string.confirm_action), getString(R.string.are_you_sure_generate_preset_s, confirmPresetName))
                     .show(getSupportFragmentManager(), ConfirmDialog.class.getSimpleName());
         }
     }

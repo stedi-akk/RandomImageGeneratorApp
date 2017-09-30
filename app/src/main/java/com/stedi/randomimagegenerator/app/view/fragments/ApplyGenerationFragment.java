@@ -4,6 +4,7 @@ import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import com.stedi.randomimagegenerator.ImageParams;
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.Components;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
 import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
@@ -88,9 +91,54 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
 
     private void refreshFromPreset() {
         if (getView() != null) {
-            tvOut.setText(presenter.getPreset().toString());
+            tvOut.setText(getSummaryFromPreset(presenter.getPreset()));
             btnSaveRename.setText(presenter.isPresetNewOrChanged() ? getString(R.string.save) : getString(R.string.rename));
         }
+    }
+
+    private String getSummaryFromPreset(Preset preset) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getString(R.string.name_s, preset.getName())).append("\n");
+        if (preset.getTimestamp() != 0)
+            sb.append(getString(R.string.timestamp_s, Utils.formatTime(preset.getTimestamp()))).append("\n");
+
+        if (preset.getGeneratorParams() instanceof EffectGeneratorParams) {
+            GeneratorParams targetParams = ((EffectGeneratorParams) preset.getGeneratorParams()).getTarget();
+            sb.append(getString(R.string.generator_type_s, getString(targetParams.getType().getStringRes()))).append("\n");
+            sb.append(getString(R.string.effect_type_s, getString(preset.getGeneratorParams().getType().getStringRes()))).append("\n");
+        } else {
+            sb.append(getString(R.string.generator_type_s, getString(preset.getGeneratorParams().getType().getStringRes()))).append("\n");
+        }
+
+        boolean showCount = true;
+        if (appendRangeSize(sb, R.string.widt_s, preset.getWidthRange())) {
+            showCount = false;
+        } else {
+            sb.append(getString(R.string.widt_s, String.valueOf(preset.getWidth())));
+        }
+        sb.append("\n");
+        if (appendRangeSize(sb, R.string.height_s, preset.getHeightRange())) {
+            showCount = false;
+        } else {
+            sb.append(getString(R.string.height_s, String.valueOf(preset.getHeight())));
+        }
+        sb.append("\n");
+        if (showCount)
+            sb.append(getString(R.string.count_s, String.valueOf(preset.getCount()))).append("\n");
+
+        sb.append(getString(R.string.quality_s_percent_tab, preset.getQuality().getFormat().name(), String.valueOf(preset.getQuality().getQualityValue())));
+
+        return sb.toString();
+    }
+
+    private boolean appendRangeSize(StringBuilder sb, @StringRes int res, int[] size) {
+        if (size == null)
+            return false;
+        String from = String.valueOf(size[0]);
+        String to = String.valueOf(size[1]);
+        String step = String.valueOf(size[2]);
+        sb.append(getString(res, getString(R.string.from_s_to_s_step_s, from, to, step)));
+        return true;
     }
 
     @OnClick(R.id.apply_generation_fragment_btn_save_rename)

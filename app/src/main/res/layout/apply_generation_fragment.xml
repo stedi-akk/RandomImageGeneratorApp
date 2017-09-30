@@ -26,6 +26,8 @@
                 android:id="@+id/apply_generation_fragment_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:lineSpacingExtra="12dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 tools:text="@string/lorem_ipsum" />
 
             <Button
