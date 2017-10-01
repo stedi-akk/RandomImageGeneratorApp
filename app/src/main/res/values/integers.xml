@@ -2,4 +2,6 @@
 <resources>
     <integer name="generator_type_adapter_grid_items">2</integer>
     <integer name="max_preset_name_length">20</integer>
+    <integer name="max_simple_integers_params_input_length">4</integer>
+    <integer name="max_size_count_input_length">4</integer>
 </resources>

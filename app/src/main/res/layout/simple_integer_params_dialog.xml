@@ -18,6 +18,7 @@
         android:id="@+id/simple_integer_params_dialog_et_value"
         style="@style/SignedIntegerInput"
         android:layout_width="match_parent"
+        android:maxLength="@integer/max_simple_integers_params_input_length"
         android:layout_height="wrap_content"
         tools:text="123" />
 

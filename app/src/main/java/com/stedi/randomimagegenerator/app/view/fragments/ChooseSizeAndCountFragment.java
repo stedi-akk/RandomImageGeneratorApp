@@ -68,6 +68,7 @@ public class ChooseSizeAndCountFragment extends StepFragment implements
         if (savedInstanceState == null) {
             presenter.getValues();
             etWidth.setSelection(etWidth.getText().length());
+            etWidth.requestFocus();
         }
     }
 

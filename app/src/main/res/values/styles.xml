@@ -11,6 +11,10 @@
         <item name="android:inputType">numberSigned</item>
     </style>
 
+    <style name="SizeAndCountInput" parent="SignedIntegerInput">
+        <item name="android:maxLength">@integer/max_size_count_input_length</item>
+    </style>
+
     <style name="GenerationStepHeaderText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
