@@ -40,7 +40,7 @@ public class ApplyGenerationPresenterImplTest {
         pendingPreset = new PendingPreset("unsaved", TestUtils.getTestFolder().getAbsolutePath(), logger);
         pendingPreset.prepareCandidateFrom(TestUtils.newSimplePreset());
         presetRepository = spy(new FakePresetRepository(0));
-        presenter = new ApplyGenerationPresenterImpl(pendingPreset, presetRepository,
+        presenter = new ApplyGenerationPresenterImpl(pendingPreset, presetRepository, TestUtils.getTestFolder().getAbsolutePath(),
                 Schedulers.immediate(), Schedulers.immediate(), Schedulers.immediate(), new CachedBus(ThreadEnforcer.ANY, logger), logger);
         ui = mock(ApplyGenerationPresenterImpl.UIImpl.class);
     }

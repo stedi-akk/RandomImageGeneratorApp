@@ -4,8 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.Quality;
+import com.stedi.randomimagegenerator.app.di.qualifiers.RootSavePath;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.FlatColorParams;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
+
+import java.io.File;
 
 public class PendingPreset {
     private static final String KEY_MAIN_PRESET = "KEY_MAIN_PRESET";
@@ -13,16 +16,16 @@ public class PendingPreset {
     private static final String KEY_CANDIDATE_PRESET = "KEY_CANDIDATE_PRESET";
 
     private final String unsavedName;
-    private final String pathToSave;
+    private final String rootSavePath;
     private final Logger logger;
 
     private Preset preset;
     private Preset candidateFrom;
     private Preset candidate;
 
-    public PendingPreset(@NonNull String unsavedName, @NonNull String pathToSave, @NonNull Logger logger) {
+    public PendingPreset(@NonNull String unsavedName, @NonNull @RootSavePath String rootSavePath, @NonNull Logger logger) {
         this.unsavedName = unsavedName;
-        this.pathToSave = pathToSave;
+        this.rootSavePath = rootSavePath;
         this.logger = logger;
     }
 
@@ -36,7 +39,7 @@ public class PendingPreset {
                 unsavedName,
                 new FlatColorParams(),
                 Quality.png(),
-                pathToSave);
+                rootSavePath + File.separator + "0");
         candidate.setWidth(100);
         candidate.setHeight(100);
         candidate.setCount(1);

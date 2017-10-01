@@ -31,7 +31,6 @@ public class ChooseSaveOptionsPresenterImpl implements ChooseSaveOptionsPresente
         Quality currentQuality = pendingPreset.getCandidate().getQuality();
         ui.showQualityFormat(currentQuality.getFormat());
         ui.showQualityValue(currentQuality.getQualityValue());
-        ui.showSaveFolder(pendingPreset.getCandidate().getPathToSave());
     }
 
     @Override

@@ -37,9 +37,13 @@ public class FakePresetRepository implements PresetRepository {
 
     @Override
     public void save(@NonNull Preset preset) throws Exception {
-        latestId++;
-        preset.setId(latestId);
-        items.put(latestId, preset);
+        if (preset.getId() == 0) {
+            latestId++;
+            preset.setId(latestId);
+            items.put(latestId, preset);
+        } else {
+            items.put(preset.getId(), preset);
+        }
     }
 
     @Override

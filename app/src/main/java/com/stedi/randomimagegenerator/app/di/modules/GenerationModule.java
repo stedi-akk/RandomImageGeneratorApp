@@ -2,6 +2,7 @@ package com.stedi.randomimagegenerator.app.di.modules;
 
 import com.stedi.randomimagegenerator.app.di.qualifiers.DefaultScheduler;
 import com.stedi.randomimagegenerator.app.di.qualifiers.RigScheduler;
+import com.stedi.randomimagegenerator.app.di.qualifiers.RootSavePath;
 import com.stedi.randomimagegenerator.app.di.qualifiers.UiScheduler;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.repository.PresetRepository;
@@ -68,10 +69,11 @@ public class GenerationModule {
     @Provides
     ApplyGenerationPresenter provideApplyGenerationPresenter(PendingPreset pendingPreset,
                                                              PresetRepository presetRepository,
+                                                             @RootSavePath String rootSavePath,
                                                              @RigScheduler Scheduler superSubscribeOn,
                                                              @DefaultScheduler Scheduler subscribeOn,
                                                              @UiScheduler Scheduler observeOn,
                                                              CachedBus bus, Logger logger) {
-        return new ApplyGenerationPresenterImpl(pendingPreset, presetRepository, superSubscribeOn, subscribeOn, observeOn, bus, logger);
+        return new ApplyGenerationPresenterImpl(pendingPreset, presetRepository, rootSavePath, superSubscribeOn, subscribeOn, observeOn, bus, logger);
     }
 }

@@ -9,12 +9,15 @@ import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.qualifiers.AppContext;
 import com.stedi.randomimagegenerator.app.di.qualifiers.DefaultScheduler;
 import com.stedi.randomimagegenerator.app.di.qualifiers.RigScheduler;
+import com.stedi.randomimagegenerator.app.di.qualifiers.RootSavePath;
 import com.stedi.randomimagegenerator.app.di.qualifiers.UiScheduler;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
 import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.view.components.GeneratorTypeImageLoader;
+
+import java.io.File;
 
 import javax.inject.Singleton;
 
@@ -65,9 +68,15 @@ public class AppModule {
 
     @Provides
     @Singleton
-    PendingPreset providePendingPreset(Logger logger) {
-        return new PendingPreset(app.getResources().getString(R.string.unsaved_preset_name),
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath(), logger);
+    @RootSavePath
+    String provideRootSavePath() {
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath() + File.separator + "RIG";
+    }
+
+    @Provides
+    @Singleton
+    PendingPreset providePendingPreset(Logger logger, @RootSavePath String rootSavePath) {
+        return new PendingPreset(app.getResources().getString(R.string.unsaved_preset_name), rootSavePath, logger);
     }
 
     @Provides

@@ -50,7 +50,7 @@
                 app:layout_constraintRight_toLeftOf="@+id/choose_save_options_fragment_value_picker_holder"
                 app:layout_constraintTop_toBottomOf="@+id/choose_save_options_fragment_rg_format_title"
                 tools:background="@color/black_semi_transparent"
-                tools:minHeight="120dp">
+                tools:minHeight="160dp">
 
                 <RadioGroup
                     android:id="@+id/choose_save_options_fragment_rg_format"
@@ -75,31 +75,6 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center" />
             </FrameLayout>
-
-            <TextView
-                android:id="@+id/choose_save_options_fragment_tv_folder_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/common_views_spacing"
-                android:paddingTop="@dimen/common_views_spacing"
-                android:text="@string/save_folder"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/choose_save_options_fragment_rg_format_holder" />
-
-            <TextView
-                android:id="@+id/choose_save_options_fragment_tv_folder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:freezesText="true"
-                android:maxLines="2"
-                android:padding="@dimen/common_views_spacing"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@android:color/black"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/choose_save_options_fragment_tv_folder_title"
-                tools:text="123" />
 
         </android.support.constraint.ConstraintLayout>
 

@@ -18,8 +18,6 @@ public interface ChooseSaveOptionsPresenter extends Presenter<ChooseSaveOptionsP
 
         void showQualityValue(int value);
 
-        void showSaveFolder(@NonNull String path);
-
         void onIncorrectQualityValue();
     }
 }

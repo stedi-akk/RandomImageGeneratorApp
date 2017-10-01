@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.squareup.otto.Subscribe;
 import com.stedi.randomimagegenerator.app.di.qualifiers.DefaultScheduler;
 import com.stedi.randomimagegenerator.app.di.qualifiers.RigScheduler;
+import com.stedi.randomimagegenerator.app.di.qualifiers.RootSavePath;
 import com.stedi.randomimagegenerator.app.di.qualifiers.UiScheduler;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
@@ -15,6 +16,7 @@ import com.stedi.randomimagegenerator.app.other.ChainSerializable;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter;
 
+import java.io.File;
 import java.io.Serializable;
 
 import rx.Completable;
@@ -23,6 +25,7 @@ import rx.Scheduler;
 public class ApplyGenerationPresenterImpl extends ApplyGenerationPresenter {
     private final PendingPreset pendingPreset;
     private final PresetRepository presetRepository;
+    private final String rootSavePath;
     private final Scheduler subscribeOn;
     private final Scheduler observeOn;
     private final CachedBus bus;
@@ -42,6 +45,7 @@ public class ApplyGenerationPresenterImpl extends ApplyGenerationPresenter {
 
     public ApplyGenerationPresenterImpl(@NonNull PendingPreset pendingPreset,
                                         @NonNull PresetRepository presetRepository,
+                                        @NonNull @RootSavePath String rootSavePath,
                                         @NonNull @RigScheduler Scheduler superSubscribeOn,
                                         @NonNull @DefaultScheduler Scheduler subscribeOn,
                                         @NonNull @UiScheduler Scheduler observeOn,
@@ -51,6 +55,7 @@ public class ApplyGenerationPresenterImpl extends ApplyGenerationPresenter {
             throw new IllegalStateException("pending preset candidate must not be null");
         this.pendingPreset = pendingPreset;
         this.presetRepository = presetRepository;
+        this.rootSavePath = rootSavePath;
         this.logger = logger;
         this.subscribeOn = subscribeOn;
         this.observeOn = observeOn;
@@ -91,10 +96,13 @@ public class ApplyGenerationPresenterImpl extends ApplyGenerationPresenter {
         Preset preset = pendingPreset.getCandidate();
         String originalName = preset.getName();
         long originalTimestamp = preset.getTimestamp();
-        preset.setName(name);
-        preset.setTimestamp(System.currentTimeMillis());
+        String originalSavePath = preset.getPathToSave();
 
         Completable.fromCallable(() -> {
+            preset.setName(name);
+            preset.setTimestamp(System.currentTimeMillis());
+            presetRepository.save(preset);
+            preset.setPathToSave(rootSavePath + File.separator + preset.getId());
             presetRepository.save(preset);
             return true;
         }).subscribeOn(subscribeOn)
@@ -103,6 +111,7 @@ public class ApplyGenerationPresenterImpl extends ApplyGenerationPresenter {
                         throwable -> {
                             preset.setName(originalName);
                             preset.setTimestamp(originalTimestamp);
+                            preset.setPathToSave(originalSavePath);
                             bus.post(new OnPresetSaveEvent(throwable));
                         });
     }

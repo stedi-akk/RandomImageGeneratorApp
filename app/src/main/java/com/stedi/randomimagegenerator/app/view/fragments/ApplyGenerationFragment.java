@@ -95,16 +95,22 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
 
     private String getSummaryFromPreset(Preset preset) {
         StringBuilder sb = new StringBuilder();
-        sb.append(getString(R.string.name_s, preset.getName())).append("\n");
-        if (preset.getTimestamp() != 0)
-            sb.append(getString(R.string.timestamp_s, Utils.formatTime(preset.getTimestamp()))).append("\n");
+        sb.append(getString(R.string.name_s, preset.getName()));
+        sb.append("\n\n");
+        if (preset.getTimestamp() != 0) {
+            sb.append(getString(R.string.timestamp_s, Utils.formatTime(preset.getTimestamp())));
+            sb.append("\n\n");
+        }
 
         if (preset.getGeneratorParams() instanceof EffectGeneratorParams) {
             GeneratorParams targetParams = ((EffectGeneratorParams) preset.getGeneratorParams()).getTarget();
-            sb.append(getString(R.string.generator_type_s, getString(targetParams.getType().getStringRes()))).append("\n");
-            sb.append(getString(R.string.effect_type_s, getString(preset.getGeneratorParams().getType().getStringRes()))).append("\n");
+            sb.append(getString(R.string.generator_type_s, getString(targetParams.getType().getStringRes())));
+            sb.append("\n\n");
+            sb.append(getString(R.string.effect_type_s, getString(preset.getGeneratorParams().getType().getStringRes())));
+            sb.append("\n\n");
         } else {
-            sb.append(getString(R.string.generator_type_s, getString(preset.getGeneratorParams().getType().getStringRes()))).append("\n");
+            sb.append(getString(R.string.generator_type_s, getString(preset.getGeneratorParams().getType().getStringRes())));
+            sb.append("\n\n");
         }
 
         boolean showCount = true;
@@ -113,17 +119,21 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
         } else {
             sb.append(getString(R.string.widt_s, String.valueOf(preset.getWidth())));
         }
-        sb.append("\n");
+        sb.append("\n\n");
         if (appendRangeSize(sb, R.string.height_s, preset.getHeightRange())) {
             showCount = false;
         } else {
             sb.append(getString(R.string.height_s, String.valueOf(preset.getHeight())));
         }
-        sb.append("\n");
-        if (showCount)
-            sb.append(getString(R.string.count_s, String.valueOf(preset.getCount()))).append("\n");
+        sb.append("\n\n");
+        if (showCount) {
+            sb.append(getString(R.string.count_s, String.valueOf(preset.getCount())));
+            sb.append("\n\n");
+        }
 
-        sb.append(getString(R.string.quality_s_percent_tab, preset.getQuality().getFormat().name(), String.valueOf(preset.getQuality().getQualityValue())));
+        sb.append(getString(R.string.quality_s_percent, preset.getQuality().getFormat().name(), String.valueOf(preset.getQuality().getQualityValue())));
+        sb.append("\n\n");
+        sb.append(getString(R.string.save_folder_s, preset.getPathToSave()));
 
         return sb.toString();
     }

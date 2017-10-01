@@ -57,7 +57,6 @@
     <string name="fixed_size">Fixed size:</string>
     <string name="format">Format:</string>
     <string name="percent_quality">Quality (%):</string>
-    <string name="save_folder">Save folder:</string>
     <string name="unsaved_preset_name">*unsaved</string>
     <string name="failed_save_preset">Failed to save preset</string>
     <string name="preset_name_empty">Preset name is empty</string>
@@ -68,5 +67,6 @@
     <string name="widt_s">Width: %s</string>
     <string name="height_s">Height: %s</string>
     <string name="count_s">Count: %s</string>
-    <string name="quality_s_percent_tab">Quality: %1$s (%2$s%%)</string>
+    <string name="quality_s_percent">Quality: %1$s (%2$s%%)</string>
+    <string name="save_folder_s">Save folder: %s</string>
 </resources>

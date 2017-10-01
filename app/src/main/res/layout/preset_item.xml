@@ -68,7 +68,7 @@
             android:layout_marginLeft="@dimen/common_views_spacing"
             android:layout_marginTop="@dimen/common_views_spacing"
             android:ellipsize="end"
-            android:maxLines="1"
+            android:maxLines="3"
             app:layout_constraintLeft_toRightOf="@+id/preset_item_image"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/preset_item_tv_created"
