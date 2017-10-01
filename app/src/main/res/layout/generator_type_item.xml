@@ -24,7 +24,7 @@
                 android:layout_height="@dimen/adapter_rig_image_size_big"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_texture_gray_medium_semi_24dp" />
+                app:srcCompat="@drawable/ic_texture_adapter_rig_image_size" />
 
             <FrameLayout
                 android:layout_width="0dp"
@@ -42,7 +42,7 @@
                     android:layout_gravity="right"
                     android:background="?selectableItemBackgroundBorderless"
                     android:scaleType="center"
-                    app:srcCompat="@drawable/ic_settings_black_semi_24dp" />
+                    app:srcCompat="@drawable/ic_settings_24dp_border" />
 
             </FrameLayout>
 
@@ -54,6 +54,7 @@
                 android:ellipsize="end"
                 android:gravity="center_horizontal"
                 android:maxLines="1"
+                android:textColor="@color/gray_dark"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -68,7 +69,7 @@
                 app:layout_constraintLeft_toLeftOf="@+id/generator_type_item_image"
                 app:layout_constraintRight_toRightOf="@+id/generator_type_item_image"
                 app:layout_constraintTop_toTopOf="@+id/generator_type_item_image"
-                app:srcCompat="@drawable/ic_check_circle_accent_80_48dp" />
+                app:srcCompat="@drawable/ic_check_circle_48_border" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>

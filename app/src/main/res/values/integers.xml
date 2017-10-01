@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="generator_type_adapter_grid_items">2</integer>
+    <integer name="max_preset_name_length">20</integer>
 </resources>

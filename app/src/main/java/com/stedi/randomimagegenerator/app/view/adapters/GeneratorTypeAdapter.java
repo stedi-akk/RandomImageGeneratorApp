@@ -61,7 +61,7 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
         holder.btnEdit.setOnClickListener(this);
         holder.isSelected.setVisibility(type == selectedType ? View.VISIBLE : View.INVISIBLE);
         holder.btnEdit.setVisibility(View.INVISIBLE);
-        holder.image.setImageResource(R.drawable.ic_texture_gray_medium_semi_24dp);
+        holder.image.setImageResource(R.drawable.ic_texture_adapter_rig_image_size);
 
         imageLoader.load(type, targetType, (params, bitmap) -> {
             GeneratorType holderType = (GeneratorType) holder.card.getTag();

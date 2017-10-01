@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="colorAccent_80_transparent">#ccff4081</color>
+    <color name="colorPrimary">#424242</color>
+    <color name="colorPrimaryDark">#212121</color>
+    <color name="colorAccent">#E65100</color>
+    <color name="colorAccent_80_transparent">#ccE65100</color>
+    <color name="white_80_transparent">#ccFFFFFF</color>
+    <color name="ms_selectedColor">@color/colorAccent</color>
     <color name="black_semi_transparent">#80000000</color>
     <color name="gray_dark">#212121</color>
     <color name="gray_dark_semi_transparent">#80212121</color>

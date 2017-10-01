@@ -60,13 +60,13 @@
     <string name="unsaved_preset_name">*unsaved</string>
     <string name="failed_save_preset">Failed to save preset</string>
     <string name="preset_name_empty">Preset name is empty</string>
-    <string name="name_s">Name: \"%s\"</string>
-    <string name="timestamp_s">Timestamp: %s</string>
-    <string name="generator_type_s">Generator type: %s</string>
-    <string name="effect_type_s">Effect type: %s</string>
-    <string name="widt_s">Width: %s</string>
-    <string name="height_s">Height: %s</string>
-    <string name="count_s">Count: %s</string>
-    <string name="quality_s_percent">Quality: %1$s (%2$s%%)</string>
-    <string name="save_folder_s">Save folder: %s</string>
+    <string name="name_s">Name\u0020\u0020—\u0020\u0020\"%s\"</string>
+    <string name="created_s">Created\u0020\u0020—\u0020\u0020%s</string>
+    <string name="generator_type_s">Generator type\u0020\u0020—\u0020\u0020%s</string>
+    <string name="effect_type_s">Effect type\u0020\u0020—\u0020\u0020%s</string>
+    <string name="widt_s">Width\u0020\u0020—\u0020\u0020%s</string>
+    <string name="height_s">Height\u0020\u0020—\u0020\u0020%s</string>
+    <string name="count_s">Count\u0020\u0020—\u0020\u0020%s</string>
+    <string name="quality_s_percent">Quality\u0020\u0020—\u0020\u0020%1$s (%2$s%%)</string>
+    <string name="save_folder_s">Save folder\u0020\u0020—\u0020\u0020%s</string>
 </resources>

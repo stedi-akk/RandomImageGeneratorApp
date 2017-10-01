@@ -98,7 +98,7 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
         sb.append(getString(R.string.name_s, preset.getName()));
         sb.append("\n\n");
         if (preset.getTimestamp() != 0) {
-            sb.append(getString(R.string.timestamp_s, Utils.formatTime(preset.getTimestamp())));
+            sb.append(getString(R.string.created_s, Utils.formatTime(preset.getTimestamp())));
             sb.append("\n\n");
         }
 

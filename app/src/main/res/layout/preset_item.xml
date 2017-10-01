@@ -23,7 +23,7 @@
             android:scaleType="center"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_close_black_24dp" />
+            app:srcCompat="@drawable/ic_close_24dp" />
 
         <TextView
             android:id="@+id/preset_item_tv_name"
@@ -46,7 +46,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/preset_item_tv_name"
-            app:srcCompat="@drawable/ic_texture_gray_medium_semi_24dp" />
+            app:srcCompat="@drawable/ic_texture_adapter_rig_image_size" />
 
         <TextView
             android:id="@+id/preset_item_tv_created"

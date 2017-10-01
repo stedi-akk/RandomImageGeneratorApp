@@ -18,10 +18,11 @@
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Large</item>
     </style>
 
-    <style name="CommonDialogPadding">
+    <style name="CommonDialogPadded">
         <item name="android:paddingLeft">?dialogPreferredPadding</item>
         <item name="android:paddingRight">?dialogPreferredPadding</item>
         <item name="android:paddingTop">20dp</item>
+        <item name="android:paddingBottom">20dp</item>
     </style>
 
 </resources>
