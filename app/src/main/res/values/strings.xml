@@ -2,6 +2,7 @@
     <string name="lorem_ipsum" translatable="false">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
     <string name="empty_presets_list">There are no saved presets yet.\nClick add to create one.</string>
     <string name="save">Save</string>
+    <string name="save_as">Save as</string>
     <string name="generate">Generate</string>
     <string name="failed_fetch_presets">Failed to fetch presets</string>
     <string name="failed_delete_preset">Failed to delete preset</string>
@@ -58,9 +59,7 @@
     <string name="percent_quality">Quality (%):</string>
     <string name="save_folder">Save folder:</string>
     <string name="unsaved_preset_name">*unsaved</string>
-    <string name="rename">Rename</string>
     <string name="failed_save_preset">Failed to save preset</string>
-    <string name="set_preset_name">Set preset name</string>
     <string name="preset_name_empty">Preset name is empty</string>
     <string name="name_s">Name: \"%s\"</string>
     <string name="timestamp_s">Timestamp: %s</string>

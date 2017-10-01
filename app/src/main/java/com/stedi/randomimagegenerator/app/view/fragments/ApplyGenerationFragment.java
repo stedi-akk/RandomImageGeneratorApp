@@ -8,7 +8,6 @@ import android.support.annotation.StringRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
@@ -43,7 +42,6 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
     @Inject Logger logger;
 
     @BindView(R.id.apply_generation_fragment_tv) TextView tvOut;
-    @BindView(R.id.apply_generation_fragment_btn_save_rename) Button btnSaveRename;
 
     private Preset startGenerationPreset;
 
@@ -92,7 +90,6 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
     private void refreshFromPreset() {
         if (getView() != null) {
             tvOut.setText(getSummaryFromPreset(presenter.getPreset()));
-            btnSaveRename.setText(presenter.isPresetNewOrChanged() ? getString(R.string.save) : getString(R.string.rename));
         }
     }
 
@@ -141,8 +138,8 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
         return true;
     }
 
-    @OnClick(R.id.apply_generation_fragment_btn_save_rename)
-    public void onSaveRenameClick(View v) {
+    @OnClick(R.id.apply_generation_fragment_btn_save_as)
+    public void onSaveAsClick(View v) {
         EditPresetNameDialog.newInstance(presenter.getPreset().getName()).show(getFragmentManager());
     }
 
