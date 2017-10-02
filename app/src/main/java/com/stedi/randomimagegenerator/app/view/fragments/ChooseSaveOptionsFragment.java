@@ -29,11 +29,15 @@ public class ChooseSaveOptionsFragment extends StepFragment implements
         NumberPicker.OnValueChangeListener,
         ChooseSaveOptionsPresenter.UIImpl {
 
+    private static final String KEY_PICKER_VALUE = "KEY_PICKER_VALUE";
+
     @Inject ChooseSaveOptionsPresenter presenter;
     @Inject Logger logger;
 
     @BindView(R.id.choose_save_options_fragment_rg_format) RadioGroup rgFormat;
     @BindView(R.id.choose_save_options_fragment_value_picker) NumberPicker npQuality;
+
+    private Bitmap.CompressFormat selectedFormat;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,8 +61,11 @@ public class ChooseSaveOptionsFragment extends StepFragment implements
         npQuality.setMaxValue(100);
         npQuality.setOnValueChangedListener(this);
         rgFormat.setOnCheckedChangeListener(this);
-        if (savedInstanceState == null)
+        if (savedInstanceState == null) {
             presenter.getData();
+        } else if (savedInstanceState.containsKey(KEY_PICKER_VALUE)) {
+            showQualityValue(savedInstanceState.getInt(KEY_PICKER_VALUE));
+        }
     }
 
     private void addFormatButtons() {
@@ -79,10 +86,18 @@ public class ChooseSaveOptionsFragment extends StepFragment implements
     }
 
     @Override
+    public void onSelected() {
+        if (getView() != null && selectedFormat != null) {
+            rgFormat.setOnCheckedChangeListener(null);
+            rgFormat.check(selectedFormat.ordinal());
+            rgFormat.setOnCheckedChangeListener(this);
+            selectedFormat = null;
+        }
+    }
+
+    @Override
     public void showQualityFormat(@NonNull Bitmap.CompressFormat format) {
-        rgFormat.setOnCheckedChangeListener(null);
-        rgFormat.check(format.ordinal());
-        rgFormat.setOnCheckedChangeListener(this);
+        selectedFormat = format;
     }
 
     @Override
@@ -100,6 +115,14 @@ public class ChooseSaveOptionsFragment extends StepFragment implements
     @Override
     public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
         presenter.setQualityFormat(Bitmap.CompressFormat.values()[checkedId]);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (npQuality != null) {
+            outState.putInt(KEY_PICKER_VALUE, npQuality.getValue());
+        }
     }
 
     @Override

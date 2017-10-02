@@ -52,7 +52,7 @@ public class EditPresetNameDialog extends ButterKnifeDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         String fromName = getArguments().getString(KEY_PRESET_NAME);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(R.string.save_as);
+        builder.setTitle(R.string.set_name);
         builder.setView(inflateAndBind(R.layout.edit_preset_name_dialog));
         etName.setText(fromName);
         etName.setSelection(fromName.length());

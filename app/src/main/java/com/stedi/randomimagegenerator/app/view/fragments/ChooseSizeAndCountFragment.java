@@ -67,6 +67,12 @@ public class ChooseSizeAndCountFragment extends StepFragment implements
         etHeightRangeStep.addTextChangedListener(this);
         if (savedInstanceState == null) {
             presenter.getValues();
+        }
+    }
+
+    @Override
+    public void onSelected() {
+        if (getView() != null) {
             etWidth.setSelection(etWidth.getText().length());
             etWidth.requestFocus();
         }
