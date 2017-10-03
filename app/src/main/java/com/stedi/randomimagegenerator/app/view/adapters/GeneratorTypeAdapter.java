@@ -16,7 +16,7 @@ import com.stedi.randomimagegenerator.app.view.components.GeneratorTypeImageLoad
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdapter.ViewHolder> implements View.OnClickListener {
+public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdapter.ViewHolder> {
     private final GeneratorTypeImageLoader imageLoader;
     private final GeneratorType[] generatorType;
     private final ClickListener listener;
@@ -54,40 +54,21 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
     @Override
     public void onBindViewHolder(GeneratorTypeAdapter.ViewHolder holder, int position) {
         GeneratorType type = generatorType[position];
+        holder.generatorType = type;
 
-        holder.card.setTag(type);
-        holder.card.setOnClickListener(this);
+        holder.card.setOnClickListener(holder);
         holder.text.setText(type.getStringRes());
-        holder.btnEdit.setOnClickListener(this);
-        holder.isSelected.setVisibility(type == selectedType ? View.VISIBLE : View.INVISIBLE);
         holder.btnEdit.setVisibility(View.INVISIBLE);
+        holder.btnEdit.setOnClickListener(holder);
+        holder.isSelected.setVisibility(type == selectedType ? View.VISIBLE : View.INVISIBLE);
         holder.image.setImageResource(R.drawable.ic_texture_adapter_rig_image_size);
 
         imageLoader.load(type, targetType, (params, bitmap) -> {
-            GeneratorType holderType = (GeneratorType) holder.card.getTag();
-            if (type == holderType) {
-                holder.btnEdit.setVisibility(params.isEditable() && holderType == selectedType ? View.VISIBLE : View.INVISIBLE);
+            if (type == holder.generatorType) {
+                holder.btnEdit.setVisibility(params.isEditable() && type == selectedType ? View.VISIBLE : View.INVISIBLE);
                 holder.image.setImageBitmap(bitmap);
             }
         });
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.generator_type_item_btn_edit) {
-            listener.onEditSelected();
-        } else if (v.getId() == R.id.generator_type_item_card) {
-            GeneratorType clickedType = (GeneratorType) v.getTag();
-            if (selectedType != clickedType) {
-                selectedType = clickedType;
-                listener.onSelected(selectedType);
-                notifyDataSetChanged();
-            } else if (isDeselectAllowed) {
-                selectedType = null;
-                listener.onDeselected();
-                notifyDataSetChanged();
-            }
-        }
     }
 
     @Override
@@ -95,16 +76,35 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
         return generatorType.length;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.generator_type_item_card) View card;
         @BindView(R.id.generator_type_item_text) TextView text;
         @BindView(R.id.generator_type_item_btn_edit) View btnEdit;
         @BindView(R.id.generator_type_item_selected) View isSelected;
         @BindView(R.id.generator_type_item_image) ImageView image;
 
+        GeneratorType generatorType;
+
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (v == btnEdit) {
+                listener.onEditSelected();
+            } else if (v == card) {
+                if (selectedType != generatorType) {
+                    selectedType = generatorType;
+                    listener.onSelected(selectedType);
+                    notifyDataSetChanged();
+                } else if (isDeselectAllowed) {
+                    selectedType = null;
+                    listener.onDeselected();
+                    notifyDataSetChanged();
+                }
+            }
         }
     }
 }

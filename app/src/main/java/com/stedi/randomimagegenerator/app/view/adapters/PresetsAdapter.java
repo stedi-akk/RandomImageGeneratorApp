@@ -23,7 +23,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHolder> implements View.OnClickListener {
+public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHolder> {
     private final List<Preset> presetsList = new ArrayList<>();
     private final GeneratorTypeImageLoader imageLoader;
     private final ClickListener listener;
@@ -71,56 +71,28 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Preset preset = presetsList.get(position);
+        holder.preset = preset;
 
         GeneratorType mainType = preset.getGeneratorParams().getType();
         GeneratorType secondType = null;
         if (preset.getGeneratorParams() instanceof EffectGeneratorParams)
             secondType = ((EffectGeneratorParams) preset.getGeneratorParams()).getTarget().getType();
 
-        holder.itemView.setTag(mainType);
         holder.tvName.setText(preset.getName());
         holder.tvFolder.setText(preset.getPathToSave());
         holder.tvCreated.setText(Utils.formatTime(preset.getTimestamp()));
         holder.btnAction.setText(preset == pendingPreset ? R.string.save : R.string.generate);
         holder.imageView.setImageResource(R.drawable.ic_texture_adapter_rig_image_size);
 
-        setPresetBoundedClickListener(holder.itemView, preset);
-        setPresetBoundedClickListener(holder.btnAction, preset);
-        setPresetBoundedClickListener(holder.btnDelete, preset);
+        holder.itemView.setOnClickListener(holder);
+        holder.btnAction.setOnClickListener(holder);
+        holder.btnDelete.setOnClickListener(holder);
 
         imageLoader.load(mainType, secondType, (params, bitmap) -> {
-            GeneratorType holderType = (GeneratorType) holder.itemView.getTag();
-            if (mainType == holderType) {
+            if (mainType == holder.preset.getGeneratorParams().getType()) {
                 holder.imageView.setImageBitmap(bitmap);
             }
         });
-    }
-
-    private void setPresetBoundedClickListener(View view, Preset preset) {
-        view.setTag(R.id.tag_preset, preset);
-        view.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        Preset preset = (Preset) v.getTag(R.id.tag_preset);
-        switch ((String) v.getTag(R.id.tag_key)) {
-            case ViewHolder.ITEM_VIEW_TAG:
-                listener.onCardClick(preset);
-                break;
-            case ViewHolder.BTN_ACTION_TAG:
-                if (preset == pendingPreset) {
-                    listener.onSaveClick(preset);
-                } else {
-                    listener.onGenerateClick(preset);
-                }
-                break;
-            case ViewHolder.BTN_DELETE_TAG:
-                listener.onDeleteClick(preset);
-                break;
-            default:
-                throw new IllegalStateException("unreachable code");
-        }
     }
 
     @Override
@@ -128,11 +100,7 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
         return presetsList.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
-        private static final String ITEM_VIEW_TAG = "ITEM_VIEW_TAG";
-        private static final String BTN_ACTION_TAG = "BTN_ACTION_TAG";
-        private static final String BTN_DELETE_TAG = "BTN_DELETE_TAG";
-
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.preset_item_tv_name) TextView tvName;
         @BindView(R.id.preset_item_tv_folder) TextView tvFolder;
         @BindView(R.id.preset_item_tv_created) TextView tvCreated;
@@ -140,12 +108,26 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
         @BindView(R.id.preset_item_btn_action) Button btnAction;
         @BindView(R.id.preset_item_btn_delete) View btnDelete;
 
+        Preset preset;
+
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setTag(R.id.tag_key, ITEM_VIEW_TAG);
-            btnAction.setTag(R.id.tag_key, BTN_ACTION_TAG);
-            btnDelete.setTag(R.id.tag_key, BTN_DELETE_TAG);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (v == itemView) {
+                listener.onCardClick(preset);
+            } else if (v == btnAction) {
+                if (preset == pendingPreset) {
+                    listener.onSaveClick(preset);
+                } else {
+                    listener.onGenerateClick(preset);
+                }
+            } else if (v == btnDelete) {
+                listener.onDeleteClick(preset);
+            }
         }
     }
 }
