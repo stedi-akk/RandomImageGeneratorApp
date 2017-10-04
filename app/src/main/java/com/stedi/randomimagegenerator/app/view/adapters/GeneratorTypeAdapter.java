@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -98,6 +99,7 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
                 if (selectedType != generatorType) {
                     selectedType = generatorType;
                     listener.onSelected(selectedType);
+                    runSelectionAnimation();
                     notifyDataSetChanged();
                 } else if (isDeselectAllowed) {
                     selectedType = null;
@@ -105,6 +107,17 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
                     notifyDataSetChanged();
                 }
             }
+        }
+
+        private void runSelectionAnimation() {
+            isSelected.setScaleX(0);
+            isSelected.setScaleY(0);
+            isSelected.setAlpha(0);
+            btnEdit.setAlpha(0);
+            isSelected.animate().scaleX(1).scaleY(1)
+                    .setInterpolator(new OvershootInterpolator(1.2f))
+                    .alpha(1).setDuration(200)
+                    .withEndAction(() -> btnEdit.animate().alpha(1f).setDuration(200));
         }
     }
 }

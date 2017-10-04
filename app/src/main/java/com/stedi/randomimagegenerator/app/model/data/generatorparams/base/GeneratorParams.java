@@ -35,11 +35,17 @@ public abstract class GeneratorParams implements Parcelable {
             case FLAT_COLOR:
                 return new FlatColorParams();
             case COLORED_PIXELS:
-                return new ColoredPixelsParams();
+                ColoredPixelsParams pixelsParams = new ColoredPixelsParams();
+                pixelsParams.setValue(10);
+                return pixelsParams;
             case COLORED_CIRCLES:
-                return new ColoredCirclesParams();
+                ColoredCirclesParams circlesParams = new ColoredCirclesParams();
+                circlesParams.setValue(50);
+                return circlesParams;
             case COLORED_RECTANGLE:
-                return new ColoredRectangleParams();
+                ColoredRectangleParams rectangleParams = new ColoredRectangleParams();
+                rectangleParams.setValue(50);
+                return rectangleParams;
             case COLORED_NOISE:
                 return new ColoredNoiseParams();
             default:

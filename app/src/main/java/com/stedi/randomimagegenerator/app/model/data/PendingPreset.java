@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.stedi.randomimagegenerator.Quality;
 import com.stedi.randomimagegenerator.app.di.qualifiers.RootSavePath;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.FlatColorParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 
 import java.io.File;
@@ -37,7 +38,7 @@ public class PendingPreset {
         candidateFrom = null;
         candidate = new Preset(
                 unsavedName,
-                new FlatColorParams(),
+                GeneratorParams.createDefaultParams(GeneratorType.COLORED_CIRCLES),
                 Quality.png(),
                 rootSavePath + File.separator + "0");
         candidate.setWidth(100);

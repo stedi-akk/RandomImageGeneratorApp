@@ -40,7 +40,6 @@ public class ChooseSaveOptionsPresenterImplTest {
         presenter.getData();
         verify(ui, times(1)).showQualityFormat(Bitmap.CompressFormat.JPEG);
         verify(ui, times(1)).showQualityValue(77);
-        verify(ui, times(1)).showSaveFolder(pendingPreset.getCandidate().getPathToSave());
 
         presenter.setQualityFormat(Bitmap.CompressFormat.WEBP);
         assertTrue(pendingPreset.getCandidate().getQuality().getFormat() == Bitmap.CompressFormat.WEBP);

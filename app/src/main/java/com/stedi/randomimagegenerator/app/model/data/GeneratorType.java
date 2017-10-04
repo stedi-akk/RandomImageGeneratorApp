@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum GeneratorType {
-    FLAT_COLOR(false, R.string.generator_flat_color),
-    COLORED_PIXELS(false, R.string.generator_colored_pixels),
     COLORED_CIRCLES(false, R.string.generator_colored_circles),
     COLORED_RECTANGLE(false, R.string.generator_colored_rectangle),
+    COLORED_PIXELS(false, R.string.generator_colored_pixels),
+    FLAT_COLOR(false, R.string.generator_flat_color),
     COLORED_NOISE(false, R.string.generator_colored_noise),
     MIRRORED(true, R.string.effect_mirrored),
     TEXT_OVERLAY(true, R.string.effect_text_overlay);
