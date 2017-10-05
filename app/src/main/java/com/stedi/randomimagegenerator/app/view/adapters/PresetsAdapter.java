@@ -50,8 +50,13 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
         this.pendingPreset = pendingPreset;
         presetsList.clear();
         presetsList.addAll(presets);
-        if (pendingPreset != null)
-            presetsList.set(0, pendingPreset);
+        if (pendingPreset != null) {
+            if (!presetsList.isEmpty()) {
+                presetsList.set(0, pendingPreset);
+            } else {
+                presetsList.add(pendingPreset);
+            }
+        }
         notifyDataSetChanged();
     }
 
@@ -61,6 +66,11 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
             presetsList.remove(listIndex);
             notifyItemRemoved(listIndex);
         }
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return presetsList.get(position).getId();
     }
 
     @Override

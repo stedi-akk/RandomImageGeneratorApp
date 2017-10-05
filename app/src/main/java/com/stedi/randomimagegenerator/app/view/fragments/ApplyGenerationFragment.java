@@ -117,10 +117,10 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
         }
 
         boolean showCount = true;
-        if (appendRangeSize(sb, R.string.widt_s, preset.getWidthRange())) {
+        if (appendRangeSize(sb, R.string.width_s, preset.getWidthRange())) {
             showCount = false;
         } else {
-            sb.append(getString(R.string.widt_s, String.valueOf(preset.getWidth())));
+            sb.append(getString(R.string.width_s, String.valueOf(preset.getWidth())));
         }
         sb.append("\n\n");
         if (appendRangeSize(sb, R.string.height_s, preset.getHeightRange())) {

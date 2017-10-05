@@ -105,13 +105,14 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     public void onPresetsFetched(@Nullable Preset pendingPreset, @NonNull List<Preset> presets) {
         logger.log(this, "onPresetsFetched");
         fab.setVisibility(View.VISIBLE);
-        emptyView.setVisibility(pendingPreset == null && presets.isEmpty() ? View.VISIBLE : View.GONE);
         adapter.set(presets, pendingPreset);
+        refreshEmptyView();
     }
 
     @Override
     public void onFailedToFetchPresets() {
         Utils.toastLong(this, R.string.failed_fetch_presets);
+        refreshEmptyView();
     }
 
     @OnClick(R.id.home_activity_fab)
@@ -144,7 +145,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     public void onPresetDeleted(@NonNull Preset preset) {
         logger.log(this, "onPresetDeleted " + preset);
         adapter.remove(preset);
-        emptyView.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+        refreshEmptyView();
     }
 
     @Override
@@ -234,5 +235,9 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(KEY_HOME_PRESENTER_STATE, presenter.onRetain());
+    }
+
+    private void refreshEmptyView() {
+        emptyView.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 }

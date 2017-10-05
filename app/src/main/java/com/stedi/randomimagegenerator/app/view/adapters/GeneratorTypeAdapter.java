@@ -48,6 +48,11 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
     }
 
     @Override
+    public long getItemId(int position) {
+        return generatorType[position].ordinal();
+    }
+
+    @Override
     public GeneratorTypeAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.generator_type_item, parent, false));
     }

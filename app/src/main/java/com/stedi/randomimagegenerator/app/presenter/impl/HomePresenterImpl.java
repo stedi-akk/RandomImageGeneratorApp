@@ -159,9 +159,8 @@ public class HomePresenterImpl extends HomePresenter {
             return;
         }
 
-        fetchInProgress = false;
-
         if (ui == null) {
+            fetchInProgress = false;
             logger.log(this, "onFetchPresetsEvent when ui == null");
             return;
         }
@@ -178,6 +177,8 @@ public class HomePresenterImpl extends HomePresenter {
             }
             ui.onPresetsFetched(pendingPreset.get(), event.presets);
         }
+
+        fetchInProgress = false;
     }
 
     @Subscribe

@@ -65,7 +65,7 @@
     <string name="created_s">Created\u0020\u0020—\u0020\u0020%s</string>
     <string name="generator_type_s">Generator type\u0020\u0020—\u0020\u0020%s</string>
     <string name="effect_type_s">Effect type\u0020\u0020—\u0020\u0020%s</string>
-    <string name="widt_s">Width\u0020\u0020—\u0020\u0020%s</string>
+    <string name="width_s">Width\u0020\u0020—\u0020\u0020%s</string>
     <string name="height_s">Height\u0020\u0020—\u0020\u0020%s</string>
     <string name="count_s">Count\u0020\u0020—\u0020\u0020%s</string>
     <string name="quality_s_percent">Quality\u0020\u0020—\u0020\u0020%1$s (%2$s%%)</string>
