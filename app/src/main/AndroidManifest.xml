@@ -21,7 +21,8 @@
 
         <activity
             android:name=".view.activity.GenerationStepsActivity"
-            android:parentActivityName=".view.activity.HomeActivity" />
+            android:parentActivityName=".view.activity.HomeActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
     </application>
 
 </manifest>
