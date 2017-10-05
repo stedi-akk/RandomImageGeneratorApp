@@ -29,7 +29,8 @@ public class ChooseSaveOptionsFragment extends StepFragment implements
         NumberPicker.OnValueChangeListener,
         ChooseSaveOptionsPresenter.UIImpl {
 
-    private static final String KEY_PICKER_VALUE = "KEY_PICKER_VALUE";
+    private static final String KEY_QUALITY_FORMAT = "KEY_QUALITY_FORMAT";
+    private static final String KEY_QUALITY_VALUE = "KEY_QUALITY_VALUE";
 
     @Inject ChooseSaveOptionsPresenter presenter;
     @Inject Logger logger;
@@ -37,7 +38,8 @@ public class ChooseSaveOptionsFragment extends StepFragment implements
     @BindView(R.id.choose_save_options_fragment_rg_format) RadioGroup rgFormat;
     @BindView(R.id.choose_save_options_fragment_value_picker) NumberPicker npQuality;
 
-    private Bitmap.CompressFormat selectedFormat;
+    private Bitmap.CompressFormat selectedFormat = null;
+    private int selectedValue = -1;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,8 +65,10 @@ public class ChooseSaveOptionsFragment extends StepFragment implements
         rgFormat.setOnCheckedChangeListener(this);
         if (savedInstanceState == null) {
             presenter.getData();
-        } else if (savedInstanceState.containsKey(KEY_PICKER_VALUE)) {
-            showQualityValue(savedInstanceState.getInt(KEY_PICKER_VALUE));
+        } else {
+            selectedFormat = (Bitmap.CompressFormat) savedInstanceState.getSerializable(KEY_QUALITY_FORMAT);
+            selectedValue = savedInstanceState.getInt(KEY_QUALITY_VALUE);
+            refresh();
         }
     }
 
@@ -81,18 +85,22 @@ public class ChooseSaveOptionsFragment extends StepFragment implements
     }
 
     @Override
-    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-        presenter.setQualityValue(newVal);
+    public void onSelected() {
+        if (getView() == null)
+            return;
+        refresh();
     }
 
-    @Override
-    public void onSelected() {
-        if (getView() != null && selectedFormat != null) {
-            rgFormat.setOnCheckedChangeListener(null);
-            rgFormat.check(selectedFormat.ordinal());
-            rgFormat.setOnCheckedChangeListener(this);
-            selectedFormat = null;
-        }
+    private void refresh() {
+        if (selectedFormat == null || selectedValue == -1)
+            return;
+        rgFormat.setOnCheckedChangeListener(null);
+        rgFormat.clearCheck();
+        rgFormat.check(selectedFormat.ordinal());
+        rgFormat.setOnCheckedChangeListener(this);
+        npQuality.setOnValueChangedListener(null);
+        npQuality.setValue(selectedValue);
+        npQuality.setOnValueChangedListener(this);
     }
 
     @Override
@@ -102,9 +110,19 @@ public class ChooseSaveOptionsFragment extends StepFragment implements
 
     @Override
     public void showQualityValue(int value) {
-        npQuality.setOnValueChangedListener(null);
-        npQuality.setValue(value);
-        npQuality.setOnValueChangedListener(this);
+        selectedValue = value;
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+        selectedFormat = Bitmap.CompressFormat.values()[checkedId];
+        presenter.setQualityFormat(selectedFormat);
+    }
+
+    @Override
+    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+        selectedValue = newVal;
+        presenter.setQualityValue(selectedValue);
     }
 
     @Override
@@ -113,16 +131,10 @@ public class ChooseSaveOptionsFragment extends StepFragment implements
     }
 
     @Override
-    public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-        presenter.setQualityFormat(Bitmap.CompressFormat.values()[checkedId]);
-    }
-
-    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (npQuality != null) {
-            outState.putInt(KEY_PICKER_VALUE, npQuality.getValue());
-        }
+        outState.putSerializable(KEY_QUALITY_FORMAT, selectedFormat);
+        outState.putInt(KEY_QUALITY_VALUE, selectedValue);
     }
 
     @Override
