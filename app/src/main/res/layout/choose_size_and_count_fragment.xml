@@ -44,7 +44,9 @@
                     style="@style/SizeAndCountInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/width" />
+                    android:hint="@string/width"
+                    android:imeOptions="actionNext"
+                    android:nextFocusRight="@+id/choose_size_and_count_et_height" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -63,7 +65,9 @@
                     style="@style/SizeAndCountInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/height" />
+                    android:hint="@string/height"
+                    android:imeOptions="actionNext"
+                    android:nextFocusRight="@+id/choose_size_and_count_et_count" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -109,7 +113,9 @@
                     style="@style/SizeAndCountInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/from" />
+                    android:hint="@string/from"
+                    android:imeOptions="actionNext"
+                    android:nextFocusRight="@+id/choose_size_and_count_et_width_range_to" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -128,7 +134,9 @@
                     style="@style/SizeAndCountInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/to" />
+                    android:hint="@string/to"
+                    android:imeOptions="actionNext"
+                    android:nextFocusRight="@+id/choose_size_and_count_et_width_range_step" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -174,7 +182,9 @@
                     style="@style/SizeAndCountInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/from" />
+                    android:hint="@string/from"
+                    android:imeOptions="actionNext"
+                    android:nextFocusRight="@+id/choose_size_and_count_et_height_range_to" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -193,7 +203,9 @@
                     style="@style/SizeAndCountInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/to" />
+                    android:hint="@string/to"
+                    android:imeOptions="actionNext"
+                    android:nextFocusRight="@+id/choose_size_and_count_et_height_range_step" />
 
             </android.support.design.widget.TextInputLayout>
 
