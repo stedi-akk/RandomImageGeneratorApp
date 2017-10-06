@@ -67,23 +67,14 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
                 presenter.onRestore(state);
         }
 
-        fab.setVisibility(View.INVISIBLE);
+        fab.hide(fabShowHideListener);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new ListSpaceDecoration(
                 Utils.dp2pxi(this, R.dimen.common_v_spacing), Utils.dp2pxi(this, R.dimen.common_lr_spacing)));
         adapter = new PresetsAdapter(adapterImageLoader, this);
         recyclerView.setAdapter(adapter);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0) {
-                    fab.hide();
-                } else {
-                    fab.show();
-                }
-            }
-        });
+        recyclerView.addOnScrollListener(recyclerScrollListener);
     }
 
     @Override
@@ -103,14 +94,14 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
 
     @Override
     public void onPresetsFetched(@Nullable Preset pendingPreset, @NonNull List<Preset> presets) {
-        logger.log(this, "onPresetsFetched");
-        fab.setVisibility(View.VISIBLE);
+        fab.show(fabShowHideListener);
         adapter.set(presets, pendingPreset);
         refreshEmptyView();
     }
 
     @Override
     public void onFailedToFetchPresets() {
+        fab.show(fabShowHideListener);
         Utils.toastLong(this, R.string.failed_fetch_presets);
         refreshEmptyView();
     }
@@ -240,4 +231,27 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     private void refreshEmptyView() {
         emptyView.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
+
+    private RecyclerView.OnScrollListener recyclerScrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            if (dy > 0) {
+                fab.hide(fabShowHideListener);
+            } else {
+                fab.show(fabShowHideListener);
+            }
+        }
+    };
+
+    private FloatingActionButton.OnVisibilityChangedListener fabShowHideListener = new FloatingActionButton.OnVisibilityChangedListener() {
+        @Override
+        public void onShown(FloatingActionButton fab) {
+            fab.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public void onHidden(FloatingActionButton fab) {
+            fab.setVisibility(View.GONE);
+        }
+    };
 }
