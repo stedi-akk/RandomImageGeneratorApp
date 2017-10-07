@@ -42,7 +42,7 @@
                     android:layout_gravity="right"
                     android:background="?selectableItemBackgroundBorderless"
                     android:scaleType="center"
-                    app:srcCompat="@drawable/ic_settings_24dp_border" />
+                    app:srcCompat="@drawable/ic_settings_border" />
 
             </FrameLayout>
 
@@ -69,7 +69,7 @@
                 app:layout_constraintLeft_toLeftOf="@+id/generator_type_item_image"
                 app:layout_constraintRight_toRightOf="@+id/generator_type_item_image"
                 app:layout_constraintTop_toTopOf="@+id/generator_type_item_image"
-                app:srcCompat="@drawable/ic_check_circle_48_border" />
+                app:srcCompat="@drawable/ic_check_circle_border" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>

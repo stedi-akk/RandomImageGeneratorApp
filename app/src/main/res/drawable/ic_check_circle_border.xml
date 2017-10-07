@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
+    <item
+        android:bottom="3dp"
+        android:left="3dp"
+        android:right="3dp"
+        android:top="3dp">
         <shape android:shape="oval">
             <size
                 android:width="48dp"
                 android:height="48dp" />
-            <solid android:color="@android:color/white" />
+            <solid android:color="@color/black_semi_transparent" />
         </shape>
     </item>
-    <item android:drawable="@drawable/ic_check_circle_48dp" />
+    <item android:drawable="@drawable/ic_check_circle" />
 </layer-list>
