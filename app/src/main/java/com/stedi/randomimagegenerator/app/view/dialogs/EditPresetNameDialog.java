@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.stedi.randomimagegenerator.app.R;
@@ -50,14 +52,21 @@ public class EditPresetNameDialog extends ButterKnifeDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        String fromName = getArguments().getString(KEY_PRESET_NAME);
+        String fromName = getArguments().getString(KEY_PRESET_NAME, "");
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.set_name);
         builder.setView(inflateAndBind(R.layout.edit_preset_name_dialog));
-        etName.setText(fromName);
-        etName.setSelection(fromName.length());
         builder.setPositiveButton(R.string.ok, null);
         AlertDialog dialog = builder.create();
+        etName.setText(fromName);
+        if (fromName.isEmpty()) {
+            etName.requestFocus();
+            Window window = dialog.getWindow();
+            if (window != null)
+                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        } else {
+            etName.setSelection(fromName.length());
+        }
         dialog.setOnShowListener(dialog1 -> dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v -> apply()));
         return dialog;
     }

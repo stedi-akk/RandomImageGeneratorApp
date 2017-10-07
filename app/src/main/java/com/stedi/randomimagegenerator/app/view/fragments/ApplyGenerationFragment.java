@@ -156,7 +156,8 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
 
     @OnClick(R.id.apply_generation_fragment_btn_save)
     public void onSaveClick(View v) {
-        EditPresetNameDialog.newInstance(presenter.getPreset().getName()).show(getFragmentManager());
+        Preset preset = presenter.getPreset();
+        EditPresetNameDialog.newInstance(preset.getId() == 0 ? "" : preset.getName()).show(getFragmentManager());
     }
 
     @OnClick(R.id.apply_generation_fragment_btn_generate)

@@ -41,9 +41,9 @@ public class PendingPreset {
                 GeneratorParams.createDefaultParams(GeneratorType.COLORED_CIRCLES),
                 Quality.png(),
                 rootSavePath + File.separator + "0");
-        candidate.setWidth(100);
-        candidate.setHeight(100);
-        candidate.setCount(1);
+        candidate.setWidth(800);
+        candidate.setHeight(800);
+        candidate.setCount(5);
         logger.log(this, "after newDefaultCandidate: " + this);
     }
 
