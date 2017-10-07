@@ -10,10 +10,14 @@ import com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent;
 import com.stedi.randomimagegenerator.app.di.modules.AppModule;
 
 public final class App extends Application {
+    private static App instance;
+
     private AppComponent component;
 
     @Override
     public void onCreate() {
+        instance = this;
+
         boolean debug = !BuildConfig.BUILD_TYPE.equals("release");
 
         if (debug) {
@@ -33,6 +37,11 @@ public final class App extends Application {
                 .build();
 
         Rig.enableDebugLogging(debug);
+    }
+
+    @NonNull
+    public static App getInstance() {
+        return instance;
     }
 
     @NonNull
