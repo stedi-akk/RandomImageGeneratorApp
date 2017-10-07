@@ -18,7 +18,10 @@
     <style name="GenerationStepHeaderText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">@dimen/generation_step_header_margin</item>
+        <item name="android:layout_marginLeft">@dimen/generation_step_header_margin_lr</item>
+        <item name="android:layout_marginRight">@dimen/generation_step_header_margin_lr</item>
+        <item name="android:layout_marginTop">@dimen/generation_step_header_margin_tb</item>
+        <item name="android:layout_marginBottom">@dimen/generation_step_header_margin_tb</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Large</item>
     </style>
 
