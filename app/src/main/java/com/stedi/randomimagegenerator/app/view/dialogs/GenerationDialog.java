@@ -17,6 +17,8 @@ import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationPresenter;
 import com.stedi.randomimagegenerator.app.view.dialogs.base.BaseDialogFragment;
 
+import java.io.File;
+
 import javax.inject.Inject;
 
 public class GenerationDialog extends BaseDialogFragment implements GenerationPresenter.UIImpl {
@@ -92,7 +94,7 @@ public class GenerationDialog extends BaseDialogFragment implements GenerationPr
     }
 
     @Override
-    public void onGenerated(@NonNull ImageParams imageParams) {
+    public void onGenerated(@NonNull ImageParams imageParams, @NonNull File imageFile) {
         generatedCount++;
         changeStateTo(State.PROGRESS);
     }

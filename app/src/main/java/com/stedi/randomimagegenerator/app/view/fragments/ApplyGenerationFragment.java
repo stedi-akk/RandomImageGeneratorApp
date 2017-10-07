@@ -1,6 +1,8 @@
 package com.stedi.randomimagegenerator.app.view.fragments;
 
 import android.Manifest;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,6 +29,7 @@ import com.stedi.randomimagegenerator.app.view.dialogs.EditPresetNameDialog;
 import com.stedi.randomimagegenerator.app.view.dialogs.GenerationDialog;
 import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment;
 
+import java.io.File;
 import java.io.Serializable;
 
 import javax.inject.Inject;
@@ -203,9 +206,10 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
     }
 
     @Override
-    public void onGenerated(@NonNull ImageParams imageParams) {
+    public void onGenerated(@NonNull ImageParams imageParams, @NonNull File imageFile) {
         logger.log(this, "onGenerated");
-        GenerationDialog.getInstance(getFragmentManager()).onGenerated(imageParams);
+        getActivity().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(imageFile)));
+        GenerationDialog.getInstance(getFragmentManager()).onGenerated(imageParams, imageFile);
     }
 
     @Override

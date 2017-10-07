@@ -26,6 +26,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
+import java.io.File;
 import java.util.List;
 
 import rx.Scheduler;
@@ -84,7 +85,7 @@ public class GenerationPresenterTest {
 
         presenter.startGeneration(preset);
         verify(ui, times(1)).onStartGeneration();
-        verify(ui, times(1)).onGenerated(imageParamsCaptor.capture());
+        verify(ui, times(1)).onGenerated(imageParamsCaptor.capture(), any(File.class));
         ImageParams ip = imageParamsCaptor.getValue();
         assertTrue(ip.getWidth() == 100);
         assertTrue(ip.getHeight() == 200);
@@ -155,7 +156,7 @@ public class GenerationPresenterTest {
 
         presenter.startGeneration(preset);
         verify(ui, times(1)).onStartGeneration();
-        verify(ui, times(6)).onGenerated(imageParamsCaptor.capture());
+        verify(ui, times(6)).onGenerated(imageParamsCaptor.capture(), any(File.class));
         List<ImageParams> imageParams = imageParamsCaptor.getAllValues();
         assertTrue(imageParams.size() == 6);
         int id = 1;
@@ -191,7 +192,7 @@ public class GenerationPresenterTest {
 
         presenter.startGeneration(preset);
         verify(ui, times(1)).onStartGeneration();
-        verify(ui, times(3)).onGenerated(imageParamsCaptor.capture());
+        verify(ui, times(3)).onGenerated(imageParamsCaptor.capture(), any(File.class));
         List<ImageParams> imageParams = imageParamsCaptor.getAllValues();
         assertTrue(imageParams.size() == 3);
         for (ImageParams ip : imageParams) {
@@ -216,7 +217,7 @@ public class GenerationPresenterTest {
 
         presenter.startGeneration(preset);
         verify(ui, times(1)).onStartGeneration();
-        verify(ui, times(4)).onGenerated(imageParamsCaptor.capture()); // should be 9 times, but the RIG library has a bug
+        verify(ui, times(4)).onGenerated(imageParamsCaptor.capture(), any(File.class)); // should be 9 times, but the RIG library has a bug
         List<ImageParams> imageParams = imageParamsCaptor.getAllValues();
         assertTrue(imageParams.size() == 4);
         assertTrue(imageParams.get(0).getWidth() == 10);
@@ -246,7 +247,7 @@ public class GenerationPresenterTest {
 
         presenter.startGeneration(preset);
         verify(ui, times(1)).onStartGeneration();
-        verify(ui, times(3)).onGenerated(imageParamsCaptor.capture());
+        verify(ui, times(3)).onGenerated(imageParamsCaptor.capture(), any(File.class));
         List<ImageParams> imageParams = imageParamsCaptor.getAllValues();
         assertTrue(imageParams.size() == 3);
         assertTrue(imageParams.get(0).getWidth() == 35);

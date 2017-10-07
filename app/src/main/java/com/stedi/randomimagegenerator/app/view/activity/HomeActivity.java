@@ -1,6 +1,8 @@
 package com.stedi.randomimagegenerator.app.view.activity;
 
 import android.Manifest;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,6 +27,7 @@ import com.stedi.randomimagegenerator.app.view.components.ListSpaceDecoration;
 import com.stedi.randomimagegenerator.app.view.dialogs.ConfirmDialog;
 import com.stedi.randomimagegenerator.app.view.dialogs.GenerationDialog;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.List;
 
@@ -199,9 +202,10 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     }
 
     @Override
-    public void onGenerated(@NonNull ImageParams imageParams) {
+    public void onGenerated(@NonNull ImageParams imageParams, @NonNull File imageFile) {
         logger.log(this, "onGenerated");
-        GenerationDialog.getInstance(getSupportFragmentManager()).onGenerated(imageParams);
+        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(imageFile)));
+        GenerationDialog.getInstance(getSupportFragmentManager()).onGenerated(imageParams, imageFile);
     }
 
     @Override

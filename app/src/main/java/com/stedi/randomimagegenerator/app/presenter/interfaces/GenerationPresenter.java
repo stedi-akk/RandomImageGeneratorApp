@@ -48,10 +48,20 @@ public abstract class GenerationPresenter<T extends GenerationPresenter.UIImpl> 
 
         private final Type type;
         private final ImageParams imageParams;
+        private final File imageFile;
+
+        Event(Type type) {
+            this(type, null);
+        }
 
         Event(Type type, ImageParams imageParams) {
+            this(type, imageParams, null);
+        }
+
+        Event(Type type, ImageParams imageParams, File imageFile) {
             this.type = type;
             this.imageParams = imageParams;
+            this.imageFile = imageFile;
         }
     }
 
@@ -70,7 +80,7 @@ public abstract class GenerationPresenter<T extends GenerationPresenter.UIImpl> 
             return;
         generationInProgress = true;
         logger.log(this, "GENERATION STARTED");
-        bus.post(new Event(Event.Type.ON_START_GENERATION, null));
+        bus.post(new Event(Event.Type.ON_START_GENERATION));
 
         Completable.fromAction(new Action0() {
             private ImageParams generationFor;
@@ -116,7 +126,7 @@ public abstract class GenerationPresenter<T extends GenerationPresenter.UIImpl> 
                     @Override
                     public void onSaved(Bitmap bitmap, File file) {
                         final ImageParams generationForRef = generationFor;
-                        Completable.fromAction(() -> bus.post(new Event(Event.Type.ON_GENERATED, generationForRef))).subscribeOn(observeOn).subscribe();
+                        Completable.fromAction(() -> bus.post(new Event(Event.Type.ON_GENERATED, generationForRef, file))).subscribeOn(observeOn).subscribe();
                     }
 
                     @Override
@@ -132,10 +142,10 @@ public abstract class GenerationPresenter<T extends GenerationPresenter.UIImpl> 
                 .observeOn(observeOn)
                 .subscribe(() -> {
                     logger.log(this, "GENERATION FINISHED");
-                    bus.post(new Event(Event.Type.ON_FINISH_GENERATION, null));
+                    bus.post(new Event(Event.Type.ON_FINISH_GENERATION));
                 }, throwable -> {
                     logger.log(this, throwable);
-                    bus.post(new Event(Event.Type.ON_GENERATION_UNKNOWN_ERROR, null));
+                    bus.post(new Event(Event.Type.ON_GENERATION_UNKNOWN_ERROR));
                 });
     }
 
@@ -161,7 +171,7 @@ public abstract class GenerationPresenter<T extends GenerationPresenter.UIImpl> 
                     ui.onFinishGeneration();
                     break;
                 case ON_GENERATED:
-                    ui.onGenerated(event.imageParams);
+                    ui.onGenerated(event.imageParams, event.imageFile);
                     break;
                 case ON_FAILED_TO_GENERATE:
                     ui.onFailedToGenerate(event.imageParams);
@@ -202,7 +212,7 @@ public abstract class GenerationPresenter<T extends GenerationPresenter.UIImpl> 
     public interface UIImpl extends UI {
         void onStartGeneration();
 
-        void onGenerated(@NonNull ImageParams imageParams);
+        void onGenerated(@NonNull ImageParams imageParams, @NonNull File imageFile);
 
         void onGenerationUnknownError();
 

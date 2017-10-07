@@ -157,7 +157,7 @@ public class HomePresenterImplTest {
         verify(ui, times(1)).showConfirmLastAction(HomePresenter.Confirm.GENERATE_FROM_PRESET);
         presenter.confirmLastAction();
         verify(ui, times(1)).onStartGeneration();
-        verify(ui, times(1)).onGenerated(any());
+        verify(ui, times(1)).onGenerated(any(), any());
         verify(ui, times(1)).onFinishGeneration();
         verifyNoMoreInteractions(ui);
     }
