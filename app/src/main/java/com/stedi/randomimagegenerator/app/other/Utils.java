@@ -12,13 +12,16 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import java.text.DateFormat;
+import com.stedi.randomimagegenerator.app.di.qualifiers.RootSavePath;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public final class Utils {
-    private static DateFormat dateFormat;
+    private static SimpleDateFormat dateFormat;
 
     private Utils() {
     }
@@ -83,7 +86,12 @@ public final class Utils {
     @NonNull
     public static String formatTime(long millis) {
         if (dateFormat == null)
-            dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
+            dateFormat = new SimpleDateFormat("dd.MM.YYYY HH:mm");
         return dateFormat.format(new Date(millis));
+    }
+
+    @NonNull
+    public static String formatSavePath(@RootSavePath @NonNull String rootSavePath, @NonNull String path) {
+        return path.replace(rootSavePath + File.separator, "sdcard/Pictures/RIG/");
     }
 }

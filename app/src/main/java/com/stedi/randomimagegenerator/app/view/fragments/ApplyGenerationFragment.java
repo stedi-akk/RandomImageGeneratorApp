@@ -17,6 +17,7 @@ import com.squareup.otto.Subscribe;
 import com.stedi.randomimagegenerator.ImageParams;
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.Components;
+import com.stedi.randomimagegenerator.app.di.qualifiers.RootSavePath;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
@@ -44,6 +45,7 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
     @Inject ApplyGenerationPresenter presenter;
     @Inject CachedBus bus;
     @Inject Logger logger;
+    @Inject @RootSavePath String rootSavePath;
 
     @BindView(R.id.apply_generation_fragment_tv) TextView tvOut;
     @BindView(R.id.apply_generation_fragment_btn_save) Button btnSave;
@@ -139,7 +141,7 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
 
         sb.append(getString(R.string.quality_s_percent, preset.getQuality().getFormat().name(), String.valueOf(preset.getQuality().getQualityValue())));
         sb.append("\n\n");
-        sb.append(getString(R.string.save_folder_s, preset.getPathToSave()));
+        sb.append(getString(R.string.save_folder_s, Utils.formatSavePath(rootSavePath, preset.getPathToSave())));
 
         return sb.toString();
     }

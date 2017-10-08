@@ -15,6 +15,7 @@ import com.squareup.otto.Subscribe;
 import com.stedi.randomimagegenerator.ImageParams;
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.modules.HomeModule;
+import com.stedi.randomimagegenerator.app.di.qualifiers.RootSavePath;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
 import com.stedi.randomimagegenerator.app.other.Utils;
@@ -47,6 +48,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     @Inject Logger logger;
     @Inject CachedBus bus;
     @Inject GeneratorTypeImageLoader adapterImageLoader;
+    @Inject @RootSavePath String rootSavePath;
 
     @BindView(R.id.home_activity_recycler_view) RecyclerView recyclerView;
     @BindView(R.id.home_activity_empty_view) View emptyView;
@@ -75,7 +77,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new ListSpaceDecoration(
                 Utils.dp2pxi(this, R.dimen.common_v_spacing), Utils.dp2pxi(this, R.dimen.common_lr_spacing)));
-        adapter = new PresetsAdapter(adapterImageLoader, this);
+        adapter = new PresetsAdapter(adapterImageLoader, rootSavePath, this);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(recyclerScrollListener);
     }

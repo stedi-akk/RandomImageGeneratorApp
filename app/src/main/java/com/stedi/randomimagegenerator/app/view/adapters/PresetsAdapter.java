@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.stedi.randomimagegenerator.app.R;
+import com.stedi.randomimagegenerator.app.di.qualifiers.RootSavePath;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams;
@@ -26,6 +27,7 @@ import butterknife.ButterKnife;
 public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHolder> {
     private final List<Preset> presetsList = new ArrayList<>();
     private final GeneratorTypeImageLoader imageLoader;
+    private final String rootSavePath;
     private final ClickListener listener;
 
     private Preset pendingPreset;
@@ -40,9 +42,10 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
         void onSaveClick(@NonNull Preset preset);
     }
 
-    public PresetsAdapter(@NonNull GeneratorTypeImageLoader imageLoader, @NonNull ClickListener listener) {
+    public PresetsAdapter(@NonNull GeneratorTypeImageLoader imageLoader, @RootSavePath @NonNull String rootSavePath, @NonNull ClickListener listener) {
         setHasStableIds(true);
         this.imageLoader = imageLoader;
+        this.rootSavePath = rootSavePath;
         this.listener = listener;
     }
 
@@ -89,7 +92,7 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
             secondType = ((EffectGeneratorParams) preset.getGeneratorParams()).getTarget().getType();
 
         holder.tvName.setText(preset.getName());
-        holder.tvFolder.setText(preset.getPathToSave());
+        holder.tvFolder.setText(Utils.formatSavePath(rootSavePath, preset.getPathToSave()));
         holder.tvCreated.setText(Utils.formatTime(preset.getTimestamp()));
         holder.btnAction.setText(preset == pendingPreset ? R.string.save : R.string.generate);
         holder.imageView.setImageResource(R.drawable.ic_texture_adapter_rig_image_size);
