@@ -63,6 +63,7 @@ public class DatabasePresetRepository extends OrmLiteSqliteOpenHelper implements
     @Override
     public synchronized void save(@NonNull Preset preset) throws Exception {
         TransactionManager.callInTransaction(getConnectionSource(), () -> {
+            deleteOldGeneratorParams(preset);
             saveGeneratorParamsRecursively(preset.getGeneratorParams());
             preset.setGeneratorParamsId(preset.getGeneratorParams().getId());
             Dao<Preset, Integer> daoPreset = getDao(Preset.class);
@@ -109,6 +110,16 @@ public class DatabasePresetRepository extends OrmLiteSqliteOpenHelper implements
             preset.setGeneratorParams(generatorParams);
         }
         return presets;
+    }
+
+    private void deleteOldGeneratorParams(Preset preset) throws Exception {
+        Dao<Preset, Integer> daoPreset = getDao(Preset.class);
+        Preset databasePreset = daoPreset.queryForId(preset.getId());
+        if (databasePreset != null) {
+            GeneratorParams generatorParams = queryGeneratorParamsById(databasePreset.getGeneratorType(), databasePreset.getGeneratorParamsId());
+            if (generatorParams != null)
+                deleteGeneratorParamsRecursively(generatorParams);
+        }
     }
 
     private void saveGeneratorParamsRecursively(GeneratorParams generatorParams) throws Exception {

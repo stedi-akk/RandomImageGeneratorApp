@@ -9,7 +9,7 @@
             <size
                 android:width="48dp"
                 android:height="48dp" />
-            <solid android:color="@color/black_semi_transparent" />
+            <solid android:color="@color/gray_dark_semi_transparent" />
         </shape>
     </item>
     <item android:drawable="@drawable/ic_check_circle" />
