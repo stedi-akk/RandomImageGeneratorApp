@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="common_v_spacing">8dp</dimen>
-    <dimen name="common_lr_spacing">8dp</dimen>
-    <dimen name="common_views_spacing">4dp</dimen>
+    <dimen name="common_lr_spacing">16dp</dimen>
+    <dimen name="common_views_spacing">6dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="adapter_rig_image_size">120dp</dimen>
     <dimen name="adapter_rig_image_size_big">160dp</dimen>

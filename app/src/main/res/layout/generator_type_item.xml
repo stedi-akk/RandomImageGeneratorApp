@@ -10,6 +10,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="@dimen/common_views_spacing"
+        android:layout_marginRight="@dimen/common_views_spacing"
         android:layout_marginBottom="@dimen/common_v_spacing"
         android:layout_marginTop="@dimen/common_v_spacing"
         android:foreground="?selectableItemBackground">
