@@ -86,7 +86,7 @@ public final class Utils {
     @NonNull
     public static String formatTime(long millis) {
         if (dateFormat == null)
-            dateFormat = new SimpleDateFormat("dd.MM.YYYY HH:mm");
+            dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         return dateFormat.format(new Date(millis));
     }
 
