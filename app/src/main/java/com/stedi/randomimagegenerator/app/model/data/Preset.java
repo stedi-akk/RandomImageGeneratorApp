@@ -236,8 +236,6 @@ public class Preset implements Parcelable {
 
         Preset preset = (Preset) o;
 
-        if (id != preset.id) return false;
-        if (generatorParamsId != preset.generatorParamsId) return false;
         if (timestamp != preset.timestamp) return false;
         if (count != preset.count) return false;
         if (width != preset.width) return false;
@@ -253,10 +251,8 @@ public class Preset implements Parcelable {
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + generatorParamsId;
+        int result = name.hashCode();
         result = 31 * result + (int) (timestamp ^ (timestamp >>> 32));
-        result = 31 * result + name.hashCode();
         result = 31 * result + generatorParams.hashCode();
         result = 31 * result + getQuality().getFormat().ordinal();
         result = 31 * result + getQuality().getQualityValue();

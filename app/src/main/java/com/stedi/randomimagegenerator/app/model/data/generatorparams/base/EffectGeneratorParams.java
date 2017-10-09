@@ -70,14 +70,12 @@ public abstract class EffectGeneratorParams extends GeneratorParams {
 
         EffectGeneratorParams that = (EffectGeneratorParams) o;
 
-        if (targetGeneratorParamsId != that.targetGeneratorParamsId) return false;
         return target.equals(that.target);
     }
 
     @Override
     public int hashCode() {
-        int result = target.hashCode();
-        return 31 * result + targetGeneratorParamsId;
+        return target.hashCode();
     }
 
     @Override

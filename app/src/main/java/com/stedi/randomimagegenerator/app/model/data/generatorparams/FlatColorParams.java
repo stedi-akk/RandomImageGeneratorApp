@@ -41,20 +41,6 @@ public class FlatColorParams extends GeneratorParams {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (!super.equals(o)) return false;
-
-        FlatColorParams that = (FlatColorParams) o;
-
-        return id == that.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return id;
-    }
-
-    @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.id);
     }

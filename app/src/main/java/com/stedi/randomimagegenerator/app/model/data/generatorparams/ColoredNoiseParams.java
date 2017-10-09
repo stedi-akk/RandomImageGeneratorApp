@@ -69,7 +69,6 @@ public class ColoredNoiseParams extends GeneratorParams {
         ColoredNoiseParams that = (ColoredNoiseParams) o;
 
         if (orientation != that.orientation) return false;
-        if (id != that.id) return false;
         return type == that.type;
     }
 
@@ -77,7 +76,6 @@ public class ColoredNoiseParams extends GeneratorParams {
     public int hashCode() {
         int result = orientation.hashCode();
         result = 31 * result + type.hashCode();
-        result = 31 * result + id;
         return result;
     }
 

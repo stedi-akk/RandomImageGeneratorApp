@@ -44,22 +44,6 @@ public class ColoredCirclesParams extends SimpleIntegerParams {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (!super.equals(o)) return false;
-
-        ColoredCirclesParams that = (ColoredCirclesParams) o;
-
-        return id == that.id;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + id;
-        return result;
-    }
-
-    @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeInt(this.id);
