@@ -3,6 +3,7 @@ package com.stedi.randomimagegenerator.app;
 import android.app.Application;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatDelegate;
 
 import com.stedi.randomimagegenerator.Rig;
 import com.stedi.randomimagegenerator.app.di.components.AppComponent;
@@ -36,6 +37,7 @@ public final class App extends Application {
                 .appModule(new AppModule(this))
                 .build();
 
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         Rig.enableDebugLogging(debug);
     }
 
