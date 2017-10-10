@@ -24,6 +24,11 @@ public class EffectGeneratorParamsEqualsTest {
         }
 
         @Override
+        public void setId(int id) {
+
+        }
+
+        @Override
         public int getId() {
             return 0;
         }

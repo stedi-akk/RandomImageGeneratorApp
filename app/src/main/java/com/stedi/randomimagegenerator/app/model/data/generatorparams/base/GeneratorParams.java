@@ -19,6 +19,8 @@ public abstract class GeneratorParams implements Parcelable {
         return GeneratorProxy.proxy(createGenerator());
     }
 
+    public abstract void setId(int id);
+
     public abstract int getId();
 
     public abstract boolean isEditable();

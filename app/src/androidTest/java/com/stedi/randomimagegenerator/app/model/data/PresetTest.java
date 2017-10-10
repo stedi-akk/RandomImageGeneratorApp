@@ -136,11 +136,6 @@ public class PresetTest {
     public void testSettersExceptions() {
         Preset preset = new Preset("ololo", GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), "path");
         try {
-            preset.setId(0);
-            fail();
-        } catch (IllegalArgumentException e) {
-        }
-        try {
             preset.setTimestamp(0);
             fail();
         } catch (IllegalArgumentException e) {

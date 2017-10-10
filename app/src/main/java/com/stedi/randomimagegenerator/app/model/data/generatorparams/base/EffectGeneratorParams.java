@@ -41,8 +41,6 @@ public abstract class EffectGeneratorParams extends GeneratorParams {
     }
 
     public void setTargetGeneratorParamsId(int targetGeneratorParamsId) {
-        if (targetGeneratorParamsId < 1)
-            throw new IllegalArgumentException("id must be > 0");
         this.targetGeneratorParamsId = targetGeneratorParamsId;
     }
 

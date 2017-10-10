@@ -10,6 +10,7 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import com.stedi.randomimagegenerator.Quality;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 
 import java.util.Arrays;
@@ -73,19 +74,26 @@ public class Preset implements Parcelable {
         }
     }
 
+    public void clearIds() {
+        setId(0);
+        setGeneratorParamsId(0);
+        generatorParams.setId(0);
+        if (generatorParams instanceof EffectGeneratorParams) {
+            EffectGeneratorParams effectGeneratorParams = (EffectGeneratorParams) generatorParams;
+            effectGeneratorParams.setTargetGeneratorParamsId(0);
+            effectGeneratorParams.getTarget().setId(0);
+        }
+    }
+
     public int getGeneratorParamsId() {
         return generatorParamsId;
     }
 
     public void setGeneratorParamsId(int generatorParamsId) {
-        if (generatorParamsId < 1)
-            throw new IllegalArgumentException("id must be > 0");
         this.generatorParamsId = generatorParamsId;
     }
 
     public void setId(int id) {
-        if (id < 1)
-            throw new IllegalArgumentException("id must be > 0");
         this.id = id;
     }
 

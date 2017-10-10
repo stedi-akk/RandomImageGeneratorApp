@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.Quality;
 import com.stedi.randomimagegenerator.app.di.qualifiers.RootSavePath;
-import com.stedi.randomimagegenerator.app.model.data.generatorparams.FlatColorParams;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 
@@ -78,8 +77,10 @@ public class PendingPreset {
         if (candidate == null)
             throw new IllegalStateException("candidate is null");
         preset = candidate;
-        if (candidateFrom != null)
+        if (candidateFrom != null) {
+            preset.clearIds();
             preset.setName(unsavedName);
+        }
         preset.setTimestamp(System.currentTimeMillis());
         logger.log(this, "after applyCandidate: " + this);
     }

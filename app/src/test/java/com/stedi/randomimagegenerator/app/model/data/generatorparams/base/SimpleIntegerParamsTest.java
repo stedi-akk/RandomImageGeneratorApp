@@ -19,6 +19,11 @@ public class SimpleIntegerParamsTest {
         }
 
         @Override
+        public void setId(int id) {
+
+        }
+
+        @Override
         public int getId() {
             return 0;
         }
@@ -41,6 +46,11 @@ public class SimpleIntegerParamsTest {
         @Override
         public boolean canBeRandom() {
             return true;
+        }
+
+        @Override
+        public void setId(int id) {
+
         }
 
         @Override
