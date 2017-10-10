@@ -130,6 +130,7 @@ public class CachedPresetRepositoryTest {
         cachedPresetRepository = new CachedPresetRepository(target);
 
         Preset preset = TestUtils.newSimplePreset();
+        preset.setName("first");
 
         cachedPresetRepository.save(preset);
         verify(target, times(1)).save(preset);
@@ -168,6 +169,7 @@ public class CachedPresetRepositoryTest {
         verifyZeroInteractions(target);
 
         preset = TestUtils.newSimplePreset();
+        preset.setName("second");
         cachedPresetRepository.save(preset);
         verify(target, times(1)).save(preset);
 
