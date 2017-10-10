@@ -52,14 +52,9 @@ public class PresetsAdapter extends RecyclerView.Adapter<PresetsAdapter.ViewHold
     public void set(@NonNull List<Preset> presets, @Nullable Preset pendingPreset) {
         this.pendingPreset = pendingPreset;
         presetsList.clear();
+        if (pendingPreset != null)
+            presetsList.add(pendingPreset);
         presetsList.addAll(presets);
-        if (pendingPreset != null) {
-            if (!presetsList.isEmpty()) {
-                presetsList.set(0, pendingPreset);
-            } else {
-                presetsList.add(pendingPreset);
-            }
-        }
         notifyDataSetChanged();
     }
 
