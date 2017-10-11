@@ -1,13 +1,15 @@
 package com.stedi.randomimagegenerator.app.view.dialogs;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.widget.TextView;
 
 import com.stedi.randomimagegenerator.ImageParams;
 import com.stedi.randomimagegenerator.app.R;
@@ -15,16 +17,21 @@ import com.stedi.randomimagegenerator.app.di.Components;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationPresenter;
-import com.stedi.randomimagegenerator.app.view.dialogs.base.BaseDialogFragment;
+import com.stedi.randomimagegenerator.app.view.dialogs.base.ButterKnifeDialogFragment;
 
 import java.io.File;
 
 import javax.inject.Inject;
 
-public class GenerationDialog extends BaseDialogFragment implements GenerationPresenter.UIImpl {
+import butterknife.BindView;
+
+public class GenerationDialog extends ButterKnifeDialogFragment implements GenerationPresenter.UIImpl {
+    @SuppressLint("StaticFieldLeak")
     private static GenerationDialog instance;
 
-    private ProgressDialog progressDialog;
+    private AlertDialog dialog;
+    @BindView(R.id.generation_dialog_progress) View progressBar;
+    @BindView(R.id.generation_dialog_message) TextView tvMessage;
 
     private State currentState = State.START;
     private int generatedCount;
@@ -65,15 +72,19 @@ public class GenerationDialog extends BaseDialogFragment implements GenerationPr
             logger.log(this, "dismissing non instance dialog");
             dismiss();
         }
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setCancelable(false);
-        progressDialog.setTitle(R.string.please_wait);
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.ok), (dialog, which) -> {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(R.string.please_wait);
+        builder.setView(inflateAndBind(R.layout.generation_dialog));
+        builder.setPositiveButton(R.string.ok, null);
+        dialog = builder.create();
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setOnShowListener(d -> dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v -> {
             bus.post(new OkClicked());
-        });
+            dismiss();
+        }));
         setCancelable(false);
-        return progressDialog;
+        return dialog;
     }
 
     @Override
@@ -128,20 +139,20 @@ public class GenerationDialog extends BaseDialogFragment implements GenerationPr
         switch (currentState) {
             case START:
             case PROGRESS:
-                progressDialog.setTitle(R.string.please_wait);
-                progressDialog.setMessage(getString(R.string.generating_image_s, String.valueOf(generatedCount + failedCount + 1)));
-                progressDialog.getButton(DialogInterface.BUTTON_POSITIVE).setVisibility(View.GONE);
+                dialog.setTitle(R.string.please_wait);
+                tvMessage.setText(getString(R.string.generating_image_s, String.valueOf(generatedCount + failedCount + 1)));
+                dialog.getButton(DialogInterface.BUTTON_POSITIVE).setVisibility(View.GONE);
                 break;
             case FINISH:
             case ERROR:
-                progressDialog.setTitle(R.string.generation_results);
+                dialog.setTitle(R.string.generation_results);
                 if (currentState == State.FINISH) {
-                    progressDialog.setMessage(getString(R.string.generated_stats, String.valueOf(generatedCount), String.valueOf(failedCount)));
+                    tvMessage.setText(getString(R.string.generated_stats, String.valueOf(generatedCount), String.valueOf(failedCount)));
                 } else if (currentState == State.ERROR) {
-                    progressDialog.setMessage(getString(R.string.generation_error));
+                    tvMessage.setText(R.string.generation_error);
                 }
-                progressDialog.getButton(DialogInterface.BUTTON_POSITIVE).setVisibility(View.VISIBLE);
-                progressDialog.findViewById(android.R.id.progress).setVisibility(View.GONE);
+                dialog.getButton(DialogInterface.BUTTON_POSITIVE).setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
                 break;
             default:
                 throw new IllegalStateException("unreachable code");
