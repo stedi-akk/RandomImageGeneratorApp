@@ -74,7 +74,7 @@ public abstract class BaseActivity extends LifeCycleActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         boolean isGranted = grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
-        bus.post(new PermissionEvent(permissions[0], requestCode, isGranted));
+        bus.postDead(new PermissionEvent(permissions[0], requestCode, isGranted));
     }
 
     public boolean checkForPermission(@NonNull String permission, int requestCode) {

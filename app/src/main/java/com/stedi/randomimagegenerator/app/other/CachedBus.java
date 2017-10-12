@@ -8,10 +8,13 @@ import com.squareup.otto.DeadEvent;
 import com.squareup.otto.ThreadEnforcer;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 public class CachedBus extends Bus {
     private final LinkedList<Runnable> cache = new LinkedList<>();
+    private final Set<Object> postDeadEvents = new HashSet<>();
     private final Thread creationThread = Thread.currentThread();
 
     private final Logger logger;
@@ -40,6 +43,13 @@ public class CachedBus extends Bus {
         releaseCache();
     }
 
+    public void postDead(final Object event) {
+        logger.log(this, "postDead");
+        ensureCreationThread();
+        postDeadEvents.add(event);
+        post(event);
+    }
+
     @Override
     public void post(final Object event) {
         logger.log(this, "posting " + event);
@@ -47,9 +57,21 @@ public class CachedBus extends Bus {
         if (!locked && !(event instanceof DeadEvent)) {
             logger.log(this, "posting " + event + " successfully");
             super.post(event);
+            postDeadEvents.remove(event);
         } else {
-            logger.log(this, "posting " + event + " failed because of lock or it is a DeadEvent, adding to the cache");
-            cache.add(() -> post(event instanceof DeadEvent ? ((DeadEvent) event).event : event));
+            logger.log(this, "posting " + event + " failed");
+            Object actualEvent = event;
+            if (event instanceof DeadEvent) {
+                actualEvent = ((DeadEvent) event).event;
+                if (postDeadEvents.contains(actualEvent)) {
+                    logger.log(this, "ignoring postDead event " + actualEvent);
+                    postDeadEvents.remove(actualEvent);
+                    return;
+                }
+            }
+            logger.log(this, "adding to the cache");
+            Object actualEventF = actualEvent;
+            cache.add(() -> post(actualEventF));
         }
     }
 
