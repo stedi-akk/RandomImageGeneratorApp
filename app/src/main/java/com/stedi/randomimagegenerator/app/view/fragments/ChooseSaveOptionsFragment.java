@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatRadioButton;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,6 +63,7 @@ public class ChooseSaveOptionsFragment extends StepFragment implements
         npQuality.setMinValue(0);
         npQuality.setMaxValue(100);
         npQuality.setOnValueChangedListener(this);
+        Utils.setDividerColor(npQuality, getResources().getColor(R.color.colorAccent));
         rgFormat.setOnCheckedChangeListener(this);
         if (savedInstanceState == null) {
             presenter.getData();
@@ -75,7 +77,7 @@ public class ChooseSaveOptionsFragment extends StepFragment implements
     private void addFormatButtons() {
         int height = Utils.dp2pxi(getActivity(), 48f);
         for (Bitmap.CompressFormat format : Bitmap.CompressFormat.values()) {
-            RadioButton rb = new RadioButton(getActivity());
+            RadioButton rb = new AppCompatRadioButton(getActivity());
             rb.setId(format.ordinal());
             rb.setText(format.name());
             rb.setMinHeight(height);

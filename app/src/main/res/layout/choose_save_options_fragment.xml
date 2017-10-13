@@ -73,7 +73,8 @@
                     android:id="@+id/choose_save_options_fragment_value_picker"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:descendantFocusability="blocksDescendants" />
             </FrameLayout>
 
         </android.support.constraint.ConstraintLayout>

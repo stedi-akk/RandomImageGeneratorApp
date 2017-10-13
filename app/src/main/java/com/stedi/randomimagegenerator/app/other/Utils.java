@@ -3,6 +3,7 @@ package com.stedi.randomimagegenerator.app.other;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.DimenRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -10,11 +11,13 @@ import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.NumberPicker;
 import android.widget.Toast;
 
 import com.stedi.randomimagegenerator.app.di.qualifiers.RootSavePath;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -93,5 +96,21 @@ public final class Utils {
     @NonNull
     public static String formatSavePath(@RootSavePath @NonNull String rootSavePath, @NonNull String path) {
         return path.replace(rootSavePath + File.separator, "sdcard/Pictures/RIG/");
+    }
+
+    // https://stackoverflow.com/questions/24233556/changing-numberpicker-divider-color
+    public static void setDividerColor(@NonNull NumberPicker picker, int color) {
+        Field[] pickerFields = NumberPicker.class.getDeclaredFields();
+        for (Field pf : pickerFields) {
+            if (pf.getName().equals("mSelectionDivider")) {
+                pf.setAccessible(true);
+                try {
+                    pf.set(picker, new ColorDrawable(color));
+                } catch (Exception e) {
+                    // ignore
+                }
+                break;
+            }
+        }
     }
 }
