@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatDialogFragment;
 
+import com.stedi.randomimagegenerator.app.App;
 import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity;
 
 public abstract class BaseDialogFragment extends AppCompatDialogFragment {
@@ -19,6 +20,12 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
         if (getDialog() != null && getRetainInstance())
             getDialog().setDismissMessage(null);
         super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        App.getInstance().getLeakWatcher().watch(this);
     }
 
     public void show(FragmentManager manager) {

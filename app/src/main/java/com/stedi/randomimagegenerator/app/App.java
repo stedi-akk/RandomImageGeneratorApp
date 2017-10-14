@@ -5,6 +5,8 @@ import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatDelegate;
 
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 import com.stedi.randomimagegenerator.Rig;
 import com.stedi.randomimagegenerator.app.di.components.AppComponent;
 import com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent;
@@ -13,6 +15,7 @@ import com.stedi.randomimagegenerator.app.di.modules.AppModule;
 public final class App extends Application {
     private static App instance;
 
+    private RefWatcher leakWatcher;
     private AppComponent component;
 
     @Override
@@ -33,6 +36,12 @@ public final class App extends Application {
         }
 
         super.onCreate();
+
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
+        leakWatcher = LeakCanary.install(this);
+
         component = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
                 .build();
@@ -49,5 +58,10 @@ public final class App extends Application {
     @NonNull
     public AppComponent getAppComponent() {
         return component;
+    }
+
+    @NonNull
+    public RefWatcher getLeakWatcher() {
+        return leakWatcher;
     }
 }
