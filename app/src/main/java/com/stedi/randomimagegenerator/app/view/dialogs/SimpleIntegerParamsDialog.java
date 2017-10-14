@@ -30,7 +30,7 @@ public class SimpleIntegerParamsDialog extends ButterKnifeDialogFragment impleme
         CompoundButton.OnCheckedChangeListener,
         SimpleIntegerParamsPresenter.UIImpl {
 
-    private static GeneratorType[] supportedTypes = new GeneratorType[]{
+    private static final GeneratorType[] supportedTypes = new GeneratorType[]{
             GeneratorType.COLORED_CIRCLES,
             GeneratorType.COLORED_RECTANGLE,
             GeneratorType.COLORED_PIXELS

@@ -22,9 +22,9 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
     private final GeneratorType[] generatorType;
     private final ClickListener listener;
     private final boolean isDeselectAllowed;
+    private final GeneratorType targetType;
 
     private GeneratorType selectedType;
-    private GeneratorType targetType;
 
     public interface ClickListener {
         void onSelected(@NonNull GeneratorType type);

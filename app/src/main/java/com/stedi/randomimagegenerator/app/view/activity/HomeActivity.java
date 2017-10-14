@@ -238,7 +238,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
         emptyView.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
-    private RecyclerView.OnScrollListener recyclerScrollListener = new RecyclerView.OnScrollListener() {
+    private final RecyclerView.OnScrollListener recyclerScrollListener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             if (dy > 0) {
@@ -249,7 +249,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
         }
     };
 
-    private FloatingActionButton.OnVisibilityChangedListener fabShowHideListener = new FloatingActionButton.OnVisibilityChangedListener() {
+    private final FloatingActionButton.OnVisibilityChangedListener fabShowHideListener = new FloatingActionButton.OnVisibilityChangedListener() {
         @Override
         public void onShown(FloatingActionButton fab) {
             fab.setVisibility(View.VISIBLE);

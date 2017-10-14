@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
 public class PresetTest {
-    private static List<Quality> qualities = new ArrayList<>();
+    private static final List<Quality> qualities = new ArrayList<>();
 
     @BeforeClass
     public static void beforeClass() {

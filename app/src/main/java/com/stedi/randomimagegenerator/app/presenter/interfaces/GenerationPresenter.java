@@ -149,7 +149,7 @@ public abstract class GenerationPresenter<T extends GenerationPresenter.UIImpl> 
                 });
     }
 
-    private Object busTarget = new Object() {
+    private final Object busTarget = new Object() {
         @Subscribe
         public void onEvent(Event event) {
             if (ui == null) {

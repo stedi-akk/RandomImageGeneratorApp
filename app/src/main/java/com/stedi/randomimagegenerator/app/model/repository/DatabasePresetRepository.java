@@ -162,7 +162,7 @@ public class DatabasePresetRepository extends OrmLiteSqliteOpenHelper implements
         return daoParams.queryForId(id);
     }
 
-    private Class<? extends GeneratorParams> getGeneratorParamsClassFromType(GeneratorType type) throws Exception {
+    private Class<? extends GeneratorParams> getGeneratorParamsClassFromType(GeneratorType type) {
         switch (type) {
             case FLAT_COLOR:
                 return FlatColorParams.class;

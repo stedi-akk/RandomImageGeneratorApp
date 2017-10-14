@@ -11,7 +11,7 @@ import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import rx.Scheduler;
 
 public abstract class ApplyGenerationPresenter extends GenerationPresenter<ApplyGenerationPresenter.UIImpl> {
-    public ApplyGenerationPresenter(@NonNull @RigScheduler Scheduler subscribeOn,
+    protected ApplyGenerationPresenter(@NonNull @RigScheduler Scheduler subscribeOn,
                                     @NonNull @UiScheduler Scheduler observeOn,
                                     @NonNull CachedBus bus, @NonNull Logger logger) {
         super(subscribeOn, observeOn, bus, logger);
