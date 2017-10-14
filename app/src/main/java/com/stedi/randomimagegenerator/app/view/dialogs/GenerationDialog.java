@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.stedi.randomimagegenerator.ImageParams;
@@ -72,6 +73,7 @@ public class GenerationDialog extends ButterKnifeDialogFragment implements Gener
             logger.log(this, "dismissing non instance dialog");
             dismiss();
         }
+        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.please_wait);
         builder.setView(inflateAndBind(R.layout.generation_dialog));
@@ -91,6 +93,12 @@ public class GenerationDialog extends ButterKnifeDialogFragment implements Gener
     public void onStart() {
         super.onStart();
         invalidate();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
