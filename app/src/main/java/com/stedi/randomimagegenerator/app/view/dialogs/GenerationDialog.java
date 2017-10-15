@@ -27,6 +27,10 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class GenerationDialog extends ButterKnifeDialogFragment implements GenerationPresenter.UIImpl {
+    private static final String KEY_CURRENT_STATE = "KEY_CURRENT_STATE";
+    private static final String KEY_GENERATED_COUNT = "KEY_GENERATED_COUNT";
+    private static final String KEY_FAILED_COUNT = "KEY_FAILED_COUNT";
+
     @SuppressLint("StaticFieldLeak")
     private static GenerationDialog instance;
 
@@ -70,8 +74,15 @@ public class GenerationDialog extends ButterKnifeDialogFragment implements Gener
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         if (instance == null) {
-            logger.log(this, "dismissing non instance dialog");
-            dismiss();
+            logger.log(this, "handling process kill");
+            if (savedInstanceState != null) {
+                currentState = (State) savedInstanceState.getSerializable(KEY_CURRENT_STATE);
+                generatedCount = savedInstanceState.getInt(KEY_GENERATED_COUNT);
+                failedCount = savedInstanceState.getInt(KEY_FAILED_COUNT);
+            }
+            if (currentState != State.FINISH) {
+                currentState = State.ERROR;
+            }
         }
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -165,5 +176,13 @@ public class GenerationDialog extends ButterKnifeDialogFragment implements Gener
             default:
                 throw new IllegalStateException("unreachable code");
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(KEY_CURRENT_STATE, currentState);
+        outState.putInt(KEY_GENERATED_COUNT, generatedCount);
+        outState.putInt(KEY_FAILED_COUNT, failedCount);
     }
 }
