@@ -93,4 +93,9 @@ public class CachedBus extends Bus {
     LinkedList<Runnable> getCache() {
         return cache;
     }
+
+    @VisibleForTesting
+    Set<Object> getPostDeadEvents() {
+        return postDeadEvents;
+    }
 }

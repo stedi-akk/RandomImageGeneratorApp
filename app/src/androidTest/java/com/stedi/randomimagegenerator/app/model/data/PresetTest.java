@@ -4,7 +4,11 @@ import android.graphics.Bitmap;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.stedi.randomimagegenerator.Quality;
+import com.stedi.randomimagegenerator.app.TestUtils;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredNoiseParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredPixelsParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.FlatColorParams;
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.TextOverlayParams;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 import com.stedi.randomimagegenerator.generators.ColoredNoiseGenerator;
 
@@ -182,5 +186,32 @@ public class PresetTest {
             fail();
         } catch (IllegalStateException e) {
         }
+    }
+
+    @Test
+    public void testClearIds() {
+        Preset preset = TestUtils.newSimplePreset();
+        ColoredPixelsParams childParams = new ColoredPixelsParams();
+        childParams.setId(10);
+        TextOverlayParams parentParams = new TextOverlayParams(childParams);
+        parentParams.setId(20);
+        preset.setGeneratorParams(parentParams);
+        preset.setId(30);
+
+        preset.clearIds();
+
+        assertTrue(childParams.getId() == 0);
+        assertTrue(parentParams.getId() == 0);
+        assertTrue(preset.getId() == 0);
+
+        FlatColorParams otherParams = new FlatColorParams();
+        otherParams.setId(66);
+        preset.setGeneratorParams(otherParams);
+        preset.setId(77);
+
+        preset.clearIds();
+
+        assertTrue(otherParams.getId() == 0);
+        assertTrue(preset.getId() == 0);
     }
 }

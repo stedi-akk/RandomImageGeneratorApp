@@ -100,4 +100,36 @@ public class CachedBusTest {
         assertTrue(testTarget.eventsCount == 5);
         assertTrue(bus.getCache().isEmpty());
     }
+
+    @Test
+    public void postDeadTest() {
+        CachedBus bus = new CachedBus(ThreadEnforcer.ANY, new SoutLogger("CachedBusTest"));
+        TestTarget testTarget = new TestTarget();
+
+        bus.register(testTarget);
+        bus.unlock();
+
+        bus.postDead(new TestEvent());
+        assertTrue(testTarget.eventsCount == 1);
+        assertTrue(bus.getPostDeadEvents().isEmpty());
+
+        bus.lock();
+        bus.postDead(new TestEvent());
+        assertTrue(testTarget.eventsCount == 1);
+        assertTrue(bus.getPostDeadEvents().size() == 1);
+        assertTrue(bus.getCache().size() == 1);
+
+        bus.unregister(testTarget);
+        bus.unlock();
+
+        assertTrue(testTarget.eventsCount == 1);
+        assertTrue(bus.getPostDeadEvents().isEmpty());
+        assertTrue(bus.getCache().isEmpty());
+
+        bus.register(testTarget);
+        bus.postDead(new TestEvent());
+        assertTrue(testTarget.eventsCount == 2);
+        assertTrue(bus.getPostDeadEvents().isEmpty());
+        assertTrue(bus.getCache().isEmpty());
+    }
 }

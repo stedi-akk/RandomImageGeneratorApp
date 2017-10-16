@@ -53,6 +53,7 @@ public class PendingPresetTest {
         pendingPreset.candidateSaved();
         assertNull(pendingPreset.get());
         assertNotNull(pendingPreset.getCandidate());
+        assertTrue(pendingPreset.getCandidate().getId() == 10);
         assertFalse(pendingPreset.isCandidateNewOrChanged());
 
         pendingPreset.getCandidate().setName("changed");
@@ -60,6 +61,7 @@ public class PendingPresetTest {
 
         pendingPreset.applyCandidate();
         assertTrue(pendingPreset.get().equals(pendingPreset.getCandidate()));
+        assertTrue(pendingPreset.get().getId() == 0);
         assertTrue(pendingPreset.isCandidateNewOrChanged());
 
         pendingPreset.killCandidate();
@@ -88,6 +90,7 @@ public class PendingPresetTest {
         Preset from = new Preset("razdwatri",
                 GeneratorParams.createDefaultParams(GeneratorType.COLORED_CIRCLES),
                 Quality.jpg(100), "path");
+        from.setId(1);
 
         pendingPreset.prepareCandidateFrom(from);
         assertNull(pendingPreset.get());
@@ -98,6 +101,7 @@ public class PendingPresetTest {
         pendingPreset.candidateSaved();
         assertNull(pendingPreset.get());
         assertNotNull(pendingPreset.getCandidate());
+        assertTrue(pendingPreset.getCandidate().getId() == 10);
         assertFalse(pendingPreset.isCandidateNewOrChanged());
 
         pendingPreset.getCandidate().setName("changed");
@@ -105,6 +109,7 @@ public class PendingPresetTest {
 
         pendingPreset.applyCandidate();
         assertTrue(pendingPreset.get().equals(pendingPreset.getCandidate()));
+        assertTrue(pendingPreset.get().getId() == 0);
         assertTrue(pendingPreset.isCandidateNewOrChanged());
 
         pendingPreset.prepareCandidateFrom(from);
