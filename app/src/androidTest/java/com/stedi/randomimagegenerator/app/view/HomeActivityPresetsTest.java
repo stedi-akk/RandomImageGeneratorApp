@@ -1,5 +1,4 @@
-package com.stedi.randomimagegenerator.app.view.activity;
-
+package com.stedi.randomimagegenerator.app.view;
 
 import android.support.annotation.NonNull;
 import android.support.test.espresso.UiController;
@@ -12,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.stedi.randomimagegenerator.app.R;
+import com.stedi.randomimagegenerator.app.view.activity.HomeActivity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -35,7 +35,7 @@ import static org.hamcrest.Matchers.not;
 
 @android.support.test.filters.LargeTest
 @RunWith(AndroidJUnit4.class)
-public class HomeActivityTest {
+public class HomeActivityPresetsTest {
     @Rule
     public ActivityTestRule<HomeActivity> mActivityTestRule = new ActivityTestRule<>(HomeActivity.class);
 
@@ -47,7 +47,9 @@ public class HomeActivityTest {
         savePresetAndCheckIfExist("test 1", 0);
         savePresetAndCheckIfExist("test 2", 1);
 
+        cancelDeletePresetAndCheckIfExist("test 1", 0);
         deletePresetAndCheckIfExist("test 1", 0);
+        cancelDeletePresetAndCheckIfExist("test 2", 0);
         deletePresetAndCheckIfExist("test 2", 0);
 
         onView(withId(R.id.home_activity_empty_view))
@@ -89,6 +91,29 @@ public class HomeActivityTest {
 
         try {
             Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        onView(withId(R.id.home_activity_recycler_view))
+                .check(matches(atPosition(position, hasDescendant(withText(name)))));
+    }
+
+    private void cancelDeletePresetAndCheckIfExist(String name, int position) {
+        onView(withId(R.id.home_activity_recycler_view))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(position, clickChildViewWithId(R.id.preset_item_btn_delete)));
+
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        onView(allOf(withId(android.R.id.button2), withText("Cancel")))
+                .perform(scrollTo(), click());
+
+        try {
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
