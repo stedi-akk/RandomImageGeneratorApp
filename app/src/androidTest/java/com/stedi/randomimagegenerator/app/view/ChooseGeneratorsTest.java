@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.view;
 
+
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -17,42 +18,28 @@ import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
-import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.stedi.randomimagegenerator.app.view.EspressoUtils.atRecyclerViewPosition;
+import static com.stedi.randomimagegenerator.app.view.EspressoUtils.atView;
 import static com.stedi.randomimagegenerator.app.view.EspressoUtils.clickChildViewWithId;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.not;
 
 @android.support.test.filters.LargeTest
 @RunWith(AndroidJUnit4.class)
-public class HomeActivityPresetsTest {
+public class ChooseGeneratorsTest {
     @Rule
     public ActivityTestRule<HomeActivity> mActivityTestRule = new ActivityTestRule<>(HomeActivity.class);
 
     @Test
-    public void testPresetSaveDeleteX2() {
-        onView(withId(R.id.home_activity_empty_view))
-                .check(matches(isDisplayed()));
-
-        savePresetAndCheckIfExist("test 1", 0);
-        savePresetAndCheckIfExist("test 2", 1);
-
-        cancelDeletePresetAndCheckIfExist("test 1", 0);
-        deletePresetAndCheckIfExist("test 1", 0);
-        cancelDeletePresetAndCheckIfExist("test 2", 0);
-        deletePresetAndCheckIfExist("test 2", 0);
-
-        onView(withId(R.id.home_activity_empty_view))
-                .check(matches(isDisplayed()));
-    }
-
-    private void savePresetAndCheckIfExist(String name, int position) {
+    public void chooseGeneratorsTest() {
         onView(allOf(withId(R.id.home_activity_fab), isDisplayed()))
                 .perform(click());
+
+        onView(withId(R.id.choose_generator_fragment_recycler_view))
+                .perform(actionOnItemAtPosition(1, clickChildViewWithId(R.id.generator_type_item_card)));
 
         onView(allOf(withId(R.id.ms_stepNextButton), withText("Effect"),
                 withParent(allOf(withId(R.id.ms_bottomNavigation),
@@ -78,7 +65,7 @@ public class HomeActivityPresetsTest {
                 .perform(scrollTo(), click());
 
         onView(allOf(withId(R.id.edit_preset_name_dialog_et_name), isDisplayed()))
-                .perform(replaceText(name), closeSoftKeyboard());
+                .perform(replaceText("rectangles"), closeSoftKeyboard());
 
         onView(allOf(withId(android.R.id.button1), withText("OK")))
                 .perform(scrollTo(), click());
@@ -90,52 +77,29 @@ public class HomeActivityPresetsTest {
         }
 
         onView(withId(R.id.home_activity_recycler_view))
-                .check(matches(atRecyclerViewPosition(position, hasDescendant(withText(name)))));
-    }
+                .perform(actionOnItemAtPosition(0, click()));
 
-    private void cancelDeletePresetAndCheckIfExist(String name, int position) {
-        onView(withId(R.id.home_activity_recycler_view))
-                .perform(actionOnItemAtPosition(position, clickChildViewWithId(R.id.preset_item_btn_delete)));
+        onView(allOf(withId(R.id.ms_stepPrevButton), withText("Configure"),
+                withParent(allOf(withId(R.id.ms_bottomNavigation),
+                        withParent(withId(R.id.generation_steps_activity_stepper)))), isDisplayed()))
+                .perform(click());
 
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        onView(allOf(withId(R.id.ms_stepPrevButton), withText("Size/count"),
+                withParent(allOf(withId(R.id.ms_bottomNavigation),
+                        withParent(withId(R.id.generation_steps_activity_stepper)))), isDisplayed()))
+                .perform(click());
 
-        onView(allOf(withId(android.R.id.button2), withText("Cancel")))
-                .perform(scrollTo(), click());
+        onView(allOf(withId(R.id.ms_stepPrevButton), withText("Effect"),
+                withParent(allOf(withId(R.id.ms_bottomNavigation),
+                        withParent(withId(R.id.generation_steps_activity_stepper)))), isDisplayed()))
+                .perform(click());
 
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        onView(allOf(withId(R.id.ms_stepPrevButton), withText("Generator"),
+                withParent(allOf(withId(R.id.ms_bottomNavigation),
+                        withParent(withId(R.id.generation_steps_activity_stepper)))), isDisplayed()))
+                .perform(click());
 
-        onView(withId(R.id.home_activity_recycler_view))
-                .check(matches(atRecyclerViewPosition(position, hasDescendant(withText(name)))));
-    }
-
-    private void deletePresetAndCheckIfExist(String name, int position) {
-        onView(withId(R.id.home_activity_recycler_view))
-                .perform(actionOnItemAtPosition(position, clickChildViewWithId(R.id.preset_item_btn_delete)));
-
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        onView(allOf(withId(android.R.id.button1), withText("OK")))
-                .perform(scrollTo(), click());
-
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        onView(withId(R.id.home_activity_recycler_view))
-                .check(matches(not(atRecyclerViewPosition(position, hasDescendant(withText(name))))));
+        onView(withId(R.id.choose_generator_fragment_recycler_view))
+                .check(matches(atRecyclerViewPosition(1, atView(R.id.generator_type_item_selected, isDisplayed()))));
     }
 }

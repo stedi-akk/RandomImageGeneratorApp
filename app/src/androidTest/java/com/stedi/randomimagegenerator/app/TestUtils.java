@@ -11,7 +11,10 @@ import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.Genera
 import java.io.File;
 import java.io.IOException;
 
-public class TestUtils {
+public final class TestUtils {
+    private TestUtils() {
+    }
+
     @NonNull
     public static File getTestFolder() {
         return new File(InstrumentationRegistry.getTargetContext().getApplicationInfo().dataDir, "tests");
