@@ -35,11 +35,22 @@ public class ChooseGeneratorsTest {
 
     @Test
     public void chooseGeneratorsTest() {
+        onView(withId(R.id.home_activity_empty_view))
+                .check(matches(isDisplayed()));
+
         onView(allOf(withId(R.id.home_activity_fab), isDisplayed()))
                 .perform(click());
 
+        selectGeneratorSaveAndCheck(1, "rectangles");
+        selectGeneratorSaveAndCheck(0, "circles");
+        selectGeneratorSaveAndCheck(2, "pixels");
+        selectGeneratorSaveAndCheck(3, "flat color");
+        selectGeneratorSaveAndCheck(4, "noise");
+    }
+
+    private void selectGeneratorSaveAndCheck(int generatorIndex, String name) {
         onView(withId(R.id.choose_generator_fragment_recycler_view))
-                .perform(actionOnItemAtPosition(1, clickChildViewWithId(R.id.generator_type_item_card)));
+                .perform(actionOnItemAtPosition(generatorIndex, clickChildViewWithId(R.id.generator_type_item_card)));
 
         navigateInGenerationSteps("Generator", "Summary");
 
@@ -47,7 +58,7 @@ public class ChooseGeneratorsTest {
                 .perform(scrollTo(), click());
 
         onView(allOf(withId(R.id.edit_preset_name_dialog_et_name), isDisplayed()))
-                .perform(replaceText("rectangles"), closeSoftKeyboard());
+                .perform(replaceText(name), closeSoftKeyboard());
 
         onView(allOf(withId(android.R.id.button1), withText("OK")))
                 .perform(scrollTo(), click());
@@ -64,6 +75,6 @@ public class ChooseGeneratorsTest {
         navigateInGenerationSteps("Summary", "Generator");
 
         onView(withId(R.id.choose_generator_fragment_recycler_view))
-                .check(matches(atRecyclerViewPosition(1, atView(R.id.generator_type_item_selected, isDisplayed()))));
+                .check(matches(atRecyclerViewPosition(generatorIndex, atView(R.id.generator_type_item_selected, isDisplayed()))));
     }
 }
