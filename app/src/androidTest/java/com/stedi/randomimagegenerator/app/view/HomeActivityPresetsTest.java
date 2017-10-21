@@ -13,8 +13,6 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
@@ -25,6 +23,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.stedi.randomimagegenerator.app.view.EspressoUtils.atRecyclerViewPosition;
 import static com.stedi.randomimagegenerator.app.view.EspressoUtils.clickChildViewWithId;
 import static com.stedi.randomimagegenerator.app.view.EspressoUtils.navigateInGenerationSteps;
+import static com.stedi.randomimagegenerator.app.view.EspressoUtils.savePreset;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 
@@ -57,16 +56,7 @@ public class HomeActivityPresetsTest {
 
         navigateInGenerationSteps("Generator", "Summary");
 
-        onView(allOf(withId(R.id.apply_generation_fragment_btn_save), withText("(*) Save")))
-                .perform(scrollTo(), click());
-
-        onView(allOf(withId(R.id.edit_preset_name_dialog_et_name), isDisplayed()))
-                .perform(replaceText(name), closeSoftKeyboard());
-
-        onView(allOf(withId(android.R.id.button1), withText("OK")))
-                .perform(scrollTo(), click());
-
-        Utils.sleep(1000);
+        savePreset(name);
 
         onView(withId(R.id.home_activity_recycler_view))
                 .check(matches(atRecyclerViewPosition(position, hasDescendant(withText(name)))));

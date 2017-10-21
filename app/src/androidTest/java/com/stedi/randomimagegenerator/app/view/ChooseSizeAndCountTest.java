@@ -15,16 +15,14 @@ import org.junit.runner.RunWith;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.stedi.randomimagegenerator.app.view.EspressoUtils.navigateInGenerationSteps;
+import static com.stedi.randomimagegenerator.app.view.EspressoUtils.savePresetAndComebackToStep;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.isEmptyString;
 
@@ -52,7 +50,7 @@ public class ChooseSizeAndCountTest {
         type(WIDTH_HEIGHT_COUNT_IDS[1], "200");
         type(WIDTH_HEIGHT_COUNT_IDS[2], "300");
 
-        saveAndBackToEdit("test");
+        savePresetAndComebackToStep("test", "Size/count");
 
         verifyText(WIDTH_HEIGHT_COUNT_IDS[0], "100");
         verifyText(WIDTH_HEIGHT_COUNT_IDS[1], "200");
@@ -63,7 +61,7 @@ public class ChooseSizeAndCountTest {
 
         type(WIDTH_RANGE_IDS[0], "100");
 
-        saveAndBackToEdit("test");
+        savePresetAndComebackToStep("test", "Size/count");
 
         verifyText(WIDTH_RANGE_IDS[0], "100");
         verifyText(WIDTH_RANGE_IDS[1], "1");
@@ -76,7 +74,7 @@ public class ChooseSizeAndCountTest {
 
         type(HEIGHT_RANGE_IDS[0], "100");
 
-        saveAndBackToEdit("test");
+        savePresetAndComebackToStep("test", "Size/count");
 
         verifyText(WIDTH_RANGE_IDS[0], "100");
         verifyText(WIDTH_RANGE_IDS[1], "1");
@@ -89,7 +87,7 @@ public class ChooseSizeAndCountTest {
 
         type(WIDTH_HEIGHT_COUNT_IDS[2], "300");
 
-        saveAndBackToEdit("test");
+        savePresetAndComebackToStep("test", "Size/count");
 
         verifyText(WIDTH_HEIGHT_COUNT_IDS[0], "1");
         verifyText(WIDTH_HEIGHT_COUNT_IDS[1], "1");
@@ -100,7 +98,7 @@ public class ChooseSizeAndCountTest {
 
         type(WIDTH_RANGE_IDS[2], "100");
 
-        saveAndBackToEdit("test");
+        savePresetAndComebackToStep("test", "Size/count");
 
         verifyText(WIDTH_RANGE_IDS[0], "1");
         verifyText(WIDTH_RANGE_IDS[1], "1");
@@ -113,7 +111,7 @@ public class ChooseSizeAndCountTest {
 
         type(HEIGHT_RANGE_IDS[2], "100");
 
-        saveAndBackToEdit("test");
+        savePresetAndComebackToStep("test", "Size/count");
 
         verifyText(WIDTH_RANGE_IDS[0], "1");
         verifyText(WIDTH_RANGE_IDS[1], "1");
@@ -126,7 +124,8 @@ public class ChooseSizeAndCountTest {
 
         type(WIDTH_HEIGHT_COUNT_IDS[1], "100");
 
-        saveAndBackToEdit("test");
+        savePresetAndComebackToStep("test", "Size/count");
+
         verifyEmpty(WIDTH_HEIGHT_COUNT_IDS[0]);
         verifyText(WIDTH_HEIGHT_COUNT_IDS[1], "100");
         verifyEmpty(WIDTH_HEIGHT_COUNT_IDS[2]);
@@ -137,7 +136,8 @@ public class ChooseSizeAndCountTest {
         Utils.sleep(500);
 
         type(WIDTH_HEIGHT_COUNT_IDS[0], "100");
-        saveAndBackToEdit("test");
+
+        savePresetAndComebackToStep("test", "Size/count");
 
         verifyText(WIDTH_HEIGHT_COUNT_IDS[0], "100");
         verifyText(WIDTH_HEIGHT_COUNT_IDS[1], "100");
@@ -231,25 +231,5 @@ public class ChooseSizeAndCountTest {
     private void verifyText(@IdRes int id, String text) {
         onView(allOf(withId(id), isDisplayed()))
                 .check(matches(withText(text)));
-    }
-
-    private void saveAndBackToEdit(String name) {
-        navigateInGenerationSteps("Size/count", "Summary");
-
-        onView(allOf(withId(R.id.apply_generation_fragment_btn_save), withText("(*) Save")))
-                .perform(scrollTo(), click());
-
-        onView(allOf(withId(R.id.edit_preset_name_dialog_et_name), isDisplayed()))
-                .perform(replaceText(name), closeSoftKeyboard());
-
-        onView(allOf(withId(android.R.id.button1), withText("OK")))
-                .perform(scrollTo(), click());
-
-        Utils.sleep(1000);
-
-        onView(withId(R.id.home_activity_recycler_view))
-                .perform(actionOnItemAtPosition(0, click()));
-
-        navigateInGenerationSteps("Summary", "Size/count");
     }
 }

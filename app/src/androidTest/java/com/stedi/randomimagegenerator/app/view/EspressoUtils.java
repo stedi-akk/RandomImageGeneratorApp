@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.stedi.randomimagegenerator.app.R;
+import com.stedi.randomimagegenerator.app.other.Utils;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -18,6 +19,10 @@ import java.util.List;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.replaceText;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
+import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
@@ -107,5 +112,29 @@ final class EspressoUtils {
                         .perform(click());
             }
         }
+    }
+
+    static void savePresetAndComebackToStep(@NonNull String name, @NonNull String step) {
+        navigateInGenerationSteps(step, "Summary");
+
+        savePreset(name);
+
+        onView(withId(R.id.home_activity_recycler_view))
+                .perform(actionOnItemAtPosition(0, click()));
+
+        navigateInGenerationSteps("Summary", step);
+    }
+
+    static void savePreset(@NonNull String name) {
+        onView(allOf(withId(R.id.apply_generation_fragment_btn_save), withText("(*) Save")))
+                .perform(scrollTo(), click());
+
+        onView(allOf(withId(R.id.edit_preset_name_dialog_et_name), isDisplayed()))
+                .perform(replaceText(name), closeSoftKeyboard());
+
+        onView(allOf(withId(android.R.id.button1), withText("OK")))
+                .perform(scrollTo(), click());
+
+        Utils.sleep(1000);
     }
 }
