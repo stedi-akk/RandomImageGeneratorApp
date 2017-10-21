@@ -5,8 +5,10 @@ import android.support.annotation.NonNull;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.matcher.BoundedMatcher;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.NumberPicker;
 
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.other.Utils;
@@ -85,6 +87,27 @@ final class EspressoUtils {
             protected boolean matchesSafely(final View view) {
                 View child = view.findViewById(id);
                 return child != null && viewMatcher.matches(child);
+            }
+        };
+    }
+
+    @NonNull
+    static ViewAction setPickerNumber(final int number) {
+        return new ViewAction() {
+            @Override
+            public void perform(UiController uiController, View view) {
+                NumberPicker np = (NumberPicker) view;
+                np.setValue(number);
+            }
+
+            @Override
+            public String getDescription() {
+                return "Set the passed number into the NumberPicker.";
+            }
+
+            @Override
+            public Matcher<View> getConstraints() {
+                return ViewMatchers.isAssignableFrom(NumberPicker.class);
             }
         };
     }
