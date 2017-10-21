@@ -1,6 +1,5 @@
 package com.stedi.randomimagegenerator.app.view;
 
-
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -27,10 +26,11 @@ import static com.stedi.randomimagegenerator.app.view.EspressoUtils.atView;
 import static com.stedi.randomimagegenerator.app.view.EspressoUtils.clickChildViewWithId;
 import static com.stedi.randomimagegenerator.app.view.EspressoUtils.navigateInGenerationSteps;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.not;
 
 @android.support.test.filters.LargeTest
 @RunWith(AndroidJUnit4.class)
-public class ChooseGeneratorsTest {
+public class ChooseEffectsTest {
     @Rule
     public ActivityTestRule<HomeActivity> mActivityTestRule = new ActivityTestRule<>(HomeActivity.class);
 
@@ -42,18 +42,46 @@ public class ChooseGeneratorsTest {
         onView(allOf(withId(R.id.home_activity_fab), isDisplayed()))
                 .perform(click());
 
-        selectGeneratorSaveAndCheck(1, "rectangles");
-        selectGeneratorSaveAndCheck(0, "circles");
-        selectGeneratorSaveAndCheck(2, "pixels");
-        selectGeneratorSaveAndCheck(3, "flat color");
-        selectGeneratorSaveAndCheck(4, "noise");
+        navigateInGenerationSteps("Generator", "Effect");
+
+        onView(withId(R.id.choose_effect_fragment_recycler_view))
+                .check(matches(atRecyclerViewPosition(0, atView(R.id.generator_type_item_selected, not(isDisplayed())))));
+        onView(withId(R.id.choose_effect_fragment_recycler_view))
+                .check(matches(atRecyclerViewPosition(1, atView(R.id.generator_type_item_selected, not(isDisplayed())))));
+
+        onView(withId(R.id.choose_effect_fragment_recycler_view))
+                .perform(actionOnItemAtPosition(0, clickChildViewWithId(R.id.generator_type_item_card)));
+
+        saveAndBackToEdit("test");
+
+        onView(withId(R.id.choose_effect_fragment_recycler_view))
+                .check(matches(atRecyclerViewPosition(0, atView(R.id.generator_type_item_selected, isDisplayed()))));
+        onView(withId(R.id.choose_effect_fragment_recycler_view))
+                .check(matches(atRecyclerViewPosition(1, atView(R.id.generator_type_item_selected, not(isDisplayed())))));
+
+        onView(withId(R.id.choose_effect_fragment_recycler_view))
+                .perform(actionOnItemAtPosition(0, clickChildViewWithId(R.id.generator_type_item_card)));
+
+        saveAndBackToEdit("test");
+
+        onView(withId(R.id.choose_effect_fragment_recycler_view))
+                .check(matches(atRecyclerViewPosition(0, atView(R.id.generator_type_item_selected, not(isDisplayed())))));
+        onView(withId(R.id.choose_effect_fragment_recycler_view))
+                .check(matches(atRecyclerViewPosition(1, atView(R.id.generator_type_item_selected, not(isDisplayed())))));
+
+        onView(withId(R.id.choose_effect_fragment_recycler_view))
+                .perform(actionOnItemAtPosition(1, clickChildViewWithId(R.id.generator_type_item_card)));
+
+        saveAndBackToEdit("test");
+
+        onView(withId(R.id.choose_effect_fragment_recycler_view))
+                .check(matches(atRecyclerViewPosition(0, atView(R.id.generator_type_item_selected, not(isDisplayed())))));
+        onView(withId(R.id.choose_effect_fragment_recycler_view))
+                .check(matches(atRecyclerViewPosition(1, atView(R.id.generator_type_item_selected, isDisplayed()))));
     }
 
-    private void selectGeneratorSaveAndCheck(int generatorIndex, String name) {
-        onView(withId(R.id.choose_generator_fragment_recycler_view))
-                .perform(actionOnItemAtPosition(generatorIndex, clickChildViewWithId(R.id.generator_type_item_card)));
-
-        navigateInGenerationSteps("Generator", "Summary");
+    private void saveAndBackToEdit(String name) {
+        navigateInGenerationSteps("Effect", "Summary");
 
         onView(allOf(withId(R.id.apply_generation_fragment_btn_save), withText("(*) Save")))
                 .perform(scrollTo(), click());
@@ -69,9 +97,6 @@ public class ChooseGeneratorsTest {
         onView(withId(R.id.home_activity_recycler_view))
                 .perform(actionOnItemAtPosition(0, click()));
 
-        navigateInGenerationSteps("Summary", "Generator");
-
-        onView(withId(R.id.choose_generator_fragment_recycler_view))
-                .check(matches(atRecyclerViewPosition(generatorIndex, atView(R.id.generator_type_item_selected, isDisplayed()))));
+        navigateInGenerationSteps("Summary", "Effect");
     }
 }

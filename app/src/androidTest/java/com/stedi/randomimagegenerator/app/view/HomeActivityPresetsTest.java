@@ -4,6 +4,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.stedi.randomimagegenerator.app.R;
+import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.view.activity.HomeActivity;
 
 import org.junit.Rule;
@@ -65,11 +66,7 @@ public class HomeActivityPresetsTest {
         onView(allOf(withId(android.R.id.button1), withText("OK")))
                 .perform(scrollTo(), click());
 
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Utils.sleep(1000);
 
         onView(withId(R.id.home_activity_recycler_view))
                 .check(matches(atRecyclerViewPosition(position, hasDescendant(withText(name)))));
@@ -79,20 +76,12 @@ public class HomeActivityPresetsTest {
         onView(withId(R.id.home_activity_recycler_view))
                 .perform(actionOnItemAtPosition(position, clickChildViewWithId(R.id.preset_item_btn_delete)));
 
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Utils.sleep(500);
 
         onView(allOf(withId(android.R.id.button2), withText("Cancel")))
                 .perform(scrollTo(), click());
 
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Utils.sleep(500);
 
         onView(withId(R.id.home_activity_recycler_view))
                 .check(matches(atRecyclerViewPosition(position, hasDescendant(withText(name)))));
@@ -102,20 +91,12 @@ public class HomeActivityPresetsTest {
         onView(withId(R.id.home_activity_recycler_view))
                 .perform(actionOnItemAtPosition(position, clickChildViewWithId(R.id.preset_item_btn_delete)));
 
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Utils.sleep(500);
 
         onView(allOf(withId(android.R.id.button1), withText("OK")))
                 .perform(scrollTo(), click());
 
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Utils.sleep(500);
 
         onView(withId(R.id.home_activity_recycler_view))
                 .check(matches(not(atRecyclerViewPosition(position, hasDescendant(withText(name))))));
