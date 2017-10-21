@@ -20,10 +20,10 @@ import static android.support.test.espresso.contrib.RecyclerViewActions.actionOn
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.stedi.randomimagegenerator.app.view.EspressoUtils.atRecyclerViewPosition;
 import static com.stedi.randomimagegenerator.app.view.EspressoUtils.clickChildViewWithId;
+import static com.stedi.randomimagegenerator.app.view.EspressoUtils.navigateInGenerationSteps;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 
@@ -54,25 +54,7 @@ public class HomeActivityPresetsTest {
         onView(allOf(withId(R.id.home_activity_fab), isDisplayed()))
                 .perform(click());
 
-        onView(allOf(withId(R.id.ms_stepNextButton), withText("Effect"),
-                withParent(allOf(withId(R.id.ms_bottomNavigation),
-                        withParent(withId(R.id.generation_steps_activity_stepper)))), isDisplayed()))
-                .perform(click());
-
-        onView(allOf(withId(R.id.ms_stepNextButton), withText("Size/count"),
-                withParent(allOf(withId(R.id.ms_bottomNavigation),
-                        withParent(withId(R.id.generation_steps_activity_stepper)))), isDisplayed()))
-                .perform(click());
-
-        onView(allOf(withId(R.id.ms_stepNextButton), withText("Quality"),
-                withParent(allOf(withId(R.id.ms_bottomNavigation),
-                        withParent(withId(R.id.generation_steps_activity_stepper)))), isDisplayed()))
-                .perform(click());
-
-        onView(allOf(withId(R.id.ms_stepNextButton), withText("Summary"),
-                withParent(allOf(withId(R.id.ms_bottomNavigation),
-                        withParent(withId(R.id.generation_steps_activity_stepper)))), isDisplayed()))
-                .perform(click());
+        navigateInGenerationSteps("Generator", "Summary");
 
         onView(allOf(withId(R.id.apply_generation_fragment_btn_save), withText("(*) Save")))
                 .perform(scrollTo(), click());

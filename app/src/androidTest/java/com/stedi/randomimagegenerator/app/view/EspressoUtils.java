@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.view;
 
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
@@ -7,15 +8,30 @@ import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.stedi.randomimagegenerator.app.R;
+
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
+import java.util.Arrays;
+import java.util.List;
+
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
+
 final class EspressoUtils {
+    private static List<String> GENERATION_STEPS = Arrays.asList("Generator", "Effect", "Size/count", "Quality", "Summary", "Configure");
+
     private EspressoUtils() {
     }
 
     @NonNull
-    static ViewAction clickChildViewWithId(final int id) {
+    static ViewAction clickChildViewWithId(@IdRes final int id) {
         return new ViewAction() {
             @Override
             public Matcher<View> getConstraints() {
@@ -52,7 +68,7 @@ final class EspressoUtils {
     }
 
     @NonNull
-    static Matcher<View> atView(final int id, @NonNull final Matcher<View> viewMatcher) {
+    static Matcher<View> atView(@IdRes final int id, @NonNull final Matcher<View> viewMatcher) {
         return new BoundedMatcher<View, View>(View.class) {
             @Override
             public void describeTo(Description description) {
@@ -66,5 +82,30 @@ final class EspressoUtils {
                 return child != null && viewMatcher.matches(child);
             }
         };
+    }
+
+    static void navigateInGenerationSteps(@NonNull String from, @NonNull String to) {
+        int fromIndex = GENERATION_STEPS.indexOf(from);
+        int toIndex = GENERATION_STEPS.indexOf(to);
+        if (fromIndex < 0 || toIndex < 0 || fromIndex == toIndex)
+            return;
+        if (fromIndex < toIndex && toIndex != 5) {
+            for (int i = fromIndex + 1; i <= toIndex; i++) {
+                onView(allOf(withId(R.id.ms_stepNextButton), withText(GENERATION_STEPS.get(i)),
+                        withParent(allOf(withId(R.id.ms_bottomNavigation),
+                                withParent(withId(R.id.generation_steps_activity_stepper)))), isDisplayed()))
+                        .perform(click());
+            }
+        } else {
+            fromIndex = toIndex == 5 || fromIndex == 4 ? 6 : fromIndex;
+            for (int i = fromIndex - 1; i >= toIndex; i--) {
+                if (i == 3 || i == 4)
+                    continue;
+                onView(allOf(withId(R.id.ms_stepPrevButton), withText(GENERATION_STEPS.get(i)),
+                        withParent(allOf(withId(R.id.ms_bottomNavigation),
+                                withParent(withId(R.id.generation_steps_activity_stepper)))), isDisplayed()))
+                        .perform(click());
+            }
+        }
     }
 }

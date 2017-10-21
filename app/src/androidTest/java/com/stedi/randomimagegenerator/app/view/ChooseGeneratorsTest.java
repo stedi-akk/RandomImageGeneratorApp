@@ -20,11 +20,11 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.stedi.randomimagegenerator.app.view.EspressoUtils.atRecyclerViewPosition;
 import static com.stedi.randomimagegenerator.app.view.EspressoUtils.atView;
 import static com.stedi.randomimagegenerator.app.view.EspressoUtils.clickChildViewWithId;
+import static com.stedi.randomimagegenerator.app.view.EspressoUtils.navigateInGenerationSteps;
 import static org.hamcrest.Matchers.allOf;
 
 @android.support.test.filters.LargeTest
@@ -41,25 +41,7 @@ public class ChooseGeneratorsTest {
         onView(withId(R.id.choose_generator_fragment_recycler_view))
                 .perform(actionOnItemAtPosition(1, clickChildViewWithId(R.id.generator_type_item_card)));
 
-        onView(allOf(withId(R.id.ms_stepNextButton), withText("Effect"),
-                withParent(allOf(withId(R.id.ms_bottomNavigation),
-                        withParent(withId(R.id.generation_steps_activity_stepper)))), isDisplayed()))
-                .perform(click());
-
-        onView(allOf(withId(R.id.ms_stepNextButton), withText("Size/count"),
-                withParent(allOf(withId(R.id.ms_bottomNavigation),
-                        withParent(withId(R.id.generation_steps_activity_stepper)))), isDisplayed()))
-                .perform(click());
-
-        onView(allOf(withId(R.id.ms_stepNextButton), withText("Quality"),
-                withParent(allOf(withId(R.id.ms_bottomNavigation),
-                        withParent(withId(R.id.generation_steps_activity_stepper)))), isDisplayed()))
-                .perform(click());
-
-        onView(allOf(withId(R.id.ms_stepNextButton), withText("Summary"),
-                withParent(allOf(withId(R.id.ms_bottomNavigation),
-                        withParent(withId(R.id.generation_steps_activity_stepper)))), isDisplayed()))
-                .perform(click());
+        navigateInGenerationSteps("Generator", "Summary");
 
         onView(allOf(withId(R.id.apply_generation_fragment_btn_save), withText("(*) Save")))
                 .perform(scrollTo(), click());
@@ -79,25 +61,7 @@ public class ChooseGeneratorsTest {
         onView(withId(R.id.home_activity_recycler_view))
                 .perform(actionOnItemAtPosition(0, click()));
 
-        onView(allOf(withId(R.id.ms_stepPrevButton), withText("Configure"),
-                withParent(allOf(withId(R.id.ms_bottomNavigation),
-                        withParent(withId(R.id.generation_steps_activity_stepper)))), isDisplayed()))
-                .perform(click());
-
-        onView(allOf(withId(R.id.ms_stepPrevButton), withText("Size/count"),
-                withParent(allOf(withId(R.id.ms_bottomNavigation),
-                        withParent(withId(R.id.generation_steps_activity_stepper)))), isDisplayed()))
-                .perform(click());
-
-        onView(allOf(withId(R.id.ms_stepPrevButton), withText("Effect"),
-                withParent(allOf(withId(R.id.ms_bottomNavigation),
-                        withParent(withId(R.id.generation_steps_activity_stepper)))), isDisplayed()))
-                .perform(click());
-
-        onView(allOf(withId(R.id.ms_stepPrevButton), withText("Generator"),
-                withParent(allOf(withId(R.id.ms_bottomNavigation),
-                        withParent(withId(R.id.generation_steps_activity_stepper)))), isDisplayed()))
-                .perform(click());
+        navigateInGenerationSteps("Summary", "Generator");
 
         onView(withId(R.id.choose_generator_fragment_recycler_view))
                 .check(matches(atRecyclerViewPosition(1, atView(R.id.generator_type_item_selected, isDisplayed()))));
