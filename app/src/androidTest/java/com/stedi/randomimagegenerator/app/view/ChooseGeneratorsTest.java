@@ -35,7 +35,7 @@ public class ChooseGeneratorsTest {
     public ActivityTestRule<HomeActivity> mActivityTestRule = new ActivityTestRule<>(HomeActivity.class);
 
     @Test
-    public void chooseGeneratorsTest() {
+    public void chooseTest() {
         onView(withId(R.id.home_activity_empty_view))
                 .check(matches(isDisplayed()));
 

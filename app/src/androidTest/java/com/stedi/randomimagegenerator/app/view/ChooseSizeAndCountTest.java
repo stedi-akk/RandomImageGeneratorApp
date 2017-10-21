@@ -15,9 +15,12 @@ import org.junit.runner.RunWith;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -34,6 +37,115 @@ public class ChooseSizeAndCountTest {
     private final Integer[] WIDTH_HEIGHT_COUNT_IDS = new Integer[]{R.id.choose_size_and_count_et_width, R.id.choose_size_and_count_et_height, R.id.choose_size_and_count_et_count};
     private final Integer[] WIDTH_RANGE_IDS = new Integer[]{R.id.choose_size_and_count_et_width_range_from, R.id.choose_size_and_count_et_width_range_to, R.id.choose_size_and_count_et_width_range_step};
     private final Integer[] HEIGHT_RANGE_IDS = new Integer[]{R.id.choose_size_and_count_et_height_range_from, R.id.choose_size_and_count_et_height_range_to, R.id.choose_size_and_count_et_height_range_step};
+
+    @Test
+    public void chooseTest() {
+        onView(withId(R.id.home_activity_empty_view))
+                .check(matches(isDisplayed()));
+
+        onView(allOf(withId(R.id.home_activity_fab), isDisplayed()))
+                .perform(click());
+
+        navigateInGenerationSteps("Generator", "Size/count");
+
+        type(WIDTH_HEIGHT_COUNT_IDS[0], "100");
+        type(WIDTH_HEIGHT_COUNT_IDS[1], "200");
+        type(WIDTH_HEIGHT_COUNT_IDS[2], "300");
+
+        saveAndBackToEdit("test");
+
+        verifyText(WIDTH_HEIGHT_COUNT_IDS[0], "100");
+        verifyText(WIDTH_HEIGHT_COUNT_IDS[1], "200");
+        verifyText(WIDTH_HEIGHT_COUNT_IDS[2], "300");
+        verifyEmpty(WIDTH_RANGE_IDS);
+        verifyEmpty(HEIGHT_RANGE_IDS);
+        Utils.sleep(500);
+
+        type(WIDTH_RANGE_IDS[0], "100");
+
+        saveAndBackToEdit("test");
+
+        verifyText(WIDTH_RANGE_IDS[0], "100");
+        verifyText(WIDTH_RANGE_IDS[1], "1");
+        verifyText(WIDTH_RANGE_IDS[2], "1");
+        verifyEmpty(WIDTH_HEIGHT_COUNT_IDS[0]);
+        verifyText(WIDTH_HEIGHT_COUNT_IDS[1], "200");
+        verifyEmpty(WIDTH_HEIGHT_COUNT_IDS[2]);
+        verifyEmpty(HEIGHT_RANGE_IDS);
+        Utils.sleep(500);
+
+        type(HEIGHT_RANGE_IDS[0], "100");
+
+        saveAndBackToEdit("test");
+
+        verifyText(WIDTH_RANGE_IDS[0], "100");
+        verifyText(WIDTH_RANGE_IDS[1], "1");
+        verifyText(WIDTH_RANGE_IDS[2], "1");
+        verifyText(HEIGHT_RANGE_IDS[0], "100");
+        verifyText(HEIGHT_RANGE_IDS[1], "1");
+        verifyText(HEIGHT_RANGE_IDS[2], "1");
+        verifyEmpty(WIDTH_HEIGHT_COUNT_IDS);
+        Utils.sleep(500);
+
+        type(WIDTH_HEIGHT_COUNT_IDS[2], "300");
+
+        saveAndBackToEdit("test");
+
+        verifyText(WIDTH_HEIGHT_COUNT_IDS[0], "1");
+        verifyText(WIDTH_HEIGHT_COUNT_IDS[1], "1");
+        verifyText(WIDTH_HEIGHT_COUNT_IDS[2], "300");
+        verifyEmpty(WIDTH_RANGE_IDS);
+        verifyEmpty(HEIGHT_RANGE_IDS);
+        Utils.sleep(500);
+
+        type(WIDTH_RANGE_IDS[2], "100");
+
+        saveAndBackToEdit("test");
+
+        verifyText(WIDTH_RANGE_IDS[0], "1");
+        verifyText(WIDTH_RANGE_IDS[1], "1");
+        verifyText(WIDTH_RANGE_IDS[2], "100");
+        verifyEmpty(WIDTH_HEIGHT_COUNT_IDS[0]);
+        verifyText(WIDTH_HEIGHT_COUNT_IDS[1], "1");
+        verifyEmpty(WIDTH_HEIGHT_COUNT_IDS[2]);
+        verifyEmpty(HEIGHT_RANGE_IDS);
+        Utils.sleep(500);
+
+        type(HEIGHT_RANGE_IDS[2], "100");
+
+        saveAndBackToEdit("test");
+
+        verifyText(WIDTH_RANGE_IDS[0], "1");
+        verifyText(WIDTH_RANGE_IDS[1], "1");
+        verifyText(WIDTH_RANGE_IDS[2], "100");
+        verifyText(HEIGHT_RANGE_IDS[0], "1");
+        verifyText(HEIGHT_RANGE_IDS[1], "1");
+        verifyText(HEIGHT_RANGE_IDS[2], "100");
+        verifyEmpty(WIDTH_HEIGHT_COUNT_IDS);
+        Utils.sleep(500);
+
+        type(WIDTH_HEIGHT_COUNT_IDS[1], "100");
+
+        saveAndBackToEdit("test");
+        verifyEmpty(WIDTH_HEIGHT_COUNT_IDS[0]);
+        verifyText(WIDTH_HEIGHT_COUNT_IDS[1], "100");
+        verifyEmpty(WIDTH_HEIGHT_COUNT_IDS[2]);
+        verifyText(WIDTH_RANGE_IDS[0], "1");
+        verifyText(WIDTH_RANGE_IDS[1], "1");
+        verifyText(WIDTH_RANGE_IDS[2], "100");
+        verifyEmpty(HEIGHT_RANGE_IDS);
+        Utils.sleep(500);
+
+        type(WIDTH_HEIGHT_COUNT_IDS[0], "100");
+        saveAndBackToEdit("test");
+
+        verifyText(WIDTH_HEIGHT_COUNT_IDS[0], "100");
+        verifyText(WIDTH_HEIGHT_COUNT_IDS[1], "100");
+        verifyText(WIDTH_HEIGHT_COUNT_IDS[2], "1");
+        verifyEmpty(WIDTH_RANGE_IDS);
+        verifyEmpty(HEIGHT_RANGE_IDS);
+        Utils.sleep(500);
+    }
 
     @Test
     public void typeTest() {
@@ -63,9 +175,7 @@ public class ChooseSizeAndCountTest {
         type(HEIGHT_RANGE_IDS[0], "100");
         verifyText(HEIGHT_RANGE_IDS[1], "1");
         verifyText(HEIGHT_RANGE_IDS[2], "1");
-        verifyEmpty(WIDTH_HEIGHT_COUNT_IDS[0]);
-        verifyEmpty(WIDTH_HEIGHT_COUNT_IDS[1]);
-        verifyEmpty(WIDTH_HEIGHT_COUNT_IDS[2]);
+        verifyEmpty(WIDTH_HEIGHT_COUNT_IDS);
         Utils.sleep(500);
 
         type(WIDTH_HEIGHT_COUNT_IDS[2], "300");
@@ -86,9 +196,7 @@ public class ChooseSizeAndCountTest {
         type(HEIGHT_RANGE_IDS[2], "100");
         verifyText(HEIGHT_RANGE_IDS[0], "1");
         verifyText(HEIGHT_RANGE_IDS[1], "1");
-        verifyEmpty(WIDTH_HEIGHT_COUNT_IDS[0]);
-        verifyEmpty(WIDTH_HEIGHT_COUNT_IDS[1]);
-        verifyEmpty(WIDTH_HEIGHT_COUNT_IDS[2]);
+        verifyEmpty(WIDTH_HEIGHT_COUNT_IDS);
         Utils.sleep(500);
 
         type(WIDTH_HEIGHT_COUNT_IDS[1], "100");
@@ -123,5 +231,25 @@ public class ChooseSizeAndCountTest {
     private void verifyText(@IdRes int id, String text) {
         onView(allOf(withId(id), isDisplayed()))
                 .check(matches(withText(text)));
+    }
+
+    private void saveAndBackToEdit(String name) {
+        navigateInGenerationSteps("Size/count", "Summary");
+
+        onView(allOf(withId(R.id.apply_generation_fragment_btn_save), withText("(*) Save")))
+                .perform(scrollTo(), click());
+
+        onView(allOf(withId(R.id.edit_preset_name_dialog_et_name), isDisplayed()))
+                .perform(replaceText(name), closeSoftKeyboard());
+
+        onView(allOf(withId(android.R.id.button1), withText("OK")))
+                .perform(scrollTo(), click());
+
+        Utils.sleep(1000);
+
+        onView(withId(R.id.home_activity_recycler_view))
+                .perform(actionOnItemAtPosition(0, click()));
+
+        navigateInGenerationSteps("Summary", "Size/count");
     }
 }
