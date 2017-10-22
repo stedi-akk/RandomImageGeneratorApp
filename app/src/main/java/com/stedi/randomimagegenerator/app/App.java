@@ -5,12 +5,15 @@ import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatDelegate;
 
+import com.crashlytics.android.Crashlytics;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.stedi.randomimagegenerator.Rig;
 import com.stedi.randomimagegenerator.app.di.components.AppComponent;
 import com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent;
 import com.stedi.randomimagegenerator.app.di.modules.AppModule;
+
+import io.fabric.sdk.android.Fabric;
 
 public final class App extends Application {
     private static App instance;
@@ -41,6 +44,10 @@ public final class App extends Application {
             return;
         }
         leakWatcher = LeakCanary.install(this);
+
+        if (!debug) {
+            Fabric.with(this, new Crashlytics());
+        }
 
         component = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
