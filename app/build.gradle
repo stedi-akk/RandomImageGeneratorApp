@@ -15,6 +15,22 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
+    signingConfigs {
+        release {
+            def propsFile = new File("local.properties")
+            if (propsFile.exists()) {
+                Properties props = new Properties()
+                props.load(new FileInputStream(propsFile))
+                if (props['storeFile'] != null && !props['storeFile'].isEmpty()) {
+                    storeFile = file(props['storeFile'])
+                    keyAlias = props['keyAlias']
+                    storePassword = props['storePassword']
+                    keyPassword = props['keyPassword']
+                }
+            }
+        }
+    }
+
     buildTypes {
         debug {
             versionNameSuffix "-DBG"
@@ -30,6 +46,7 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 
