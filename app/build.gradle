@@ -31,16 +31,19 @@ android {
 
     buildTypes {
         debug {
+            ext.enableCrashlytics = false
             versionNameSuffix "-DBG"
             applicationIdSuffix ".dbg"
             signingConfig signingConfigs.debug
         }
         slowdebug {
+            ext.enableCrashlytics = false
             versionNameSuffix "-SDBG"
             applicationIdSuffix ".sdbg"
             signingConfig signingConfigs.debug
         }
         release {
+            ext.enableCrashlytics = true
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
