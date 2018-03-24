@@ -1,9 +1,9 @@
 package com.stedi.randomimagegenerator.app.di.modules;
 
-import com.stedi.randomimagegenerator.app.di.qualifiers.DefaultScheduler;
-import com.stedi.randomimagegenerator.app.di.qualifiers.RigScheduler;
-import com.stedi.randomimagegenerator.app.di.qualifiers.RootSavePath;
-import com.stedi.randomimagegenerator.app.di.qualifiers.UiScheduler;
+import com.stedi.randomimagegenerator.app.di.DefaultScheduler;
+import com.stedi.randomimagegenerator.app.di.RigScheduler;
+import com.stedi.randomimagegenerator.app.di.RootSavePath;
+import com.stedi.randomimagegenerator.app.di.UiScheduler;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.repository.PresetRepository;
 import com.stedi.randomimagegenerator.app.other.CachedBus;

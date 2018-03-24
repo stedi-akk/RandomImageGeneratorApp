@@ -15,7 +15,7 @@ import com.squareup.otto.Subscribe;
 import com.stedi.randomimagegenerator.ImageParams;
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.modules.HomeModule;
-import com.stedi.randomimagegenerator.app.di.qualifiers.RootSavePath;
+import com.stedi.randomimagegenerator.app.di.RootSavePath;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
 import com.stedi.randomimagegenerator.app.other.Utils;

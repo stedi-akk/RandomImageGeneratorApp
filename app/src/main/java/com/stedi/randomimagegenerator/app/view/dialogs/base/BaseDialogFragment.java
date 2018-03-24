@@ -25,7 +25,7 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        App.getInstance().getLeakWatcher().watch(this);
+        ((App) getActivity().getApplicationContext()).getLeakWatcher().watch(this);
     }
 
     public void show(FragmentManager manager) {

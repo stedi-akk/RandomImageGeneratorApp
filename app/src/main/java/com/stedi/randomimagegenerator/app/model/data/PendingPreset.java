@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.Quality;
-import com.stedi.randomimagegenerator.app.di.qualifiers.RootSavePath;
+import com.stedi.randomimagegenerator.app.di.RootSavePath;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 

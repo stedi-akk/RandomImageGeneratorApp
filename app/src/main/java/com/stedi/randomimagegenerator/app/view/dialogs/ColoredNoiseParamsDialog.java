@@ -1,6 +1,7 @@
 package com.stedi.randomimagegenerator.app.view.dialogs;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,7 +9,6 @@ import android.support.v7.app.AlertDialog;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import com.stedi.randomimagegenerator.app.App;
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.di.Components;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
@@ -22,44 +22,60 @@ import butterknife.BindView;
 
 public class ColoredNoiseParamsDialog extends ButterKnifeDialogFragment implements ColoredNoiseParamsPresenter.UIImpl {
     private enum MapedOrientation {
-        VERTICAL(ColoredNoiseGenerator.Orientation.VERTICAL, App.getInstance().getString(R.string.vertical)),
-        HORIZONTAL(ColoredNoiseGenerator.Orientation.HORIZONTAL, App.getInstance().getString(R.string.horizontal)),
-        RANDOM(ColoredNoiseGenerator.Orientation.RANDOM, App.getInstance().getString(R.string.random));
+        VERTICAL(ColoredNoiseGenerator.Orientation.VERTICAL, R.string.vertical),
+        HORIZONTAL(ColoredNoiseGenerator.Orientation.HORIZONTAL, R.string.horizontal),
+        RANDOM(ColoredNoiseGenerator.Orientation.RANDOM, R.string.random);
 
         private final ColoredNoiseGenerator.Orientation orientation;
-        private final String name;
+        private final int nameRes;
 
-        MapedOrientation(ColoredNoiseGenerator.Orientation orientation, String name) {
+        MapedOrientation(ColoredNoiseGenerator.Orientation orientation, int nameRes) {
             this.orientation = orientation;
-            this.name = name;
+            this.nameRes = nameRes;
         }
 
-        @Override
-        public String toString() {
-            return name;
+        private String getName(Context context) {
+            return context.getString(nameRes);
+        }
+
+        private static String[] toArray(Context context) {
+            String[] array = new String[MapedOrientation.values().length];
+            for (int i = 0; i < array.length; i++) {
+                array[i] = MapedOrientation.values()[i].getName(context);
+            }
+            return array;
         }
     }
 
     private enum MapedType {
-        TYPE_1(ColoredNoiseGenerator.Type.TYPE_1, App.getInstance().getString(R.string.type_s, "1")),
-        TYPE_2(ColoredNoiseGenerator.Type.TYPE_2, App.getInstance().getString(R.string.type_s, "2")),
-        TYPE_3(ColoredNoiseGenerator.Type.TYPE_3, App.getInstance().getString(R.string.type_s, "3")),
-        TYPE_4(ColoredNoiseGenerator.Type.TYPE_4, App.getInstance().getString(R.string.type_s, "4")),
-        TYPE_5(ColoredNoiseGenerator.Type.TYPE_5, App.getInstance().getString(R.string.type_s, "5")),
-        TYPE_6(ColoredNoiseGenerator.Type.TYPE_6, App.getInstance().getString(R.string.type_s, "6")),
-        RANDOM(ColoredNoiseGenerator.Type.RANDOM, App.getInstance().getString(R.string.random));
+        TYPE_1(ColoredNoiseGenerator.Type.TYPE_1, R.string.type_s, "1"),
+        TYPE_2(ColoredNoiseGenerator.Type.TYPE_2, R.string.type_s, "2"),
+        TYPE_3(ColoredNoiseGenerator.Type.TYPE_3, R.string.type_s, "3"),
+        TYPE_4(ColoredNoiseGenerator.Type.TYPE_4, R.string.type_s, "4"),
+        TYPE_5(ColoredNoiseGenerator.Type.TYPE_5, R.string.type_s, "5"),
+        TYPE_6(ColoredNoiseGenerator.Type.TYPE_6, R.string.type_s, "6"),
+        RANDOM(ColoredNoiseGenerator.Type.RANDOM, R.string.random, null);
 
         private final ColoredNoiseGenerator.Type type;
-        private final String name;
+        private final int nameRes;
+        private final String formatArg;
 
-        MapedType(ColoredNoiseGenerator.Type type, String name) {
+        MapedType(ColoredNoiseGenerator.Type type, int nameRes, String formatArg) {
             this.type = type;
-            this.name = name;
+            this.nameRes = nameRes;
+            this.formatArg = formatArg;
         }
 
-        @Override
-        public String toString() {
-            return name;
+        private String getName(Context context) {
+            return formatArg != null ? context.getString(nameRes, formatArg) : context.getString(nameRes);
+        }
+
+        private static String[] toArray(Context context) {
+            String[] array = new String[MapedType.values().length];
+            for (int i = 0; i < array.length; i++) {
+                array[i] = MapedType.values()[i].getName(context);
+            }
+            return array;
         }
     }
 
@@ -85,8 +101,8 @@ public class ColoredNoiseParamsDialog extends ButterKnifeDialogFragment implemen
         });
         builder.setTitle(getString(R.string.s_parameters, getString(GeneratorType.COLORED_NOISE.getStringRes())));
         builder.setView(inflateAndBind(R.layout.colored_noise_params_dialog));
-        spOrientation.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, MapedOrientation.values()));
-        spType.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, MapedType.values()));
+        spOrientation.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, MapedOrientation.toArray(getContext())));
+        spType.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, MapedType.toArray(getContext())));
         if (savedInstanceState == null)
             presenter.getValues();
         return builder.create();

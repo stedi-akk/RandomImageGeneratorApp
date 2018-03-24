@@ -6,11 +6,11 @@ import android.support.annotation.NonNull;
 
 import com.stedi.randomimagegenerator.app.App;
 import com.stedi.randomimagegenerator.app.R;
-import com.stedi.randomimagegenerator.app.di.qualifiers.AppContext;
-import com.stedi.randomimagegenerator.app.di.qualifiers.DefaultScheduler;
-import com.stedi.randomimagegenerator.app.di.qualifiers.RigScheduler;
-import com.stedi.randomimagegenerator.app.di.qualifiers.RootSavePath;
-import com.stedi.randomimagegenerator.app.di.qualifiers.UiScheduler;
+import com.stedi.randomimagegenerator.app.di.AppContext;
+import com.stedi.randomimagegenerator.app.di.DefaultScheduler;
+import com.stedi.randomimagegenerator.app.di.RigScheduler;
+import com.stedi.randomimagegenerator.app.di.RootSavePath;
+import com.stedi.randomimagegenerator.app.di.UiScheduler;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
 import com.stedi.randomimagegenerator.app.other.Utils;

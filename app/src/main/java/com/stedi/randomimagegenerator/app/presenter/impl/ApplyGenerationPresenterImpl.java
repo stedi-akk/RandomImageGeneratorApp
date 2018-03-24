@@ -4,10 +4,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.squareup.otto.Subscribe;
-import com.stedi.randomimagegenerator.app.di.qualifiers.DefaultScheduler;
-import com.stedi.randomimagegenerator.app.di.qualifiers.RigScheduler;
-import com.stedi.randomimagegenerator.app.di.qualifiers.RootSavePath;
-import com.stedi.randomimagegenerator.app.di.qualifiers.UiScheduler;
+import com.stedi.randomimagegenerator.app.di.DefaultScheduler;
+import com.stedi.randomimagegenerator.app.di.RigScheduler;
+import com.stedi.randomimagegenerator.app.di.RootSavePath;
+import com.stedi.randomimagegenerator.app.di.UiScheduler;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.model.repository.PresetRepository;

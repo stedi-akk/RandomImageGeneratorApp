@@ -17,6 +17,6 @@ public abstract class BaseFragment extends LifeCycleFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        App.getInstance().getLeakWatcher().watch(this);
+        ((App) getActivity().getApplicationContext()).getLeakWatcher().watch(this);
     }
 }

@@ -2,7 +2,7 @@ package com.stedi.randomimagegenerator.app.di.modules;
 
 import android.content.Context;
 
-import com.stedi.randomimagegenerator.app.di.qualifiers.AppContext;
+import com.stedi.randomimagegenerator.app.di.AppContext;
 import com.stedi.randomimagegenerator.app.model.repository.CachedPresetRepository;
 import com.stedi.randomimagegenerator.app.model.repository.DatabasePresetRepository;
 import com.stedi.randomimagegenerator.app.model.repository.PresetRepository;

@@ -14,7 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.NumberPicker;
 import android.widget.Toast;
 
-import com.stedi.randomimagegenerator.app.di.qualifiers.RootSavePath;
+import com.stedi.randomimagegenerator.app.di.RootSavePath;
 
 import java.io.File;
 import java.lang.reflect.Field;

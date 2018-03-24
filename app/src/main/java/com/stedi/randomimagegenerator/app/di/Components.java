@@ -17,7 +17,7 @@ public final class Components {
     }
 
     public static AppComponent getAppComponent(@NonNull Context context) {
-        return ((App) context.getApplicationContext()).getAppComponent();
+        return ((App) context.getApplicationContext()).getComponent();
     }
 
     public static ActivityComponent getActivityComponent(@NonNull Activity activity) {

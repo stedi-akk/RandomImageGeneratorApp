@@ -2,8 +2,8 @@ package com.stedi.randomimagegenerator.app.presenter.interfaces;
 
 import android.support.annotation.NonNull;
 
-import com.stedi.randomimagegenerator.app.di.qualifiers.RigScheduler;
-import com.stedi.randomimagegenerator.app.di.qualifiers.UiScheduler;
+import com.stedi.randomimagegenerator.app.di.RigScheduler;
+import com.stedi.randomimagegenerator.app.di.UiScheduler;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
