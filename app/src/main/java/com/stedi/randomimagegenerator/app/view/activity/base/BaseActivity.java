@@ -7,11 +7,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
-import com.stedi.randomimagegenerator.app.di.Components;
 import com.stedi.randomimagegenerator.app.di.components.ActivityComponent;
 import com.stedi.randomimagegenerator.app.di.modules.ActivityModule;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
+import com.stedi.randomimagegenerator.app.other.ExtKt;
 
 import javax.inject.Inject;
 
@@ -48,7 +48,7 @@ public abstract class BaseActivity extends LifeCycleActivity {
     @NonNull
     public ActivityComponent getActivityComponent() {
         if (component == null)
-            component = Components.getAppComponent(this).plus(new ActivityModule(this));
+            component = ExtKt.getApp(this).getComponent().plus(new ActivityModule(this));
         return component;
     }
 

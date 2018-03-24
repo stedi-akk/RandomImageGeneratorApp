@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.squareup.otto.Subscribe;
 import com.stedi.randomimagegenerator.ImageParams;
 import com.stedi.randomimagegenerator.app.R;
-import com.stedi.randomimagegenerator.app.di.Components;
 import com.stedi.randomimagegenerator.app.di.RootSavePath;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams;
@@ -25,6 +24,7 @@ import com.stedi.randomimagegenerator.app.other.CachedBus;
 import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter;
+import com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity;
 import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity;
 import com.stedi.randomimagegenerator.app.view.dialogs.EditPresetNameDialog;
 import com.stedi.randomimagegenerator.app.view.dialogs.GenerationDialog;
@@ -55,7 +55,7 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Components.getGenerationComponent(this).inject(this);
+        ((GenerationStepsActivity) getActivity()).getGenerationComponent().inject(this);
         presenter.onAttach(this);
         if (savedInstanceState != null) {
             Serializable state = savedInstanceState.getSerializable(KEY_APPLY_GENERATION_PRESENTER_STATE);

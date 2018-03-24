@@ -15,10 +15,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.stedi.randomimagegenerator.app.R;
-import com.stedi.randomimagegenerator.app.di.Components;
 import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSaveOptionsPresenter;
+import com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity;
 import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment;
 
 import javax.inject.Inject;
@@ -45,7 +45,7 @@ public class ChooseSaveOptionsFragment extends StepFragment implements
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Components.getGenerationComponent(this).inject(this);
+        ((GenerationStepsActivity) getActivity()).getGenerationComponent().inject(this);
         presenter.onAttach(this);
     }
 

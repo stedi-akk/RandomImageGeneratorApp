@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.stedi.randomimagegenerator.app.R;
-import com.stedi.randomimagegenerator.app.di.Components;
 import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSizeAndCountPresenter;
+import com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity;
 import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment;
 import com.stepstone.stepper.VerificationError;
 
@@ -42,7 +42,7 @@ public class ChooseSizeAndCountFragment extends StepFragment implements
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Components.getGenerationComponent(this).inject(this);
+        ((GenerationStepsActivity) getActivity()).getGenerationComponent().inject(this);
         presenter.onAttach(this);
     }
 

@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.stedi.randomimagegenerator.app.di.Components;
+import com.stedi.randomimagegenerator.app.other.ExtKt;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 
 import javax.inject.Inject;
@@ -23,7 +23,7 @@ public abstract class LifeCycleFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (LOG) {
-            Components.getAppComponent(context).inject(this);
+            ExtKt.getApp(context).getComponent().inject(this);
             logger.log(this, "onAttach");
         }
     }

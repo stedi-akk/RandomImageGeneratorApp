@@ -10,9 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.stedi.randomimagegenerator.app.R;
-import com.stedi.randomimagegenerator.app.di.Components;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ColoredNoiseParamsPresenter;
+import com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity;
 import com.stedi.randomimagegenerator.app.view.dialogs.base.ButterKnifeDialogFragment;
 import com.stedi.randomimagegenerator.generators.ColoredNoiseGenerator;
 
@@ -87,7 +87,7 @@ public class ColoredNoiseParamsDialog extends ButterKnifeDialogFragment implemen
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Components.getGenerationComponent(this).inject(this);
+        ((GenerationStepsActivity) getActivity()).getGenerationComponent().inject(this);
         presenter.onAttach(this);
     }
 

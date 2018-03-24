@@ -11,8 +11,8 @@ import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.stedi.randomimagegenerator.app.R;
-import com.stedi.randomimagegenerator.app.di.Components;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
+import com.stedi.randomimagegenerator.app.other.ExtKt;
 import com.stedi.randomimagegenerator.app.view.dialogs.base.ButterKnifeDialogFragment;
 
 import javax.inject.Inject;
@@ -46,7 +46,7 @@ public class EditPresetNameDialog extends ButterKnifeDialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Components.getAppComponent(getContext()).inject(this);
+        ExtKt.getApp(getContext()).getComponent().inject(this);
     }
 
     @NonNull

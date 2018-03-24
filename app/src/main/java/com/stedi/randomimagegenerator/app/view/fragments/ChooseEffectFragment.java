@@ -10,10 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.stedi.randomimagegenerator.app.R;
-import com.stedi.randomimagegenerator.app.di.Components;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseEffectPresenter;
+import com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity;
 import com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapter;
 import com.stedi.randomimagegenerator.app.view.components.GeneratorTypeImageLoader;
 import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment;
@@ -35,7 +35,7 @@ public class ChooseEffectFragment extends StepFragment implements
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Components.getGenerationComponent(this).inject(this);
+        ((GenerationStepsActivity) getActivity()).getGenerationComponent().inject(this);
         presenter.onAttach(this);
     }
 
