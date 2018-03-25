@@ -46,14 +46,6 @@ public final class Utils {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
     }
 
-    public static void sleep(long millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
     @NonNull
     public static <T> List<T> sparseArrayToList(@NonNull SparseArray<T> array) {
         List<T> result = new ArrayList<>();

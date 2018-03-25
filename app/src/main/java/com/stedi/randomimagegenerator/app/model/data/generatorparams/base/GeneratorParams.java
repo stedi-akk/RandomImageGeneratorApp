@@ -16,7 +16,7 @@ import com.stedi.randomimagegenerator.generators.Generator;
 public abstract class GeneratorParams implements Parcelable {
     @NonNull
     public Generator getGenerator() {
-        return GeneratorProxy.proxy(createGenerator());
+        return GeneratorProxyKt.proxy(createGenerator());
     }
 
     public abstract void setId(int id);

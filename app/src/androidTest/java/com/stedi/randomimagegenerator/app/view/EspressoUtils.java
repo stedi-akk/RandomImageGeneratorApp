@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.NumberPicker;
 
 import com.stedi.randomimagegenerator.app.R;
+import com.stedi.randomimagegenerator.app.other.ExtKt;
 import com.stedi.randomimagegenerator.app.other.Utils;
 
 import org.hamcrest.Description;
@@ -158,6 +159,6 @@ final class EspressoUtils {
         onView(allOf(withId(android.R.id.button1), withText("OK")))
                 .perform(scrollTo(), click());
 
-        Utils.sleep(1000);
+        ExtKt.sleep(1000);
     }
 }
