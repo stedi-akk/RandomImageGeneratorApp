@@ -10,7 +10,7 @@ public class GeneratorParamsCreateDefaultTest {
     @Test
     public void testCreateDefaultParams() {
         for (GeneratorType gt : GeneratorType.nonEffectTypes()) {
-            GeneratorParams gp = GeneratorParams.createDefaultParams(gt);
+            GeneratorParams gp = GeneratorParams.Companion.createDefaultParams(gt);
             assertNotNull(gp);
         }
     }
@@ -19,7 +19,7 @@ public class GeneratorParamsCreateDefaultTest {
     public void testCreateDefaultParamsFail() {
         for (GeneratorType gt : GeneratorType.effectTypes()) {
             try {
-                GeneratorParams.createDefaultParams(gt);
+                GeneratorParams.Companion.createDefaultParams(gt);
                 fail();
             } catch (IllegalArgumentException e) {
             }
@@ -28,19 +28,19 @@ public class GeneratorParamsCreateDefaultTest {
 
     @Test
     public void testCreateDefaultEffectParams() {
-        GeneratorParams target = GeneratorParams.createDefaultParams(GeneratorType.nonEffectTypes()[0]);
+        GeneratorParams target = GeneratorParams.Companion.createDefaultParams(GeneratorType.nonEffectTypes()[0]);
         for (GeneratorType gt : GeneratorType.effectTypes()) {
-            GeneratorParams gp = GeneratorParams.createDefaultEffectParams(gt, target);
+            GeneratorParams gp = GeneratorParams.Companion.createDefaultEffectParams(gt, target);
             assertNotNull(gp);
         }
     }
 
     @Test
     public void testCreateDefaultEffectParamsFail() {
-        GeneratorParams target = GeneratorParams.createDefaultParams(GeneratorType.nonEffectTypes()[0]);
+        GeneratorParams target = GeneratorParams.Companion.createDefaultParams(GeneratorType.nonEffectTypes()[0]);
         for (GeneratorType gt : GeneratorType.nonEffectTypes()) {
             try {
-                GeneratorParams.createDefaultEffectParams(gt, target);
+                GeneratorParams.Companion.createDefaultEffectParams(gt, target);
                 fail();
             } catch (IllegalArgumentException e) {
             }

@@ -41,7 +41,7 @@ public class DatabasePresetRepositoryTest {
     @Test
     public void simpleTest() throws Exception {
         long timestamp = System.currentTimeMillis();
-        Preset preset = new Preset("name", GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), "folder");
+        Preset preset = new Preset("name", GeneratorParams.Companion.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), "folder");
         preset.setTimestamp(timestamp);
         preset.setWidth(666);
         preset.setHeight(999);
@@ -69,7 +69,7 @@ public class DatabasePresetRepositoryTest {
 
     @Test
     public void saveUpdateTest() throws Exception {
-        Preset preset = new Preset("name", GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), "folder");
+        Preset preset = new Preset("name", GeneratorParams.Companion.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), "folder");
 
         repository.save(preset);
         Preset databasePreset = repository.get(1);
@@ -85,7 +85,7 @@ public class DatabasePresetRepositoryTest {
     public void nonEffectParamsTest() throws Exception {
         int ids = 1;
         for (GeneratorType type : GeneratorType.nonEffectTypes()) {
-            Preset preset = new Preset("name", GeneratorParams.createDefaultParams(type), Quality.png(), "folder");
+            Preset preset = new Preset("name", GeneratorParams.Companion.createDefaultParams(type), Quality.png(), "folder");
 
             repository.save(preset);
             assertTrue(preset.getId() == ids);
@@ -112,7 +112,7 @@ public class DatabasePresetRepositoryTest {
         int ids = 1;
         for (GeneratorType effectType : GeneratorType.effectTypes()) {
             for (GeneratorType nonEffecttype : GeneratorType.nonEffectTypes()) {
-                Preset preset = new Preset("name", GeneratorParams.createDefaultEffectParams(effectType, GeneratorParams.createDefaultParams(nonEffecttype)), Quality.png(), "folder");
+                Preset preset = new Preset("name", GeneratorParams.Companion.createDefaultEffectParams(effectType, GeneratorParams.Companion.createDefaultParams(nonEffecttype)), Quality.png(), "folder");
 
                 repository.save(preset);
                 assertTrue(preset.getId() == ids);

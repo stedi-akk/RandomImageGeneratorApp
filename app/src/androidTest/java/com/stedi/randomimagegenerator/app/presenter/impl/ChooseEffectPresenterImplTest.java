@@ -36,7 +36,7 @@ public class ChooseEffectPresenterImplTest {
 
     @Test
     public void testGetEffectTypesNull() {
-        pendingPreset.getCandidate().setGeneratorParams(GeneratorParams.createDefaultParams(GeneratorType.COLORED_RECTANGLE));
+        pendingPreset.getCandidate().setGeneratorParams(GeneratorParams.Companion.createDefaultParams(GeneratorType.COLORED_RECTANGLE));
         presenter.onAttach(ui);
         presenter.getEffectTypes();
         verify(ui, times(1)).showTypes(GeneratorType.effectTypes(), null, GeneratorType.COLORED_RECTANGLE);
@@ -45,7 +45,7 @@ public class ChooseEffectPresenterImplTest {
 
     @Test
     public void testGetEffectTypesNonNull() {
-        pendingPreset.getCandidate().setGeneratorParams(GeneratorParams.createDefaultEffectParams(GeneratorType.MIRRORED, GeneratorParams.createDefaultParams(GeneratorType.COLORED_CIRCLES)));
+        pendingPreset.getCandidate().setGeneratorParams(GeneratorParams.Companion.createDefaultEffectParams(GeneratorType.MIRRORED, GeneratorParams.Companion.createDefaultParams(GeneratorType.COLORED_CIRCLES)));
         presenter.onAttach(ui);
         presenter.getEffectTypes();
         verify(ui, times(1)).showTypes(GeneratorType.effectTypes(), GeneratorType.MIRRORED, GeneratorType.COLORED_CIRCLES);
@@ -54,7 +54,7 @@ public class ChooseEffectPresenterImplTest {
 
     @Test
     public void testChooseEffectType1() {
-        pendingPreset.getCandidate().setGeneratorParams(GeneratorParams.createDefaultParams(GeneratorType.COLORED_RECTANGLE));
+        pendingPreset.getCandidate().setGeneratorParams(GeneratorParams.Companion.createDefaultParams(GeneratorType.COLORED_RECTANGLE));
         presenter.onAttach(ui);
         presenter.chooseEffectType(GeneratorType.TEXT_OVERLAY);
         assertTrue(pendingPreset.getCandidate().getGeneratorParams().getType() == GeneratorType.TEXT_OVERLAY);
@@ -64,7 +64,7 @@ public class ChooseEffectPresenterImplTest {
 
     @Test
     public void testChooseEffectType2() {
-        pendingPreset.getCandidate().setGeneratorParams(GeneratorParams.createDefaultEffectParams(GeneratorType.MIRRORED, GeneratorParams.createDefaultParams(GeneratorType.COLORED_CIRCLES)));
+        pendingPreset.getCandidate().setGeneratorParams(GeneratorParams.Companion.createDefaultEffectParams(GeneratorType.MIRRORED, GeneratorParams.Companion.createDefaultParams(GeneratorType.COLORED_CIRCLES)));
         presenter.onAttach(ui);
         presenter.chooseEffectType(GeneratorType.TEXT_OVERLAY);
         assertTrue(pendingPreset.getCandidate().getGeneratorParams().getType() == GeneratorType.TEXT_OVERLAY);

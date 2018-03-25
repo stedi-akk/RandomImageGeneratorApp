@@ -34,7 +34,7 @@ public class PresetTest {
 
     @Test
     public void testCreateCopyAndEquals() {
-        ColoredNoiseParams generatorParams = (ColoredNoiseParams) GeneratorParams.createDefaultParams(GeneratorType.COLORED_NOISE);
+        ColoredNoiseParams generatorParams = (ColoredNoiseParams) GeneratorParams.Companion.createDefaultParams(GeneratorType.COLORED_NOISE);
         Preset preset = new Preset("ololo", generatorParams, Quality.png(), "path");
 
         preset.setId(1);
@@ -70,7 +70,7 @@ public class PresetTest {
         int ids = 1;
         for (GeneratorType generatorType : GeneratorType.nonEffectTypes()) {
             for (Quality quality : qualities) {
-                GeneratorParams generatorParams = GeneratorParams.createDefaultParams(generatorType);
+                GeneratorParams generatorParams = GeneratorParams.Companion.createDefaultParams(generatorType);
                 String name = "name" + ids;
                 Preset preset = new Preset(name, generatorParams, quality, "path");
 
@@ -106,7 +106,7 @@ public class PresetTest {
         for (GeneratorType effectType : GeneratorType.effectTypes()) {
             for (GeneratorType nonEffectType : GeneratorType.nonEffectTypes()) {
                 for (Quality quality : qualities) {
-                    GeneratorParams generatorParams = GeneratorParams.createDefaultEffectParams(effectType, GeneratorParams.createDefaultParams(nonEffectType));
+                    GeneratorParams generatorParams = GeneratorParams.Companion.createDefaultEffectParams(effectType, GeneratorParams.Companion.createDefaultParams(nonEffectType));
                     String name = "name" + ids;
                     Preset preset = new Preset(name, generatorParams, quality, "path");
 
@@ -138,7 +138,7 @@ public class PresetTest {
 
     @Test
     public void testSettersExceptions() {
-        Preset preset = new Preset("ololo", GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), "path");
+        Preset preset = new Preset("ololo", GeneratorParams.Companion.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), "path");
         try {
             preset.setTimestamp(0);
             fail();

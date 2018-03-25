@@ -37,7 +37,7 @@ public class PendingPreset {
         candidateFrom = null;
         candidate = new Preset(
                 unsavedName,
-                GeneratorParams.createDefaultParams(GeneratorType.COLORED_CIRCLES),
+                GeneratorParams.Companion.createDefaultParams(GeneratorType.COLORED_CIRCLES),
                 Quality.png(),
                 rootSavePath + File.separator + "0");
         candidate.setWidth(800);

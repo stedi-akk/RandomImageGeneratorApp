@@ -35,7 +35,7 @@ public class ChooseGeneratorPresenterImplTest {
 
     @Test
     public void testGetGeneratorTypes1() {
-        pendingPreset.getCandidate().setGeneratorParams(GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR));
+        pendingPreset.getCandidate().setGeneratorParams(GeneratorParams.Companion.createDefaultParams(GeneratorType.FLAT_COLOR));
         presenter.onAttach(ui);
         presenter.getGeneratorTypes();
         verify(ui, times(1)).showTypes(GeneratorType.nonEffectTypes(), GeneratorType.FLAT_COLOR);
@@ -44,7 +44,7 @@ public class ChooseGeneratorPresenterImplTest {
 
     @Test
     public void testGetGeneratorTypes2() {
-        pendingPreset.getCandidate().setGeneratorParams(GeneratorParams.createDefaultEffectParams(GeneratorType.MIRRORED, GeneratorParams.createDefaultParams(GeneratorType.COLORED_CIRCLES)));
+        pendingPreset.getCandidate().setGeneratorParams(GeneratorParams.Companion.createDefaultEffectParams(GeneratorType.MIRRORED, GeneratorParams.Companion.createDefaultParams(GeneratorType.COLORED_CIRCLES)));
         presenter.onAttach(ui);
         presenter.getGeneratorTypes();
         verify(ui, times(1)).showTypes(GeneratorType.nonEffectTypes(), GeneratorType.COLORED_CIRCLES);
@@ -61,7 +61,7 @@ public class ChooseGeneratorPresenterImplTest {
 
     @Test
     public void testChooseGeneratorType2() {
-        pendingPreset.getCandidate().setGeneratorParams(GeneratorParams.createDefaultEffectParams(GeneratorType.MIRRORED, GeneratorParams.createDefaultParams(GeneratorType.COLORED_CIRCLES)));
+        pendingPreset.getCandidate().setGeneratorParams(GeneratorParams.Companion.createDefaultEffectParams(GeneratorType.MIRRORED, GeneratorParams.Companion.createDefaultParams(GeneratorType.COLORED_CIRCLES)));
         presenter.onAttach(ui);
         presenter.chooseGeneratorType(GeneratorType.COLORED_RECTANGLE);
         assertTrue(pendingPreset.getCandidate().getGeneratorParams().getType() == GeneratorType.MIRRORED);
@@ -71,7 +71,7 @@ public class ChooseGeneratorPresenterImplTest {
 
     @Test
     public void testEditChoseGeneratorParams1() {
-        pendingPreset.getCandidate().setGeneratorParams(GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR));
+        pendingPreset.getCandidate().setGeneratorParams(GeneratorParams.Companion.createDefaultParams(GeneratorType.FLAT_COLOR));
         presenter.onAttach(ui);
         presenter.editChoseGeneratorParams();
         verify(ui, times(1)).showEditGeneratorParams(GeneratorType.FLAT_COLOR);
@@ -79,7 +79,7 @@ public class ChooseGeneratorPresenterImplTest {
 
     @Test
     public void testEditChoseGeneratorParams2() {
-        pendingPreset.getCandidate().setGeneratorParams(GeneratorParams.createDefaultEffectParams(GeneratorType.MIRRORED, GeneratorParams.createDefaultParams(GeneratorType.COLORED_CIRCLES)));
+        pendingPreset.getCandidate().setGeneratorParams(GeneratorParams.Companion.createDefaultEffectParams(GeneratorType.MIRRORED, GeneratorParams.Companion.createDefaultParams(GeneratorType.COLORED_CIRCLES)));
         presenter.onAttach(ui);
         presenter.editChoseGeneratorParams();
         verify(ui, times(1)).showEditGeneratorParams(GeneratorType.COLORED_CIRCLES);

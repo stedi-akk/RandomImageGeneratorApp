@@ -25,9 +25,9 @@ public class FakePresetRepository implements PresetRepository {
                 GeneratorType gt = GeneratorType.values()[random.nextInt(GeneratorType.values().length)];
                 GeneratorParams generatorParams;
                 if (gt.isEffect()) {
-                    generatorParams = GeneratorParams.createDefaultEffectParams(gt, GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR));
+                    generatorParams = GeneratorParams.Companion.createDefaultEffectParams(gt, GeneratorParams.Companion.createDefaultParams(GeneratorType.FLAT_COLOR));
                 } else {
-                    generatorParams = GeneratorParams.createDefaultParams(gt);
+                    generatorParams = GeneratorParams.Companion.createDefaultParams(gt);
                 }
                 items.put(id, createTestPreset(id, generatorParams));
             }

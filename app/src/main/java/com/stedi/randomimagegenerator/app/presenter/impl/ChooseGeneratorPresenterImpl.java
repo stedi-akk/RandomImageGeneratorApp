@@ -36,10 +36,10 @@ public class ChooseGeneratorPresenterImpl implements ChooseGeneratorPresenter {
 
     @Override
     public void chooseGeneratorType(@NonNull GeneratorType type) {
-        GeneratorParams newParams = GeneratorParams.createDefaultParams(type);
+        GeneratorParams newParams = GeneratorParams.Companion.createDefaultParams(type);
         GeneratorParams currentParams = pendingPreset.getCandidate().getGeneratorParams();
         if (currentParams instanceof EffectGeneratorParams) {
-            ((EffectGeneratorParams) currentParams).setTarget(newParams);
+            ((EffectGeneratorParams) currentParams).setTargetParams(newParams);
         } else {
             pendingPreset.getCandidate().setGeneratorParams(newParams);
         }

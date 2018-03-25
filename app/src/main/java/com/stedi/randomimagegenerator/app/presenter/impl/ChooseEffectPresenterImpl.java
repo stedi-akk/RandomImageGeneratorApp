@@ -46,7 +46,7 @@ public class ChooseEffectPresenterImpl implements ChooseEffectPresenter {
             prevParams = ((EffectGeneratorParams) prevParams).getTarget();
         }
         if (effectType != null) {
-            newParams = GeneratorParams.createDefaultEffectParams(effectType, prevParams);
+            newParams = GeneratorParams.Companion.createDefaultEffectParams(effectType, prevParams);
         } else {
             newParams = prevParams;
         }

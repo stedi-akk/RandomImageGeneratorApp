@@ -31,7 +31,7 @@ public final class TestUtils {
 
     @NonNull
     public static Preset newSimplePreset() {
-        Preset preset = new Preset("name", GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), TestUtils.getTestFolder().getAbsolutePath());
+        Preset preset = new Preset("name", GeneratorParams.Companion.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), TestUtils.getTestFolder().getAbsolutePath());
         preset.setTimestamp(System.currentTimeMillis());
         return preset;
     }

@@ -152,7 +152,7 @@ public class DatabasePresetRepository extends OrmLiteSqliteOpenHelper implements
             EffectGeneratorParams effectParams = (EffectGeneratorParams) generatorParams;
             GeneratorParams targetParams = queryGeneratorParamsById(effectParams.getTargetGeneratorType(), effectParams.getTargetGeneratorParamsId());
             fillGeneratorParamsRecursively(targetParams);
-            effectParams.setTarget(targetParams);
+            effectParams.setTargetParams(targetParams);
         }
     }
 

@@ -88,7 +88,7 @@ public class PendingPresetTest {
     @Test
     public void testPrepareCandidateFrom() {
         Preset from = new Preset("razdwatri",
-                GeneratorParams.createDefaultParams(GeneratorType.COLORED_CIRCLES),
+                GeneratorParams.Companion.createDefaultParams(GeneratorType.COLORED_CIRCLES),
                 Quality.jpg(100), "path");
         from.setId(1);
 

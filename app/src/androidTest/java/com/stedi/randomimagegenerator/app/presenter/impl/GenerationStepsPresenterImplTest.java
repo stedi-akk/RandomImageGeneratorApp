@@ -45,7 +45,7 @@ public class GenerationStepsPresenterImplTest {
 
     @Test
     public void testIsNewFalse() {
-        Preset preset = new Preset("name", GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.jpg(100), TestUtils.getTestFolder().getAbsolutePath());
+        Preset preset = new Preset("name", GeneratorParams.Companion.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.jpg(100), TestUtils.getTestFolder().getAbsolutePath());
         preset.setTimestamp(System.currentTimeMillis());
         preset.setId(66);
         pendingPreset.prepareCandidateFrom(preset);

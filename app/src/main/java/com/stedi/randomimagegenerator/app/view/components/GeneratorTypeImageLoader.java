@@ -112,9 +112,9 @@ public class GeneratorTypeImageLoader {
 
     private GeneratorParams createGeneratorParams(GeneratorType mainType, GeneratorType secondType) {
         if (secondType == null) {
-            return GeneratorParams.createDefaultParams(mainType);
+            return GeneratorParams.Companion.createDefaultParams(mainType);
         } else {
-            return GeneratorParams.createDefaultEffectParams(mainType, GeneratorParams.createDefaultParams(secondType));
+            return GeneratorParams.Companion.createDefaultEffectParams(mainType, GeneratorParams.Companion.createDefaultParams(secondType));
         }
     }
 }
