@@ -17,7 +17,7 @@ abstract class EffectGeneratorParams : GeneratorParams {
     @DatabaseField(columnName = "target_generator_params_id")
     var targetGeneratorParamsId: Int = 0
 
-    // OrmLite constructor
+    // OrmLite required
     constructor()
 
     constructor(target: GeneratorParams) {

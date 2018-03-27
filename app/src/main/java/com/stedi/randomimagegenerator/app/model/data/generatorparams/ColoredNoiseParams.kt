@@ -20,6 +20,7 @@ class ColoredNoiseParams : GeneratorParams {
     @DatabaseField(columnName = "type", canBeNull = false)
     var noiseType: ColoredNoiseGenerator.Type = ColoredNoiseGenerator.Type.RANDOM
 
+    // OrmLite required
     constructor()
 
     public override fun createGenerator() = ColoredNoiseGenerator(noiseOrientation, noiseType)

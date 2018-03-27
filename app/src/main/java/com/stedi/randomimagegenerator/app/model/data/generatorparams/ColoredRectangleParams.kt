@@ -6,10 +6,11 @@ import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.SimpleIntegerParams
-import com.stedi.randomimagegenerator.generators.ColoredPixelsGenerator
+import com.stedi.randomimagegenerator.generators.ColoredRectangleGenerator
+import com.stedi.randomimagegenerator.generators.Generator
 
-@DatabaseTable(tableName = "colored_pixels_params")
-class ColoredPixelsParams : SimpleIntegerParams {
+@DatabaseTable(tableName = "colored_rectangle_params")
+class ColoredRectangleParams : SimpleIntegerParams {
 
     @DatabaseField(generatedId = true)
     private var id: Int = 0
@@ -17,7 +18,9 @@ class ColoredPixelsParams : SimpleIntegerParams {
     // OrmLite required
     constructor()
 
-    public override fun createGenerator() = ColoredPixelsGenerator(getValue()!!)
+    public override fun createGenerator(): Generator {
+        return getValue()?.let { ColoredRectangleGenerator(it) } ?: ColoredRectangleGenerator()
+    }
 
     override fun setId(id: Int) {
         this.id = id
@@ -25,9 +28,9 @@ class ColoredPixelsParams : SimpleIntegerParams {
 
     override fun getId() = id
 
-    override fun canBeRandom() = false
+    override fun canBeRandom() = true
 
-    override fun getType() = GeneratorType.COLORED_PIXELS
+    override fun getType() = GeneratorType.COLORED_RECTANGLE
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)
@@ -40,10 +43,10 @@ class ColoredPixelsParams : SimpleIntegerParams {
 
     companion object {
         @JvmField
-        val CREATOR = object : Parcelable.Creator<ColoredPixelsParams> {
-            override fun createFromParcel(source: Parcel) = ColoredPixelsParams(source)
+        val CREATOR = object : Parcelable.Creator<ColoredRectangleParams> {
+            override fun createFromParcel(source: Parcel) = ColoredRectangleParams(source)
 
-            override fun newArray(size: Int) = arrayOfNulls<ColoredPixelsParams>(size)
+            override fun newArray(size: Int) = arrayOfNulls<ColoredRectangleParams>(size)
         }
     }
 }

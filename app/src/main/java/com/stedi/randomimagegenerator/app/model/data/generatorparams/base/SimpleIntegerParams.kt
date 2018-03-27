@@ -6,13 +6,10 @@ import com.j256.ormlite.field.DatabaseField
 abstract class SimpleIntegerParams : GeneratorParams {
 
     @DatabaseField(columnName = "integer_value")
-    private var value: Int? = null
+    private var value: Int? = if (canBeRandom()) null else 1
 
-    constructor() {
-        if (!canBeRandom()) {
-            value = 1
-        }
-    }
+    // OrmLite required
+    constructor()
 
     fun setRandomValue() {
         if (canBeRandom()) {
