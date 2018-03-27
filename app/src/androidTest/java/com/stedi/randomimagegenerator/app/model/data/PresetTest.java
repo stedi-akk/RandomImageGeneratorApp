@@ -68,7 +68,7 @@ public class PresetTest {
     @Test
     public void testCreateCopyAndEqualsNonEffectParams() {
         int ids = 1;
-        for (GeneratorType generatorType : GeneratorType.nonEffectTypes()) {
+        for (GeneratorType generatorType : GeneratorType.Companion.getNON_EFFECT_TYPES()) {
             for (Quality quality : qualities) {
                 GeneratorParams generatorParams = GeneratorParams.Companion.createDefaultParams(generatorType);
                 String name = "name" + ids;
@@ -103,8 +103,8 @@ public class PresetTest {
     @Test
     public void testCreateCopyAndEqualsEffectParams() {
         int ids = 1;
-        for (GeneratorType effectType : GeneratorType.effectTypes()) {
-            for (GeneratorType nonEffectType : GeneratorType.nonEffectTypes()) {
+        for (GeneratorType effectType : GeneratorType.Companion.getEFFECT_TYPES()) {
+            for (GeneratorType nonEffectType : GeneratorType.Companion.getNON_EFFECT_TYPES()) {
                 for (Quality quality : qualities) {
                     GeneratorParams generatorParams = GeneratorParams.Companion.createDefaultEffectParams(effectType, GeneratorParams.Companion.createDefaultParams(nonEffectType));
                     String name = "name" + ids;

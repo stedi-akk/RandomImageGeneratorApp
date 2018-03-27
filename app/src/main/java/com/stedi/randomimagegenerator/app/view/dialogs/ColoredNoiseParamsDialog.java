@@ -99,7 +99,7 @@ public class ColoredNoiseParamsDialog extends ButterKnifeDialogFragment implemen
             presenter.setOrientation(MapedOrientation.values()[spOrientation.getSelectedItemPosition()].orientation);
             presenter.setType(MapedType.values()[spType.getSelectedItemPosition()].type);
         });
-        builder.setTitle(getString(R.string.s_parameters, getString(GeneratorType.COLORED_NOISE.getStringRes())));
+        builder.setTitle(getString(R.string.s_parameters, getString(GeneratorType.COLORED_NOISE.getNameRes())));
         builder.setView(inflateAndBind(R.layout.colored_noise_params_dialog));
         spOrientation.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, MapedOrientation.toArray(getContext())));
         spType.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, MapedType.toArray(getContext())));

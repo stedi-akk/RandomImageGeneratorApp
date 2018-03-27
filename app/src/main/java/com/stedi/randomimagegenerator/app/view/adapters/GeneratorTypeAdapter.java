@@ -63,7 +63,7 @@ public class GeneratorTypeAdapter extends RecyclerView.Adapter<GeneratorTypeAdap
         holder.generatorType = type;
 
         holder.card.setOnClickListener(holder);
-        holder.text.setText(type.getStringRes());
+        holder.text.setText(type.getNameRes());
         holder.btnEdit.setVisibility(View.INVISIBLE);
         holder.btnEdit.setOnClickListener(holder);
         holder.isSelected.setVisibility(type == selectedType ? View.VISIBLE : View.INVISIBLE);

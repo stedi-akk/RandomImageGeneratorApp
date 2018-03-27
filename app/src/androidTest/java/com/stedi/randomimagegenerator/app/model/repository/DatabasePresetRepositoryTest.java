@@ -16,7 +16,10 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 public class DatabasePresetRepositoryTest {
@@ -84,7 +87,7 @@ public class DatabasePresetRepositoryTest {
     @Test
     public void nonEffectParamsTest() throws Exception {
         int ids = 1;
-        for (GeneratorType type : GeneratorType.nonEffectTypes()) {
+        for (GeneratorType type : GeneratorType.Companion.getNON_EFFECT_TYPES()) {
             Preset preset = new Preset("name", GeneratorParams.Companion.createDefaultParams(type), Quality.png(), "folder");
 
             repository.save(preset);
@@ -98,7 +101,7 @@ public class DatabasePresetRepositoryTest {
         }
 
         List<Preset> presets = repository.getAll();
-        assertTrue(presets.size() == GeneratorType.nonEffectTypes().length);
+        assertTrue(presets.size() == GeneratorType.Companion.getNON_EFFECT_TYPES().length);
 
         for (Preset preset : presets) {
             repository.remove(preset.getId());
@@ -110,8 +113,8 @@ public class DatabasePresetRepositoryTest {
     @Test
     public void effectParamsTest() throws Exception {
         int ids = 1;
-        for (GeneratorType effectType : GeneratorType.effectTypes()) {
-            for (GeneratorType nonEffecttype : GeneratorType.nonEffectTypes()) {
+        for (GeneratorType effectType : GeneratorType.Companion.getEFFECT_TYPES()) {
+            for (GeneratorType nonEffecttype : GeneratorType.Companion.getNON_EFFECT_TYPES()) {
                 Preset preset = new Preset("name", GeneratorParams.Companion.createDefaultEffectParams(effectType, GeneratorParams.Companion.createDefaultParams(nonEffecttype)), Quality.png(), "folder");
 
                 repository.save(preset);
@@ -126,7 +129,7 @@ public class DatabasePresetRepositoryTest {
         }
 
         List<Preset> presets = repository.getAll();
-        assertTrue(presets.size() == (GeneratorType.nonEffectTypes().length * GeneratorType.effectTypes().length));
+        assertTrue(presets.size() == (GeneratorType.Companion.getNON_EFFECT_TYPES().length * GeneratorType.Companion.getEFFECT_TYPES().length));
 
         for (Preset preset : presets) {
             repository.remove(preset.getId());

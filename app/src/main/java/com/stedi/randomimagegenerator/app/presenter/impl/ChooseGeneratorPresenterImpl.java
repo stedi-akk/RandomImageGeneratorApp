@@ -31,7 +31,7 @@ public class ChooseGeneratorPresenterImpl implements ChooseGeneratorPresenter {
         } else {
             selectedType = selectedParams.getType();
         }
-        ui.showTypes(GeneratorType.nonEffectTypes(), selectedType);
+        ui.showTypes(GeneratorType.Companion.getNON_EFFECT_TYPES(), selectedType);
     }
 
     @Override

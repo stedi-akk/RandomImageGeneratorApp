@@ -80,7 +80,7 @@ public class SimpleIntegerParamsDialog extends ButterKnifeDialogFragment impleme
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setPositiveButton(R.string.ok, null);
         //noinspection ConstantConditions
-        builder.setTitle(getString(R.string.s_parameters, getString(type.getStringRes())));
+        builder.setTitle(getString(R.string.s_parameters, getString(type.getNameRes())));
         builder.setView(inflateAndBind(R.layout.simple_integer_params_dialog));
 
         switch (type) {

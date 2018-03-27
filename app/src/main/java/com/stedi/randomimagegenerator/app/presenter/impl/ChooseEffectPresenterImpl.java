@@ -35,7 +35,7 @@ public class ChooseEffectPresenterImpl implements ChooseEffectPresenter {
             effectType = null;
             targetType = currentParams.getType();
         }
-        ui.showTypes(GeneratorType.effectTypes(), effectType, targetType);
+        ui.showTypes(GeneratorType.Companion.getEFFECT_TYPES(), effectType, targetType);
     }
 
     @Override

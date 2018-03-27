@@ -112,12 +112,12 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
 
         if (preset.getGeneratorParams() instanceof EffectGeneratorParams) {
             GeneratorParams targetParams = ((EffectGeneratorParams) preset.getGeneratorParams()).getTarget();
-            sb.append(getString(R.string.generator_type_s, getString(targetParams.getType().getStringRes())));
+            sb.append(getString(R.string.generator_type_s, getString(targetParams.getType().getNameRes())));
             sb.append("\n\n");
-            sb.append(getString(R.string.effect_type_s, getString(preset.getGeneratorParams().getType().getStringRes())));
+            sb.append(getString(R.string.effect_type_s, getString(preset.getGeneratorParams().getType().getNameRes())));
             sb.append("\n\n");
         } else {
-            sb.append(getString(R.string.generator_type_s, getString(preset.getGeneratorParams().getType().getStringRes())));
+            sb.append(getString(R.string.generator_type_s, getString(preset.getGeneratorParams().getType().getNameRes())));
             sb.append("\n\n");
         }
 

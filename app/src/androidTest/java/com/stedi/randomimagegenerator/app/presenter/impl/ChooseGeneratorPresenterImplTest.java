@@ -14,8 +14,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static junit.framework.Assert.*;
-import static org.mockito.Mockito.*;
+import static junit.framework.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 @RunWith(AndroidJUnit4.class)
 public class ChooseGeneratorPresenterImplTest {
@@ -38,7 +43,7 @@ public class ChooseGeneratorPresenterImplTest {
         pendingPreset.getCandidate().setGeneratorParams(GeneratorParams.Companion.createDefaultParams(GeneratorType.FLAT_COLOR));
         presenter.onAttach(ui);
         presenter.getGeneratorTypes();
-        verify(ui, times(1)).showTypes(GeneratorType.nonEffectTypes(), GeneratorType.FLAT_COLOR);
+        verify(ui, times(1)).showTypes(GeneratorType.Companion.getNON_EFFECT_TYPES(), GeneratorType.FLAT_COLOR);
         verifyNoMoreInteractions(ui);
     }
 
@@ -47,7 +52,7 @@ public class ChooseGeneratorPresenterImplTest {
         pendingPreset.getCandidate().setGeneratorParams(GeneratorParams.Companion.createDefaultEffectParams(GeneratorType.MIRRORED, GeneratorParams.Companion.createDefaultParams(GeneratorType.COLORED_CIRCLES)));
         presenter.onAttach(ui);
         presenter.getGeneratorTypes();
-        verify(ui, times(1)).showTypes(GeneratorType.nonEffectTypes(), GeneratorType.COLORED_CIRCLES);
+        verify(ui, times(1)).showTypes(GeneratorType.Companion.getNON_EFFECT_TYPES(), GeneratorType.COLORED_CIRCLES);
         verifyNoMoreInteractions(ui);
     }
 
