@@ -140,16 +140,6 @@ public class PresetTest {
     public void testSettersExceptions() {
         Preset preset = new Preset("ololo", GeneratorParams.Companion.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), "path");
         try {
-            preset.setTimestamp(0);
-            fail();
-        } catch (IllegalArgumentException e) {
-        }
-        try {
-            preset.setName("");
-            fail();
-        } catch (IllegalArgumentException e) {
-        }
-        try {
             preset.setWidth(-1);
             fail();
         } catch (IllegalArgumentException e) {
@@ -171,11 +161,6 @@ public class PresetTest {
         }
         try {
             preset.setCount(-10);
-            fail();
-        } catch (IllegalArgumentException e) {
-        }
-        try {
-            preset.setPathToSave("");
             fail();
         } catch (IllegalArgumentException e) {
         }

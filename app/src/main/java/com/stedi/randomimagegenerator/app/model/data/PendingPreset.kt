@@ -33,9 +33,9 @@ class PendingPreset(
                 Quality.png(),
                 rootSavePath + File.separator + "0")
                 .apply {
-                    width = 800
-                    height = 800
-                    count = 5
+                    setWidth(800)
+                    setHeight(800)
+                    setCount(5)
                 }
         logger.log(this, "after newDefaultCandidate: $this")
     }
