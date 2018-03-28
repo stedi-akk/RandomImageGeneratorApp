@@ -23,6 +23,6 @@ class BuildTypeDependentModule {
     @Provides
     @Singleton
     fun providePresetRepository(@AppContext context: Context, logger: Logger): PresetRepository {
-        return CachedPresetRepository(SlowPresetRepository(DatabasePresetRepository(context, "presets_database_sdbg", logger)))
+        return CachedPresetRepository(SlowPresetRepository(DatabasePresetRepository(context, logger)))
     }
 }
