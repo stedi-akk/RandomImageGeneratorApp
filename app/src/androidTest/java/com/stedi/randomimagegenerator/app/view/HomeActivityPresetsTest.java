@@ -1,6 +1,5 @@
 package com.stedi.randomimagegenerator.app.view;
 
-import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -38,7 +37,7 @@ public class HomeActivityPresetsTest {
 
     @BeforeClass
     public static void beforeClass() {
-        InstrumentationRegistry.getTargetContext().deleteDatabase("database_name");
+        TestUtils.deletePresetDatabase();
     }
 
     @Test

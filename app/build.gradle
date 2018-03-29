@@ -69,7 +69,7 @@ repositories {
 dependencies {
     implementation 'com.stedi.randomimagegenerator:rig:1.0.0'
 
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2.20'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2.31'
 
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support:cardview-v7:26.1.0'
