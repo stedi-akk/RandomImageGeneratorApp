@@ -3,7 +3,7 @@ package com.stedi.randomimagegenerator.app.view.fragments.base;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 
-import com.stedi.randomimagegenerator.app.other.Utils;
+import com.stedi.randomimagegenerator.app.other.CommonKt;
 import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
@@ -25,7 +25,7 @@ public abstract class StepFragment extends ButterKnifeFragment implements Blocki
     @CallSuper
     @Override
     public void onNextClicked(StepperLayout.OnNextClickedCallback callback) {
-        Utils.hideInput(getActivity());
+        CommonKt.hideInput(getActivity());
         callback.goToNextStep();
     }
 
@@ -38,7 +38,7 @@ public abstract class StepFragment extends ButterKnifeFragment implements Blocki
     @CallSuper
     @Override
     public void onBackClicked(StepperLayout.OnBackClickedCallback callback) {
-        Utils.hideInput(getActivity());
+        CommonKt.hideInput(getActivity());
         callback.goToPrevStep();
     }
 }

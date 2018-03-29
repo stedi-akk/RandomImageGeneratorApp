@@ -8,7 +8,7 @@ import com.stedi.randomimagegenerator.app.TestUtils;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
-import com.stedi.randomimagegenerator.app.other.ExtKt;
+import com.stedi.randomimagegenerator.app.other.CommonKt;
 
 import java.util.List;
 import java.util.Random;
@@ -60,7 +60,7 @@ public class FakePresetRepository implements PresetRepository {
     @NonNull
     @Override
     public List<Preset> getAll() throws Exception {
-        return ExtKt.toList(items);
+        return CommonKt.toList(items);
     }
 
     private Preset createTestPreset(int id, GeneratorParams generatorParams) {

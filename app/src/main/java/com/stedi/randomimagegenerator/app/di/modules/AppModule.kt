@@ -7,7 +7,7 @@ import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.di.*
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.other.CachedBus
-import com.stedi.randomimagegenerator.app.other.Utils
+import com.stedi.randomimagegenerator.app.other.dim2px
 import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.view.components.GeneratorTypeImageLoader
 import dagger.Module
@@ -56,6 +56,6 @@ class AppModule(private val app: App) {
     @Provides
     @Singleton
     fun provideGeneratorTypeImageLoader(@AppContext context: Context, @RigScheduler scheduler: Scheduler, logger: Logger): GeneratorTypeImageLoader {
-        return GeneratorTypeImageLoader(Utils.dp2pxi(context, R.dimen.adapter_rig_image_size), scheduler, logger)
+        return GeneratorTypeImageLoader(context.dim2px(R.dimen.adapter_rig_image_size), scheduler, logger)
     }
 }

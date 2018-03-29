@@ -12,8 +12,8 @@ import rx.Scheduler;
 
 public abstract class ApplyGenerationPresenter extends GenerationPresenter<ApplyGenerationPresenter.UIImpl> {
     protected ApplyGenerationPresenter(@NonNull @RigScheduler Scheduler subscribeOn,
-                                    @NonNull @UiScheduler Scheduler observeOn,
-                                    @NonNull CachedBus bus, @NonNull Logger logger) {
+                                       @NonNull @UiScheduler Scheduler observeOn,
+                                       @NonNull CachedBus bus, @NonNull Logger logger) {
         super(subscribeOn, observeOn, bus, logger);
     }
 

@@ -10,15 +10,16 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 import com.stedi.randomimagegenerator.ImageParams;
 import com.stedi.randomimagegenerator.app.R;
-import com.stedi.randomimagegenerator.app.di.modules.HomeModule;
 import com.stedi.randomimagegenerator.app.di.RootSavePath;
+import com.stedi.randomimagegenerator.app.di.modules.HomeModule;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
-import com.stedi.randomimagegenerator.app.other.Utils;
+import com.stedi.randomimagegenerator.app.other.CommonKt;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.HomePresenter;
 import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity;
@@ -76,7 +77,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new ListSpaceDecoration(
-                Utils.dp2pxi(this, R.dimen.common_v_spacing), Utils.dp2pxi(this, R.dimen.common_lr_spacing)));
+                CommonKt.dim2px(this, R.dimen.common_v_spacing), CommonKt.dim2px(this, R.dimen.common_lr_spacing)));
         adapter = new PresetsAdapter(adapterImageLoader, rootSavePath, this);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(recyclerScrollListener);
@@ -107,7 +108,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
     @Override
     public void onFailedToFetchPresets() {
         fab.show(fabShowHideListener);
-        Utils.toastLong(this, R.string.failed_fetch_presets);
+        CommonKt.showToast(this, R.string.failed_fetch_presets, Toast.LENGTH_LONG);
         refreshEmptyView();
     }
 
@@ -146,7 +147,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.UIImpl, 
 
     @Override
     public void onFailedToDeletePreset() {
-        Utils.toastLong(this, R.string.failed_delete_preset);
+        CommonKt.showToast(this, R.string.failed_delete_preset, Toast.LENGTH_LONG);
     }
 
     @Override

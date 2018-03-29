@@ -20,8 +20,8 @@ public abstract class HomePresenter extends GenerationPresenter<HomePresenter.UI
     }
 
     protected HomePresenter(@NonNull @RigScheduler Scheduler subscribeOn,
-                         @NonNull @UiScheduler Scheduler observeOn,
-                         @NonNull CachedBus bus, @NonNull Logger logger) {
+                            @NonNull @UiScheduler Scheduler observeOn,
+                            @NonNull CachedBus bus, @NonNull Logger logger) {
         super(subscribeOn, observeOn, bus, logger);
     }
 

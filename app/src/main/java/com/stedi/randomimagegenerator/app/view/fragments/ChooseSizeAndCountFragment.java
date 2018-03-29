@@ -9,9 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.stedi.randomimagegenerator.app.R;
-import com.stedi.randomimagegenerator.app.other.Utils;
+import com.stedi.randomimagegenerator.app.other.CommonKt;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSizeAndCountPresenter;
 import com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity;
@@ -230,7 +231,7 @@ public class ChooseSizeAndCountFragment extends StepFragment implements
 
     @Override
     public void onError(@NonNull VerificationError error) {
-        Utils.toastLong(getContext(), error.getErrorMessage());
+        CommonKt.showToast(getContext(), error.getErrorMessage(), Toast.LENGTH_LONG);
     }
 
     @Override

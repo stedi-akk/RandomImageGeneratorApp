@@ -8,7 +8,7 @@ import android.support.v7.app.AlertDialog;
 
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
-import com.stedi.randomimagegenerator.app.other.ExtKt;
+import com.stedi.randomimagegenerator.app.other.CommonKt;
 import com.stedi.randomimagegenerator.app.view.dialogs.base.BaseDialogFragment;
 
 import javax.inject.Inject;
@@ -47,7 +47,7 @@ public class ConfirmDialog extends BaseDialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ExtKt.getApp(getContext()).getComponent().inject(this);
+        CommonKt.getApp(getContext()).getComponent().inject(this);
     }
 
     @NonNull

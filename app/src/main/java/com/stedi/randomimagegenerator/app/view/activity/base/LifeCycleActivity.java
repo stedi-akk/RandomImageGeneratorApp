@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.stedi.randomimagegenerator.app.other.ExtKt;
+import com.stedi.randomimagegenerator.app.other.CommonKt;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 
 import javax.inject.Inject;
@@ -17,7 +17,7 @@ public abstract class LifeCycleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         if (LOG) {
-            ExtKt.getApp(this).getComponent().inject(this);
+            CommonKt.getApp(this).getComponent().inject(this);
             logger.log(this, "onCreate");
         }
         super.onCreate(savedInstanceState);

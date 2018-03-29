@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 import com.stedi.randomimagegenerator.ImageParams;
@@ -21,7 +22,7 @@ import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 import com.stedi.randomimagegenerator.app.other.CachedBus;
-import com.stedi.randomimagegenerator.app.other.Utils;
+import com.stedi.randomimagegenerator.app.other.CommonKt;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter;
 import com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity;
@@ -106,7 +107,7 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
         sb.append(getString(R.string.name_s, preset.getName()));
         sb.append("\n\n");
         if (preset.getTimestamp() != 0) {
-            sb.append(getString(R.string.created_s, Utils.formatTime(preset.getTimestamp())));
+            sb.append(getString(R.string.created_s, CommonKt.formatTime(preset.getTimestamp())));
             sb.append("\n\n");
         }
 
@@ -141,7 +142,7 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
 
         sb.append(getString(R.string.quality_s_percent, preset.getQuality().getFormat().name(), String.valueOf(preset.getQuality().getQualityValue())));
         sb.append("\n\n");
-        sb.append(getString(R.string.save_folder_s, Utils.formatSavePath(rootSavePath, preset.getPathToSave())));
+        sb.append(getString(R.string.save_folder_s, CommonKt.formatSavePath(rootSavePath, preset.getPathToSave())));
 
         return sb.toString();
     }
@@ -199,7 +200,7 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
 
     @Override
     public void failedToSavePreset() {
-        Utils.toastLong(getContext(), R.string.failed_save_preset);
+        CommonKt.showToast(getContext(), R.string.failed_save_preset, Toast.LENGTH_LONG);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.stedi.randomimagegenerator.app.view.fragments;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -15,11 +16,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.stedi.randomimagegenerator.app.R;
-import com.stedi.randomimagegenerator.app.other.Utils;
+import com.stedi.randomimagegenerator.app.other.CommonKt;
 import com.stedi.randomimagegenerator.app.other.logger.Logger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSaveOptionsPresenter;
 import com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity;
 import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment;
+
+import java.lang.reflect.Field;
 
 import javax.inject.Inject;
 
@@ -63,7 +66,7 @@ public class ChooseSaveOptionsFragment extends StepFragment implements
         npQuality.setMinValue(0);
         npQuality.setMaxValue(100);
         npQuality.setOnValueChangedListener(this);
-        Utils.setDividerColor(npQuality, getResources().getColor(R.color.colorAccent));
+        setDividerColor(npQuality, getResources().getColor(R.color.colorAccent));
         rgFormat.setOnCheckedChangeListener(this);
         if (savedInstanceState == null) {
             presenter.getData();
@@ -75,7 +78,7 @@ public class ChooseSaveOptionsFragment extends StepFragment implements
     }
 
     private void addFormatButtons() {
-        int height = Utils.dp2pxi(getActivity(), 48f);
+        int height = (int) CommonKt.dp2px(getActivity(), 48f);
         for (Bitmap.CompressFormat format : Bitmap.CompressFormat.values()) {
             RadioButton rb = new AppCompatRadioButton(getActivity());
             rb.setId(format.ordinal());
@@ -143,5 +146,21 @@ public class ChooseSaveOptionsFragment extends StepFragment implements
     public void onDestroy() {
         super.onDestroy();
         presenter.onDetach();
+    }
+
+    // https://stackoverflow.com/questions/24233556/changing-numberpicker-divider-color
+    private void setDividerColor(@NonNull NumberPicker picker, int color) {
+        Field[] pickerFields = NumberPicker.class.getDeclaredFields();
+        for (Field pf : pickerFields) {
+            if (pf.getName().equals("mSelectionDivider")) {
+                pf.setAccessible(true);
+                try {
+                    pf.set(picker, new ColorDrawable(color));
+                } catch (Exception e) {
+                    // ignore
+                }
+                break;
+            }
+        }
     }
 }
