@@ -1,10 +1,10 @@
 package com.stedi.randomimagegenerator.app.model.repository;
 
-import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.stedi.randomimagegenerator.Quality;
+import com.stedi.randomimagegenerator.app.TestUtils;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
@@ -14,14 +14,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.io.File;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.fail;
 
 @RunWith(AndroidJUnit4.class)
 public class DatabasePresetRepositoryTest {
@@ -29,13 +27,8 @@ public class DatabasePresetRepositoryTest {
 
     @Before
     public void before() {
-        Context context = InstrumentationRegistry.getTargetContext();
-        File databaseFile = context.getDatabasePath(DatabasePresetRepository.Companion.getDATABASE_NAME());
-        if (!databaseFile.exists() || context.deleteDatabase(databaseFile.getName())) {
-            repository = new DatabasePresetRepository(context, new SoutLogger("DatabasePresetRepositoryTest"));
-        } else {
-            fail("failed to delete preset database");
-        }
+        TestUtils.deletePresetDatabase();
+        repository = new DatabasePresetRepository(InstrumentationRegistry.getTargetContext(), new SoutLogger("DatabasePresetRepositoryTest"));
     }
 
     @Test

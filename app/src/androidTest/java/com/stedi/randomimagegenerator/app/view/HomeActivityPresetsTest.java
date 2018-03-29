@@ -1,13 +1,15 @@
 package com.stedi.randomimagegenerator.app.view;
 
+import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.stedi.randomimagegenerator.app.R;
+import com.stedi.randomimagegenerator.app.TestUtils;
 import com.stedi.randomimagegenerator.app.other.ExtKt;
-import com.stedi.randomimagegenerator.app.other.Utils;
 import com.stedi.randomimagegenerator.app.view.activity.HomeActivity;
 
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,6 +35,11 @@ import static org.hamcrest.Matchers.not;
 public class HomeActivityPresetsTest {
     @Rule
     public ActivityTestRule<HomeActivity> mActivityTestRule = new ActivityTestRule<>(HomeActivity.class);
+
+    @BeforeClass
+    public static void beforeClass() {
+        InstrumentationRegistry.getTargetContext().deleteDatabase("database_name");
+    }
 
     @Test
     public void testPresetSaveDeleteX2() {

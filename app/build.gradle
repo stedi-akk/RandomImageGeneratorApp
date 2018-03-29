@@ -18,6 +18,10 @@ android {
         manifestPlaceholders = [crashlyticsKey: getLocalProperty("crashlyticsKey")]
     }
 
+    testOptions {
+        execution 'ANDROID_TEST_ORCHESTRATOR'
+    }
+
     signingConfigs {
         release {
             def storeFileProp = getLocalProperty('storeFile')
@@ -97,24 +101,25 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
     testImplementation "org.mockito:mockito-core:2.16.0"
-    androidTestImplementation('com.android.support.test:runner:0.5', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    androidTestImplementation('com.android.support.test:rules:0.5', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
     androidTestImplementation 'org.mockito:mockito-android:2.16.0'
     androidTestImplementation 'com.github.tmurakami:dexopener:0.12.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation('com.android.support.test:runner:1.0.1', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    androidTestImplementation('com.android.support.test:rules:1.0.1', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1', {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
-    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:2.2.2', {
+    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.1', {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.android.support', module: 'support-v4'
         exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.android.support', module: 'design'
         exclude group: 'com.android.support', module: 'recyclerview-v7'
     }
+    androidTestUtil 'com.android.support.test:orchestrator:1.0.1'
 }
 
 def getLocalProperty(String propertyName) {
