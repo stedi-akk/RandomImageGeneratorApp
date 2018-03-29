@@ -77,7 +77,7 @@ public class EditPresetNameDialog extends ButterKnifeDialogFragment {
             etName.setError(getString(R.string.preset_name_empty));
             return;
         }
-        bus.postDead(new OnEdited(name));
+        bus.postDeadEvent(new OnEdited(name));
         dismiss();
     }
 }

@@ -63,7 +63,7 @@ public class ConfirmDialog extends BaseDialogFragment {
             builder.setMessage(message);
         builder.setPositiveButton(R.string.ok, (dialog, which) -> {
             posted = true;
-            bus.postDead(new Callback(requestCode, true));
+            bus.postDeadEvent(new Callback(requestCode, true));
         });
         builder.setNegativeButton(R.string.cancel, null);
         return builder.create();
@@ -73,6 +73,6 @@ public class ConfirmDialog extends BaseDialogFragment {
     public void onDestroy() {
         super.onDestroy();
         if (!posted)
-            bus.postDead(new Callback(requestCode, false));
+            bus.postDeadEvent(new Callback(requestCode, false));
     }
 }

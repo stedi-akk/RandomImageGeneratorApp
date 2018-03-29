@@ -109,27 +109,27 @@ public class CachedBusTest {
         bus.register(testTarget);
         bus.unlock();
 
-        bus.postDead(new TestEvent());
+        bus.postDeadEvent(new TestEvent());
         assertTrue(testTarget.eventsCount == 1);
-        assertTrue(bus.getPostDeadEvents().isEmpty());
+        assertTrue(bus.getAllowedDeadEvents().isEmpty());
 
         bus.lock();
-        bus.postDead(new TestEvent());
+        bus.postDeadEvent(new TestEvent());
         assertTrue(testTarget.eventsCount == 1);
-        assertTrue(bus.getPostDeadEvents().size() == 1);
+        assertTrue(bus.getAllowedDeadEvents().size() == 1);
         assertTrue(bus.getCache().size() == 1);
 
         bus.unregister(testTarget);
         bus.unlock();
 
         assertTrue(testTarget.eventsCount == 1);
-        assertTrue(bus.getPostDeadEvents().isEmpty());
+        assertTrue(bus.getAllowedDeadEvents().isEmpty());
         assertTrue(bus.getCache().isEmpty());
 
         bus.register(testTarget);
-        bus.postDead(new TestEvent());
+        bus.postDeadEvent(new TestEvent());
         assertTrue(testTarget.eventsCount == 2);
-        assertTrue(bus.getPostDeadEvents().isEmpty());
+        assertTrue(bus.getAllowedDeadEvents().isEmpty());
         assertTrue(bus.getCache().isEmpty());
     }
 }

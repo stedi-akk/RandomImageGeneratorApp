@@ -216,13 +216,13 @@ public class HomePresenterImpl extends HomePresenter {
     @Override
     public void onRestore(@NonNull Serializable state) {
         ChainSerializable chainSerializable = (ChainSerializable) state;
-        super.onRestore(chainSerializable.getState());
-        chainSerializable = chainSerializable.getNext();
-        fetchInProgress = (boolean) chainSerializable.getState();
-        chainSerializable = chainSerializable.getNext();
-        lastActionConfirm = (Confirm) chainSerializable.getState();
-        chainSerializable = chainSerializable.getNext();
-        lastActionPresetId = (int) chainSerializable.getState();
+        super.onRestore(chainSerializable.get());
+        chainSerializable = chainSerializable.getChain();
+        fetchInProgress = (boolean) chainSerializable.get();
+        chainSerializable = chainSerializable.getChain();
+        lastActionConfirm = (Confirm) chainSerializable.get();
+        chainSerializable = chainSerializable.getChain();
+        lastActionPresetId = (int) chainSerializable.get();
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -230,7 +230,7 @@ public class HomePresenterImpl extends HomePresenter {
     @Override
     public Serializable onRetain() {
         ChainSerializable chainSerializable = new ChainSerializable(super.onRetain());
-        chainSerializable.createNext(fetchInProgress).createNext(lastActionConfirm).createNext(lastActionPresetId);
+        chainSerializable.addChain(fetchInProgress).addChain(lastActionConfirm).addChain(lastActionPresetId);
         return chainSerializable;
     }
 }

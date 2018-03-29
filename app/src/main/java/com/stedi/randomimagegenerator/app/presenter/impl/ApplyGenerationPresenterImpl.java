@@ -154,10 +154,10 @@ public class ApplyGenerationPresenterImpl extends ApplyGenerationPresenter {
     @Override
     public void onRestore(@NonNull Serializable state) {
         ChainSerializable chainSerializable = (ChainSerializable) state;
-        super.onRestore(chainSerializable.getState());
-        chainSerializable = chainSerializable.getNext();
+        super.onRestore(chainSerializable.get());
+        chainSerializable = chainSerializable.getChain();
         //noinspection ConstantConditions
-        saveInProgress = (boolean) chainSerializable.getState();
+        saveInProgress = (boolean) chainSerializable.get();
     }
 
     @Nullable
@@ -165,7 +165,7 @@ public class ApplyGenerationPresenterImpl extends ApplyGenerationPresenter {
     public Serializable onRetain() {
         //noinspection ConstantConditions
         ChainSerializable chainSerializable = new ChainSerializable(super.onRetain());
-        chainSerializable.createNext(saveInProgress);
+        chainSerializable.addChain(saveInProgress);
         return chainSerializable;
     }
 }

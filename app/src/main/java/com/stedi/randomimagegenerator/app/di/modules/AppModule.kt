@@ -28,7 +28,7 @@ class AppModule(private val app: App) {
 
     @Provides
     @Singleton
-    fun provideBus(logger: Logger): CachedBus = CachedBus(logger)
+    fun provideBus(logger: Logger): CachedBus = CachedBus(logger = logger)
 
     @Provides
     @DefaultScheduler

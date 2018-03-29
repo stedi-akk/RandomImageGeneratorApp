@@ -93,7 +93,7 @@ public class GenerationDialog extends ButterKnifeDialogFragment implements Gener
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setOnShowListener(d -> dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v -> {
-            bus.postDead(new OkClicked());
+            bus.postDeadEvent(new OkClicked());
             dismiss();
         }));
         setCancelable(false);
