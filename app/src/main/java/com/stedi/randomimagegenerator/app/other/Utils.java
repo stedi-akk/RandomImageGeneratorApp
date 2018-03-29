@@ -7,7 +7,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.DimenRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
-import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -19,9 +18,7 @@ import com.stedi.randomimagegenerator.app.di.RootSavePath;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public final class Utils {
     private static SimpleDateFormat dateFormat;
@@ -44,14 +41,6 @@ public final class Utils {
 
     public static float dp2px(@NonNull Context context, float dp) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
-    }
-
-    @NonNull
-    public static <T> List<T> sparseArrayToList(@NonNull SparseArray<T> array) {
-        List<T> result = new ArrayList<>();
-        for (int i = 0; i < array.size(); i++)
-            result.add(array.valueAt(i));
-        return result;
     }
 
     public static void toastLong(@NonNull Context context, @StringRes int id) {
