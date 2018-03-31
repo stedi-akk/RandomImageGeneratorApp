@@ -9,7 +9,6 @@ import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.model.repository.PresetRepository
 import com.stedi.randomimagegenerator.app.other.CachedBus
-import com.stedi.randomimagegenerator.app.other.ChainSerializable
 import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.presenter.interfaces.HomePresenter
 import rx.Scheduler
@@ -157,20 +156,16 @@ class HomePresenterImpl(
     }
 
     override fun onRestore(state: Serializable) {
-        var chain = state as ChainSerializable
-        super.onRestore(chain.get()!!)
-        chain = chain.getChain()!!
-        fetchInProgress = chain.get() as Boolean
-        chain = chain.getChain()!!
-        lastActionConfirm = chain.get() as HomePresenter.Confirm?
-        chain = chain.getChain()!!
-        lastActionPresetId = chain.get() as Int
+        (state as Array<Serializable>).apply {
+            super.onRestore(this[0])
+            fetchInProgress = this[1] as Boolean
+            lastActionConfirm = this[2] as HomePresenter.Confirm?
+            lastActionPresetId = this[3] as Int
+        }
     }
 
     override fun onRetain(): Serializable? {
-        return ChainSerializable(super.onRetain()).apply {
-            addChain(fetchInProgress).addChain(lastActionConfirm).addChain(lastActionPresetId)
-        }
+        return arrayOf(super.onRetain(), fetchInProgress, lastActionConfirm, lastActionPresetId)
     }
 
     private fun deletePreset(presetId: Int) {

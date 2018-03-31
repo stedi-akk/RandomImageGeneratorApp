@@ -9,7 +9,6 @@ import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.model.repository.PresetRepository
 import com.stedi.randomimagegenerator.app.other.CachedBus
-import com.stedi.randomimagegenerator.app.other.ChainSerializable
 import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter
 import rx.Completable
@@ -122,15 +121,13 @@ class ApplyGenerationPresenterImpl(
     }
 
     override fun onRestore(state: Serializable) {
-        (state as ChainSerializable).apply {
-            super.onRestore(get()!!)
-            saveInProgress = getChain()!!.get() as Boolean
+        (state as Array<Serializable>).apply {
+            super.onRestore(this[0])
+            saveInProgress = this[1] as Boolean
         }
     }
 
     override fun onRetain(): Serializable? {
-        return ChainSerializable(super.onRetain()).apply {
-            addChain(saveInProgress)
-        }
+        return arrayOf(super.onRetain(), saveInProgress)
     }
 }
