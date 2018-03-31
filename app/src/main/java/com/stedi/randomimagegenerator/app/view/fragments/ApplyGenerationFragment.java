@@ -179,8 +179,8 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
 
     @Subscribe
     public void onPermissionEvent(BaseActivity.PermissionEvent event) {
-        if (event.requestCode == REQUEST_CODE_WRITE_EXTERNAL) {
-            if (event.isGranted && startGenerationPreset != null) {
+        if (event.getRequestCode() == REQUEST_CODE_WRITE_EXTERNAL) {
+            if (event.isGranted() && startGenerationPreset != null) {
                 //noinspection MissingPermission
                 presenter.startGeneration(startGenerationPreset);
             }
