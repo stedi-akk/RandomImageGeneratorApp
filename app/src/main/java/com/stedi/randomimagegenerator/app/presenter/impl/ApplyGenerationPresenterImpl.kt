@@ -97,7 +97,6 @@ class ApplyGenerationPresenterImpl(
             pendingPreset.candidateSaved()
         }
 
-        val ui = ui
         if (ui == null) {
             logger.log(this, "onPresetSaveEvent when ui == null")
             return
@@ -105,8 +104,8 @@ class ApplyGenerationPresenterImpl(
 
         event.throwable?.apply {
             logger.log(this@ApplyGenerationPresenterImpl, this)
-            ui.failedToSavePreset()
-        } ?: ui.onPresetSaved()
+            ui?.failedToSavePreset()
+        } ?: ui?.onPresetSaved()
     }
 
     @SuppressWarnings("MissingPermission")
