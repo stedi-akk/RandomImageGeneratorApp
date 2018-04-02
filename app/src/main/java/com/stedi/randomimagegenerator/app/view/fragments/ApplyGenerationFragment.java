@@ -160,7 +160,7 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
     @OnClick(R.id.apply_generation_fragment_btn_save)
     public void onSaveClick(View v) {
         Preset preset = presenter.getPreset();
-        EditPresetNameDialog.newInstance(preset.getId() == 0 ? "" : preset.getName()).show(getFragmentManager());
+        EditPresetNameDialog.Companion.newInstance(preset.getId() == 0 ? "" : preset.getName()).show(getFragmentManager());
     }
 
     @OnClick(R.id.apply_generation_fragment_btn_generate)
@@ -174,7 +174,7 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
 
     @Subscribe
     public void onEditedPresetName(EditPresetNameDialog.OnEdited onEdited) {
-        presenter.savePreset(onEdited.name);
+        presenter.savePreset(onEdited.getName());
     }
 
     @Subscribe
