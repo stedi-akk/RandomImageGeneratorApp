@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.view.adapters
 
+import android.graphics.Bitmap
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams
 import com.stedi.randomimagegenerator.app.other.formatSavePath
 import com.stedi.randomimagegenerator.app.other.formatTime
 import com.stedi.randomimagegenerator.app.view.components.GeneratorTypeImageLoader
@@ -87,13 +89,15 @@ class PresetsAdapter(
         holder.btnAction.setOnClickListener(holder)
         holder.btnDelete.setOnClickListener(holder)
 
-        imageLoader.load(mainType, secondType) { _, bitmap ->
-            holder.preset?.let {
-                if (mainType === it.getGeneratorParams().getType()) {
-                    holder.imageView.setImageBitmap(bitmap)
+        imageLoader.load(mainType, secondType, object : GeneratorTypeImageLoader.Callback {
+            override fun onLoaded(params: GeneratorParams, bitmap: Bitmap) {
+                holder.preset?.let {
+                    if (mainType === it.getGeneratorParams().getType()) {
+                        holder.imageView.setImageBitmap(bitmap)
+                    }
                 }
             }
-        }
+        })
     }
 
     inner class ViewHolder(item: View) : RecyclerView.ViewHolder(item), View.OnClickListener {

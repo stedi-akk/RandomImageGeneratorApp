@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.view.adapters
 
+import android.graphics.Bitmap
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams
 import com.stedi.randomimagegenerator.app.view.components.GeneratorTypeImageLoader
 
 class GeneratorTypeAdapter(
@@ -52,12 +54,14 @@ class GeneratorTypeAdapter(
         holder.isSelected.visibility = if (type === selectedType) View.VISIBLE else View.INVISIBLE
         holder.image.setImageResource(R.drawable.ic_texture_adapter_rig_image_size)
 
-        imageLoader.load(type, targetType) { params, bitmap ->
-            if (type === holder.generatorType) {
-                holder.btnEdit.visibility = if (params.isEditable() && type === selectedType) View.VISIBLE else View.INVISIBLE
-                holder.image.setImageBitmap(bitmap)
+        imageLoader.load(type, targetType, object : GeneratorTypeImageLoader.Callback {
+            override fun onLoaded(params: GeneratorParams, bitmap: Bitmap) {
+                if (type === holder.generatorType) {
+                    holder.btnEdit.visibility = if (params.isEditable() && type === selectedType) View.VISIBLE else View.INVISIBLE
+                    holder.image.setImageBitmap(bitmap)
+                }
             }
-        }
+        })
     }
 
     inner class ViewHolder(item: View) : RecyclerView.ViewHolder(item), View.OnClickListener {
