@@ -189,7 +189,7 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
     }
 
     @Subscribe
-    public void onOkClickedEvent(GenerationDialog.OkClicked event) {
+    public void onGenerationDialogDismissed(GenerationDialog.Dismissed event) {
         getActivity().finish();
     }
 
@@ -206,32 +206,32 @@ public class ApplyGenerationFragment extends StepFragment implements ApplyGenera
     @Override
     public void onStartGeneration() {
         logger.log(this, "onStartGeneration");
-        GenerationDialog.getInstance(getFragmentManager()).onStartGeneration();
+        GenerationDialog.Companion.getInstance(getFragmentManager()).onStartGeneration();
     }
 
     @Override
     public void onGenerated(@NonNull ImageParams imageParams, @NonNull File imageFile) {
         logger.log(this, "onGenerated");
         getActivity().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(imageFile)));
-        GenerationDialog.getInstance(getFragmentManager()).onGenerated(imageParams, imageFile);
+        GenerationDialog.Companion.getInstance(getFragmentManager()).onGenerated(imageParams, imageFile);
     }
 
     @Override
     public void onGenerationUnknownError() {
         logger.log(this, "onGenerationUnknownError");
-        GenerationDialog.getInstance(getFragmentManager()).onGenerationUnknownError();
+        GenerationDialog.Companion.getInstance(getFragmentManager()).onGenerationUnknownError();
     }
 
     @Override
     public void onFailedToGenerate(@NonNull ImageParams imageParams) {
         logger.log(this, "onFailedToGenerate");
-        GenerationDialog.getInstance(getFragmentManager()).onFailedToGenerate(imageParams);
+        GenerationDialog.Companion.getInstance(getFragmentManager()).onFailedToGenerate(imageParams);
     }
 
     @Override
     public void onFinishGeneration() {
         logger.log(this, "onFinishGeneration");
-        GenerationDialog.getInstance(getFragmentManager()).onFinishGeneration();
+        GenerationDialog.Companion.getInstance(getFragmentManager()).onFinishGeneration();
     }
 
     @Override

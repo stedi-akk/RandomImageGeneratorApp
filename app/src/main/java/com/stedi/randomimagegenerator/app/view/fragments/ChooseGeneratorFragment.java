@@ -77,7 +77,7 @@ public class ChooseGeneratorFragment extends StepFragment implements
             case COLORED_PIXELS:
             case COLORED_CIRCLES:
             case COLORED_RECTANGLE:
-                SimpleIntegerParamsDialog.newInstance(type).show(getFragmentManager());
+                SimpleIntegerParamsDialog.Companion.newInstance(type).show(getFragmentManager());
                 break;
             case COLORED_NOISE:
                 new ColoredNoiseParamsDialog().show(getFragmentManager());
