@@ -12,8 +12,7 @@ import javax.inject.Inject
 
 class ConfirmDialog : BaseDialogFragment() {
 
-    @Inject
-    lateinit var bus: CachedBus
+    @Inject lateinit var bus: CachedBus
 
     private var requestCode: Int = 0
     private var posted: Boolean = false

@@ -21,13 +21,10 @@ class GenerationStepsActivity : BaseActivity(), GenerationStepsPresenter.UIImpl 
 
     lateinit var generationComponent: GenerationComponent
 
-    @Inject
-    lateinit var presenter: GenerationStepsPresenter
-    @Inject
-    lateinit var logger: Logger
+    @Inject lateinit var presenter: GenerationStepsPresenter
+    @Inject lateinit var logger: Logger
 
-    @BindView(R.id.generation_steps_activity_stepper)
-    lateinit var stepper: StepperLayout
+    @BindView(R.id.generation_steps_activity_stepper) lateinit var stepper: StepperLayout
 
     private lateinit var stepperAdapter: GenerationStepperAdapter
 

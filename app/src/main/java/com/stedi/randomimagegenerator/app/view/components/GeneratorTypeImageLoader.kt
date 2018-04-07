@@ -18,8 +18,7 @@ import java.util.*
 
 class GeneratorTypeImageLoader(
         private val imageSize: Int,
-        @RigScheduler
-        private val subscribeOn: Scheduler,
+        @RigScheduler private val subscribeOn: Scheduler,
         private val logger: Logger) {
 
     private val cache = SparseArray<CacheItem>()

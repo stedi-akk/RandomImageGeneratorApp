@@ -101,18 +101,12 @@ class PresetsAdapter(
     }
 
     inner class ViewHolder(item: View) : RecyclerView.ViewHolder(item), View.OnClickListener {
-        @BindView(R.id.preset_item_tv_name)
-        lateinit var tvName: TextView
-        @BindView(R.id.preset_item_tv_folder)
-        lateinit var tvFolder: TextView
-        @BindView(R.id.preset_item_tv_created)
-        lateinit var tvCreated: TextView
-        @BindView(R.id.preset_item_image)
-        lateinit var imageView: ImageView
-        @BindView(R.id.preset_item_btn_action)
-        lateinit var btnAction: Button
-        @BindView(R.id.preset_item_btn_delete)
-        lateinit var btnDelete: View
+        @BindView(R.id.preset_item_tv_name) lateinit var tvName: TextView
+        @BindView(R.id.preset_item_tv_folder) lateinit var tvFolder: TextView
+        @BindView(R.id.preset_item_tv_created) lateinit var tvCreated: TextView
+        @BindView(R.id.preset_item_image) lateinit var imageView: ImageView
+        @BindView(R.id.preset_item_btn_action) lateinit var btnAction: Button
+        @BindView(R.id.preset_item_btn_delete) lateinit var btnDelete: View
 
         var preset: Preset? = null
 

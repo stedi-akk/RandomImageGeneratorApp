@@ -8,10 +8,8 @@ import com.stedi.randomimagegenerator.app.other.logger.Logger
 import rx.Scheduler
 
 abstract class HomePresenter(
-        @RigScheduler
-        subscribeOn: Scheduler,
-        @UiScheduler
-        observeOn: Scheduler,
+        @RigScheduler subscribeOn: Scheduler,
+        @UiScheduler observeOn: Scheduler,
         bus: CachedBus,
         logger: Logger) : GenerationPresenter<HomePresenter.UIImpl>(subscribeOn, observeOn, bus, logger) {
 

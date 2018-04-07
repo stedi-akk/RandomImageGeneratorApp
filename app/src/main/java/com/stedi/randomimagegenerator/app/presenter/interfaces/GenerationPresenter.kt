@@ -24,10 +24,8 @@ import java.io.File
 import java.io.Serializable
 
 abstract class GenerationPresenter<in T : GenerationPresenter.UIImpl>(
-        @RigScheduler
-        private val subscribeOn: Scheduler,
-        @UiScheduler
-        private val observeOn: Scheduler,
+        @RigScheduler private val subscribeOn: Scheduler,
+        @UiScheduler private val observeOn: Scheduler,
         private val bus: CachedBus,
         private val logger: Logger) : RetainedPresenter<T> {
 

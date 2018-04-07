@@ -25,17 +25,12 @@ class SimpleIntegerParamsDialog : ButterKnifeDialogFragment(),
         CompoundButton.OnCheckedChangeListener,
         SimpleIntegerParamsPresenter.UIImpl {
 
-    @Inject
-    lateinit var presenter: SimpleIntegerParamsPresenter
-    @Inject
-    lateinit var logger: Logger
+    @Inject lateinit var presenter: SimpleIntegerParamsPresenter
+    @Inject lateinit var logger: Logger
 
-    @BindView(R.id.simple_integer_params_tv_input)
-    lateinit var tvInput: TextView
-    @BindView(R.id.simple_integer_params_dialog_et_value)
-    lateinit var etValue: EditText
-    @BindView(R.id.simple_integer_params_dialog_cb_random)
-    lateinit var cbRandom: CheckBox
+    @BindView(R.id.simple_integer_params_tv_input) lateinit var tvInput: TextView
+    @BindView(R.id.simple_integer_params_dialog_et_value) lateinit var etValue: EditText
+    @BindView(R.id.simple_integer_params_dialog_cb_random) lateinit var cbRandom: CheckBox
 
     private var canBeRandom: Boolean = false
 

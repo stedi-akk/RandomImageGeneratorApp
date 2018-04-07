@@ -17,10 +17,8 @@ abstract class BaseActivity : LifeCycleActivity() {
         getApp().component.plus(ActivityModule(this))
     }
 
-    @Inject
-    lateinit var pendingPreset: PendingPreset
-    @Inject
-    lateinit var bus: CachedBus
+    @Inject lateinit var pendingPreset: PendingPreset
+    @Inject lateinit var bus: CachedBus
 
     private companion object {
         var mustRestorePendingPreset = true

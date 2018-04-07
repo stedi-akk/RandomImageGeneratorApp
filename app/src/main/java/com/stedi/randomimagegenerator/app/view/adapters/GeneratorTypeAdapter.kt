@@ -65,16 +65,11 @@ class GeneratorTypeAdapter(
     }
 
     inner class ViewHolder(item: View) : RecyclerView.ViewHolder(item), View.OnClickListener {
-        @BindView(R.id.generator_type_item_card)
-        lateinit var card: View
-        @BindView(R.id.generator_type_item_text)
-        lateinit var text: TextView
-        @BindView(R.id.generator_type_item_btn_edit)
-        lateinit var btnEdit: View
-        @BindView(R.id.generator_type_item_selected)
-        lateinit var isSelected: View
-        @BindView(R.id.generator_type_item_image)
-        lateinit var image: ImageView
+        @BindView(R.id.generator_type_item_card) lateinit var card: View
+        @BindView(R.id.generator_type_item_text) lateinit var text: TextView
+        @BindView(R.id.generator_type_item_btn_edit) lateinit var btnEdit: View
+        @BindView(R.id.generator_type_item_selected) lateinit var isSelected: View
+        @BindView(R.id.generator_type_item_image) lateinit var image: ImageView
 
         var generatorType: GeneratorType? = null
 

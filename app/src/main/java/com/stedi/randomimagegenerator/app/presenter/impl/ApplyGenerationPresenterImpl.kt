@@ -19,14 +19,10 @@ import java.io.Serializable
 class ApplyGenerationPresenterImpl(
         private val pendingPreset: PendingPreset,
         private val presetRepository: PresetRepository,
-        @RootSavePath
-        private val rootSavePath: String,
-        @RigScheduler
-        superSubscribeOn: Scheduler,
-        @DefaultScheduler
-        private val subscribeOn: Scheduler,
-        @UiScheduler
-        private val observeOn: Scheduler,
+        @RootSavePath private val rootSavePath: String,
+        @RigScheduler superSubscribeOn: Scheduler,
+        @DefaultScheduler private val subscribeOn: Scheduler,
+        @UiScheduler private val observeOn: Scheduler,
         private val bus: CachedBus,
         private val logger: Logger) : ApplyGenerationPresenter(superSubscribeOn, observeOn, bus, logger) {
 

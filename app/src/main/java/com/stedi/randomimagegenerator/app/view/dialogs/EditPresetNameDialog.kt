@@ -16,11 +16,9 @@ import javax.inject.Inject
 
 class EditPresetNameDialog : ButterKnifeDialogFragment() {
 
-    @BindView(R.id.edit_preset_name_dialog_et_name)
-    lateinit var etName: EditText
+    @BindView(R.id.edit_preset_name_dialog_et_name) lateinit var etName: EditText
 
-    @Inject
-    lateinit var bus: CachedBus
+    @Inject lateinit var bus: CachedBus
 
     class OnEdited(val name: String)
 

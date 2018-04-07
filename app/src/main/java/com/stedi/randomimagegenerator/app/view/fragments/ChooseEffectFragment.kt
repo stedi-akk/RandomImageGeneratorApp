@@ -19,15 +19,11 @@ import javax.inject.Inject
 
 class ChooseEffectFragment : StepFragment(), GeneratorTypeAdapter.ClickListener, ChooseEffectPresenter.UIImpl {
 
-    @Inject
-    lateinit var presenter: ChooseEffectPresenter
-    @Inject
-    lateinit var logger: Logger
-    @Inject
-    lateinit var adapterImageLoader: GeneratorTypeImageLoader
+    @Inject lateinit var presenter: ChooseEffectPresenter
+    @Inject lateinit var logger: Logger
+    @Inject lateinit var adapterImageLoader: GeneratorTypeImageLoader
 
-    @BindView(R.id.choose_effect_fragment_recycler_view)
-    lateinit var recyclerView: RecyclerView
+    @BindView(R.id.choose_effect_fragment_recycler_view) lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

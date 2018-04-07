@@ -29,15 +29,11 @@ class ChooseSaveOptionsFragment : StepFragment(),
     private val KEY_QUALITY_FORMAT = "KEY_QUALITY_FORMAT"
     private val KEY_QUALITY_VALUE = "KEY_QUALITY_VALUE"
 
-    @Inject
-    lateinit var presenter: ChooseSaveOptionsPresenter
-    @Inject
-    lateinit var logger: Logger
+    @Inject lateinit var presenter: ChooseSaveOptionsPresenter
+    @Inject lateinit var logger: Logger
 
-    @BindView(R.id.choose_save_options_fragment_rg_format)
-    lateinit var rgFormat: RadioGroup
-    @BindView(R.id.choose_save_options_fragment_value_picker)
-    lateinit var npQuality: NumberPicker
+    @BindView(R.id.choose_save_options_fragment_rg_format) lateinit var rgFormat: RadioGroup
+    @BindView(R.id.choose_save_options_fragment_value_picker) lateinit var npQuality: NumberPicker
 
     private var selectedFormat: Bitmap.CompressFormat? = null
     private var selectedValue = -1

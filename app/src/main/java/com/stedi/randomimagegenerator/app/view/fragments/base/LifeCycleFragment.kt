@@ -14,9 +14,7 @@ import javax.inject.Inject
 abstract class LifeCycleFragment : Fragment() {
     private val LOG = false
 
-    @Inject
-    lateinit var lifeCycleLogger: Logger
-
+    @Inject lateinit var lifeCycleLogger: Logger
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

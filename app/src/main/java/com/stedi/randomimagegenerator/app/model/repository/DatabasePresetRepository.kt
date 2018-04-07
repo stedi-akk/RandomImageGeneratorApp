@@ -17,8 +17,7 @@ import com.stedi.randomimagegenerator.app.other.logger.Logger
 import java.sql.SQLException
 
 class DatabasePresetRepository(
-        @AppContext
-        context: Context,
+        @AppContext context: Context,
         private val logger: Logger) : OrmLiteSqliteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION), PresetRepository {
 
     companion object {

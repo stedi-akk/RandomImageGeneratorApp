@@ -38,20 +38,13 @@ class ApplyGenerationFragment : StepFragment(), ApplyGenerationPresenter.UIImpl 
     private val REQUEST_CODE_WRITE_EXTERNAL = 22
     private val KEY_APPLY_GENERATION_PRESENTER_STATE = "KEY_APPLY_GENERATION_PRESENTER_STATE"
 
-    @Inject
-    lateinit var presenter: ApplyGenerationPresenter
-    @Inject
-    lateinit var bus: CachedBus
-    @Inject
-    lateinit var logger: Logger
-    @Inject
-    @field:RootSavePath
-    lateinit var rootSavePath: String
+    @Inject lateinit var presenter: ApplyGenerationPresenter
+    @Inject lateinit var bus: CachedBus
+    @Inject lateinit var logger: Logger
+    @Inject @field:RootSavePath lateinit var rootSavePath: String
 
-    @BindView(R.id.apply_generation_fragment_tv)
-    lateinit var tvOut: TextView
-    @BindView(R.id.apply_generation_fragment_btn_save)
-    lateinit var btnSave: Button
+    @BindView(R.id.apply_generation_fragment_tv) lateinit var tvOut: TextView
+    @BindView(R.id.apply_generation_fragment_btn_save) lateinit var btnSave: Button
 
     private var startGenerationPreset: Preset? = null
 

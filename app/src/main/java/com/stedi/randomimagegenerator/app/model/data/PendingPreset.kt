@@ -9,8 +9,7 @@ import java.io.File
 
 class PendingPreset(
         private val unsavedName: String,
-        @RootSavePath
-        private val rootSavePath: String,
+        @RootSavePath private val rootSavePath: String,
         private val logger: Logger) {
 
     companion object {

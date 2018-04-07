@@ -26,10 +26,8 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
     private val KEY_GENERATED_COUNT = "KEY_GENERATED_COUNT"
     private val KEY_FAILED_COUNT = "KEY_FAILED_COUNT"
 
-    @BindView(R.id.generation_dialog_progress)
-    lateinit var progressBar: View
-    @BindView(R.id.generation_dialog_message)
-    lateinit var tvMessage: TextView
+    @BindView(R.id.generation_dialog_progress) lateinit var progressBar: View
+    @BindView(R.id.generation_dialog_message) lateinit var tvMessage: TextView
 
     private var currentState = State.START
     private var generatedCount: Int = 0
@@ -44,10 +42,8 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
 
     class Dismissed
 
-    @Inject
-    lateinit var bus: CachedBus
-    @Inject
-    lateinit var logger: Logger
+    @Inject lateinit var bus: CachedBus
+    @Inject lateinit var logger: Logger
 
     companion object {
         @SuppressLint("StaticFieldLeak")

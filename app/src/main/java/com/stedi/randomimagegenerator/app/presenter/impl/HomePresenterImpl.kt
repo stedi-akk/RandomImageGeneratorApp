@@ -18,12 +18,9 @@ import java.io.Serializable
 class HomePresenterImpl(
         private val presetRepository: PresetRepository,
         private val pendingPreset: PendingPreset,
-        @DefaultScheduler
-        private val subscribeOn: Scheduler,
-        @RigScheduler
-        superSubscribeOn: Scheduler,
-        @UiScheduler
-        private val observeOn: Scheduler,
+        @DefaultScheduler private val subscribeOn: Scheduler,
+        @RigScheduler superSubscribeOn: Scheduler,
+        @UiScheduler private val observeOn: Scheduler,
         private val bus: CachedBus,
         private val logger: Logger) : HomePresenter(superSubscribeOn, observeOn, bus, logger) {
 

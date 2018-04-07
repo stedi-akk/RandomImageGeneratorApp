@@ -22,29 +22,18 @@ class ChooseSizeAndCountFragment : StepFragment(),
         TextWatcher,
         ChooseSizeAndCountPresenter.UIImpl {
 
-    @Inject
-    lateinit var presenter: ChooseSizeAndCountPresenter
-    @Inject
-    lateinit var logger: Logger
+    @Inject lateinit var presenter: ChooseSizeAndCountPresenter
+    @Inject lateinit var logger: Logger
 
-    @BindView(R.id.choose_size_and_count_et_width)
-    lateinit var etWidth: EditText
-    @BindView(R.id.choose_size_and_count_et_height)
-    lateinit var etHeight: EditText
-    @BindView(R.id.choose_size_and_count_et_count)
-    lateinit var etCount: EditText
-    @BindView(R.id.choose_size_and_count_et_width_range_from)
-    lateinit var etWidthRangeFrom: EditText
-    @BindView(R.id.choose_size_and_count_et_width_range_to)
-    lateinit var etWidthRangeTo: EditText
-    @BindView(R.id.choose_size_and_count_et_width_range_step)
-    lateinit var etWidthRangeStep: EditText
-    @BindView(R.id.choose_size_and_count_et_height_range_from)
-    lateinit var etHeightRangeFrom: EditText
-    @BindView(R.id.choose_size_and_count_et_height_range_to)
-    lateinit var etHeightRangeTo: EditText
-    @BindView(R.id.choose_size_and_count_et_height_range_step)
-    lateinit var etHeightRangeStep: EditText
+    @BindView(R.id.choose_size_and_count_et_width) lateinit var etWidth: EditText
+    @BindView(R.id.choose_size_and_count_et_height) lateinit var etHeight: EditText
+    @BindView(R.id.choose_size_and_count_et_count) lateinit var etCount: EditText
+    @BindView(R.id.choose_size_and_count_et_width_range_from) lateinit var etWidthRangeFrom: EditText
+    @BindView(R.id.choose_size_and_count_et_width_range_to) lateinit var etWidthRangeTo: EditText
+    @BindView(R.id.choose_size_and_count_et_width_range_step) lateinit var etWidthRangeStep: EditText
+    @BindView(R.id.choose_size_and_count_et_height_range_from) lateinit var etHeightRangeFrom: EditText
+    @BindView(R.id.choose_size_and_count_et_height_range_to) lateinit var etHeightRangeTo: EditText
+    @BindView(R.id.choose_size_and_count_et_height_range_step) lateinit var etHeightRangeStep: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

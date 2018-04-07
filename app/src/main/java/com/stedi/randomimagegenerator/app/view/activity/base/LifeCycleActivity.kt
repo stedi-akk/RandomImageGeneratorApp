@@ -9,8 +9,7 @@ import javax.inject.Inject
 abstract class LifeCycleActivity : AppCompatActivity() {
     private val LOG = false
 
-    @Inject
-    lateinit var lifeCycleLogger: Logger
+    @Inject lateinit var lifeCycleLogger: Logger
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (LOG) {

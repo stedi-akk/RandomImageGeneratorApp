@@ -37,22 +37,14 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
     private val REQUEST_CONFIRM_DELETE = 321
     private val REQUEST_CONFIRM_GENERATE = 231
 
-    @Inject
-    lateinit var presenter: HomePresenter
-    @Inject
-    lateinit var logger: Logger
-    @Inject
-    lateinit var adapterImageLoader: GeneratorTypeImageLoader
-    @field:RootSavePath
-    @Inject
-    lateinit var rootSavePath: String
+    @Inject lateinit var presenter: HomePresenter
+    @Inject lateinit var logger: Logger
+    @Inject lateinit var adapterImageLoader: GeneratorTypeImageLoader
+    @Inject @field:RootSavePath lateinit var rootSavePath: String
 
-    @BindView(R.id.home_activity_recycler_view)
-    lateinit var recyclerView: RecyclerView
-    @BindView(R.id.home_activity_empty_view)
-    lateinit var emptyView: View
-    @BindView(R.id.home_activity_fab)
-    lateinit var fab: FloatingActionButton
+    @BindView(R.id.home_activity_recycler_view) lateinit var recyclerView: RecyclerView
+    @BindView(R.id.home_activity_empty_view) lateinit var emptyView: View
+    @BindView(R.id.home_activity_fab) lateinit var fab: FloatingActionButton
 
     private lateinit var adapter: PresetsAdapter
 

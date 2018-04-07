@@ -34,13 +34,10 @@ class ColoredNoiseParamsDialog : ButterKnifeDialogFragment(), ColoredNoiseParams
         RANDOM(ColoredNoiseGenerator.Type.RANDOM, R.string.random, null)
     }
 
-    @Inject
-    lateinit var presenter: ColoredNoiseParamsPresenter
+    @Inject lateinit var presenter: ColoredNoiseParamsPresenter
 
-    @BindView(R.id.colored_noise_params_dialog_sp_orientation)
-    lateinit var spOrientation: Spinner
-    @BindView(R.id.colored_noise_params_dialog_sp_type)
-    lateinit var spType: Spinner
+    @BindView(R.id.colored_noise_params_dialog_sp_orientation) lateinit var spOrientation: Spinner
+    @BindView(R.id.colored_noise_params_dialog_sp_type) lateinit var spType: Spinner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

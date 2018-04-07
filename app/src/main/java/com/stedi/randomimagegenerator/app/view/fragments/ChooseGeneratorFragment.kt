@@ -21,15 +21,11 @@ import javax.inject.Inject
 
 class ChooseGeneratorFragment : StepFragment(), ChooseGeneratorPresenter.UIImpl, GeneratorTypeAdapter.ClickListener {
 
-    @Inject
-    lateinit var presenter: ChooseGeneratorPresenter
-    @Inject
-    lateinit var logger: Logger
-    @Inject
-    lateinit var adapterImageLoader: GeneratorTypeImageLoader
+    @Inject lateinit var presenter: ChooseGeneratorPresenter
+    @Inject lateinit var logger: Logger
+    @Inject lateinit var adapterImageLoader: GeneratorTypeImageLoader
 
-    @BindView(R.id.choose_generator_fragment_recycler_view)
-    lateinit var recyclerView: RecyclerView
+    @BindView(R.id.choose_generator_fragment_recycler_view) lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
