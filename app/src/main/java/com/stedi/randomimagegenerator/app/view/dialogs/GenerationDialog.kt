@@ -79,18 +79,17 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
         isCancelable = false
 
         val context = context as Context
-        return AlertDialog.Builder(context).let {
-            it.setTitle(R.string.please_wait)
-            it.setView(inflateAndBind(R.layout.generation_dialog))
-            it.setPositiveButton(R.string.ok, null)
-            it.create().apply {
-                setCancelable(false)
-                setCanceledOnTouchOutside(false)
-                setOnShowListener {
-                    getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
-                        bus.postDeadEvent(Dismissed())
-                        dismiss()
-                    }
+        return AlertDialog.Builder(context).apply {
+            setTitle(R.string.please_wait)
+            setView(inflateAndBind(R.layout.generation_dialog))
+            setPositiveButton(R.string.ok, null)
+        }.create().apply {
+            setCancelable(false)
+            setCanceledOnTouchOutside(false)
+            setOnShowListener {
+                getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
+                    bus.postDeadEvent(Dismissed())
+                    dismiss()
                 }
             }
         }

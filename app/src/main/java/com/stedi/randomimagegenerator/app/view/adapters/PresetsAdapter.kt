@@ -91,8 +91,8 @@ class PresetsAdapter(
 
         imageLoader.load(mainType, secondType, object : GeneratorTypeImageLoader.Callback {
             override fun onLoaded(params: GeneratorParams, bitmap: Bitmap) {
-                holder.preset?.let {
-                    if (mainType === it.getGeneratorParams().getType()) {
+                holder.preset?.apply {
+                    if (mainType === getGeneratorParams().getType()) {
                         holder.imageView.setImageBitmap(bitmap)
                     }
                 }

@@ -42,26 +42,25 @@ class ConfirmDialog : BaseDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val context = context as Context
-        return AlertDialog.Builder(context).let {
+        return AlertDialog.Builder(context).apply {
             requestCode = arguments?.getInt(KEY_REQUEST_CODE) ?: 0
 
             val title = arguments?.getString(KEY_TITLE, null)
             if (title != null) {
-                it.setTitle(title)
+                setTitle(title)
             }
 
             val message = arguments?.getString(KEY_MESSAGE, null)
             if (message != null) {
-                it.setMessage(message)
+                setMessage(message)
             }
 
-            it.setPositiveButton(R.string.ok) { _, _ ->
+            setPositiveButton(R.string.ok) { _, _ ->
                 posted = true
                 bus.postDeadEvent(Callback(requestCode, true))
             }
-            it.setNegativeButton(R.string.cancel, null)
-            it.create()
-        }
+            setNegativeButton(R.string.cancel, null)
+        }.create()
     }
 
     override fun onDestroy() {

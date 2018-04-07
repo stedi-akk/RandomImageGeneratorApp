@@ -48,20 +48,19 @@ class ColoredNoiseParamsDialog : ButterKnifeDialogFragment(), ColoredNoiseParams
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val context = context as Context
 
-        return AlertDialog.Builder(context).let {
-            it.setPositiveButton(R.string.ok) { _, _ ->
+        return AlertDialog.Builder(context).apply {
+            setPositiveButton(R.string.ok) { _, _ ->
                 presenter.setOrientation(MapedOrientation.values()[spOrientation.selectedItemPosition].orientation)
                 presenter.setType(MapedType.values()[spType.selectedItemPosition].type)
             }
-            it.setTitle(getString(R.string.s_parameters, getString(GeneratorType.COLORED_NOISE.nameRes)))
-            it.setView(inflateAndBind(R.layout.colored_noise_params_dialog))
+            setTitle(getString(R.string.s_parameters, getString(GeneratorType.COLORED_NOISE.nameRes)))
+            setView(inflateAndBind(R.layout.colored_noise_params_dialog))
             spOrientation.adapter = ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, MapedOrientation.values().map { getString(it.nameRes) })
             spType.adapter = ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, MapedType.values().map { getString(it.nameRes, it.formatArg) })
             if (savedInstanceState == null) {
                 presenter.getValues()
             }
-            it.create()
-        }
+        }.create()
     }
 
     override fun showOrientation(orientation: ColoredNoiseGenerator.Orientation) {

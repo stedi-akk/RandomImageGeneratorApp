@@ -35,8 +35,8 @@ class GeneratorTypeImageLoader(
     fun load(mainType: GeneratorType, secondType: GeneratorType?, callback: Callback) {
         val key = createCacheKey(mainType, secondType)
 
-        cache.get(key)?.let {
-            callback.onLoaded(it.params, it.bitmap)
+        cache.get(key)?.apply {
+            callback.onLoaded(params, bitmap)
             return
         }
 

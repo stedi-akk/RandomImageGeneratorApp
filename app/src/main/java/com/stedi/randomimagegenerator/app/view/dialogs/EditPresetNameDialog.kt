@@ -40,27 +40,25 @@ class EditPresetNameDialog : ButterKnifeDialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val context = context as Context
-        return AlertDialog.Builder(context).let { builder ->
-            builder.setTitle(R.string.set_name)
-            builder.setView(inflateAndBind(R.layout.edit_preset_name_dialog))
-            builder.setPositiveButton(R.string.ok, null)
+        val presetName = arguments?.getString(KEY_PRESET_NAME, "") ?: ""
 
-            val presetName = arguments?.getString(KEY_PRESET_NAME, "") ?: ""
+        val context = context as Context
+        return AlertDialog.Builder(context).apply {
+            setTitle(R.string.set_name)
+            setView(inflateAndBind(R.layout.edit_preset_name_dialog))
             etName.setText(presetName)
             etName.setSelection(presetName.length)
-
-            builder.create().apply {
-                if (presetName.isEmpty()) {
-                    etName.requestFocus()
-                    window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
-                }
-                setOnShowListener { getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener { apply() } }
+            setPositiveButton(R.string.ok, null)
+        }.create().apply {
+            if (presetName.isEmpty()) {
+                etName.requestFocus()
+                window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
             }
+            setOnShowListener { getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener { applyName() } }
         }
     }
 
-    private fun apply() {
+    private fun applyName() {
         val name = etName.text.toString().trim { it <= ' ' }
         if (name.isEmpty()) {
             etName.error = getString(R.string.preset_name_empty)
