@@ -14,8 +14,9 @@ import com.stedi.randomimagegenerator.app.presenter.interfaces.HomePresenter
 import rx.Scheduler
 import rx.Single
 import java.io.Serializable
+import javax.inject.Inject
 
-class HomePresenterImpl(
+class HomePresenterImpl @Inject constructor(
         private val presetRepository: PresetRepository,
         private val pendingPreset: PendingPreset,
         @DefaultScheduler private val subscribeOn: Scheduler,

@@ -1,65 +1,36 @@
 package com.stedi.randomimagegenerator.app.di.modules
 
-import com.stedi.randomimagegenerator.app.di.DefaultScheduler
-import com.stedi.randomimagegenerator.app.di.RigScheduler
-import com.stedi.randomimagegenerator.app.di.RootSavePath
-import com.stedi.randomimagegenerator.app.di.UiScheduler
-import com.stedi.randomimagegenerator.app.model.data.PendingPreset
-import com.stedi.randomimagegenerator.app.model.repository.PresetRepository
-import com.stedi.randomimagegenerator.app.other.CachedBus
-import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.presenter.impl.*
 import com.stedi.randomimagegenerator.app.presenter.interfaces.*
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
-import rx.Scheduler
 
-@Module
+@Module(includes = [(GenerationModule.Declarations::class)])
 class GenerationModule {
+    @Module
+    interface Declarations {
+        @Binds
+        fun provideGenerationStepsPresenter(presenter: GenerationStepsPresenterImpl): GenerationStepsPresenter
 
-    @Provides
-    fun provideGenerationStepsPresenter(pendingPreset: PendingPreset, logger: Logger): GenerationStepsPresenter {
-        return GenerationStepsPresenterImpl(pendingPreset, logger)
-    }
+        @Binds
+        fun provideChooseGeneratorPresenter(presenter: ChooseGeneratorPresenterImpl): ChooseGeneratorPresenter
 
-    @Provides
-    fun provideChooseGeneratorPresenter(pendingPreset: PendingPreset, logger: Logger): ChooseGeneratorPresenter {
-        return ChooseGeneratorPresenterImpl(pendingPreset, logger)
-    }
+        @Binds
+        fun provideEditColoredCirclesPresenter(presenter: SimpleIntegerParamsPresenterImpl): SimpleIntegerParamsPresenter
 
-    @Provides
-    fun provideEditColoredCirclesPresenter(pendingPreset: PendingPreset, logger: Logger): SimpleIntegerParamsPresenter {
-        return SimpleIntegerParamsPresenterImpl(pendingPreset, logger)
-    }
+        @Binds
+        fun provideColoredNoiseParamsPresenter(presenter: ColoredNoiseParamsPresenterImpl): ColoredNoiseParamsPresenter
 
-    @Provides
-    fun provideColoredNoiseParamsPresenter(pendingPreset: PendingPreset): ColoredNoiseParamsPresenter {
-        return ColoredNoiseParamsPresenterImpl(pendingPreset)
-    }
+        @Binds
+        fun provideChooseEffectPresenter(presenter: ChooseEffectPresenterImpl): ChooseEffectPresenter
 
-    @Provides
-    fun provideChooseEffectPresenter(pendingPreset: PendingPreset, logger: Logger): ChooseEffectPresenter {
-        return ChooseEffectPresenterImpl(pendingPreset, logger)
-    }
+        @Binds
+        fun provideChooseSizeAndCountPresenter(presenter: ChooseSizeAndCountPresenterImpl): ChooseSizeAndCountPresenter
 
-    @Provides
-    fun provideChooseSizeAndCountPresenter(pendingPreset: PendingPreset, logger: Logger): ChooseSizeAndCountPresenter {
-        return ChooseSizeAndCountPresenterImpl(pendingPreset, logger)
-    }
+        @Binds
+        fun provideChooseSaveOptionsPresenter(presenter: ChooseSaveOptionsPresenterImpl): ChooseSaveOptionsPresenter
 
-    @Provides
-    fun provideChooseSaveOptionsPresenter(pendingPreset: PendingPreset, logger: Logger): ChooseSaveOptionsPresenter {
-        return ChooseSaveOptionsPresenterImpl(pendingPreset, logger)
-    }
-
-    @Provides
-    fun provideApplyGenerationPresenter(pendingPreset: PendingPreset,
-                                        presetRepository: PresetRepository,
-                                        @RootSavePath rootSavePath: String,
-                                        @RigScheduler superSubscribeOn: Scheduler,
-                                        @DefaultScheduler subscribeOn: Scheduler,
-                                        @UiScheduler observeOn: Scheduler,
-                                        bus: CachedBus, logger: Logger): ApplyGenerationPresenter {
-        return ApplyGenerationPresenterImpl(pendingPreset, presetRepository, rootSavePath, superSubscribeOn, subscribeOn, observeOn, bus, logger)
+        @Binds
+        fun provideApplyGenerationPresenter(presenter: ApplyGenerationPresenterImpl): ApplyGenerationPresenter
     }
 }

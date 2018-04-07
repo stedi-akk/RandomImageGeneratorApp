@@ -15,8 +15,9 @@ import rx.Completable
 import rx.Scheduler
 import java.io.File
 import java.io.Serializable
+import javax.inject.Inject
 
-class ApplyGenerationPresenterImpl(
+class ApplyGenerationPresenterImpl @Inject constructor(
         private val pendingPreset: PendingPreset,
         private val presetRepository: PresetRepository,
         @RootSavePath private val rootSavePath: String,

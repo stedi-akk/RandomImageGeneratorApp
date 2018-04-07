@@ -4,9 +4,11 @@ import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSizeAndCountPresenter
+import javax.inject.Inject
 
-class ChooseSizeAndCountPresenterImpl(private val pendingPreset: PendingPreset,
-                                      private val logger: Logger) : ChooseSizeAndCountPresenter {
+class ChooseSizeAndCountPresenterImpl @Inject constructor(
+        private val pendingPreset: PendingPreset,
+        private val logger: Logger) : ChooseSizeAndCountPresenter {
 
     private val candidate: Preset
         get() = pendingPreset.getCandidate()

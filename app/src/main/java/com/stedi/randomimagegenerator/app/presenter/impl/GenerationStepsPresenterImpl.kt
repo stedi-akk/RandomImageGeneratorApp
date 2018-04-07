@@ -3,9 +3,11 @@ package com.stedi.randomimagegenerator.app.presenter.impl
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationStepsPresenter
+import javax.inject.Inject
 
-class GenerationStepsPresenterImpl(private val pendingPreset: PendingPreset,
-                                   private val logger: Logger) : GenerationStepsPresenter {
+class GenerationStepsPresenterImpl @Inject constructor(
+        private val pendingPreset: PendingPreset,
+        private val logger: Logger) : GenerationStepsPresenter {
 
     private var ui: GenerationStepsPresenter.UIImpl? = null
 

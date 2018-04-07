@@ -6,8 +6,10 @@ import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredNois
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ColoredNoiseParamsPresenter
 import com.stedi.randomimagegenerator.generators.ColoredNoiseGenerator
+import javax.inject.Inject
 
-class ColoredNoiseParamsPresenterImpl(private val pendingPreset: PendingPreset) : ColoredNoiseParamsPresenter {
+class ColoredNoiseParamsPresenterImpl @Inject constructor(
+        private val pendingPreset: PendingPreset) : ColoredNoiseParamsPresenter {
 
     private val candidate: Preset
         get() = pendingPreset.getCandidate()

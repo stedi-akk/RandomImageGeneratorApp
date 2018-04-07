@@ -6,9 +6,11 @@ import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.Effect
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.SimpleIntegerParams
 import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.presenter.interfaces.SimpleIntegerParamsPresenter
+import javax.inject.Inject
 
-class SimpleIntegerParamsPresenterImpl(private val pendingPreset: PendingPreset,
-                                       private val logger: Logger) : SimpleIntegerParamsPresenter {
+class SimpleIntegerParamsPresenterImpl @Inject constructor(
+        private val pendingPreset: PendingPreset,
+        private val logger: Logger) : SimpleIntegerParamsPresenter {
 
     private val candidate: Preset
         get() = pendingPreset.getCandidate()

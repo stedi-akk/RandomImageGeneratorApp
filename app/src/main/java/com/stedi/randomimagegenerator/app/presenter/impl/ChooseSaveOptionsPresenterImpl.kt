@@ -6,9 +6,11 @@ import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSaveOptionsPresenter
+import javax.inject.Inject
 
-class ChooseSaveOptionsPresenterImpl(private val pendingPreset: PendingPreset,
-                                     private val logger: Logger) : ChooseSaveOptionsPresenter {
+class ChooseSaveOptionsPresenterImpl @Inject constructor(
+        private val pendingPreset: PendingPreset,
+        private val logger: Logger) : ChooseSaveOptionsPresenter {
 
     private val candidate: Preset
         get() = pendingPreset.getCandidate()

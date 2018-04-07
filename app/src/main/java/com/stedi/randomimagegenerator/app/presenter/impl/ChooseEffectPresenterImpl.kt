@@ -7,9 +7,11 @@ import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.Effect
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams
 import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseEffectPresenter
+import javax.inject.Inject
 
-class ChooseEffectPresenterImpl(private val pendingPreset: PendingPreset,
-                                private val logger: Logger) : ChooseEffectPresenter {
+class ChooseEffectPresenterImpl @Inject constructor(
+        private val pendingPreset: PendingPreset,
+        private val logger: Logger) : ChooseEffectPresenter {
 
     private val candidate: Preset
         get() = pendingPreset.getCandidate()
