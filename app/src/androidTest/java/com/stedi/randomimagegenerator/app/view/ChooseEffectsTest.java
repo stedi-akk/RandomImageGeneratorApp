@@ -4,8 +4,10 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.stedi.randomimagegenerator.app.R;
+import com.stedi.randomimagegenerator.app.TestUtils;
 import com.stedi.randomimagegenerator.app.view.activity.HomeActivity;
 
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +31,11 @@ import static org.hamcrest.Matchers.not;
 public class ChooseEffectsTest {
     @Rule
     public ActivityTestRule<HomeActivity> mActivityTestRule = new ActivityTestRule<>(HomeActivity.class);
+
+    @BeforeClass
+    public static void beforeClass() {
+        TestUtils.deletePresetDatabase();
+    }
 
     @Test
     public void chooseTest() {

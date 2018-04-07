@@ -8,7 +8,7 @@ import com.stedi.randomimagegenerator.app.TestUtils;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
-import com.stedi.randomimagegenerator.app.other.Utils;
+import com.stedi.randomimagegenerator.app.other.CommonKt;
 
 import java.util.List;
 import java.util.Random;
@@ -25,9 +25,9 @@ public class FakePresetRepository implements PresetRepository {
                 GeneratorType gt = GeneratorType.values()[random.nextInt(GeneratorType.values().length)];
                 GeneratorParams generatorParams;
                 if (gt.isEffect()) {
-                    generatorParams = GeneratorParams.createDefaultEffectParams(gt, GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR));
+                    generatorParams = GeneratorParams.Companion.createDefaultEffectParams(gt, GeneratorParams.Companion.createDefaultParams(GeneratorType.FLAT_COLOR));
                 } else {
-                    generatorParams = GeneratorParams.createDefaultParams(gt);
+                    generatorParams = GeneratorParams.Companion.createDefaultParams(gt);
                 }
                 items.put(id, createTestPreset(id, generatorParams));
             }
@@ -60,7 +60,7 @@ public class FakePresetRepository implements PresetRepository {
     @NonNull
     @Override
     public List<Preset> getAll() throws Exception {
-        return Utils.sparseArrayToList(items);
+        return CommonKt.toList(items);
     }
 
     private Preset createTestPreset(int id, GeneratorParams generatorParams) {

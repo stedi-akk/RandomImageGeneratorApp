@@ -5,9 +5,11 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.stedi.randomimagegenerator.app.R;
-import com.stedi.randomimagegenerator.app.other.Utils;
+import com.stedi.randomimagegenerator.app.TestUtils;
+import com.stedi.randomimagegenerator.app.other.CommonKt;
 import com.stedi.randomimagegenerator.app.view.activity.HomeActivity;
 
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,6 +38,11 @@ public class ChooseSizeAndCountTest {
     private final Integer[] WIDTH_RANGE_IDS = new Integer[]{R.id.choose_size_and_count_et_width_range_from, R.id.choose_size_and_count_et_width_range_to, R.id.choose_size_and_count_et_width_range_step};
     private final Integer[] HEIGHT_RANGE_IDS = new Integer[]{R.id.choose_size_and_count_et_height_range_from, R.id.choose_size_and_count_et_height_range_to, R.id.choose_size_and_count_et_height_range_step};
 
+    @BeforeClass
+    public static void beforeClass() {
+        TestUtils.deletePresetDatabase();
+    }
+
     @Test
     public void chooseTest() {
         onView(withId(R.id.home_activity_empty_view))
@@ -57,7 +64,7 @@ public class ChooseSizeAndCountTest {
         verifyText(WIDTH_HEIGHT_COUNT_IDS[2], "300");
         verifyEmpty(WIDTH_RANGE_IDS);
         verifyEmpty(HEIGHT_RANGE_IDS);
-        Utils.sleep(500);
+        CommonKt.sleep(500);
 
         type(WIDTH_RANGE_IDS[0], "100");
 
@@ -70,7 +77,7 @@ public class ChooseSizeAndCountTest {
         verifyText(WIDTH_HEIGHT_COUNT_IDS[1], "200");
         verifyEmpty(WIDTH_HEIGHT_COUNT_IDS[2]);
         verifyEmpty(HEIGHT_RANGE_IDS);
-        Utils.sleep(500);
+        CommonKt.sleep(500);
 
         type(HEIGHT_RANGE_IDS[0], "100");
 
@@ -83,7 +90,7 @@ public class ChooseSizeAndCountTest {
         verifyText(HEIGHT_RANGE_IDS[1], "1");
         verifyText(HEIGHT_RANGE_IDS[2], "1");
         verifyEmpty(WIDTH_HEIGHT_COUNT_IDS);
-        Utils.sleep(500);
+        CommonKt.sleep(500);
 
         type(WIDTH_HEIGHT_COUNT_IDS[2], "300");
 
@@ -94,7 +101,7 @@ public class ChooseSizeAndCountTest {
         verifyText(WIDTH_HEIGHT_COUNT_IDS[2], "300");
         verifyEmpty(WIDTH_RANGE_IDS);
         verifyEmpty(HEIGHT_RANGE_IDS);
-        Utils.sleep(500);
+        CommonKt.sleep(500);
 
         type(WIDTH_RANGE_IDS[2], "100");
 
@@ -107,7 +114,7 @@ public class ChooseSizeAndCountTest {
         verifyText(WIDTH_HEIGHT_COUNT_IDS[1], "1");
         verifyEmpty(WIDTH_HEIGHT_COUNT_IDS[2]);
         verifyEmpty(HEIGHT_RANGE_IDS);
-        Utils.sleep(500);
+        CommonKt.sleep(500);
 
         type(HEIGHT_RANGE_IDS[2], "100");
 
@@ -120,7 +127,7 @@ public class ChooseSizeAndCountTest {
         verifyText(HEIGHT_RANGE_IDS[1], "1");
         verifyText(HEIGHT_RANGE_IDS[2], "100");
         verifyEmpty(WIDTH_HEIGHT_COUNT_IDS);
-        Utils.sleep(500);
+        CommonKt.sleep(500);
 
         type(WIDTH_HEIGHT_COUNT_IDS[1], "100");
 
@@ -133,7 +140,7 @@ public class ChooseSizeAndCountTest {
         verifyText(WIDTH_RANGE_IDS[1], "1");
         verifyText(WIDTH_RANGE_IDS[2], "100");
         verifyEmpty(HEIGHT_RANGE_IDS);
-        Utils.sleep(500);
+        CommonKt.sleep(500);
 
         type(WIDTH_HEIGHT_COUNT_IDS[0], "100");
 
@@ -144,7 +151,7 @@ public class ChooseSizeAndCountTest {
         verifyText(WIDTH_HEIGHT_COUNT_IDS[2], "1");
         verifyEmpty(WIDTH_RANGE_IDS);
         verifyEmpty(HEIGHT_RANGE_IDS);
-        Utils.sleep(500);
+        CommonKt.sleep(500);
     }
 
     @Test
@@ -162,7 +169,7 @@ public class ChooseSizeAndCountTest {
         type(WIDTH_HEIGHT_COUNT_IDS[2], "300");
         verifyEmpty(WIDTH_RANGE_IDS);
         verifyEmpty(HEIGHT_RANGE_IDS);
-        Utils.sleep(500);
+        CommonKt.sleep(500);
 
         type(WIDTH_RANGE_IDS[0], "100");
         verifyText(WIDTH_RANGE_IDS[1], "1");
@@ -170,20 +177,20 @@ public class ChooseSizeAndCountTest {
         verifyEmpty(WIDTH_HEIGHT_COUNT_IDS[0]);
         verifyText(WIDTH_HEIGHT_COUNT_IDS[1], "200");
         verifyEmpty(WIDTH_HEIGHT_COUNT_IDS[2]);
-        Utils.sleep(500);
+        CommonKt.sleep(500);
 
         type(HEIGHT_RANGE_IDS[0], "100");
         verifyText(HEIGHT_RANGE_IDS[1], "1");
         verifyText(HEIGHT_RANGE_IDS[2], "1");
         verifyEmpty(WIDTH_HEIGHT_COUNT_IDS);
-        Utils.sleep(500);
+        CommonKt.sleep(500);
 
         type(WIDTH_HEIGHT_COUNT_IDS[2], "300");
         verifyText(WIDTH_HEIGHT_COUNT_IDS[0], "1");
         verifyText(WIDTH_HEIGHT_COUNT_IDS[1], "1");
         verifyEmpty(WIDTH_RANGE_IDS);
         verifyEmpty(HEIGHT_RANGE_IDS);
-        Utils.sleep(500);
+        CommonKt.sleep(500);
 
         type(WIDTH_RANGE_IDS[2], "100");
         verifyText(WIDTH_RANGE_IDS[0], "1");
@@ -191,13 +198,13 @@ public class ChooseSizeAndCountTest {
         verifyEmpty(WIDTH_HEIGHT_COUNT_IDS[0]);
         verifyText(WIDTH_HEIGHT_COUNT_IDS[1], "1");
         verifyEmpty(WIDTH_HEIGHT_COUNT_IDS[2]);
-        Utils.sleep(500);
+        CommonKt.sleep(500);
 
         type(HEIGHT_RANGE_IDS[2], "100");
         verifyText(HEIGHT_RANGE_IDS[0], "1");
         verifyText(HEIGHT_RANGE_IDS[1], "1");
         verifyEmpty(WIDTH_HEIGHT_COUNT_IDS);
-        Utils.sleep(500);
+        CommonKt.sleep(500);
 
         type(WIDTH_HEIGHT_COUNT_IDS[1], "100");
         verifyEmpty(WIDTH_HEIGHT_COUNT_IDS[0]);
@@ -206,14 +213,14 @@ public class ChooseSizeAndCountTest {
         verifyText(WIDTH_RANGE_IDS[0], "1");
         verifyText(WIDTH_RANGE_IDS[1], "1");
         verifyEmpty(HEIGHT_RANGE_IDS);
-        Utils.sleep(500);
+        CommonKt.sleep(500);
 
         type(WIDTH_HEIGHT_COUNT_IDS[0], "100");
         verifyText(WIDTH_HEIGHT_COUNT_IDS[1], "100");
         verifyText(WIDTH_HEIGHT_COUNT_IDS[2], "1");
         verifyEmpty(WIDTH_RANGE_IDS);
         verifyEmpty(HEIGHT_RANGE_IDS);
-        Utils.sleep(500);
+        CommonKt.sleep(500);
     }
 
     private void type(@IdRes int id, String text) {

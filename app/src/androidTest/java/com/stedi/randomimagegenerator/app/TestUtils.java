@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.test.InstrumentationRegistry;
 
@@ -7,9 +8,12 @@ import com.stedi.randomimagegenerator.Quality;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
+import com.stedi.randomimagegenerator.app.model.repository.DatabasePresetRepository;
 
 import java.io.File;
 import java.io.IOException;
+
+import static org.junit.Assert.fail;
 
 public final class TestUtils {
     private TestUtils() {
@@ -26,25 +30,40 @@ public final class TestUtils {
             System.out.println("test folder successfully deleted");
         } catch (IOException e) {
             e.printStackTrace();
+            fail("failed to delete test folder");
+        }
+    }
+
+    public static void deletePresetDatabase() {
+        Context context = InstrumentationRegistry.getTargetContext();
+        File databaseFile = context.getDatabasePath(DatabasePresetRepository.Companion.getDATABASE_NAME());
+        if (!databaseFile.exists() || context.deleteDatabase(databaseFile.getName())) {
+            System.out.println("preset database successfully deleted");
+        } else {
+            fail("failed to delete preset database");
         }
     }
 
     @NonNull
     public static Preset newSimplePreset() {
-        Preset preset = new Preset("name", GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), TestUtils.getTestFolder().getAbsolutePath());
+        Preset preset = new Preset("name", GeneratorParams.Companion.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), TestUtils.getTestFolder().getAbsolutePath());
         preset.setTimestamp(System.currentTimeMillis());
         return preset;
     }
 
     private static void deleteRecursively(File fileOrDirectory) throws IOException {
-        if (!fileOrDirectory.exists())
+        if (!fileOrDirectory.exists()) {
             return;
+        }
 
-        if (fileOrDirectory.isDirectory())
-            for (File child : fileOrDirectory.listFiles())
+        if (fileOrDirectory.isDirectory()) {
+            for (File child : fileOrDirectory.listFiles()) {
                 deleteRecursively(child);
+            }
+        }
 
-        if (!fileOrDirectory.delete())
+        if (!fileOrDirectory.delete()) {
             throw new IOException("failed to delete: " + fileOrDirectory.getAbsolutePath());
+        }
     }
 }

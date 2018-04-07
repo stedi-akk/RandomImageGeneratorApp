@@ -54,8 +54,8 @@ public class EffectGeneratorParamsEqualsTest {
 
     @Test
     public void test() {
-        GeneratorParams target1 = GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR);
-        GeneratorParams target2 = GeneratorParams.createDefaultParams(GeneratorType.COLORED_PIXELS);
+        GeneratorParams target1 = GeneratorParams.Companion.createDefaultParams(GeneratorType.FLAT_COLOR);
+        GeneratorParams target2 = GeneratorParams.Companion.createDefaultParams(GeneratorType.COLORED_PIXELS);
 
         EffectParams1 effectParams1First = new EffectParams1(target1);
         EffectParams1 effectParams1Second = new EffectParams1(target1);

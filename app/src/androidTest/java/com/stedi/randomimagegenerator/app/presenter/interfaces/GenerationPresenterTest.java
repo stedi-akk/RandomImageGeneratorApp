@@ -9,8 +9,8 @@ import com.stedi.randomimagegenerator.ImageParams;
 import com.stedi.randomimagegenerator.Quality;
 import com.stedi.randomimagegenerator.Rig;
 import com.stedi.randomimagegenerator.app.TestUtils;
-import com.stedi.randomimagegenerator.app.di.qualifiers.RigScheduler;
-import com.stedi.randomimagegenerator.app.di.qualifiers.UiScheduler;
+import com.stedi.randomimagegenerator.app.di.RigScheduler;
+import com.stedi.randomimagegenerator.app.di.UiScheduler;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
@@ -78,7 +78,7 @@ public class GenerationPresenterTest {
 
     @Test
     public void testOneSimple() {
-        Preset preset = new Preset("name", GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), TestUtils.getTestFolder().getAbsolutePath());
+        Preset preset = new Preset("name", GeneratorParams.Companion.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), TestUtils.getTestFolder().getAbsolutePath());
         preset.setWidth(100);
         preset.setHeight(200);
         preset.setCount(1);
@@ -149,7 +149,7 @@ public class GenerationPresenterTest {
 
     @Test
     public void testMany() {
-        Preset preset = new Preset("name", GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), TestUtils.getTestFolder().getAbsolutePath());
+        Preset preset = new Preset("name", GeneratorParams.Companion.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), TestUtils.getTestFolder().getAbsolutePath());
         preset.setWidth(66);
         preset.setHeight(99);
         preset.setCount(6);
@@ -211,7 +211,7 @@ public class GenerationPresenterTest {
 
     @Test
     public void testManyRange() {
-        Preset preset = new Preset("name", GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR), new Quality(Bitmap.CompressFormat.WEBP, 100), TestUtils.getTestFolder().getAbsolutePath());
+        Preset preset = new Preset("name", GeneratorParams.Companion.createDefaultParams(GeneratorType.FLAT_COLOR), new Quality(Bitmap.CompressFormat.WEBP, 100), TestUtils.getTestFolder().getAbsolutePath());
         preset.setWidthRange(10, 100, 50);
         preset.setHeightRange(100, 10, 50);
 
