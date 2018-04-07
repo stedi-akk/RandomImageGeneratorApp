@@ -21,8 +21,8 @@ class DatabasePresetRepository(
         private val logger: Logger) : OrmLiteSqliteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION), PresetRepository {
 
     companion object {
-        val DATABASE_NAME = "presets_database"
-        val DATABASE_VERSION = 1
+        const val DATABASE_NAME = "presets_database"
+        const val DATABASE_VERSION = 1
     }
 
     override fun onCreate(database: SQLiteDatabase, connectionSource: ConnectionSource) {

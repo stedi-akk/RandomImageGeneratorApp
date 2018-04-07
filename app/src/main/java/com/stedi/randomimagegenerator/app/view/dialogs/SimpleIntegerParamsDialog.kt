@@ -35,7 +35,7 @@ class SimpleIntegerParamsDialog : ButterKnifeDialogFragment(),
     private var canBeRandom: Boolean = false
 
     companion object {
-        private val KEY_TYPE = "KEY_TYPE"
+        private const val KEY_TYPE = "KEY_TYPE"
 
         fun newInstance(type: GeneratorType): SimpleIntegerParamsDialog {
             if (arrayOf(GeneratorType.COLORED_CIRCLES, GeneratorType.COLORED_RECTANGLE, GeneratorType.COLORED_PIXELS).none { it == type }) {

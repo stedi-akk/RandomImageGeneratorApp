@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
+import android.support.annotation.UiThread
 import android.support.v4.app.FragmentManager
 import android.support.v7.app.AlertDialog
 import android.view.View
@@ -49,6 +50,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
         @SuppressLint("StaticFieldLeak")
         private var instance: GenerationDialog? = null
 
+        @UiThread
         fun getInstance(fm: FragmentManager): GenerationDialog {
             if (instance == null) {
                 instance = GenerationDialog().apply { show(fm) }

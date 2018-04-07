@@ -20,9 +20,9 @@ class ConfirmDialog : BaseDialogFragment() {
     class Callback(val requestCode: Int, val confirm: Boolean)
 
     companion object {
-        private val KEY_REQUEST_CODE = "KEY_REQUEST_CODE"
-        private val KEY_TITLE = "KEY_TITLE"
-        private val KEY_MESSAGE = "KEY_MESSAGE"
+        private const val KEY_REQUEST_CODE = "KEY_REQUEST_CODE"
+        private const val KEY_TITLE = "KEY_TITLE"
+        private const val KEY_MESSAGE = "KEY_MESSAGE"
 
         fun newInstance(requestCode: Int, title: String?, message: String?): ConfirmDialog {
             return ConfirmDialog().apply {

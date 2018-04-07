@@ -36,7 +36,7 @@ public final class TestUtils {
 
     public static void deletePresetDatabase() {
         Context context = InstrumentationRegistry.getTargetContext();
-        File databaseFile = context.getDatabasePath(DatabasePresetRepository.Companion.getDATABASE_NAME());
+        File databaseFile = context.getDatabasePath(DatabasePresetRepository.DATABASE_NAME);
         if (!databaseFile.exists() || context.deleteDatabase(databaseFile.getName())) {
             System.out.println("preset database successfully deleted");
         } else {

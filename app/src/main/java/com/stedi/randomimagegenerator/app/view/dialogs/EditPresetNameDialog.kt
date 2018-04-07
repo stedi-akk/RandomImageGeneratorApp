@@ -23,7 +23,7 @@ class EditPresetNameDialog : ButterKnifeDialogFragment() {
     class OnEdited(val name: String)
 
     companion object {
-        private val KEY_PRESET_NAME = "KEY_PRESET_NAME"
+        private const val KEY_PRESET_NAME = "KEY_PRESET_NAME"
 
         fun newInstance(presetName: String): EditPresetNameDialog {
             return EditPresetNameDialog().apply {

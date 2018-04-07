@@ -29,7 +29,7 @@ class GenerationStepsActivity : BaseActivity(), GenerationStepsPresenter.UIImpl 
     private lateinit var stepperAdapter: GenerationStepperAdapter
 
     companion object {
-        private val KEY_NEW_GENERATION = "KEY_NEW_GENERATION"
+        private const val KEY_NEW_GENERATION = "KEY_NEW_GENERATION"
 
         fun start(context: Context, newGeneration: Boolean) {
             val intent = Intent(context, GenerationStepsActivity::class.java)

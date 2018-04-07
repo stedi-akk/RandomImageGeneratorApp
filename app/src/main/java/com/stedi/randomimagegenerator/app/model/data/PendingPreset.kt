@@ -13,9 +13,9 @@ class PendingPreset(
         private val logger: Logger) {
 
     companion object {
-        private val KEY_MAIN_PRESET = "KEY_MAIN_PRESET"
-        private val KEY_CANDIDATE_FROM_PRESET = "KEY_CANDIDATE_FROM_PRESET"
-        private val KEY_CANDIDATE_PRESET = "KEY_CANDIDATE_PRESET"
+        private const val KEY_MAIN_PRESET = "KEY_MAIN_PRESET"
+        private const val KEY_CANDIDATE_FROM_PRESET = "KEY_CANDIDATE_FROM_PRESET"
+        private const val KEY_CANDIDATE_PRESET = "KEY_CANDIDATE_PRESET"
     }
 
     private var preset: Preset? = null
