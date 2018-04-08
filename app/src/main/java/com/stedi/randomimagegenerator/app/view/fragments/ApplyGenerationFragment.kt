@@ -99,14 +99,14 @@ class ApplyGenerationFragment : StepFragment(), ApplyGenerationPresenter.UIImpl 
                 append("\n\n")
             }
 
-            if (preset.getGeneratorParams() is EffectGeneratorParams) {
-                val targetParams = (preset.getGeneratorParams() as EffectGeneratorParams).target
-                append(getString(R.string.generator_type_s, getString(targetParams.getType().nameRes)))
+            val generatorParams = preset.getGeneratorParams()
+            if (generatorParams is EffectGeneratorParams) {
+                append(getString(R.string.generator_type_s, getString(generatorParams.target.getType().nameRes)))
                 append("\n\n")
-                append(getString(R.string.effect_type_s, getString(preset.getGeneratorParams().getType().nameRes)))
+                append(getString(R.string.effect_type_s, getString(generatorParams.getType().nameRes)))
                 append("\n\n")
             } else {
-                append(getString(R.string.generator_type_s, getString(preset.getGeneratorParams().getType().nameRes)))
+                append(getString(R.string.generator_type_s, getString(generatorParams.getType().nameRes)))
                 append("\n\n")
             }
 
@@ -169,10 +169,11 @@ class ApplyGenerationFragment : StepFragment(), ApplyGenerationPresenter.UIImpl 
     @Subscribe
     fun onPermissionEvent(event: BaseActivity.PermissionEvent) {
         if (event.requestCode == REQUEST_CODE_WRITE_EXTERNAL) {
+            val startGenerationPreset = startGenerationPreset
             if (event.isGranted && startGenerationPreset != null) {
-                presenter.startGeneration(startGenerationPreset!!)
+                presenter.startGeneration(startGenerationPreset)
             }
-            startGenerationPreset = null
+            this.startGenerationPreset = null
         }
     }
 
@@ -191,28 +192,33 @@ class ApplyGenerationFragment : StepFragment(), ApplyGenerationPresenter.UIImpl 
 
     override fun onStartGeneration() {
         logger.log(this, "onStartGeneration")
-        GenerationDialog.getInstance(fragmentManager!!).onStartGeneration()
+        val fragmentManager = fragmentManager ?: return
+        GenerationDialog.getInstance(fragmentManager).onStartGeneration()
     }
 
     override fun onGenerated(imageParams: ImageParams, imageFile: File) {
         logger.log(this, "onGenerated")
-        activity!!.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(imageFile)))
-        GenerationDialog.getInstance(fragmentManager!!).onGenerated(imageParams, imageFile)
+        val fragmentManager = fragmentManager ?: return
+        activity?.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(imageFile)))
+        GenerationDialog.getInstance(fragmentManager).onGenerated(imageParams, imageFile)
     }
 
     override fun onGenerationUnknownError() {
         logger.log(this, "onGenerationUnknownError")
-        GenerationDialog.getInstance(fragmentManager!!).onGenerationUnknownError()
+        val fragmentManager = fragmentManager ?: return
+        GenerationDialog.getInstance(fragmentManager).onGenerationUnknownError()
     }
 
     override fun onFailedToGenerate(imageParams: ImageParams) {
         logger.log(this, "onFailedToGenerate")
-        GenerationDialog.getInstance(fragmentManager!!).onFailedToGenerate(imageParams)
+        val fragmentManager = fragmentManager ?: return
+        GenerationDialog.getInstance(fragmentManager).onFailedToGenerate(imageParams)
     }
 
     override fun onFinishGeneration() {
         logger.log(this, "onFinishGeneration")
-        GenerationDialog.getInstance(fragmentManager!!).onFinishGeneration()
+        val fragmentManager = fragmentManager ?: return
+        GenerationDialog.getInstance(fragmentManager).onFinishGeneration()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

@@ -31,7 +31,7 @@ class HomePresenterImpl @Inject constructor(
     private var lastActionConfirm: HomePresenter.Confirm? = null
     private var lastActionPresetId: Int = 0
 
-    class FetchPresetsEvent(val presets: List<Preset>?, val throwable: Throwable? = null)
+    class FetchPresetsEvent(val presets: List<Preset> = emptyList(), val throwable: Throwable? = null)
     class DeletePresetEvent(val preset: Preset?, val throwable: Throwable? = null)
 
     override fun onAttach(ui: HomePresenter.UIImpl) {
@@ -59,7 +59,7 @@ class HomePresenterImpl @Inject constructor(
                 .subscribe({
                     bus.post(FetchPresetsEvent(it))
                 }, { t ->
-                    bus.post(FetchPresetsEvent(null, t))
+                    bus.post(FetchPresetsEvent(throwable = t))
                 })
     }
 
@@ -100,7 +100,7 @@ class HomePresenterImpl @Inject constructor(
         }
         lastActionConfirm = HomePresenter.Confirm.DELETE_PRESET
         lastActionPresetId = preset.id
-        ui?.showConfirmLastAction(lastActionConfirm!!)
+        ui?.showConfirmLastAction(HomePresenter.Confirm.DELETE_PRESET)
     }
 
     override fun startGeneration(preset: Preset) {
@@ -111,7 +111,7 @@ class HomePresenterImpl @Inject constructor(
         logger.log(this, "startGeneration $preset")
         lastActionConfirm = HomePresenter.Confirm.GENERATE_FROM_PRESET
         lastActionPresetId = preset.id
-        ui?.showConfirmLastAction(lastActionConfirm!!)
+        ui?.showConfirmLastAction(HomePresenter.Confirm.GENERATE_FROM_PRESET)
     }
 
     @Subscribe
@@ -133,7 +133,7 @@ class HomePresenterImpl @Inject constructor(
         event.throwable?.apply {
             logger.log(this@HomePresenterImpl, this)
             ui?.onFailedToFetchPresets()
-        } ?: ui?.onPresetsFetched(pendingPreset.get(), event.presets!!)
+        } ?: ui?.onPresetsFetched(pendingPreset.get(), event.presets)
     }
 
     @Subscribe

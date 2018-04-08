@@ -81,9 +81,10 @@ class GeneratorTypeAdapter(
             if (v === btnEdit) {
                 listener.onEditSelected()
             } else if (v === card) {
+                val generatorType = generatorType ?: return
                 if (selectedType !== generatorType) {
                     selectedType = generatorType
-                    listener.onSelected(selectedType!!)
+                    listener.onSelected(generatorType)
                     runSelectionAnimation()
                     notifyDataSetChanged()
                 } else if (isDeselectAllowed) {

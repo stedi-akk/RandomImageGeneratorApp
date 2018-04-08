@@ -73,10 +73,11 @@ class PresetsAdapter(
         val preset = presetsList[position]
         holder.preset = preset
 
-        val mainType = preset.getGeneratorParams().getType()
+        val generatorParams = preset.getGeneratorParams()
+        val mainType = generatorParams.getType()
         var secondType: GeneratorType? = null
-        if (preset.getGeneratorParams() is EffectGeneratorParams) {
-            secondType = (preset.getGeneratorParams() as EffectGeneratorParams).target.getType()
+        if (generatorParams is EffectGeneratorParams) {
+            secondType = generatorParams.target.getType()
         }
 
         holder.tvName.text = preset.name

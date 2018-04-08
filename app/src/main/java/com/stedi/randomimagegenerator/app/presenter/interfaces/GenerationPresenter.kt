@@ -32,7 +32,7 @@ abstract class GenerationPresenter<in T : GenerationPresenter.UIImpl>(
     private var ui: UIImpl? = null
     private var generationInProgress: Boolean = false
 
-    private class Event(val type: Type, val imageParams: ImageParams? = null, val imageFile: File? = null) {
+    class Event(val type: Type, val imageParams: ImageParams? = null, val imageFile: File? = null) {
         enum class Type {
             ON_START_GENERATION,
             ON_GENERATION_UNKNOWN_ERROR,
@@ -88,24 +88,29 @@ abstract class GenerationPresenter<in T : GenerationPresenter.UIImpl>(
 
                         override fun onFailedToGenerate(imageParams: ImageParams, e: Exception) {
                             logger.log(this@GenerationPresenter, e)
-                            Completable.fromAction { bus.post(Event(Event.Type.ON_FAILED_TO_GENERATE, imageParams)) }.subscribeOn(observeOn).subscribe()
+                            post(Event(Event.Type.ON_FAILED_TO_GENERATE, imageParams))
                         }
                     })
 
                     setFileSaveCallback(object : SaveCallback {
                         override fun onSaved(bitmap: Bitmap, file: File) {
                             val generationForRef = generationFor
-                            Completable.fromAction { bus.post(Event(Event.Type.ON_GENERATED, generationForRef, file)) }.subscribeOn(observeOn).subscribe()
+                            post(Event(Event.Type.ON_GENERATED, generationForRef, file))
                         }
 
                         override fun onFailedToSave(bitmap: Bitmap, e: Exception) {
                             logger.log(this@GenerationPresenter, e)
                             val generationForRef = generationFor
-                            Completable.fromAction { bus.post(Event(Event.Type.ON_FAILED_TO_GENERATE, generationForRef)) }.subscribeOn(observeOn).subscribe()
+                            post(Event(Event.Type.ON_FAILED_TO_GENERATE, generationForRef))
                         }
                     })
                 }.build().generate()
             }
+
+            private fun post(event: Event) {
+                Completable.fromAction { bus.post(event) }.subscribeOn(observeOn).subscribe()
+            }
+
         }).subscribeOn(subscribeOn)
                 .observeOn(observeOn)
                 .subscribe({
@@ -156,13 +161,13 @@ abstract class GenerationPresenter<in T : GenerationPresenter.UIImpl>(
     }
 
     @CallSuper
-    override fun onRetain(): Serializable? {
-        return generationInProgress
+    override fun onRestore(state: Serializable) {
+        generationInProgress = state as Boolean
     }
 
     @CallSuper
-    override fun onRestore(state: Serializable) {
-        generationInProgress = state as Boolean
+    override fun onRetain(): Serializable? {
+        return generationInProgress
     }
 
     interface UIImpl : UI {

@@ -26,7 +26,7 @@ class Preset : Parcelable {
     private var generatorParams: GeneratorParams? = null
 
     @DatabaseField(columnName = "generator_type", canBeNull = false)
-    private var generatorType: GeneratorType? = null
+    private var generatorType: GeneratorType = GeneratorType.FLAT_COLOR
 
     @DatabaseField(columnName = "generator_params_id")
     var generatorParamsId: Int = 0
@@ -34,10 +34,10 @@ class Preset : Parcelable {
     private var quality: Quality? = null
 
     @DatabaseField(columnName = "quality_format", canBeNull = false)
-    private var qualityFormat: Bitmap.CompressFormat? = null
+    private var qualityFormat: Bitmap.CompressFormat = Bitmap.CompressFormat.PNG
 
     @DatabaseField(columnName = "quality_value")
-    private var qualityValue: Int = 0
+    private var qualityValue: Int = 100
 
     @DatabaseField(columnName = "path_to_save", canBeNull = false)
     var pathToSave: String = ""
@@ -87,11 +87,11 @@ class Preset : Parcelable {
     fun clearIds() {
         id = 0
         generatorParamsId = 0
-        generatorParams!!.setId(0)
+        val generatorParams = getGeneratorParams()
+        generatorParams.setId(0)
         if (generatorParams is EffectGeneratorParams) {
-            val effectGeneratorParams = generatorParams as EffectGeneratorParams
-            effectGeneratorParams.targetGeneratorParamsId = 0
-            effectGeneratorParams.target.setId(0)
+            generatorParams.targetGeneratorParamsId = 0
+            generatorParams.target.setId(0)
         }
     }
 
@@ -100,9 +100,12 @@ class Preset : Parcelable {
         this.generatorType = generatorParams.getType()
     }
 
-    fun getGeneratorParams(): GeneratorParams = generatorParams!!
+    fun getGeneratorParams(): GeneratorParams {
+        return generatorParams?.let { it }
+                ?: GeneratorParams.createDefaultParams(generatorType).apply { generatorParams = this }
+    }
 
-    fun getGeneratorType(): GeneratorType = generatorType!!
+    fun getGeneratorType(): GeneratorType = generatorType
 
     fun setQuality(quality: Quality) {
         this.quality = quality
@@ -111,10 +114,7 @@ class Preset : Parcelable {
     }
 
     fun getQuality(): Quality {
-        if (quality == null) {
-            quality = Quality(qualityFormat, qualityValue)
-        }
-        return quality!!
+        return quality?.let { it } ?: Quality(qualityFormat, qualityValue).apply { quality = this }
     }
 
     fun setCount(count: Int) {
@@ -175,7 +175,7 @@ class Preset : Parcelable {
             "id=$id" +
             ", timestamp=$timestamp" +
             ", name='$name'" +
-            ", generatorParams=$generatorParams" +
+            ", generatorParams=${getGeneratorParams()}" +
             ", quality=${getQuality()}" +
             ", pathToSave='$pathToSave'" +
             ", count=$count" +
@@ -194,7 +194,7 @@ class Preset : Parcelable {
         if (width != preset.width) return false
         if (height != preset.height) return false
         if (name != preset.name) return false
-        if (generatorParams != preset.generatorParams) return false
+        if (getGeneratorParams() != preset.getGeneratorParams()) return false
         if (getQuality().format != preset.getQuality().format) return false
         if (getQuality().qualityValue != preset.getQuality().qualityValue) return false
         if (pathToSave != preset.pathToSave) return false
@@ -204,7 +204,7 @@ class Preset : Parcelable {
     override fun hashCode(): Int {
         var result = name.hashCode()
         result = 31 * result + (timestamp xor timestamp.ushr(32)).toInt()
-        result = 31 * result + generatorParams!!.hashCode()
+        result = 31 * result + getGeneratorParams().hashCode()
         result = 31 * result + getQuality().format.ordinal
         result = 31 * result + getQuality().qualityValue
         result = 31 * result + pathToSave.hashCode()
@@ -223,7 +223,7 @@ class Preset : Parcelable {
         dest.writeInt(this.generatorParamsId)
         dest.writeLong(this.timestamp)
         dest.writeString(this.name)
-        dest.writeParcelable(this.generatorParams, flags)
+        dest.writeParcelable(this.getGeneratorParams(), flags)
         dest.writeInt(this.getQuality().format.ordinal)
         dest.writeInt(this.getQuality().qualityValue)
         dest.writeString(this.pathToSave)

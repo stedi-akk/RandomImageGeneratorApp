@@ -41,8 +41,7 @@ class ConfirmDialog : BaseDialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val context = context as Context
-        return AlertDialog.Builder(context).apply {
+        return AlertDialog.Builder(context!!).apply {
             requestCode = arguments?.getInt(KEY_REQUEST_CODE) ?: 0
 
             val title = arguments?.getString(KEY_TITLE, null)

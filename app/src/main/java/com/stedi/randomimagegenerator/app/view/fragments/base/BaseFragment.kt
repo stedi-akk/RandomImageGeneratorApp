@@ -5,10 +5,9 @@ import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity
 
 abstract class BaseFragment : LifeCycleFragment() {
 
-    fun getBaseActivity() = activity as BaseActivity
-
     fun checkForPermission(permission: String, requestCode: Int): Boolean {
-        return getBaseActivity().checkForPermission(permission, requestCode)
+        val activity = activity ?: return false
+        return (activity as BaseActivity).checkForPermission(permission, requestCode)
     }
 
     override fun onDestroy() {

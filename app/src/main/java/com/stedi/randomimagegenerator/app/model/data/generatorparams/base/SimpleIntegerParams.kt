@@ -43,6 +43,6 @@ abstract class SimpleIntegerParams : GeneratorParams {
     }
 
     protected constructor(parcel: Parcel) {
-        this.value = parcel.readValue(Int::class.java.classLoader) as Int
+        this.value = parcel.readValue(Int::class.java.classLoader) as Int?
     }
 }

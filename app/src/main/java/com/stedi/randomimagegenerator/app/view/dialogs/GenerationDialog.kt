@@ -80,8 +80,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
         activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         isCancelable = false
 
-        val context = context as Context
-        return AlertDialog.Builder(context).apply {
+        return AlertDialog.Builder(context!!).apply {
             setTitle(R.string.please_wait)
             setView(inflateAndBind(R.layout.generation_dialog))
             setPositiveButton(R.string.ok, null)

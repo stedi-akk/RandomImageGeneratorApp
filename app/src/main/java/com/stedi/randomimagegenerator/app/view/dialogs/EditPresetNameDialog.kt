@@ -42,8 +42,7 @@ class EditPresetNameDialog : ButterKnifeDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val presetName = arguments?.getString(KEY_PRESET_NAME, "") ?: ""
 
-        val context = context as Context
-        return AlertDialog.Builder(context).apply {
+        return AlertDialog.Builder(context!!).apply {
             setTitle(R.string.set_name)
             setView(inflateAndBind(R.layout.edit_preset_name_dialog))
             etName.setText(presetName)

@@ -58,9 +58,10 @@ class ChooseGeneratorFragment : StepFragment(), ChooseGeneratorPresenter.UIImpl,
     }
 
     override fun showEditGeneratorParams(type: GeneratorType) {
+        val fragmentManager = fragmentManager ?: return
         when (type) {
-            GeneratorType.COLORED_PIXELS, GeneratorType.COLORED_CIRCLES, GeneratorType.COLORED_RECTANGLE -> SimpleIntegerParamsDialog.newInstance(type).show(fragmentManager!!)
-            GeneratorType.COLORED_NOISE -> ColoredNoiseParamsDialog().show(fragmentManager!!)
+            GeneratorType.COLORED_PIXELS, GeneratorType.COLORED_CIRCLES, GeneratorType.COLORED_RECTANGLE -> SimpleIntegerParamsDialog.newInstance(type).show(fragmentManager)
+            GeneratorType.COLORED_NOISE -> ColoredNoiseParamsDialog().show(fragmentManager)
             else -> throw IllegalStateException("incorrect behavior")
         }
     }

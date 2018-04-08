@@ -46,9 +46,7 @@ class ColoredNoiseParamsDialog : ButterKnifeDialogFragment(), ColoredNoiseParams
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val context = context as Context
-
-        return AlertDialog.Builder(context).apply {
+        return AlertDialog.Builder(context!!).apply {
             setPositiveButton(R.string.ok) { _, _ ->
                 presenter.setOrientation(MapedOrientation.values()[spOrientation.selectedItemPosition].orientation)
                 presenter.setType(MapedType.values()[spType.selectedItemPosition].type)

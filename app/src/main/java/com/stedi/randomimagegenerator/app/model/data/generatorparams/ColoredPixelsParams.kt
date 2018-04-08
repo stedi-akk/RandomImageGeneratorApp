@@ -7,6 +7,7 @@ import com.j256.ormlite.table.DatabaseTable
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.SimpleIntegerParams
 import com.stedi.randomimagegenerator.generators.ColoredPixelsGenerator
+import com.stedi.randomimagegenerator.generators.Generator
 
 @DatabaseTable(tableName = "colored_pixels_params")
 class ColoredPixelsParams : SimpleIntegerParams {
@@ -17,7 +18,9 @@ class ColoredPixelsParams : SimpleIntegerParams {
     // OrmLite required
     constructor()
 
-    public override fun createGenerator() = ColoredPixelsGenerator(getValue()!!)
+    public override fun createGenerator(): Generator {
+        return getValue()?.let { ColoredPixelsGenerator(it) } ?: ColoredPixelsGenerator()
+    }
 
     override fun setId(id: Int) {
         this.id = id

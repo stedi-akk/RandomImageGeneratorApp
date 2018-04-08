@@ -51,7 +51,7 @@ class ChooseSaveOptionsFragment : StepFragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        addFormatButtons(getBaseActivity())
+        addFormatButtons(context!!)
         npQuality.minValue = 0
         npQuality.maxValue = 100
         npQuality.setOnValueChangedListener(this)
@@ -60,7 +60,7 @@ class ChooseSaveOptionsFragment : StepFragment(),
         if (savedInstanceState == null) {
             presenter.getData()
         } else {
-            selectedFormat = savedInstanceState.getSerializable(KEY_QUALITY_FORMAT) as Bitmap.CompressFormat
+            selectedFormat = savedInstanceState.getSerializable(KEY_QUALITY_FORMAT) as Bitmap.CompressFormat?
             selectedValue = savedInstanceState.getInt(KEY_QUALITY_VALUE)
             refresh()
         }
