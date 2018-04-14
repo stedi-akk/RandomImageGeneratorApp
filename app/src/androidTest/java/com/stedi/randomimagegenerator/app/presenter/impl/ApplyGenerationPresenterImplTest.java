@@ -21,8 +21,17 @@ import java.util.List;
 
 import rx.schedulers.Schedulers;
 
-import static junit.framework.Assert.*;
-import static org.mockito.Mockito.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doCallRealMethod;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @SuppressWarnings("MissingPermission")
 @RunWith(AndroidJUnit4.class)
@@ -41,7 +50,7 @@ public class ApplyGenerationPresenterImplTest {
         pendingPreset.prepareCandidateFrom(TestUtils.newSimplePreset());
         presetRepository = spy(new FakePresetRepository(0));
         presenter = new ApplyGenerationPresenterImpl(pendingPreset, presetRepository, TestUtils.getTestFolder().getAbsolutePath(),
-                Schedulers.immediate(), Schedulers.immediate(), Schedulers.immediate(), new CachedBus(ThreadEnforcer.ANY, logger), logger);
+                Schedulers.immediate(), Schedulers.immediate(), new CachedBus(ThreadEnforcer.ANY, logger), logger);
         ui = mock(ApplyGenerationPresenterImpl.UIImpl.class);
     }
 
