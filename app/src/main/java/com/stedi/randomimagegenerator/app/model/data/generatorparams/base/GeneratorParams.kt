@@ -54,8 +54,6 @@ abstract class GeneratorParams : Parcelable {
 
     abstract fun getId(): Int
 
-    abstract fun isEditable(): Boolean
-
     abstract fun getType(): GeneratorType
 
     protected abstract fun createGenerator(): Generator
@@ -67,7 +65,6 @@ abstract class GeneratorParams : Parcelable {
 
     override fun toString() = "GeneratorParams{" +
             "getType()=${getType()}" +
-            ", isEditable()=${isEditable()}" +
             '}'
 
     override fun describeContents() = 0

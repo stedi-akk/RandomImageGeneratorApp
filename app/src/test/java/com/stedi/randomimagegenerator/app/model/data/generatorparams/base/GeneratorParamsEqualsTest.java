@@ -24,11 +24,6 @@ public class GeneratorParamsEqualsTest {
             return 0;
         }
 
-        @Override
-        public boolean isEditable() {
-            return false;
-        }
-
         @NonNull
         @Override
         public GeneratorType getType() {

@@ -35,7 +35,6 @@ abstract class EffectGeneratorParams : GeneratorParams {
 
     override fun toString() = "EffectGeneratorParams{" +
             "getType()=${getType()}" +
-            ", isEditable()=${isEditable()}" +
             ", target=$target" +
             '}'
 

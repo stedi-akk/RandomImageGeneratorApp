@@ -31,8 +31,6 @@ class ColoredNoiseParams : GeneratorParams {
 
     override fun getId() = id
 
-    override fun isEditable() = true
-
     override fun getType() = GeneratorType.COLORED_NOISE
 
     override fun equals(other: Any?): Boolean {

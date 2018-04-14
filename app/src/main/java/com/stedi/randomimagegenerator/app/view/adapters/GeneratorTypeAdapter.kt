@@ -1,6 +1,5 @@
 package com.stedi.randomimagegenerator.app.view.adapters
 
-import android.graphics.Bitmap
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -10,13 +9,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.squareup.picasso.Picasso
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
-import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams
-import com.stedi.randomimagegenerator.app.view.components.GeneratorTypeImageLoader
+import com.stedi.randomimagegenerator.app.other.dim2px
+import com.stedi.randomimagegenerator.app.view.components.RigRequestHandler
 
 class GeneratorTypeAdapter(
-        private val imageLoader: GeneratorTypeImageLoader,
         private val generatorType: Array<GeneratorType>,
         private var selectedType: GeneratorType?,
         private val targetType: GeneratorType?,
@@ -47,21 +46,17 @@ class GeneratorTypeAdapter(
         val type = generatorType[position]
         holder.generatorType = type
 
-        holder.card.setOnClickListener(holder)
         holder.text.setText(type.nameRes)
-        holder.btnEdit.visibility = View.INVISIBLE
-        holder.btnEdit.setOnClickListener(holder)
+        holder.btnEdit.visibility = if (type.isEditable && type === selectedType) View.VISIBLE else View.INVISIBLE
         holder.isSelected.visibility = if (type === selectedType) View.VISIBLE else View.INVISIBLE
-        holder.image.setImageResource(R.drawable.ic_texture_adapter_rig_image_size)
 
-        imageLoader.load(type, targetType, object : GeneratorTypeImageLoader.Callback {
-            override fun onLoaded(params: GeneratorParams, bitmap: Bitmap) {
-                if (type === holder.generatorType) {
-                    holder.btnEdit.visibility = if (params.isEditable() && type === selectedType) View.VISIBLE else View.INVISIBLE
-                    holder.image.setImageBitmap(bitmap)
-                }
-            }
-        })
+        val size = holder.itemView.context.dim2px(R.dimen.adapter_rig_image_size)
+        Picasso.get().load(RigRequestHandler.makeUri(type, targetType, size, size))
+                .placeholder(R.drawable.ic_texture_adapter_rig_image_size)
+                .into(holder.image)
+
+        holder.card.setOnClickListener(holder)
+        holder.btnEdit.setOnClickListener(holder)
     }
 
     inner class ViewHolder(item: View) : RecyclerView.ViewHolder(item), View.OnClickListener {

@@ -6,10 +6,12 @@ import android.support.v7.app.AppCompatDelegate
 import com.crashlytics.android.Crashlytics
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
+import com.squareup.picasso.Picasso
 import com.stedi.randomimagegenerator.Rig
 import com.stedi.randomimagegenerator.app.di.components.AppComponent
 import com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent
 import com.stedi.randomimagegenerator.app.di.modules.AppModule
+import com.stedi.randomimagegenerator.app.view.components.RigRequestHandler
 import io.fabric.sdk.android.Fabric
 
 class App : Application() {
@@ -43,6 +45,9 @@ class App : Application() {
         if (!debug) {
             Fabric.with(this, Crashlytics())
         }
+
+        Picasso.setSingletonInstance(Picasso.Builder(this).loggingEnabled(debug)
+                .addRequestHandler(RigRequestHandler()).build())
 
         component = DaggerAppComponent.builder()
                 .appModule(AppModule(this))

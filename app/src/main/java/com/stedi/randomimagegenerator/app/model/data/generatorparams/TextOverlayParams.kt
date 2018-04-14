@@ -36,8 +36,6 @@ class TextOverlayParams : EffectGeneratorParams {
 
     override fun getId() = id
 
-    override fun isEditable() = false
-
     override fun getType() = GeneratorType.TEXT_OVERLAY
 
     override fun writeToParcel(dest: Parcel, flags: Int) {

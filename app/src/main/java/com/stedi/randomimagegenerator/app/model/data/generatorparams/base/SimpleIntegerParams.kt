@@ -28,8 +28,6 @@ abstract class SimpleIntegerParams : GeneratorParams {
 
     abstract fun canBeRandom(): Boolean
 
-    override fun isEditable() = true
-
     override fun equals(other: Any?): Boolean {
         if (!super.equals(other)) return false
         val that = other as SimpleIntegerParams

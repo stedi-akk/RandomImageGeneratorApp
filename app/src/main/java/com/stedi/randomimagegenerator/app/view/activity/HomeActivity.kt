@@ -24,7 +24,6 @@ import com.stedi.randomimagegenerator.app.other.showToast
 import com.stedi.randomimagegenerator.app.presenter.interfaces.HomePresenter
 import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity
 import com.stedi.randomimagegenerator.app.view.adapters.PresetsAdapter
-import com.stedi.randomimagegenerator.app.view.components.GeneratorTypeImageLoader
 import com.stedi.randomimagegenerator.app.view.components.ListSpaceDecoration
 import com.stedi.randomimagegenerator.app.view.dialogs.ConfirmDialog
 import com.stedi.randomimagegenerator.app.view.dialogs.GenerationDialog
@@ -39,7 +38,6 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
 
     @Inject lateinit var presenter: HomePresenter
     @Inject lateinit var logger: Logger
-    @Inject lateinit var adapterImageLoader: GeneratorTypeImageLoader
     @Inject @field:RootSavePath lateinit var rootSavePath: String
 
     @BindView(R.id.home_activity_recycler_view) lateinit var recyclerView: RecyclerView
@@ -68,7 +66,7 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
         recyclerView.addItemDecoration(ListSpaceDecoration(dim2px(R.dimen.common_v_spacing), dim2px(R.dimen.common_lr_spacing)))
-        adapter = PresetsAdapter(adapterImageLoader, rootSavePath, this)
+        adapter = PresetsAdapter(rootSavePath, this)
         recyclerView.adapter = adapter
         recyclerView.addOnScrollListener(recyclerScrollListener)
     }

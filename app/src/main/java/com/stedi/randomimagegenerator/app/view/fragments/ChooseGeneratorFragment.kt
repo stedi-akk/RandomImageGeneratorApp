@@ -13,7 +13,6 @@ import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseGeneratorPresenter
 import com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity
 import com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapter
-import com.stedi.randomimagegenerator.app.view.components.GeneratorTypeImageLoader
 import com.stedi.randomimagegenerator.app.view.dialogs.ColoredNoiseParamsDialog
 import com.stedi.randomimagegenerator.app.view.dialogs.SimpleIntegerParamsDialog
 import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment
@@ -23,7 +22,6 @@ class ChooseGeneratorFragment : StepFragment(), ChooseGeneratorPresenter.UIImpl,
 
     @Inject lateinit var presenter: ChooseGeneratorPresenter
     @Inject lateinit var logger: Logger
-    @Inject lateinit var adapterImageLoader: GeneratorTypeImageLoader
 
     @BindView(R.id.choose_generator_fragment_recycler_view) lateinit var recyclerView: RecyclerView
 
@@ -46,7 +44,7 @@ class ChooseGeneratorFragment : StepFragment(), ChooseGeneratorPresenter.UIImpl,
     }
 
     override fun showTypes(types: Array<GeneratorType>, selectedType: GeneratorType) {
-        recyclerView.adapter = GeneratorTypeAdapter(adapterImageLoader, types, selectedType, null, this, false)
+        recyclerView.adapter = GeneratorTypeAdapter(types, selectedType, null, this, false)
     }
 
     override fun onSelected(type: GeneratorType) {

@@ -29,8 +29,6 @@ class MirroredParams : EffectGeneratorParams {
 
     override fun getId() = id
 
-    override fun isEditable() = false
-
     override fun getType() = GeneratorType.MIRRORED
 
     override fun writeToParcel(dest: Parcel, flags: Int) {

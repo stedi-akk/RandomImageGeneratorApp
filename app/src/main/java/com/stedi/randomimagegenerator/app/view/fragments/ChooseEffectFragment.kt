@@ -13,7 +13,6 @@ import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseEffectPresenter
 import com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity
 import com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapter
-import com.stedi.randomimagegenerator.app.view.components.GeneratorTypeImageLoader
 import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment
 import javax.inject.Inject
 
@@ -21,7 +20,6 @@ class ChooseEffectFragment : StepFragment(), GeneratorTypeAdapter.ClickListener,
 
     @Inject lateinit var presenter: ChooseEffectPresenter
     @Inject lateinit var logger: Logger
-    @Inject lateinit var adapterImageLoader: GeneratorTypeImageLoader
 
     @BindView(R.id.choose_effect_fragment_recycler_view) lateinit var recyclerView: RecyclerView
 
@@ -50,7 +48,7 @@ class ChooseEffectFragment : StepFragment(), GeneratorTypeAdapter.ClickListener,
     }
 
     override fun showTypes(types: Array<GeneratorType>, selectedType: GeneratorType?, targetType: GeneratorType) {
-        recyclerView.adapter = GeneratorTypeAdapter(adapterImageLoader, types, selectedType, targetType, this, true)
+        recyclerView.adapter = GeneratorTypeAdapter(types, selectedType, targetType, this, true)
     }
 
     override fun onSelected(type: GeneratorType) {

@@ -25,8 +25,6 @@ class FlatColorParams : GeneratorParams {
 
     override fun getId() = id
 
-    override fun isEditable() = false
-
     override fun getType() = GeneratorType.FLAT_COLOR
 
     override fun writeToParcel(dest: Parcel, flags: Int) {

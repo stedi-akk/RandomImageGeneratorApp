@@ -4,12 +4,13 @@ import android.content.Context
 import android.os.Environment
 import com.stedi.randomimagegenerator.app.App
 import com.stedi.randomimagegenerator.app.R
-import com.stedi.randomimagegenerator.app.di.*
+import com.stedi.randomimagegenerator.app.di.AppContext
+import com.stedi.randomimagegenerator.app.di.DefaultScheduler
+import com.stedi.randomimagegenerator.app.di.RootSavePath
+import com.stedi.randomimagegenerator.app.di.UiScheduler
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.other.CachedBus
-import com.stedi.randomimagegenerator.app.other.dim2px
 import com.stedi.randomimagegenerator.app.other.logger.Logger
-import com.stedi.randomimagegenerator.app.view.components.GeneratorTypeImageLoader
 import dagger.Module
 import dagger.Provides
 import rx.Scheduler
@@ -47,11 +48,5 @@ class AppModule(private val app: App) {
     @Singleton
     fun providePendingPreset(logger: Logger, @RootSavePath rootSavePath: String): PendingPreset {
         return PendingPreset(app.resources.getString(R.string.unsaved_preset_name), rootSavePath, logger)
-    }
-
-    @Provides
-    @Singleton
-    fun provideGeneratorTypeImageLoader(@AppContext context: Context, @DefaultScheduler scheduler: Scheduler, logger: Logger): GeneratorTypeImageLoader {
-        return GeneratorTypeImageLoader(context.dim2px(R.dimen.adapter_rig_image_size), scheduler, logger)
     }
 }

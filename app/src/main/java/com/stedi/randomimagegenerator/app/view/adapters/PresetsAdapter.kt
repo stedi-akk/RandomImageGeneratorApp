@@ -1,6 +1,5 @@
 package com.stedi.randomimagegenerator.app.view.adapters
 
-import android.graphics.Bitmap
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -10,18 +9,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.squareup.picasso.Picasso
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams
-import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams
+import com.stedi.randomimagegenerator.app.other.dim2px
 import com.stedi.randomimagegenerator.app.other.formatSavePath
 import com.stedi.randomimagegenerator.app.other.formatTime
-import com.stedi.randomimagegenerator.app.view.components.GeneratorTypeImageLoader
+import com.stedi.randomimagegenerator.app.view.components.RigRequestHandler
 import java.util.*
 
 class PresetsAdapter(
-        private val imageLoader: GeneratorTypeImageLoader,
         private val rootSavePath: String,
         private val listener: ClickListener) : RecyclerView.Adapter<PresetsAdapter.ViewHolder>() {
 
@@ -84,21 +83,15 @@ class PresetsAdapter(
         holder.tvFolder.text = formatSavePath(rootSavePath, preset.pathToSave)
         holder.tvCreated.text = formatTime(preset.timestamp)
         holder.btnAction.setText(if (preset === pendingPreset) R.string.save else R.string.generate)
-        holder.imageView.setImageResource(R.drawable.ic_texture_adapter_rig_image_size)
+
+        val size = holder.itemView.context.dim2px(R.dimen.adapter_rig_image_size)
+        Picasso.get().load(RigRequestHandler.makeUri(mainType, secondType, size, size, preset.getQuality().format, preset.getQuality().qualityValue))
+                .placeholder(R.drawable.ic_texture_adapter_rig_image_size)
+                .into(holder.imageView)
 
         holder.itemView.setOnClickListener(holder)
         holder.btnAction.setOnClickListener(holder)
         holder.btnDelete.setOnClickListener(holder)
-
-        imageLoader.load(mainType, secondType, object : GeneratorTypeImageLoader.Callback {
-            override fun onLoaded(params: GeneratorParams, bitmap: Bitmap) {
-                holder.preset?.apply {
-                    if (mainType === getGeneratorParams().getType()) {
-                        holder.imageView.setImageBitmap(bitmap)
-                    }
-                }
-            }
-        })
     }
 
     inner class ViewHolder(item: View) : RecyclerView.ViewHolder(item), View.OnClickListener {
