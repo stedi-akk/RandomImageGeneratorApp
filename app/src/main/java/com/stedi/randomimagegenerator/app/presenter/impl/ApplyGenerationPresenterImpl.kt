@@ -2,7 +2,6 @@ package com.stedi.randomimagegenerator.app.presenter.impl
 
 import com.squareup.otto.Subscribe
 import com.stedi.randomimagegenerator.app.di.DefaultScheduler
-import com.stedi.randomimagegenerator.app.di.RigScheduler
 import com.stedi.randomimagegenerator.app.di.RootSavePath
 import com.stedi.randomimagegenerator.app.di.UiScheduler
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset
@@ -21,11 +20,10 @@ class ApplyGenerationPresenterImpl @Inject constructor(
         private val pendingPreset: PendingPreset,
         private val presetRepository: PresetRepository,
         @RootSavePath private val rootSavePath: String,
-        @RigScheduler superSubscribeOn: Scheduler,
         @DefaultScheduler private val subscribeOn: Scheduler,
         @UiScheduler private val observeOn: Scheduler,
         private val bus: CachedBus,
-        private val logger: Logger) : ApplyGenerationPresenter(superSubscribeOn, observeOn, bus, logger) {
+        private val logger: Logger) : ApplyGenerationPresenter(subscribeOn, observeOn, bus, logger) {
 
     private val candidate: Preset
         get() = pendingPreset.getCandidate()

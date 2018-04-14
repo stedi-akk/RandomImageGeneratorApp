@@ -35,10 +35,6 @@ class AppModule(private val app: App) {
     fun provideDefaultScheduler(): Scheduler = Schedulers.io()
 
     @Provides
-    @RigScheduler
-    fun provideRigScheduler(): Scheduler = Schedulers.computation()
-
-    @Provides
     @UiScheduler
     fun provideAndroidScheduler(): Scheduler = AndroidSchedulers.mainThread()
 
@@ -55,7 +51,7 @@ class AppModule(private val app: App) {
 
     @Provides
     @Singleton
-    fun provideGeneratorTypeImageLoader(@AppContext context: Context, @RigScheduler scheduler: Scheduler, logger: Logger): GeneratorTypeImageLoader {
+    fun provideGeneratorTypeImageLoader(@AppContext context: Context, @DefaultScheduler scheduler: Scheduler, logger: Logger): GeneratorTypeImageLoader {
         return GeneratorTypeImageLoader(context.dim2px(R.dimen.adapter_rig_image_size), scheduler, logger)
     }
 }

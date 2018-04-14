@@ -20,11 +20,6 @@ annotation class DefaultScheduler
 @Qualifier
 @MustBeDocumented
 @Retention(value = AnnotationRetention.RUNTIME)
-annotation class RigScheduler
-
-@Qualifier
-@MustBeDocumented
-@Retention(value = AnnotationRetention.RUNTIME)
 annotation class UiScheduler
 
 @Qualifier

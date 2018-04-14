@@ -6,7 +6,7 @@ import android.os.Looper
 import android.util.SparseArray
 import com.stedi.randomimagegenerator.ImageParams
 import com.stedi.randomimagegenerator.Rig
-import com.stedi.randomimagegenerator.app.di.RigScheduler
+import com.stedi.randomimagegenerator.app.di.DefaultScheduler
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams
 import com.stedi.randomimagegenerator.app.other.logger.Logger
@@ -18,7 +18,7 @@ import java.util.*
 
 class GeneratorTypeImageLoader(
         private val imageSize: Int,
-        @RigScheduler private val subscribeOn: Scheduler,
+        @DefaultScheduler private val subscribeOn: Scheduler,
         private val logger: Logger) {
 
     private val cache = SparseArray<CacheItem>()

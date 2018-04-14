@@ -9,7 +9,7 @@ import com.stedi.randomimagegenerator.ImageParams;
 import com.stedi.randomimagegenerator.Quality;
 import com.stedi.randomimagegenerator.Rig;
 import com.stedi.randomimagegenerator.app.TestUtils;
-import com.stedi.randomimagegenerator.app.di.RigScheduler;
+import com.stedi.randomimagegenerator.app.di.DefaultScheduler;
 import com.stedi.randomimagegenerator.app.di.UiScheduler;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
@@ -32,8 +32,14 @@ import java.util.List;
 import rx.Scheduler;
 import rx.schedulers.Schedulers;
 
-import static junit.framework.Assert.*;
-import static org.mockito.Mockito.*;
+import static junit.framework.Assert.assertTrue;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 @SuppressWarnings("MissingPermission")
 @RunWith(AndroidJUnit4.class)
@@ -43,7 +49,7 @@ public class GenerationPresenterTest {
     private ArgumentCaptor<ImageParams> imageParamsCaptor;
 
     private static class GenerationPresenterImpl extends GenerationPresenter<GenerationPresenter.UIImpl> {
-        GenerationPresenterImpl(@NonNull @RigScheduler Scheduler subscribeOn, @NonNull @UiScheduler Scheduler observeOn, @NonNull CachedBus bus, @NonNull Logger logger) {
+        GenerationPresenterImpl(@NonNull @DefaultScheduler Scheduler subscribeOn, @NonNull @UiScheduler Scheduler observeOn, @NonNull CachedBus bus, @NonNull Logger logger) {
             super(subscribeOn, observeOn, bus, logger);
         }
     }

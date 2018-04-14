@@ -8,7 +8,7 @@ import com.squareup.otto.Subscribe
 import com.stedi.randomimagegenerator.DefaultFileNamePolicy
 import com.stedi.randomimagegenerator.ImageParams
 import com.stedi.randomimagegenerator.Rig
-import com.stedi.randomimagegenerator.app.di.RigScheduler
+import com.stedi.randomimagegenerator.app.di.DefaultScheduler
 import com.stedi.randomimagegenerator.app.di.UiScheduler
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.other.CachedBus
@@ -24,7 +24,7 @@ import java.io.File
 import java.io.Serializable
 
 abstract class GenerationPresenter<in T : GenerationPresenter.UIImpl>(
-        @RigScheduler private val subscribeOn: Scheduler,
+        @DefaultScheduler private val subscribeOn: Scheduler,
         @UiScheduler private val observeOn: Scheduler,
         private val bus: CachedBus,
         private val logger: Logger) : RetainedPresenter<T> {

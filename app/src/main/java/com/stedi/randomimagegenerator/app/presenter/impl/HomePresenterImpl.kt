@@ -3,7 +3,6 @@ package com.stedi.randomimagegenerator.app.presenter.impl
 import android.annotation.SuppressLint
 import com.squareup.otto.Subscribe
 import com.stedi.randomimagegenerator.app.di.DefaultScheduler
-import com.stedi.randomimagegenerator.app.di.RigScheduler
 import com.stedi.randomimagegenerator.app.di.UiScheduler
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.model.data.Preset
@@ -20,10 +19,9 @@ class HomePresenterImpl @Inject constructor(
         private val presetRepository: PresetRepository,
         private val pendingPreset: PendingPreset,
         @DefaultScheduler private val subscribeOn: Scheduler,
-        @RigScheduler superSubscribeOn: Scheduler,
         @UiScheduler private val observeOn: Scheduler,
         private val bus: CachedBus,
-        private val logger: Logger) : HomePresenter(superSubscribeOn, observeOn, bus, logger) {
+        private val logger: Logger) : HomePresenter(subscribeOn, observeOn, bus, logger) {
 
     private var ui: HomePresenter.UIImpl? = null
     private var fetchInProgress: Boolean = false

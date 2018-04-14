@@ -1,6 +1,6 @@
 package com.stedi.randomimagegenerator.app.presenter.interfaces
 
-import com.stedi.randomimagegenerator.app.di.RigScheduler
+import com.stedi.randomimagegenerator.app.di.DefaultScheduler
 import com.stedi.randomimagegenerator.app.di.UiScheduler
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.other.CachedBus
@@ -8,7 +8,7 @@ import com.stedi.randomimagegenerator.app.other.logger.Logger
 import rx.Scheduler
 
 abstract class HomePresenter(
-        @RigScheduler subscribeOn: Scheduler,
+        @DefaultScheduler subscribeOn: Scheduler,
         @UiScheduler observeOn: Scheduler,
         bus: CachedBus,
         logger: Logger) : GenerationPresenter<HomePresenter.UIImpl>(subscribeOn, observeOn, bus, logger) {
