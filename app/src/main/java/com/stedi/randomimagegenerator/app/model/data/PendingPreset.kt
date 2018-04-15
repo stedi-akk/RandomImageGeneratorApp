@@ -4,7 +4,9 @@ import android.os.Bundle
 import com.stedi.randomimagegenerator.Quality
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams
 import com.stedi.randomimagegenerator.app.other.logger.Logger
+import javax.inject.Singleton
 
+@Singleton
 class PendingPreset(private val logger: Logger) {
 
     companion object {

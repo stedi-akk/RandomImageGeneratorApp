@@ -6,7 +6,9 @@ import com.squareup.otto.DeadEvent
 import com.squareup.otto.ThreadEnforcer
 import com.stedi.randomimagegenerator.app.other.logger.Logger
 import java.util.*
+import javax.inject.Singleton
 
+@Singleton
 class CachedBus(
         enforcer: ThreadEnforcer = ThreadEnforcer.MAIN,
         private val logger: Logger) : Bus(enforcer) {
