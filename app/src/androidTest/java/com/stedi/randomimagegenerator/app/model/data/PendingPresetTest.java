@@ -18,71 +18,50 @@ public class PendingPresetTest {
 
     @Before
     public void before() {
-        pendingPreset = new PendingPreset("name", "path", new SoutLogger("PendingPresetTest"));
+        pendingPreset = new PendingPreset(new SoutLogger("PendingPresetTest"));
     }
 
     @Test
     public void testEmpty() {
-        assertNull(pendingPreset.get());
+        assertNull(pendingPreset.getPreset());
         assertNull(pendingPreset.getCandidate());
-        try {
-            pendingPreset.candidateSaved();
-            fail();
-        } catch (IllegalStateException e) {
-        }
-        try {
-            pendingPreset.isCandidateNewOrChanged();
-            fail();
-        } catch (IllegalStateException e) {
-        }
-        try {
-            pendingPreset.applyCandidate();
-            fail();
-        } catch (IllegalStateException e) {
-        }
+        assertFalse(pendingPreset.isCandidateChanged());
+        assertFalse(pendingPreset.isCandidateNew());
     }
 
     @Test
     public void testNewDefaultCandidate() {
         pendingPreset.newDefaultCandidate();
-        assertNull(pendingPreset.get());
+        assertNull(pendingPreset.getPreset());
         assertNotNull(pendingPreset.getCandidate());
-        assertTrue(pendingPreset.isCandidateNewOrChanged());
+        assertTrue(pendingPreset.isCandidateNew());
+        assertFalse(pendingPreset.isCandidateChanged());
 
-        pendingPreset.getCandidate().setId(10);
-        pendingPreset.candidateSaved();
-        assertNull(pendingPreset.get());
-        assertNotNull(pendingPreset.getCandidate());
-        assertTrue(pendingPreset.getCandidate().getId() == 10);
-        assertFalse(pendingPreset.isCandidateNewOrChanged());
-
+        String prevName = pendingPreset.getCandidate().getName();
         pendingPreset.getCandidate().setName("changed");
-        assertTrue(pendingPreset.isCandidateNewOrChanged());
+        assertTrue(pendingPreset.isCandidateNew());
+        assertFalse(pendingPreset.isCandidateChanged());
+        pendingPreset.getCandidate().setName(prevName);
+        assertTrue(pendingPreset.isCandidateNew());
+        assertFalse(pendingPreset.isCandidateChanged());
 
         pendingPreset.applyCandidate();
-        assertTrue(pendingPreset.get().equals(pendingPreset.getCandidate()));
-        assertTrue(pendingPreset.get().getId() == 0);
-        assertTrue(pendingPreset.isCandidateNewOrChanged());
+        assertNotNull(pendingPreset.getPreset());
+        assertTrue(pendingPreset.getPreset().equals(pendingPreset.getCandidate()));
+        assertTrue(pendingPreset.isCandidateNew());
+        assertFalse(pendingPreset.isCandidateChanged());
 
-        pendingPreset.killCandidate();
-        assertNotNull(pendingPreset.get());
+        pendingPreset.clearCandidate();
+        assertNotNull(pendingPreset.getPreset());
         assertNull(pendingPreset.getCandidate());
+        assertFalse(pendingPreset.isCandidateNew());
+        assertFalse(pendingPreset.isCandidateChanged());
 
-        try {
-            pendingPreset.candidateSaved();
-            fail();
-        } catch (IllegalStateException e) {
-        }
-        try {
-            pendingPreset.isCandidateNewOrChanged();
-            fail();
-        } catch (IllegalStateException e) {
-        }
-        try {
-            pendingPreset.applyCandidate();
-            fail();
-        } catch (IllegalStateException e) {
-        }
+        pendingPreset.clearPreset();
+        assertNull(pendingPreset.getPreset());
+        assertNull(pendingPreset.getCandidate());
+        assertFalse(pendingPreset.isCandidateNew());
+        assertFalse(pendingPreset.isCandidateChanged());
     }
 
     @Test
@@ -93,47 +72,34 @@ public class PendingPresetTest {
         from.setId(1);
 
         pendingPreset.prepareCandidateFrom(from);
-        assertNull(pendingPreset.get());
+        assertNull(pendingPreset.getPreset());
         assertNotNull(pendingPreset.getCandidate());
-        assertFalse(pendingPreset.isCandidateNewOrChanged());
-
-        pendingPreset.getCandidate().setId(10);
-        pendingPreset.candidateSaved();
-        assertNull(pendingPreset.get());
-        assertNotNull(pendingPreset.getCandidate());
-        assertTrue(pendingPreset.getCandidate().getId() == 10);
-        assertFalse(pendingPreset.isCandidateNewOrChanged());
+        assertFalse(pendingPreset.isCandidateNew());
+        assertFalse(pendingPreset.isCandidateChanged());
 
         pendingPreset.getCandidate().setName("changed");
-        assertTrue(pendingPreset.isCandidateNewOrChanged());
+        assertFalse(pendingPreset.isCandidateNew());
+        assertTrue(pendingPreset.isCandidateChanged());
+        pendingPreset.getCandidate().setName("razdwatri");
+        assertFalse(pendingPreset.isCandidateNew());
+        assertFalse(pendingPreset.isCandidateChanged());
 
         pendingPreset.applyCandidate();
-        assertTrue(pendingPreset.get().equals(pendingPreset.getCandidate()));
-        assertTrue(pendingPreset.get().getId() == 0);
-        assertTrue(pendingPreset.isCandidateNewOrChanged());
+        assertNotNull(pendingPreset.getPreset());
+        assertTrue(pendingPreset.getPreset().equals(pendingPreset.getCandidate()));
+        assertFalse(pendingPreset.isCandidateNew());
+        assertFalse(pendingPreset.isCandidateChanged());
 
-        pendingPreset.prepareCandidateFrom(from);
-        assertFalse(pendingPreset.get().equals(pendingPreset.getCandidate()));
-        assertFalse(pendingPreset.isCandidateNewOrChanged());
-
-        pendingPreset.killCandidate();
-        assertNotNull(pendingPreset.get());
+        pendingPreset.clearCandidate();
+        assertNotNull(pendingPreset.getPreset());
         assertNull(pendingPreset.getCandidate());
+        assertFalse(pendingPreset.isCandidateNew());
+        assertFalse(pendingPreset.isCandidateChanged());
 
-        try {
-            pendingPreset.candidateSaved();
-            fail();
-        } catch (IllegalStateException e) {
-        }
-        try {
-            pendingPreset.isCandidateNewOrChanged();
-            fail();
-        } catch (IllegalStateException e) {
-        }
-        try {
-            pendingPreset.applyCandidate();
-            fail();
-        } catch (IllegalStateException e) {
-        }
+        pendingPreset.clearPreset();
+        assertNull(pendingPreset.getPreset());
+        assertNull(pendingPreset.getCandidate());
+        assertFalse(pendingPreset.isCandidateNew());
+        assertFalse(pendingPreset.isCandidateChanged());
     }
 }

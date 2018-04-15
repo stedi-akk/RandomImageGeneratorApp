@@ -32,7 +32,7 @@ public class ChooseGeneratorPresenterImplTest {
     @Before
     public void before() {
         logger = new SoutLogger("ChooseGeneratorPresenterImplTest");
-        pendingPreset = spy(new PendingPreset("unsaved", TestUtils.getTestFolder().getAbsolutePath(), logger));
+        pendingPreset = spy(new PendingPreset(logger));
         pendingPreset.prepareCandidateFrom(TestUtils.newSimplePreset());
         presenter = new ChooseGeneratorPresenterImpl(pendingPreset, logger);
         ui = mock(ChooseGeneratorPresenterImpl.UIImpl.class);

@@ -28,7 +28,7 @@ public class ColoredNoiseParamsPresenterImplTest {
     @Before
     public void before() {
         logger = new SoutLogger("ColoredNoiseParamsPresenterImplTest");
-        pendingPreset = new PendingPreset("unsaved", TestUtils.getTestFolder().getAbsolutePath(), logger);
+        pendingPreset = new PendingPreset(logger);
         noiseParams = new ColoredNoiseParams();
         pendingPreset.prepareCandidateFrom(TestUtils.newSimplePreset());
         pendingPreset.getCandidate().setGeneratorParams(noiseParams);

@@ -28,7 +28,7 @@ public class GenerationStepsPresenterImplTest {
     @Before
     public void before() {
         logger = new SoutLogger("GenerationStepsPresenterImplTest");
-        pendingPreset = spy(new PendingPreset("unsaved", TestUtils.getTestFolder().getAbsolutePath(), logger));
+        pendingPreset = spy(new PendingPreset(logger));
         presenter = new GenerationStepsPresenterImpl(pendingPreset, logger);
         ui = mock(GenerationStepsPresenterImpl.UIImpl.class);
     }

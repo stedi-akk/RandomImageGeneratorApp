@@ -27,7 +27,7 @@ public class ChooseSizeAndCountPresenterImplTest {
     @Before
     public void before() {
         logger = new SoutLogger("ChooseSizeAndCountPresenterImplTest");
-        pendingPreset = new PendingPreset("unsaved", TestUtils.getTestFolder().getAbsolutePath(), logger);
+        pendingPreset = new PendingPreset(logger);
         pendingPreset.prepareCandidateFrom(TestUtils.newSimplePreset());
         Preset preset = pendingPreset.getCandidate();
         preset.setWidth(100);

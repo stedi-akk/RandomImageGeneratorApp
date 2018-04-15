@@ -46,10 +46,10 @@ public class ApplyGenerationPresenterImplTest {
     public void before() {
         Rig.enableDebugLogging(true);
         Logger logger = new SoutLogger("ApplyGenerationPresenterImplTest");
-        pendingPreset = new PendingPreset("unsaved", TestUtils.getTestFolder().getAbsolutePath(), logger);
+        pendingPreset = new PendingPreset(logger);
         pendingPreset.prepareCandidateFrom(TestUtils.newSimplePreset());
         presetRepository = spy(new FakePresetRepository(0));
-        presenter = new ApplyGenerationPresenterImpl(pendingPreset, presetRepository, TestUtils.getTestFolder().getAbsolutePath(),
+        presenter = new ApplyGenerationPresenterImpl(pendingPreset, presetRepository, TestUtils.getTestFolder().getAbsolutePath(), "unsaved",
                 Schedulers.immediate(), Schedulers.immediate(), new CachedBus(ThreadEnforcer.ANY, logger), logger);
         ui = mock(ApplyGenerationPresenterImpl.UIImpl.class);
     }
@@ -91,13 +91,13 @@ public class ApplyGenerationPresenterImplTest {
         doThrow(new NullPointerException()).when(presetRepository).save(any());
         presenter.savePreset("failed");
         verify(ui, times(1)).failedToSavePreset();
-        assertTrue(pendingPreset.get().getId() == 0);
-        assertEquals(pendingPreset.get(), pendingPreset.getCandidate());
+        assertTrue(pendingPreset.getPreset().getId() == 0);
+        assertEquals(pendingPreset.getPreset(), pendingPreset.getCandidate());
 
         doCallRealMethod().when(presetRepository).save(any());
         presenter.savePreset("testSavePreset");
         verify(ui, times(1)).onPresetSaved();
-        assertNull(pendingPreset.get());
+        assertNull(pendingPreset.getPreset());
         assertTrue(pendingPreset.getCandidate().getName().equals("testSavePreset"));
         assertTrue(pendingPreset.getCandidate().getId() > 0);
         List<Preset> repoPresets = presetRepository.getAll();
@@ -111,8 +111,8 @@ public class ApplyGenerationPresenterImplTest {
     public void testStartGeneration() {
         pendingPreset.newDefaultCandidate();
         presenter.onAttach(ui);
-        assertNull(pendingPreset.get());
+        assertNull(pendingPreset.getPreset());
         presenter.startGeneration(pendingPreset.getCandidate());
-        assertTrue(pendingPreset.get().equals(pendingPreset.getCandidate()));
+        assertTrue(pendingPreset.getPreset().equals(pendingPreset.getCandidate()));
     }
 }

@@ -27,7 +27,7 @@ public class SimpleIntegerParamsPresenterImplTest {
     @Before
     public void before() {
         logger = new SoutLogger("SimpleIntegerParamsPresenterImplTest");
-        pendingPreset = new PendingPreset("unsaved", TestUtils.getTestFolder().getAbsolutePath(), logger);
+        pendingPreset = new PendingPreset(logger);
         integerParams = new ColoredCirclesParams();
         pendingPreset.prepareCandidateFrom(TestUtils.newSimplePreset());
         pendingPreset.getCandidate().setGeneratorParams(integerParams);

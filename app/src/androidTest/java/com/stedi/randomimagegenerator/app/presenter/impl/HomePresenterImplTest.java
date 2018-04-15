@@ -52,7 +52,7 @@ public class HomePresenterImplTest {
         Rig.enableDebugLogging(true);
         repository = spy(new FakePresetRepository(PRESETS_REPO_INITIAL_COUNT));
         SoutLogger logger = new SoutLogger("HomePresenterImplTest");
-        pendingPreset = new PendingPreset("unsaved", TestUtils.getTestFolder().getAbsolutePath(), logger);
+        pendingPreset = new PendingPreset(logger);
         presenter = new HomePresenterImpl(repository, pendingPreset, Schedulers.immediate(), Schedulers.immediate(),
                 new CachedBus(ThreadEnforcer.ANY, logger), logger);
         ui = mock(HomePresenterImpl.UIImpl.class);
@@ -69,11 +69,11 @@ public class HomePresenterImplTest {
     public void testFetchPresets() throws Exception {
         pendingPreset.newDefaultCandidate();
         pendingPreset.applyCandidate();
-        pendingPreset.killCandidate();
+        pendingPreset.clearCandidate();
         presenter.onAttach(ui);
         presenter.fetchPresets();
         verify(ui, times(1)).onPresetsFetched(pendingPresetCaptor.capture(), presetsCaptor.capture());
-        assertTrue(pendingPreset.get() == pendingPresetCaptor.getValue());
+        assertTrue(pendingPreset.getPreset() == pendingPresetCaptor.getValue());
         assertTrue(presetsCaptor.getValue().size() == 3);
         verifyNoMoreInteractions(ui);
     }
@@ -82,7 +82,7 @@ public class HomePresenterImplTest {
     public void testFetchPresetsFailed() throws Exception {
         pendingPreset.newDefaultCandidate();
         pendingPreset.applyCandidate();
-        pendingPreset.killCandidate();
+        pendingPreset.clearCandidate();
         when(repository.getAll()).thenThrow(new NullPointerException("nope"));
         presenter.onAttach(ui);
         presenter.fetchPresets();
@@ -104,13 +104,13 @@ public class HomePresenterImplTest {
     public void testDeletePendingPreset() {
         pendingPreset.newDefaultCandidate();
         pendingPreset.applyCandidate();
-        pendingPreset.killCandidate();
+        pendingPreset.clearCandidate();
         presenter.onAttach(ui);
         presenter.fetchPresets();
         verify(ui, times(1)).onPresetsFetched(pendingPresetCaptor.capture(), any());
         Preset preset = pendingPresetCaptor.getValue();
         presenter.deletePreset(preset);
-        assertNull(pendingPreset.get());
+        assertNull(pendingPreset.getPreset());
         verify(ui, times(1)).onPresetDeleted(preset);
         verifyNoMoreInteractions(ui);
     }
