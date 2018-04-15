@@ -47,7 +47,7 @@ class ApplyGenerationPresenterImpl @Inject constructor(
     }
 
     override fun getPreset(): Preset {
-        val preset = candidate.createCopy()
+        val preset = candidate.makeCopy()
         if (pendingPreset.isCandidateNew()) {
             preset.name = defaultName
             preset.pathToSave = File(generationPath, "0").path
@@ -123,6 +123,7 @@ class ApplyGenerationPresenterImpl @Inject constructor(
         super.startGeneration(candidate)
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun onRestore(state: Serializable) {
         (state as Array<Serializable>).apply {
             super.onRestore(this[0])

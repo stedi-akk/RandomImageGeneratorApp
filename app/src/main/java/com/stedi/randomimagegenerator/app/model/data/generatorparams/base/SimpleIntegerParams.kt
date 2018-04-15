@@ -5,6 +5,7 @@ import com.j256.ormlite.field.DatabaseField
 
 abstract class SimpleIntegerParams : GeneratorParams {
 
+    @Suppress("LeakingThis")
     @DatabaseField(columnName = "integer_value")
     private var value: Int? = if (canBeRandom()) null else 1
 

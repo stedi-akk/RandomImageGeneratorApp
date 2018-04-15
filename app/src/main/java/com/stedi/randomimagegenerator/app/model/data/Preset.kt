@@ -70,7 +70,7 @@ class Preset : Parcelable {
         this.pathToSave = pathToSave
     }
 
-    fun createCopy(): Preset {
+    fun makeCopy(): Preset {
         var parcel: Parcel? = null
         try {
             parcel = Parcel.obtain()
@@ -101,8 +101,7 @@ class Preset : Parcelable {
     }
 
     fun getGeneratorParams(): GeneratorParams {
-        return generatorParams?.let { it }
-                ?: GeneratorParams.createDefaultParams(generatorType).apply { generatorParams = this }
+        return generatorParams?.let { it } ?: GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR).apply { generatorParams = this }
     }
 
     fun getGeneratorType(): GeneratorType = generatorType

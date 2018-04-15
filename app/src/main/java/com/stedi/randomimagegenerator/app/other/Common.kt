@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.other
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.support.annotation.DimenRes
@@ -55,6 +56,7 @@ fun <T> SparseArray<T>.toList(): List<T> {
 
 fun formatTime(millis: Long): String = LazyCommon.dateFormat.format(Date(millis))
 
+@SuppressLint("SimpleDateFormat")
 private object LazyCommon {
     val dateFormat: SimpleDateFormat by lazy {
         SimpleDateFormat("dd.MM.yyyy HH:mm")

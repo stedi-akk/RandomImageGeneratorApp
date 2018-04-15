@@ -151,6 +151,7 @@ class HomePresenterImpl @Inject constructor(
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun onRestore(state: Serializable) {
         (state as Array<Serializable>).apply {
             super.onRestore(this[0])

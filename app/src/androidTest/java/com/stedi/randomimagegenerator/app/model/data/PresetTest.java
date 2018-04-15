@@ -43,7 +43,7 @@ public class PresetTest {
         preset.setHeight(300);
         preset.setCount(666);
 
-        Preset copy = preset.createCopy();
+        Preset copy = preset.makeCopy();
 
         assertTrue(copy.getId() == 1);
         assertTrue(copy.getTimestamp() == 1337L);
@@ -80,7 +80,7 @@ public class PresetTest {
                 preset.setWidth(100);
                 preset.setHeightRange(10, 100, 10);
 
-                Preset copy = preset.createCopy();
+                Preset copy = preset.makeCopy();
 
                 assertTrue(copy.getId() == ids);
                 assertTrue(copy.getTimestamp() == timestamp);
@@ -116,7 +116,7 @@ public class PresetTest {
                     preset.setWidthRange(100, 10, 10);
                     preset.setHeightRange(10, 1000, 10);
 
-                    Preset copy = preset.createCopy();
+                    Preset copy = preset.makeCopy();
 
                     assertTrue(copy.getId() == ids);
                     assertTrue(copy.getTimestamp() == timestamp);

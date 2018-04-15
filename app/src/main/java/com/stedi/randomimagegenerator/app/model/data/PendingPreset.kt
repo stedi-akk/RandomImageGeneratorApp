@@ -37,7 +37,7 @@ class PendingPreset(private val logger: Logger) {
             this.candidate = preset
         } else {
             this.candidateFrom = preset
-            this.candidate = preset.createCopy()
+            this.candidate = preset.makeCopy()
         }
         logger.log(this, "after prepareCandidateFrom: $this")
     }

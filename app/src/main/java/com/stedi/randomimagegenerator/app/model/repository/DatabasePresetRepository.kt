@@ -140,6 +140,7 @@ class DatabasePresetRepository(
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     @Throws(Exception::class)
     private fun queryGeneratorParamsById(type: GeneratorType, id: Int): GeneratorParams {
         val paramsClass = getGeneratorParamsClassFromType(type)

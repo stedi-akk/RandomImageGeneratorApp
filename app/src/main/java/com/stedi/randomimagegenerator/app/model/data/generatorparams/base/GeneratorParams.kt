@@ -5,6 +5,7 @@ import com.stedi.randomimagegenerator.app.model.data.GeneratorType
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.*
 import com.stedi.randomimagegenerator.generators.Generator
 
+@Suppress("EqualsOrHashCode")
 abstract class GeneratorParams : Parcelable {
 
     companion object {
