@@ -122,7 +122,7 @@ abstract class GenerationPresenter<in T : GenerationPresenter.UIImpl>(
                 })
     }
 
-    private val busTarget = object : Any() {
+    private val busTarget: Any = object : Any() {
         @Subscribe
         fun onEvent(event: Event) {
             val ui = ui
