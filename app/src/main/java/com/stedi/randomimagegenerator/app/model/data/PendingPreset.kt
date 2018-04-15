@@ -2,15 +2,10 @@ package com.stedi.randomimagegenerator.app.model.data
 
 import android.os.Bundle
 import com.stedi.randomimagegenerator.Quality
-import com.stedi.randomimagegenerator.app.di.RootSavePath
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams
 import com.stedi.randomimagegenerator.app.other.logger.Logger
-import java.io.File
 
-class PendingPreset(
-        private val unsavedName: String,
-        @RootSavePath private val rootSavePath: String,
-        private val logger: Logger) {
+class PendingPreset(private val logger: Logger) {
 
     companion object {
         private const val KEY_MAIN_PRESET = "KEY_MAIN_PRESET"
@@ -26,11 +21,8 @@ class PendingPreset(
 
     fun newDefaultCandidate() {
         candidateFrom = null
-        candidate = Preset(
-                unsavedName,
-                GeneratorParams.createDefaultParams(GeneratorType.COLORED_CIRCLES),
-                Quality.png(),
-                rootSavePath + File.separator + "0")
+        // name and save path are set in ApplyGenerationPresenterImpl
+        candidate = Preset("", GeneratorParams.createDefaultParams(GeneratorType.COLORED_CIRCLES), Quality.png(), "")
                 .apply {
                     setWidth(800)
                     setHeight(800)
@@ -56,14 +48,14 @@ class PendingPreset(
 
     fun getCandidate() = candidate
 
-    fun isCandidateNewOrChanged() = !(candidate?.equals(candidateFrom)
-            ?: throw IllegalStateException("candidate is null"))
+    fun isCandidateNew() = candidateFrom == null
+
+    fun isCandidateChanged() = candidateFrom != null && !(candidate?.equals(candidateFrom) ?: throw IllegalStateException("candidate is null"))
 
     fun applyCandidate() {
         val candidate = candidate ?: throw IllegalStateException("candidate is null")
         if (candidateFrom != null) {
             candidate.clearIds()
-            candidate.name = unsavedName
         }
         candidate.timestamp = System.currentTimeMillis()
         preset = candidate

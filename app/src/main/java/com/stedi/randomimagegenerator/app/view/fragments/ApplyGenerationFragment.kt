@@ -17,11 +17,9 @@ import butterknife.OnClick
 import com.squareup.otto.Subscribe
 import com.stedi.randomimagegenerator.ImageParams
 import com.stedi.randomimagegenerator.app.R
-import com.stedi.randomimagegenerator.app.di.RootSavePath
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams
 import com.stedi.randomimagegenerator.app.other.CachedBus
-import com.stedi.randomimagegenerator.app.other.formatSavePath
 import com.stedi.randomimagegenerator.app.other.formatTime
 import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.other.showToast
@@ -41,7 +39,6 @@ class ApplyGenerationFragment : StepFragment(), ApplyGenerationPresenter.UIImpl 
     @Inject lateinit var presenter: ApplyGenerationPresenter
     @Inject lateinit var bus: CachedBus
     @Inject lateinit var logger: Logger
-    @Inject @field:RootSavePath lateinit var rootSavePath: String
 
     @BindView(R.id.apply_generation_fragment_tv) lateinit var tvOut: TextView
     @BindView(R.id.apply_generation_fragment_btn_save) lateinit var btnSave: Button
@@ -86,7 +83,7 @@ class ApplyGenerationFragment : StepFragment(), ApplyGenerationPresenter.UIImpl 
     private fun refreshFromPreset() {
         if (view != null) {
             tvOut.text = getSummaryFromPreset(presenter.getPreset())
-            btnSave.setText(if (presenter.isPresetNewOrChanged()) R.string.unsaved_save else R.string.save)
+            btnSave.setText(if (presenter.isPresetNew() || presenter.isPresetChanged()) R.string.unsaved_save else R.string.save)
         }
     }
 
@@ -130,7 +127,7 @@ class ApplyGenerationFragment : StepFragment(), ApplyGenerationPresenter.UIImpl 
 
             append(getString(R.string.quality_s_percent, preset.getQuality().format.name, preset.getQuality().qualityValue.toString()))
             append("\n\n")
-            append(getString(R.string.save_folder_s, formatSavePath(rootSavePath, preset.pathToSave)))
+            append(getString(R.string.folder_s, preset.pathToSave))
         }.toString()
     }
 

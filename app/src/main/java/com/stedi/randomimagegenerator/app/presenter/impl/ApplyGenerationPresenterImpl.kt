@@ -2,7 +2,6 @@ package com.stedi.randomimagegenerator.app.presenter.impl
 
 import com.squareup.otto.Subscribe
 import com.stedi.randomimagegenerator.app.di.DefaultScheduler
-import com.stedi.randomimagegenerator.app.di.RootSavePath
 import com.stedi.randomimagegenerator.app.di.UiScheduler
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.model.data.Preset
@@ -19,7 +18,8 @@ import javax.inject.Inject
 class ApplyGenerationPresenterImpl @Inject constructor(
         private val pendingPreset: PendingPreset,
         private val presetRepository: PresetRepository,
-        @RootSavePath private val rootSavePath: String,
+        private val generationPath: String,
+        private val defaultName: String,
         @DefaultScheduler private val subscribeOn: Scheduler,
         @UiScheduler private val observeOn: Scheduler,
         private val bus: CachedBus,
@@ -46,9 +46,18 @@ class ApplyGenerationPresenterImpl @Inject constructor(
         this.ui = null
     }
 
-    override fun getPreset() = candidate
+    override fun getPreset(): Preset {
+        val preset = candidate.createCopy()
+        if (pendingPreset.isCandidateNew()) {
+            preset.name = defaultName
+            preset.pathToSave = File(generationPath, "0").path
+        }
+        return preset
+    }
 
-    override fun isPresetNewOrChanged() = pendingPreset.isCandidateNewOrChanged()
+    override fun isPresetNew() = pendingPreset.isCandidateNew()
+
+    override fun isPresetChanged() = pendingPreset.isCandidateChanged()
 
     override fun savePreset(name: String) {
         if (saveInProgress) {
@@ -65,7 +74,7 @@ class ApplyGenerationPresenterImpl @Inject constructor(
             preset.name = name
             preset.timestamp = System.currentTimeMillis()
             presetRepository.save(preset)
-            preset.pathToSave = rootSavePath + File.separator + preset.id
+            preset.pathToSave = File(generationPath, preset.id.toString()).path
             presetRepository.save(preset)
         }.subscribeOn(subscribeOn)
                 .observeOn(observeOn)
@@ -104,11 +113,9 @@ class ApplyGenerationPresenterImpl @Inject constructor(
 
     @SuppressWarnings("MissingPermission")
     override fun startGeneration(preset: Preset) {
-        if (preset !== candidate) {
-            throw IllegalArgumentException("candidate preset is required")
-        }
-
-        if (pendingPreset.isCandidateNewOrChanged()) {
+        if (pendingPreset.isCandidateNew() || pendingPreset.isCandidateChanged()) {
+            candidate.name = defaultName
+            candidate.pathToSave = File(generationPath, "0").path
             pendingPreset.applyCandidate()
         }
 

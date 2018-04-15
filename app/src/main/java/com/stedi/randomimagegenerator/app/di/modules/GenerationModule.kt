@@ -1,9 +1,21 @@
 package com.stedi.randomimagegenerator.app.di.modules
 
+import android.content.Context
+import android.os.Environment
+import com.stedi.randomimagegenerator.app.R
+import com.stedi.randomimagegenerator.app.di.AppContext
+import com.stedi.randomimagegenerator.app.di.DefaultScheduler
+import com.stedi.randomimagegenerator.app.di.UiScheduler
+import com.stedi.randomimagegenerator.app.model.data.PendingPreset
+import com.stedi.randomimagegenerator.app.model.repository.PresetRepository
+import com.stedi.randomimagegenerator.app.other.CachedBus
+import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.presenter.impl.*
 import com.stedi.randomimagegenerator.app.presenter.interfaces.*
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
+import rx.Scheduler
 
 @Module(includes = [(GenerationModule.Declarations::class)])
 class GenerationModule {
@@ -29,8 +41,16 @@ class GenerationModule {
 
         @Binds
         fun provideChooseSaveOptionsPresenter(presenter: ChooseSaveOptionsPresenterImpl): ChooseSaveOptionsPresenter
+    }
 
-        @Binds
-        fun provideApplyGenerationPresenter(presenter: ApplyGenerationPresenterImpl): ApplyGenerationPresenter
+    @Provides
+    fun provideApplyGenerationPresenter(@AppContext context: Context, pendingPreset: PendingPreset, presetRepository: PresetRepository,
+                                        @DefaultScheduler subscribeOn: Scheduler, @UiScheduler observeOn: Scheduler, bus: CachedBus, logger: Logger): ApplyGenerationPresenter {
+        return ApplyGenerationPresenterImpl(
+                pendingPreset,
+                presetRepository,
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).resolve("RIG").path,
+                context.resources.getString(R.string.unsaved_preset_name),
+                subscribeOn, observeOn, bus, logger)
     }
 }

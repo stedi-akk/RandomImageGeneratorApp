@@ -15,14 +15,11 @@ import com.stedi.randomimagegenerator.app.model.data.GeneratorType
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams
 import com.stedi.randomimagegenerator.app.other.dim2px
-import com.stedi.randomimagegenerator.app.other.formatSavePath
 import com.stedi.randomimagegenerator.app.other.formatTime
 import com.stedi.randomimagegenerator.app.view.components.RigRequestHandler
 import java.util.*
 
-class PresetsAdapter(
-        private val rootSavePath: String,
-        private val listener: ClickListener) : RecyclerView.Adapter<PresetsAdapter.ViewHolder>() {
+class PresetsAdapter(private val listener: ClickListener) : RecyclerView.Adapter<PresetsAdapter.ViewHolder>() {
 
     private val presetsList = ArrayList<Preset>()
 
@@ -80,7 +77,7 @@ class PresetsAdapter(
         }
 
         holder.tvName.text = preset.name
-        holder.tvFolder.text = formatSavePath(rootSavePath, preset.pathToSave)
+        holder.tvFolder.text = preset.pathToSave
         holder.tvCreated.text = formatTime(preset.timestamp)
         holder.btnAction.setText(if (preset === pendingPreset) R.string.save else R.string.generate)
 

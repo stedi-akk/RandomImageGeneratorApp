@@ -21,8 +21,3 @@ annotation class DefaultScheduler
 @MustBeDocumented
 @Retention(value = AnnotationRetention.RUNTIME)
 annotation class UiScheduler
-
-@Qualifier
-@MustBeDocumented
-@Retention(value = AnnotationRetention.RUNTIME)
-annotation class RootSavePath

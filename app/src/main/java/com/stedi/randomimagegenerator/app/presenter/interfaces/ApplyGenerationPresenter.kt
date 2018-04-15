@@ -15,7 +15,9 @@ abstract class ApplyGenerationPresenter(
 
     abstract fun getPreset(): Preset
 
-    abstract fun isPresetNewOrChanged(): Boolean
+    abstract fun isPresetNew(): Boolean
+
+    abstract fun isPresetChanged(): Boolean
 
     abstract fun savePreset(name: String)
 

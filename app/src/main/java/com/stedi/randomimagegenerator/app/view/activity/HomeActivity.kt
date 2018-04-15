@@ -15,7 +15,6 @@ import butterknife.OnClick
 import com.squareup.otto.Subscribe
 import com.stedi.randomimagegenerator.ImageParams
 import com.stedi.randomimagegenerator.app.R
-import com.stedi.randomimagegenerator.app.di.RootSavePath
 import com.stedi.randomimagegenerator.app.di.modules.HomeModule
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.other.dim2px
@@ -38,7 +37,6 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
 
     @Inject lateinit var presenter: HomePresenter
     @Inject lateinit var logger: Logger
-    @Inject @field:RootSavePath lateinit var rootSavePath: String
 
     @BindView(R.id.home_activity_recycler_view) lateinit var recyclerView: RecyclerView
     @BindView(R.id.home_activity_empty_view) lateinit var emptyView: View
@@ -66,7 +64,7 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
         recyclerView.addItemDecoration(ListSpaceDecoration(dim2px(R.dimen.common_v_spacing), dim2px(R.dimen.common_lr_spacing)))
-        adapter = PresetsAdapter(rootSavePath, this)
+        adapter = PresetsAdapter(this)
         recyclerView.adapter = adapter
         recyclerView.addOnScrollListener(recyclerScrollListener)
     }

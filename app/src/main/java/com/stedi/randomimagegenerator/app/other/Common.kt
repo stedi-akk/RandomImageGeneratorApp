@@ -9,8 +9,6 @@ import android.util.TypedValue
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.stedi.randomimagegenerator.app.App
-import com.stedi.randomimagegenerator.app.di.RootSavePath
-import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -56,10 +54,6 @@ fun <T> SparseArray<T>.toList(): List<T> {
 }
 
 fun formatTime(millis: Long): String = LazyCommon.dateFormat.format(Date(millis))
-
-fun formatSavePath(@RootSavePath rootSavePath: String, path: String): String {
-    return path.replace(rootSavePath + File.separator, "sdcard/Pictures/RIG/")
-}
 
 private object LazyCommon {
     val dateFormat: SimpleDateFormat by lazy {
