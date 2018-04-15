@@ -91,8 +91,8 @@ class HomePresenterImpl @Inject constructor(
             return
         }
         logger.log(this, "deletePreset $preset")
-        if (pendingPreset.get() === preset) {
-            pendingPreset.clear()
+        if (pendingPreset.getPreset() === preset) {
+            pendingPreset.clearPreset()
             ui?.onPresetDeleted(preset)
             return
         }
@@ -131,7 +131,7 @@ class HomePresenterImpl @Inject constructor(
         event.throwable?.apply {
             logger.log(this@HomePresenterImpl, this)
             ui?.onFailedToFetchPresets()
-        } ?: ui?.onPresetsFetched(pendingPreset.get(), event.presets)
+        } ?: ui?.onPresetsFetched(pendingPreset.getPreset(), event.presets)
     }
 
     @Subscribe

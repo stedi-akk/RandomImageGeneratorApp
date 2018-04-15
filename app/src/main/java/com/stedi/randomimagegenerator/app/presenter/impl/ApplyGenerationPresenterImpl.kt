@@ -94,10 +94,9 @@ class ApplyGenerationPresenterImpl @Inject constructor(
         saveInProgress = false
 
         if (event.throwable == null) {
-            if (candidate === pendingPreset.get()) {
-                pendingPreset.clear()
+            if (candidate === pendingPreset.getPreset()) {
+                pendingPreset.clearPreset()
             }
-            pendingPreset.candidateSaved()
         }
 
         if (ui == null) {
@@ -114,8 +113,10 @@ class ApplyGenerationPresenterImpl @Inject constructor(
     @SuppressWarnings("MissingPermission")
     override fun startGeneration(preset: Preset) {
         if (pendingPreset.isCandidateNew() || pendingPreset.isCandidateChanged()) {
+            candidate.clearIds()
             candidate.name = defaultName
             candidate.pathToSave = File(generationPath, "0").path
+            candidate.timestamp = System.currentTimeMillis()
             pendingPreset.applyCandidate()
         }
 

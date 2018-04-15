@@ -33,6 +33,6 @@ class GenerationStepsPresenterImpl @Inject constructor(
 
     override fun release() {
         logger.log(this, "release called")
-        pendingPreset.killCandidate()
+        pendingPreset.clearCandidate()
     }
 }

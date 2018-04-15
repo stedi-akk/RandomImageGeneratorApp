@@ -17,8 +17,6 @@ class PendingPreset(private val logger: Logger) {
     private var candidateFrom: Preset? = null
     private var candidate: Preset? = null
 
-    fun get() = preset
-
     fun newDefaultCandidate() {
         candidateFrom = null
         // name and save path are set in ApplyGenerationPresenterImpl
@@ -31,46 +29,39 @@ class PendingPreset(private val logger: Logger) {
         logger.log(this, "after newDefaultCandidate: $this")
     }
 
-    fun prepareCandidateFrom(candidate: Preset) {
-        if (candidate === preset) {
+    fun prepareCandidateFrom(preset: Preset) {
+        if (preset === this.preset) {
             this.candidateFrom = null
-            this.candidate = candidate
+            this.candidate = preset
         } else {
-            this.candidateFrom = candidate
-            this.candidate = candidate.createCopy()
+            this.candidateFrom = preset
+            this.candidate = preset.createCopy()
         }
         logger.log(this, "after prepareCandidateFrom: $this")
     }
 
-    fun candidateSaved() {
-        prepareCandidateFrom(candidate ?: throw IllegalStateException("candidate is null"))
-    }
+    fun getPreset() = preset
 
     fun getCandidate() = candidate
 
-    fun isCandidateNew() = candidateFrom == null
+    fun isCandidateNew() = candidateFrom == null && candidate != null
 
-    fun isCandidateChanged() = candidateFrom != null && !(candidate?.equals(candidateFrom) ?: throw IllegalStateException("candidate is null"))
+    fun isCandidateChanged() = candidateFrom != null && !(candidate?.equals(candidateFrom) ?: true)
 
     fun applyCandidate() {
-        val candidate = candidate ?: throw IllegalStateException("candidate is null")
-        if (candidateFrom != null) {
-            candidate.clearIds()
-        }
-        candidate.timestamp = System.currentTimeMillis()
         preset = candidate
         logger.log(this, "after applyCandidate: $this")
     }
 
-    fun killCandidate() {
+    fun clearCandidate() {
         candidateFrom = null
         candidate = null
-        logger.log(this, "after killCandidate: $this")
+        logger.log(this, "after clearCandidate: $this")
     }
 
-    fun clear() {
+    fun clearPreset() {
         preset = null
-        logger.log(this, "after clear: $this")
+        logger.log(this, "after clearPreset: $this")
     }
 
     fun retain(bundle: Bundle) {
