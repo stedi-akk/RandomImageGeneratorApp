@@ -1,7 +1,6 @@
 package com.stedi.randomimagegenerator.app.view.dialogs
 
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import com.stedi.randomimagegenerator.app.R

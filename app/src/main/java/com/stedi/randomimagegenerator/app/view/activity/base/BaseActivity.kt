@@ -21,17 +21,18 @@ abstract class BaseActivity : LifeCycleActivity() {
     @Inject lateinit var bus: CachedBus
 
     private companion object {
-        var mustRestorePendingPreset = true
+        const val KEY_PENDING_PRESET_STATE = "KEY_PENDING_PRESET_STATE"
     }
 
     class PermissionEvent(val permission: String, val requestCode: Int, val isGranted: Boolean)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         component.inject(this)
-        if (mustRestorePendingPreset && savedInstanceState != null) {
-            pendingPreset.restore(savedInstanceState)
+        savedInstanceState?.apply {
+            savedInstanceState.getParcelableArray(KEY_PENDING_PRESET_STATE)?.apply {
+                pendingPreset.restore(this)
+            }
         }
-        mustRestorePendingPreset = false
         super.onCreate(savedInstanceState)
     }
 
@@ -47,7 +48,7 @@ abstract class BaseActivity : LifeCycleActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        pendingPreset.retain(outState)
+        outState.putParcelableArray(KEY_PENDING_PRESET_STATE, pendingPreset.retain())
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {

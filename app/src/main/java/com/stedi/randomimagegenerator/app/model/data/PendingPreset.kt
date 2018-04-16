@@ -1,6 +1,6 @@
 package com.stedi.randomimagegenerator.app.model.data
 
-import android.os.Bundle
+import android.os.Parcelable
 import com.stedi.randomimagegenerator.Quality
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams
 import com.stedi.randomimagegenerator.app.other.logger.Logger
@@ -8,12 +8,6 @@ import javax.inject.Singleton
 
 @Singleton
 class PendingPreset(private val logger: Logger) {
-
-    companion object {
-        private const val KEY_MAIN_PRESET = "KEY_MAIN_PRESET"
-        private const val KEY_CANDIDATE_FROM_PRESET = "KEY_CANDIDATE_FROM_PRESET"
-        private const val KEY_CANDIDATE_PRESET = "KEY_CANDIDATE_PRESET"
-    }
 
     private var preset: Preset? = null
     private var candidateFrom: Preset? = null
@@ -66,18 +60,12 @@ class PendingPreset(private val logger: Logger) {
         logger.log(this, "after clearPreset: $this")
     }
 
-    fun retain(bundle: Bundle) {
-        bundle.putParcelable(KEY_MAIN_PRESET, preset)
-        bundle.putParcelable(KEY_CANDIDATE_FROM_PRESET, candidateFrom)
-        bundle.putParcelable(KEY_CANDIDATE_PRESET, candidate)
-        logger.log(this, "after retain: $this")
-    }
+    fun retain(): Array<Parcelable?> = arrayOf(preset, candidateFrom, candidate)
 
-    fun restore(bundle: Bundle) {
-        preset = bundle.getParcelable(KEY_MAIN_PRESET)
-        candidateFrom = bundle.getParcelable(KEY_CANDIDATE_FROM_PRESET)
-        candidate = bundle.getParcelable(KEY_CANDIDATE_PRESET)
-        logger.log(this, "after restore: $this")
+    fun restore(state: Array<Parcelable?>) {
+        preset = state[0] as Preset?
+        candidateFrom = state[1] as Preset?
+        candidate = state[2] as Preset?
     }
 
     override fun toString() = "PendingPreset{" +
