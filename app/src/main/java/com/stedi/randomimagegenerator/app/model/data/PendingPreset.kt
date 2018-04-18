@@ -66,6 +66,7 @@ class PendingPreset(private val logger: Logger) {
         preset = state[0] as Preset?
         candidateFrom = state[1] as Preset?
         candidate = state[2] as Preset?
+        logger.log(this, "after restore: $this")
     }
 
     override fun toString() = "PendingPreset{" +

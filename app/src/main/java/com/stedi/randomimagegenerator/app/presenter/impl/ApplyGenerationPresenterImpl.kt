@@ -23,7 +23,7 @@ class ApplyGenerationPresenterImpl @Inject constructor(
         @DefaultScheduler private val subscribeOn: Scheduler,
         @UiScheduler private val observeOn: Scheduler,
         private val bus: CachedBus,
-        private val logger: Logger) : ApplyGenerationPresenter(subscribeOn, observeOn, bus, logger) {
+        private val logger: Logger) : ApplyGenerationPresenter {
 
     private val candidate: Preset
         get() = pendingPreset.getCandidate()
@@ -35,13 +35,11 @@ class ApplyGenerationPresenterImpl @Inject constructor(
     class OnPresetSaveEvent(val throwable: Throwable? = null)
 
     override fun onAttach(ui: ApplyGenerationPresenter.UIImpl) {
-        super.onAttach(ui)
         this.ui = ui
         bus.register(this)
     }
 
     override fun onDetach() {
-        super.onDetach()
         bus.unregister(this)
         this.ui = null
     }
@@ -88,6 +86,17 @@ class ApplyGenerationPresenterImpl @Inject constructor(
                 })
     }
 
+    override fun startGeneration() {
+        if (pendingPreset.isCandidateNew() || pendingPreset.isCandidateChanged()) {
+            candidate.clearIds()
+            candidate.name = defaultName
+            candidate.pathToSave = File(generationPath, "0").path
+            candidate.timestamp = System.currentTimeMillis()
+            pendingPreset.applyCandidate()
+        }
+        ui?.showGenerationDialog()
+    }
+
     @Subscribe
     fun onPresetSaveEvent(event: OnPresetSaveEvent) {
         logger.log(this, "onPresetSaveEvent")
@@ -110,28 +119,9 @@ class ApplyGenerationPresenterImpl @Inject constructor(
         } ?: ui?.onPresetSaved()
     }
 
-    @SuppressWarnings("MissingPermission")
-    override fun startGeneration(preset: Preset) {
-        if (pendingPreset.isCandidateNew() || pendingPreset.isCandidateChanged()) {
-            candidate.clearIds()
-            candidate.name = defaultName
-            candidate.pathToSave = File(generationPath, "0").path
-            candidate.timestamp = System.currentTimeMillis()
-            pendingPreset.applyCandidate()
-        }
-
-        super.startGeneration(candidate)
-    }
-
-    @Suppress("UNCHECKED_CAST")
     override fun onRestore(state: Serializable) {
-        (state as Array<Serializable>).apply {
-            super.onRestore(this[0])
-            saveInProgress = this[1] as Boolean
-        }
+        saveInProgress = state as Boolean
     }
 
-    override fun onRetain(): Serializable? {
-        return arrayOf(super.onRetain(), saveInProgress)
-    }
+    override fun onRetain() = saveInProgress
 }

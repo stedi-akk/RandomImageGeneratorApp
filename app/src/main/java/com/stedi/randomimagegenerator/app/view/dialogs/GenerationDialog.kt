@@ -1,12 +1,11 @@
 package com.stedi.randomimagegenerator.app.view.dialogs
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.support.annotation.UiThread
-import android.support.v4.app.FragmentManager
 import android.support.v7.app.AlertDialog
 import android.view.View
 import android.view.WindowManager
@@ -14,6 +13,7 @@ import android.widget.TextView
 import butterknife.BindView
 import com.stedi.randomimagegenerator.ImageParams
 import com.stedi.randomimagegenerator.app.R
+import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.other.CachedBus
 import com.stedi.randomimagegenerator.app.other.getApp
 import com.stedi.randomimagegenerator.app.other.logger.Logger
@@ -41,38 +41,49 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
         ERROR
     }
 
-    class Dismissed
+    class OnDismissed
 
+    @Inject lateinit var presenter: GenerationPresenter
     @Inject lateinit var bus: CachedBus
     @Inject lateinit var logger: Logger
 
-    companion object {
-        @SuppressLint("StaticFieldLeak")
-        private var instance: GenerationDialog? = null
+    private lateinit var appContext: Context
 
-        @UiThread
-        fun getInstance(fm: FragmentManager): GenerationDialog {
-            if (instance == null) {
-                instance = GenerationDialog().apply { show(fm) }
+    private var isStarted: Boolean = false
+
+    companion object {
+        private const val KEY_PRESET = "KEY_PRESET"
+
+        fun newInstance(preset: Preset): GenerationDialog {
+            return GenerationDialog().apply {
+                arguments = Bundle().apply {
+                    putParcelable(KEY_PRESET, preset)
+                }
             }
-            return instance!!
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        context?.apply { getApp().component.inject(this@GenerationDialog) }
+        appContext = context!!.applicationContext
+        appContext.getApp().component.inject(this)
+        presenter.onAttach(this)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        if (instance == null) {
-            logger.log(this, "handling process kill")
-            savedInstanceState?.apply {
-                currentState = getSerializable(KEY_CURRENT_STATE) as State
-                generatedCount = getInt(KEY_GENERATED_COUNT)
-                failedCount = getInt(KEY_FAILED_COUNT)
-            }
-            if (currentState != State.FINISH) {
+        if (savedInstanceState != null) {
+//            currentState = savedInstanceState.getSerializable(KEY_CURRENT_STATE) as State
+//            if (currentState != State.FINISH) {
+//                currentState = State.ERROR
+//            }
+//            generatedCount = savedInstanceState.getInt(KEY_GENERATED_COUNT)
+//            failedCount = savedInstanceState.getInt(KEY_FAILED_COUNT)
+        } else {
+            val arguments = arguments;
+            if (arguments != null) {
+                val preset: Preset = arguments.getParcelable(KEY_PRESET)
+                presenter.startGeneration(preset)
+            } else {
                 currentState = State.ERROR
             }
         }
@@ -89,7 +100,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
             setCanceledOnTouchOutside(false)
             setOnShowListener {
                 getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
-                    bus.postDeadEvent(Dismissed())
+                    bus.postDeadEvent(OnDismissed())
                     dismiss()
                 }
             }
@@ -98,6 +109,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
 
     override fun onStart() {
         super.onStart()
+        isStarted = true
         invalidate()
     }
 
@@ -108,7 +120,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
 
     override fun onDestroy() {
         super.onDestroy()
-        instance = null
+        presenter.onDetach()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -123,6 +135,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
     }
 
     override fun onGenerated(imageParams: ImageParams, imageFile: File) {
+        appContext.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(imageFile)))
         generatedCount++
         changeStateTo(State.PROGRESS)
     }
@@ -148,7 +161,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
 
         currentState = state
 
-        if (isAdded) {
+        if (isStarted) {
             invalidate()
         }
     }

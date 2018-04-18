@@ -1,6 +1,5 @@
 package com.stedi.randomimagegenerator.app.presenter.impl
 
-import android.annotation.SuppressLint
 import com.squareup.otto.Subscribe
 import com.stedi.randomimagegenerator.app.di.DefaultScheduler
 import com.stedi.randomimagegenerator.app.di.UiScheduler
@@ -21,25 +20,23 @@ class HomePresenterImpl @Inject constructor(
         @DefaultScheduler private val subscribeOn: Scheduler,
         @UiScheduler private val observeOn: Scheduler,
         private val bus: CachedBus,
-        private val logger: Logger) : HomePresenter(subscribeOn, observeOn, bus, logger) {
+        private val logger: Logger) : HomePresenter {
 
     private var ui: HomePresenter.UIImpl? = null
     private var fetchInProgress: Boolean = false
 
-    private var lastActionConfirm: HomePresenter.Confirm? = null
-    private var lastActionPresetId: Int = 0
+    private var deletePresetId: Int = 0
+    private var generatePresetId: Int = 0
 
     class FetchPresetsEvent(val presets: List<Preset> = emptyList(), val throwable: Throwable? = null)
     class DeletePresetEvent(val preset: Preset?, val throwable: Throwable? = null)
 
     override fun onAttach(ui: HomePresenter.UIImpl) {
-        super.onAttach(ui)
         this.ui = ui
         bus.register(this)
     }
 
     override fun onDetach() {
-        super.onDetach()
         bus.unregister(this)
         ui = null
     }
@@ -66,50 +63,81 @@ class HomePresenterImpl @Inject constructor(
         ui?.showEditPreset()
     }
 
-    override fun confirmLastAction() {
-        logger.log(this, "confirmLastAction $lastActionConfirm")
-
-        if (lastActionConfirm == Confirm.DELETE_PRESET) {
-            deletePreset(lastActionPresetId)
-        } else if (lastActionConfirm == HomePresenter.Confirm.GENERATE_FROM_PRESET) {
-            startGeneration(lastActionPresetId)
-        }
-
-        lastActionConfirm = null
-        lastActionPresetId = 0
-    }
-
-    override fun cancelLastAction() {
-        logger.log(this, "cancelLastAction $lastActionConfirm")
-        lastActionConfirm = null
-        lastActionPresetId = 0
+    override fun newPreset() {
+        pendingPreset.newDefaultCandidate()
+        ui?.showCreatePreset()
     }
 
     override fun deletePreset(preset: Preset) {
-        if (lastActionConfirm != null) {
-            logger.log(this, "ignoring deletePreset, because last action $lastActionConfirm is not confirmed/canceled")
+        if (deletePresetId != 0) {
+            logger.log(this, "ignoring deletePreset, because last deletePreset is not confirmed/canceled")
             return
         }
+
         logger.log(this, "deletePreset $preset")
         if (pendingPreset.getPreset() === preset) {
             pendingPreset.clearPreset()
             ui?.onPresetDeleted(preset)
             return
         }
-        lastActionConfirm = HomePresenter.Confirm.DELETE_PRESET
-        lastActionPresetId = preset.id
-        ui?.showConfirmLastAction(HomePresenter.Confirm.DELETE_PRESET)
+
+        deletePresetId = preset.id
+        ui?.showConfirmDeletePreset()
+    }
+
+    override fun confirmDeletePreset(confirm: Boolean) {
+        if (deletePresetId == 0) {
+            return
+        }
+
+        if (!confirm) {
+            logger.log(this, "cancelDeletePreset")
+            deletePresetId = 0
+            return
+        }
+
+        logger.log(this, "confirmDeletePreset")
+        val presetId = deletePresetId
+        deletePresetId = 0
+
+        Single.fromCallable {
+            val preset = presetRepository.get(presetId)
+            presetRepository.remove(presetId)
+            return@fromCallable preset
+        }.subscribeOn(subscribeOn)
+                .observeOn(observeOn)
+                .subscribe({
+                    bus.post(DeletePresetEvent(it))
+                }, { t ->
+                    bus.post(DeletePresetEvent(null, t))
+                })
     }
 
     override fun startGeneration(preset: Preset) {
-        if (lastActionConfirm != null) {
-            logger.log(this, "ignoring startGeneration, because last action $lastActionConfirm is not confirmed/canceled")
+        if (generatePresetId != 0) {
+            logger.log(this, "ignoring startGeneration, because last startGeneration is not confirmed/canceled")
             return
         }
+
         logger.log(this, "startGeneration $preset")
-        lastActionConfirm = HomePresenter.Confirm.GENERATE_FROM_PRESET
-        lastActionPresetId = preset.id
-        ui?.showConfirmLastAction(HomePresenter.Confirm.GENERATE_FROM_PRESET)
+        generatePresetId = preset.id
+        ui?.showConfirmGeneratePreset()
+    }
+
+    override fun confirmStartGeneration(confirm: Boolean) {
+        if (generatePresetId == 0) {
+            return
+        }
+
+        if (!confirm) {
+            logger.log(this, "cancelStartGeneration")
+            generatePresetId = 0
+            return
+        }
+
+        logger.log(this, "confirmStartGeneration")
+        generatePresetId = 0
+        ui?.showGenerationDialog()
     }
 
     @Subscribe
@@ -153,41 +181,14 @@ class HomePresenterImpl @Inject constructor(
 
     @Suppress("UNCHECKED_CAST")
     override fun onRestore(state: Serializable) {
-        (state as Array<Serializable>).apply {
-            super.onRestore(this[0])
-            fetchInProgress = this[1] as Boolean
-            lastActionConfirm = this[2] as HomePresenter.Confirm?
-            lastActionPresetId = this[3] as Int
+        (state as Array<Any>).apply {
+            fetchInProgress = this[0] as Boolean
+            deletePresetId = this[1] as Int
+            generatePresetId = this[2] as Int
         }
     }
 
     override fun onRetain(): Serializable? {
-        return arrayOf(super.onRetain(), fetchInProgress, lastActionConfirm, lastActionPresetId)
-    }
-
-    private fun deletePreset(presetId: Int) {
-        Single.fromCallable {
-            val preset = presetRepository.get(presetId)
-            presetRepository.remove(presetId)
-            return@fromCallable preset
-        }.subscribeOn(subscribeOn)
-                .observeOn(observeOn)
-                .subscribe({
-                    bus.post(DeletePresetEvent(it))
-                }, { t ->
-                    bus.post(DeletePresetEvent(null, t))
-                })
-    }
-
-    @SuppressLint("MissingPermission")
-    private fun startGeneration(presetId: Int) {
-        Single.fromCallable { presetRepository.get(presetId) }
-                .subscribeOn(subscribeOn)
-                .observeOn(observeOn)
-                .subscribe({
-                    it?.apply { super.startGeneration(this) }
-                }, { t ->
-                    logger.log(this, t)
-                })
+        return arrayOf(fetchInProgress, deletePresetId, generatePresetId)
     }
 }

@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 abstract class BaseActivity : LifeCycleActivity() {
 
-    protected val component: ActivityComponent by lazy {
+    val component: ActivityComponent by lazy {
         getApp().component.plus(ActivityModule(this))
     }
 

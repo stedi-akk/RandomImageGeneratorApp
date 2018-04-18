@@ -22,9 +22,6 @@ class GenerationModule {
     @Module
     interface Declarations {
         @Binds
-        fun provideGenerationStepsPresenter(presenter: GenerationStepsPresenterImpl): GenerationStepsPresenter
-
-        @Binds
         fun provideChooseGeneratorPresenter(presenter: ChooseGeneratorPresenterImpl): ChooseGeneratorPresenter
 
         @Binds

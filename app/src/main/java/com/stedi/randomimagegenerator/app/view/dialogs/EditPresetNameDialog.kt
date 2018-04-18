@@ -1,7 +1,6 @@
 package com.stedi.randomimagegenerator.app.view.dialogs
 
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
@@ -36,7 +35,7 @@ class EditPresetNameDialog : ButterKnifeDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        context?.apply { getApp().component.inject(this@EditPresetNameDialog) }
+        context!!.getApp().component.inject(this)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

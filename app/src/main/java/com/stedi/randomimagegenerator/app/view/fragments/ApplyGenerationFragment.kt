@@ -1,9 +1,6 @@
 package com.stedi.randomimagegenerator.app.view.fragments
 
 import android.Manifest
-import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.view.LayoutInflater
@@ -15,7 +12,6 @@ import android.widget.Toast
 import butterknife.BindView
 import butterknife.OnClick
 import com.squareup.otto.Subscribe
-import com.stedi.randomimagegenerator.ImageParams
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams
@@ -29,7 +25,6 @@ import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity
 import com.stedi.randomimagegenerator.app.view.dialogs.EditPresetNameDialog
 import com.stedi.randomimagegenerator.app.view.dialogs.GenerationDialog
 import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment
-import java.io.File
 import javax.inject.Inject
 
 class ApplyGenerationFragment : StepFragment(), ApplyGenerationPresenter.UIImpl {
@@ -78,6 +73,65 @@ class ApplyGenerationFragment : StepFragment(), ApplyGenerationPresenter.UIImpl 
 
     override fun onSelected() {
         refreshFromPreset()
+    }
+
+    @OnClick(R.id.apply_generation_fragment_btn_save)
+    fun onSaveClick(v: View) {
+        val preset = presenter.getPreset()
+        EditPresetNameDialog.newInstance(if (preset.id == 0) "" else preset.name).show(fragmentManager!!)
+    }
+
+    @OnClick(R.id.apply_generation_fragment_btn_generate)
+    fun onGenerateClick(v: View) {
+        if (checkForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_CODE_WRITE_EXTERNAL)) {
+            presenter.startGeneration()
+        } else {
+            startGenerationPreset = presenter.getPreset()
+        }
+    }
+
+    override fun onPresetSaved() {
+        activity?.finish()
+    }
+
+    override fun failedToSavePreset() {
+        activity?.showToast(R.string.failed_save_preset, Toast.LENGTH_LONG)
+    }
+
+    override fun showGenerationDialog() {
+        GenerationDialog.newInstance(presenter.getPreset()).show(fragmentManager!!)
+    }
+
+    @Subscribe
+    fun onEditedPresetName(onEdited: EditPresetNameDialog.OnEdited) {
+        presenter.savePreset(onEdited.name)
+    }
+
+    @Subscribe
+    fun onPermissionEvent(event: BaseActivity.PermissionEvent) {
+        if (event.requestCode == REQUEST_CODE_WRITE_EXTERNAL) {
+            startGenerationPreset?.apply {
+                if (event.isGranted) {
+                    presenter.startGeneration()
+                }
+                startGenerationPreset = null
+            }
+        }
+    }
+
+    @Subscribe
+    fun onGenerationDialogOnDismissed(event: GenerationDialog.OnDismissed) {
+        activity?.finish()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putSerializable(KEY_APPLY_GENERATION_PRESENTER_STATE, presenter.onRetain())
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onDetach()
     }
 
     private fun refreshFromPreset() {
@@ -140,91 +194,5 @@ class ApplyGenerationFragment : StepFragment(), ApplyGenerationPresenter.UIImpl 
         val step = size[2].toString()
         sb.append(getString(res, getString(R.string.from_s_to_s_step_s, from, to, step)))
         return true
-    }
-
-    @OnClick(R.id.apply_generation_fragment_btn_save)
-    fun onSaveClick(v: View) {
-        val preset = presenter.getPreset()
-        EditPresetNameDialog.newInstance(if (preset.id == 0) "" else preset.name).show(fragmentManager!!)
-    }
-
-    @OnClick(R.id.apply_generation_fragment_btn_generate)
-    fun onGenerateClick(v: View) {
-        if (checkForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_CODE_WRITE_EXTERNAL)) {
-            presenter.startGeneration(presenter.getPreset())
-        } else {
-            startGenerationPreset = presenter.getPreset()
-        }
-    }
-
-    @Subscribe
-    fun onEditedPresetName(onEdited: EditPresetNameDialog.OnEdited) {
-        presenter.savePreset(onEdited.name)
-    }
-
-    @SuppressLint("MissingPermission")
-    @Subscribe
-    fun onPermissionEvent(event: BaseActivity.PermissionEvent) {
-        if (event.requestCode == REQUEST_CODE_WRITE_EXTERNAL) {
-            val startGenerationPreset = startGenerationPreset
-            if (event.isGranted && startGenerationPreset != null) {
-                presenter.startGeneration(startGenerationPreset)
-            }
-            this.startGenerationPreset = null
-        }
-    }
-
-    @Subscribe
-    fun onGenerationDialogDismissed(event: GenerationDialog.Dismissed) {
-        activity?.finish()
-    }
-
-    override fun onPresetSaved() {
-        activity?.finish()
-    }
-
-    override fun failedToSavePreset() {
-        context?.showToast(R.string.failed_save_preset, Toast.LENGTH_LONG)
-    }
-
-    override fun onStartGeneration() {
-        logger.log(this, "onStartGeneration")
-        val fragmentManager = fragmentManager ?: return
-        GenerationDialog.getInstance(fragmentManager).onStartGeneration()
-    }
-
-    override fun onGenerated(imageParams: ImageParams, imageFile: File) {
-        logger.log(this, "onGenerated")
-        val fragmentManager = fragmentManager ?: return
-        activity?.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(imageFile)))
-        GenerationDialog.getInstance(fragmentManager).onGenerated(imageParams, imageFile)
-    }
-
-    override fun onGenerationUnknownError() {
-        logger.log(this, "onGenerationUnknownError")
-        val fragmentManager = fragmentManager ?: return
-        GenerationDialog.getInstance(fragmentManager).onGenerationUnknownError()
-    }
-
-    override fun onFailedToGenerate(imageParams: ImageParams) {
-        logger.log(this, "onFailedToGenerate")
-        val fragmentManager = fragmentManager ?: return
-        GenerationDialog.getInstance(fragmentManager).onFailedToGenerate(imageParams)
-    }
-
-    override fun onFinishGeneration() {
-        logger.log(this, "onFinishGeneration")
-        val fragmentManager = fragmentManager ?: return
-        GenerationDialog.getInstance(fragmentManager).onFinishGeneration()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putSerializable(KEY_APPLY_GENERATION_PRESENTER_STATE, presenter.onRetain())
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.onDetach()
     }
 }

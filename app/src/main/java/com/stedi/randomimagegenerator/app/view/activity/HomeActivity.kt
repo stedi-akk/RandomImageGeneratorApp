@@ -1,9 +1,6 @@
 package com.stedi.randomimagegenerator.app.view.activity
 
 import android.Manifest
-import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.widget.LinearLayoutManager
@@ -13,7 +10,6 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import com.squareup.otto.Subscribe
-import com.stedi.randomimagegenerator.ImageParams
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.di.modules.HomeModule
 import com.stedi.randomimagegenerator.app.model.data.Preset
@@ -26,11 +22,11 @@ import com.stedi.randomimagegenerator.app.view.adapters.PresetsAdapter
 import com.stedi.randomimagegenerator.app.view.components.ListSpaceDecoration
 import com.stedi.randomimagegenerator.app.view.dialogs.ConfirmDialog
 import com.stedi.randomimagegenerator.app.view.dialogs.GenerationDialog
-import java.io.File
 import javax.inject.Inject
 
 class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickListener {
     private val KEY_HOME_PRESENTER_STATE = "KEY_HOME_PRESENTER_STATE"
+    private val KEY_CONFIRM_PRESET = "KEY_CONFIRM_PRESET"
     private val REQUEST_CODE_WRITE_EXTERNAL = 123
     private val REQUEST_CONFIRM_DELETE = 321
     private val REQUEST_CONFIRM_GENERATE = 231
@@ -44,8 +40,7 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
 
     private lateinit var adapter: PresetsAdapter
 
-    private var startGenerationPreset: Preset? = null
-    private var confirmPresetName: String? = null
+    private var confirmPreset: Preset? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         component.plus(HomeModule()).inject(this)
@@ -58,6 +53,7 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
             savedInstanceState.getSerializable(KEY_HOME_PRESENTER_STATE)?.apply {
                 presenter.onRestore(this)
             }
+            confirmPreset = savedInstanceState.getParcelable(KEY_CONFIRM_PRESET)
         }
 
         fab.hide(fabShowHideListener)
@@ -82,6 +78,31 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
         presenter.onDetach()
     }
 
+    @OnClick(R.id.home_activity_fab)
+    fun onFabClick(v: View) {
+        presenter.newPreset()
+    }
+
+    override fun onCardClick(preset: Preset) {
+        presenter.editPreset(preset)
+    }
+
+    override fun onDeleteClick(preset: Preset) {
+        confirmPreset = preset
+        presenter.deletePreset(preset)
+    }
+
+    override fun onGenerateClick(preset: Preset) {
+        confirmPreset = preset
+        if (checkForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_CODE_WRITE_EXTERNAL)) {
+            presenter.startGeneration(preset)
+        }
+    }
+
+    override fun onSaveClick(preset: Preset) {
+        presenter.editPreset(preset)
+    }
+
     override fun onPresetsFetched(pendingPreset: Preset?, presets: List<Preset>) {
         fab.show(fabShowHideListener)
         adapter.set(presets, pendingPreset)
@@ -94,26 +115,11 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
         refreshEmptyView()
     }
 
-    @OnClick(R.id.home_activity_fab)
-    fun onFabClick(v: View) {
-        GenerationStepsActivity.start(this, true)
-    }
-
-    override fun onCardClick(preset: Preset) {
-        presenter.editPreset(preset)
-    }
-
-    override fun showEditPreset() {
-        GenerationStepsActivity.start(this, false)
-    }
-
-    override fun onSaveClick(preset: Preset) {
-        presenter.editPreset(preset)
-    }
-
-    override fun onDeleteClick(preset: Preset) {
-        confirmPresetName = preset.name
-        presenter.deletePreset(preset)
+    override fun showConfirmDeletePreset() {
+        val confirmPreset = confirmPreset ?: return
+        ConfirmDialog.newInstance(REQUEST_CONFIRM_DELETE,
+                getString(R.string.confirm_action), getString(R.string.are_you_sure_delete_s_preset, confirmPreset.name))
+                .show(supportFragmentManager, ConfirmDialog::class.java.simpleName)
     }
 
     override fun onPresetDeleted(preset: Preset) {
@@ -126,37 +132,33 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
         showToast(R.string.failed_delete_preset)
     }
 
-    override fun onGenerateClick(preset: Preset) {
-        if (checkForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_CODE_WRITE_EXTERNAL)) {
-            confirmPresetName = preset.name
-            presenter.startGeneration(preset)
-        } else {
-            startGenerationPreset = preset
-        }
+    override fun showConfirmGeneratePreset() {
+        val confirmPreset = confirmPreset ?: return
+        ConfirmDialog.newInstance(REQUEST_CONFIRM_GENERATE,
+                getString(R.string.confirm_action), getString(R.string.are_you_sure_generate_preset_s, confirmPreset.name))
+                .show(supportFragmentManager, ConfirmDialog::class.java.simpleName)
     }
 
-    override fun showConfirmLastAction(confirm: HomePresenter.Confirm) {
-        if (confirm === HomePresenter.Confirm.DELETE_PRESET) {
-            ConfirmDialog.newInstance(REQUEST_CONFIRM_DELETE,
-                    getString(R.string.confirm_action), getString(R.string.are_you_sure_delete_s_preset, confirmPresetName))
-                    .show(supportFragmentManager, ConfirmDialog::class.java.simpleName)
-        } else if (confirm === HomePresenter.Confirm.GENERATE_FROM_PRESET) {
-            ConfirmDialog.newInstance(REQUEST_CONFIRM_GENERATE,
-                    getString(R.string.confirm_action), getString(R.string.are_you_sure_generate_preset_s, confirmPresetName))
-                    .show(supportFragmentManager, ConfirmDialog::class.java.simpleName)
-        }
+    override fun showGenerationDialog() {
+        val confirmPreset = confirmPreset ?: return
+        GenerationDialog.newInstance(confirmPreset).show(supportFragmentManager)
     }
 
-    @SuppressLint("MissingPermission")
+    override fun showEditPreset() {
+        GenerationStepsActivity.start(this, false)
+    }
+
+    override fun showCreatePreset() {
+        GenerationStepsActivity.start(this, true)
+    }
+
     @Subscribe
     fun onPermissionEvent(event: BaseActivity.PermissionEvent) {
         if (event.requestCode == REQUEST_CODE_WRITE_EXTERNAL) {
-            startGenerationPreset?.apply {
+            confirmPreset?.apply {
                 if (event.isGranted) {
-                    confirmPresetName = name
                     presenter.startGeneration(this)
                 }
-                startGenerationPreset = null
             }
         }
     }
@@ -164,44 +166,17 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
     @Subscribe
     fun onConfirmDialogCallback(callback: ConfirmDialog.Callback) {
         logger.log(this, "onConfirmDialogCallback " + callback.confirm)
-        if (callback.requestCode == REQUEST_CONFIRM_DELETE || callback.requestCode == REQUEST_CONFIRM_GENERATE) {
-            if (callback.confirm) {
-                presenter.confirmLastAction()
-            } else {
-                presenter.cancelLastAction()
-            }
+        if (callback.requestCode == REQUEST_CONFIRM_DELETE) {
+            presenter.confirmDeletePreset(callback.confirm)
+        } else if (callback.requestCode == REQUEST_CONFIRM_GENERATE) {
+            presenter.confirmStartGeneration(callback.confirm)
         }
-    }
-
-    override fun onStartGeneration() {
-        logger.log(this, "onStartGeneration")
-        GenerationDialog.getInstance(supportFragmentManager).onStartGeneration()
-    }
-
-    override fun onGenerated(imageParams: ImageParams, imageFile: File) {
-        logger.log(this, "onGenerated")
-        sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(imageFile)))
-        GenerationDialog.getInstance(supportFragmentManager).onGenerated(imageParams, imageFile)
-    }
-
-    override fun onGenerationUnknownError() {
-        logger.log(this, "onGenerationUnknownError")
-        GenerationDialog.getInstance(supportFragmentManager).onGenerationUnknownError()
-    }
-
-    override fun onFailedToGenerate(imageParams: ImageParams) {
-        logger.log(this, "onFailedToGenerate")
-        GenerationDialog.getInstance(supportFragmentManager).onFailedToGenerate(imageParams)
-    }
-
-    override fun onFinishGeneration() {
-        logger.log(this, "onFinishGeneration")
-        GenerationDialog.getInstance(supportFragmentManager).onFinishGeneration()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putSerializable(KEY_HOME_PRESENTER_STATE, presenter.onRetain())
+        outState.putParcelable(KEY_CONFIRM_PRESET, confirmPreset)
     }
 
     private fun refreshEmptyView() {

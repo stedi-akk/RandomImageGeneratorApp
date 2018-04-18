@@ -1,44 +1,42 @@
 package com.stedi.randomimagegenerator.app.presenter.interfaces
 
-import com.stedi.randomimagegenerator.app.di.DefaultScheduler
-import com.stedi.randomimagegenerator.app.di.UiScheduler
 import com.stedi.randomimagegenerator.app.model.data.Preset
-import com.stedi.randomimagegenerator.app.other.CachedBus
-import com.stedi.randomimagegenerator.app.other.logger.Logger
-import rx.Scheduler
+import com.stedi.randomimagegenerator.app.presenter.interfaces.core.RetainedPresenter
+import com.stedi.randomimagegenerator.app.presenter.interfaces.core.UI
 
-abstract class HomePresenter(
-        @DefaultScheduler subscribeOn: Scheduler,
-        @UiScheduler observeOn: Scheduler,
-        bus: CachedBus,
-        logger: Logger) : GenerationPresenter<HomePresenter.UIImpl>(subscribeOn, observeOn, bus, logger) {
+interface HomePresenter : RetainedPresenter<HomePresenter.UIImpl> {
 
-    enum class Confirm {
-        DELETE_PRESET,
-        GENERATE_FROM_PRESET
-    }
+    fun fetchPresets()
 
-    abstract fun fetchPresets()
+    fun editPreset(preset: Preset)
 
-    abstract fun editPreset(preset: Preset)
+    fun newPreset()
 
-    abstract fun confirmLastAction()
+    fun deletePreset(preset: Preset)
 
-    abstract fun cancelLastAction()
+    fun confirmDeletePreset(confirm: Boolean)
 
-    abstract fun deletePreset(preset: Preset)
+    fun startGeneration(preset: Preset)
 
-    interface UIImpl : GenerationPresenter.UIImpl {
+    fun confirmStartGeneration(confirm: Boolean)
+
+    interface UIImpl : UI {
         fun onPresetsFetched(pendingPreset: Preset?, presets: List<Preset>)
 
         fun onFailedToFetchPresets()
+
+        fun showConfirmDeletePreset()
 
         fun onPresetDeleted(preset: Preset)
 
         fun onFailedToDeletePreset()
 
-        fun showConfirmLastAction(confirm: Confirm)
+        fun showConfirmGeneratePreset()
+
+        fun showGenerationDialog()
 
         fun showEditPreset()
+
+        fun showCreatePreset()
     }
 }

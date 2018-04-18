@@ -36,7 +36,7 @@ class ConfirmDialog : BaseDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        context?.apply { getApp().component.inject(this@ConfirmDialog) }
+        context!!.getApp().component.inject(this)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
