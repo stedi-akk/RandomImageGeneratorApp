@@ -94,7 +94,7 @@ class ApplyGenerationPresenterImpl @Inject constructor(
             candidate.timestamp = System.currentTimeMillis()
             pendingPreset.applyCandidate()
         }
-        ui?.showGenerationDialog()
+        ui?.showGenerationDialog(candidate)
     }
 
     @Subscribe

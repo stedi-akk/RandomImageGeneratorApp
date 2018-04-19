@@ -21,6 +21,6 @@ interface ApplyGenerationPresenter : RetainedPresenter<ApplyGenerationPresenter.
 
         fun failedToSavePreset()
 
-        fun showGenerationDialog()
+        fun showGenerationDialog(preset: Preset)
     }
 }

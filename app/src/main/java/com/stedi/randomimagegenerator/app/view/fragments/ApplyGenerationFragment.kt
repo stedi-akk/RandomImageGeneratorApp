@@ -98,8 +98,8 @@ class ApplyGenerationFragment : StepFragment(), ApplyGenerationPresenter.UIImpl 
         activity?.showToast(R.string.failed_save_preset, Toast.LENGTH_LONG)
     }
 
-    override fun showGenerationDialog() {
-        GenerationDialog.newInstance(presenter.getPreset()).show(fragmentManager!!)
+    override fun showGenerationDialog(preset: Preset) {
+        GenerationDialog.newInstance(preset).show(fragmentManager!!)
     }
 
     @Subscribe
