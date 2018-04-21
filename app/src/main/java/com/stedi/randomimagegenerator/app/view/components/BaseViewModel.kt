@@ -2,7 +2,9 @@ package com.stedi.randomimagegenerator.app.view.components
 
 import android.arch.lifecycle.ViewModel
 
-abstract class BaseViewModel<in V> : ViewModel() {
+interface RequireViewModel
+
+abstract class BaseViewModel<in V : RequireViewModel> : ViewModel() {
     var isInitialized: Boolean = false
 
     abstract fun onCreate(view: V)

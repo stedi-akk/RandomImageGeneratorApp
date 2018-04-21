@@ -11,6 +11,7 @@ import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.other.CachedBus
 import com.stedi.randomimagegenerator.app.other.getApp
 import com.stedi.randomimagegenerator.app.view.components.BaseViewModel
+import com.stedi.randomimagegenerator.app.view.components.RequireViewModel
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -24,7 +25,7 @@ class BaseActivityModel : BaseViewModel<BaseActivity>() {
     }
 }
 
-abstract class BaseActivity : LifeCycleActivity() {
+abstract class BaseActivity : LifeCycleActivity(), RequireViewModel {
 
     val activityComponent: ActivityComponent by lazy {
         getApp().appComponent.plus(ActivityModule(this))

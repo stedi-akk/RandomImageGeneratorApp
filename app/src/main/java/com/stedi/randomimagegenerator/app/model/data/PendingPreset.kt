@@ -60,7 +60,10 @@ class PendingPreset() {
         Timber.d("after clearPreset: $this")
     }
 
-    fun retain(): Array<Parcelable?> = arrayOf(preset, candidateFrom, candidate)
+    fun retain(): Array<Parcelable?> {
+        Timber.d("before retain: $this")
+        return arrayOf(preset, candidateFrom, candidate)
+    }
 
     fun restore(state: Array<Parcelable?>) {
         preset = state[0] as Preset?
