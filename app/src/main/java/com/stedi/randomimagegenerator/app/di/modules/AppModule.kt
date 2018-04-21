@@ -6,7 +6,7 @@ import com.stedi.randomimagegenerator.app.di.AppContext
 import com.stedi.randomimagegenerator.app.di.DefaultScheduler
 import com.stedi.randomimagegenerator.app.di.UiScheduler
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset
-import com.stedi.randomimagegenerator.app.other.CachedBus
+import com.stedi.randomimagegenerator.app.other.LockedBus
 import dagger.Module
 import dagger.Provides
 import rx.Scheduler
@@ -24,7 +24,7 @@ class AppModule(private val app: App) {
 
     @Provides
     @Singleton
-    fun provideBus(): CachedBus = CachedBus()
+    fun provideBus(): LockedBus = LockedBus()
 
     @Provides
     @DefaultScheduler

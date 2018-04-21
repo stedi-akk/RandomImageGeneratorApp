@@ -14,7 +14,7 @@ import butterknife.BindView
 import com.stedi.randomimagegenerator.ImageParams
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.model.data.Preset
-import com.stedi.randomimagegenerator.app.other.CachedBus
+import com.stedi.randomimagegenerator.app.other.LockedBus
 import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationPresenter
 import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity
 import com.stedi.randomimagegenerator.app.view.dialogs.base.ButterKnifeDialogFragment
@@ -44,7 +44,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
     class OnDismissed
 
     @Inject lateinit var presenter: GenerationPresenter
-    @Inject lateinit var bus: CachedBus
+    @Inject lateinit var bus: LockedBus
 
     private lateinit var appContext: Context
 
@@ -99,7 +99,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
             setCanceledOnTouchOutside(false)
             setOnShowListener {
                 getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
-                    bus.postDeadEvent(OnDismissed())
+                    bus.post(OnDismissed())
                     dismiss()
                 }
             }

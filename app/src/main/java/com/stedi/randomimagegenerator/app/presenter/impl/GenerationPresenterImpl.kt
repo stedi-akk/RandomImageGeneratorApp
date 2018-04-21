@@ -8,7 +8,7 @@ import com.stedi.randomimagegenerator.Rig
 import com.stedi.randomimagegenerator.app.di.DefaultScheduler
 import com.stedi.randomimagegenerator.app.di.UiScheduler
 import com.stedi.randomimagegenerator.app.model.data.Preset
-import com.stedi.randomimagegenerator.app.other.CachedBus
+import com.stedi.randomimagegenerator.app.other.LockedBus
 import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationPresenter
 import com.stedi.randomimagegenerator.callbacks.GenerateCallback
 import com.stedi.randomimagegenerator.callbacks.SaveCallback
@@ -22,7 +22,7 @@ import javax.inject.Inject
 class GenerationPresenterImpl @Inject constructor(
         @DefaultScheduler private val subscribeOn: Scheduler,
         @UiScheduler private val observeOn: Scheduler,
-        private val bus: CachedBus) : GenerationPresenter {
+        private val bus: LockedBus) : GenerationPresenter {
 
     private var ui: GenerationPresenter.UIImpl? = null
     private var generationInProgress: Boolean = false

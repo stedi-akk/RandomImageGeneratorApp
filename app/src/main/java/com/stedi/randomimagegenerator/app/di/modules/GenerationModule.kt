@@ -8,7 +8,7 @@ import com.stedi.randomimagegenerator.app.di.DefaultScheduler
 import com.stedi.randomimagegenerator.app.di.UiScheduler
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.model.repository.PresetRepository
-import com.stedi.randomimagegenerator.app.other.CachedBus
+import com.stedi.randomimagegenerator.app.other.LockedBus
 import com.stedi.randomimagegenerator.app.presenter.impl.*
 import com.stedi.randomimagegenerator.app.presenter.interfaces.*
 import dagger.Binds
@@ -35,7 +35,7 @@ class GenerationModule {
 
     @Provides
     fun provideApplyGenerationPresenter(@AppContext context: Context, pendingPreset: PendingPreset, presetRepository: PresetRepository,
-                                        @DefaultScheduler subscribeOn: Scheduler, @UiScheduler observeOn: Scheduler, bus: CachedBus): ApplyGenerationPresenter {
+                                        @DefaultScheduler subscribeOn: Scheduler, @UiScheduler observeOn: Scheduler, bus: LockedBus): ApplyGenerationPresenter {
         return ApplyGenerationPresenterImpl(
                 pendingPreset,
                 presetRepository,

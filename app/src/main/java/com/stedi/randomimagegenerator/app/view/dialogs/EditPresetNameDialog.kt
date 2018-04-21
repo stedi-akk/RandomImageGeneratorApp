@@ -8,7 +8,7 @@ import android.view.WindowManager
 import android.widget.EditText
 import butterknife.BindView
 import com.stedi.randomimagegenerator.app.R
-import com.stedi.randomimagegenerator.app.other.CachedBus
+import com.stedi.randomimagegenerator.app.other.LockedBus
 import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity
 import com.stedi.randomimagegenerator.app.view.dialogs.base.ButterKnifeDialogFragment
 import javax.inject.Inject
@@ -17,7 +17,7 @@ class EditPresetNameDialog : ButterKnifeDialogFragment() {
 
     @BindView(R.id.edit_preset_name_dialog_et_name) lateinit var etName: EditText
 
-    @Inject lateinit var bus: CachedBus
+    @Inject lateinit var bus: LockedBus
 
     class OnEdited(val name: String)
 
@@ -62,7 +62,7 @@ class EditPresetNameDialog : ButterKnifeDialogFragment() {
             etName.error = getString(R.string.preset_name_empty)
             return
         }
-        bus.postDeadEvent(OnEdited(name))
+        bus.post(OnEdited(name))
         dismiss()
     }
 }

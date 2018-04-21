@@ -8,7 +8,7 @@ import android.support.v4.content.ContextCompat
 import com.stedi.randomimagegenerator.app.di.components.ActivityComponent
 import com.stedi.randomimagegenerator.app.di.modules.ActivityModule
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset
-import com.stedi.randomimagegenerator.app.other.CachedBus
+import com.stedi.randomimagegenerator.app.other.LockedBus
 import com.stedi.randomimagegenerator.app.other.getApp
 import com.stedi.randomimagegenerator.app.view.components.BaseViewModel
 import com.stedi.randomimagegenerator.app.view.components.RequireViewModel
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 class BaseActivityModel : BaseViewModel<BaseActivity>() {
     @Inject lateinit var pendingPreset: PendingPreset
-    @Inject lateinit var bus: CachedBus
+    @Inject lateinit var bus: LockedBus
 
     override fun onCreate(view: BaseActivity) {
         Timber.d("BaseActivityModel onCreate")
@@ -70,7 +70,7 @@ abstract class BaseActivity : LifeCycleActivity(), RequireViewModel {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         val isGranted = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
-        viewModel.bus.postDeadEvent(PermissionEvent(permissions[0], requestCode, isGranted))
+        viewModel.bus.post(PermissionEvent(permissions[0], requestCode, isGranted))
     }
 
     fun checkForPermission(permission: String, requestCode: Int): Boolean {

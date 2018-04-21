@@ -4,14 +4,14 @@ import android.app.Dialog
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import com.stedi.randomimagegenerator.app.R
-import com.stedi.randomimagegenerator.app.other.CachedBus
+import com.stedi.randomimagegenerator.app.other.LockedBus
 import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity
 import com.stedi.randomimagegenerator.app.view.dialogs.base.BaseDialogFragment
 import javax.inject.Inject
 
 class ConfirmDialog : BaseDialogFragment() {
 
-    @Inject lateinit var bus: CachedBus
+    @Inject lateinit var bus: LockedBus
 
     private var requestCode: Int = 0
     private var posted: Boolean = false
@@ -55,7 +55,7 @@ class ConfirmDialog : BaseDialogFragment() {
 
             setPositiveButton(R.string.ok) { _, _ ->
                 posted = true
-                bus.postDeadEvent(Callback(requestCode, true))
+                bus.post(Callback(requestCode, true))
             }
             setNegativeButton(R.string.cancel, null)
         }.create()
@@ -64,7 +64,7 @@ class ConfirmDialog : BaseDialogFragment() {
     override fun onDestroy() {
         super.onDestroy()
         if (!posted) {
-            bus.postDeadEvent(Callback(requestCode, false))
+            bus.post(Callback(requestCode, false))
         }
     }
 }

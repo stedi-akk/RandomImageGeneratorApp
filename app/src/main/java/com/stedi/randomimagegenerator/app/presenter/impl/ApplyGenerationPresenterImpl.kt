@@ -6,7 +6,7 @@ import com.stedi.randomimagegenerator.app.di.UiScheduler
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.model.repository.PresetRepository
-import com.stedi.randomimagegenerator.app.other.CachedBus
+import com.stedi.randomimagegenerator.app.other.LockedBus
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter
 import rx.Completable
 import rx.Scheduler
@@ -21,7 +21,7 @@ class ApplyGenerationPresenterImpl @Inject constructor(
         private val defaultName: String,
         @DefaultScheduler private val subscribeOn: Scheduler,
         @UiScheduler private val observeOn: Scheduler,
-        private val bus: CachedBus) : ApplyGenerationPresenter {
+        private val bus: LockedBus) : ApplyGenerationPresenter {
 
     private val candidate: Preset
         get() = pendingPreset.getCandidate()

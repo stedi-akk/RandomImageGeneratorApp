@@ -14,7 +14,7 @@ import com.squareup.otto.Subscribe
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.di.modules.HomeModule
 import com.stedi.randomimagegenerator.app.model.data.Preset
-import com.stedi.randomimagegenerator.app.other.CachedBus
+import com.stedi.randomimagegenerator.app.other.LockedBus
 import com.stedi.randomimagegenerator.app.other.dim2px
 import com.stedi.randomimagegenerator.app.other.showToast
 import com.stedi.randomimagegenerator.app.presenter.interfaces.HomePresenter
@@ -29,7 +29,7 @@ import javax.inject.Inject
 
 class HomeActivityModel : BaseViewModel<HomeActivity>() {
     @Inject lateinit var presenter: HomePresenter
-    @Inject lateinit var bus: CachedBus
+    @Inject lateinit var bus: LockedBus
 
     override fun onCreate(view: HomeActivity) {
         Timber.d("HomeActivityModel onCreate")

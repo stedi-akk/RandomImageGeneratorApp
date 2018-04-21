@@ -6,7 +6,7 @@ import com.stedi.randomimagegenerator.app.di.UiScheduler
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.model.repository.PresetRepository
-import com.stedi.randomimagegenerator.app.other.CachedBus
+import com.stedi.randomimagegenerator.app.other.LockedBus
 import com.stedi.randomimagegenerator.app.presenter.interfaces.HomePresenter
 import rx.Scheduler
 import rx.Single
@@ -18,7 +18,7 @@ class HomePresenterImpl @Inject constructor(
         private val pendingPreset: PendingPreset,
         @DefaultScheduler private val subscribeOn: Scheduler,
         @UiScheduler private val observeOn: Scheduler,
-        private val bus: CachedBus) : HomePresenter {
+        private val bus: LockedBus) : HomePresenter {
 
     private var ui: HomePresenter.UIImpl? = null
     private var fetchInProgress: Boolean = false

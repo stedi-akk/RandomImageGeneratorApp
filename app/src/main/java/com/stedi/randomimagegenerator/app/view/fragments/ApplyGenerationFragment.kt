@@ -16,7 +16,7 @@ import com.squareup.otto.Subscribe
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams
-import com.stedi.randomimagegenerator.app.other.CachedBus
+import com.stedi.randomimagegenerator.app.other.LockedBus
 import com.stedi.randomimagegenerator.app.other.formatTime
 import com.stedi.randomimagegenerator.app.other.showToast
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter
@@ -30,7 +30,7 @@ import javax.inject.Inject
 
 class ApplyGenerationFragmentModel : BaseViewModel<ApplyGenerationFragment>() {
     @Inject lateinit var presenter: ApplyGenerationPresenter
-    @Inject lateinit var bus: CachedBus
+    @Inject lateinit var bus: LockedBus
 
     override fun onCreate(view: ApplyGenerationFragment) {
         Timber.d("ApplyGenerationFragmentModel onCreate")
