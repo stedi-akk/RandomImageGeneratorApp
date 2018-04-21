@@ -9,17 +9,16 @@ import android.view.ViewGroup
 import butterknife.BindView
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
-import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseEffectPresenter
 import com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity
 import com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapter
 import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment
+import timber.log.Timber
 import javax.inject.Inject
 
 class ChooseEffectFragment : StepFragment(), GeneratorTypeAdapter.ClickListener, ChooseEffectPresenter.UIImpl {
 
     @Inject lateinit var presenter: ChooseEffectPresenter
-    @Inject lateinit var logger: Logger
 
     @BindView(R.id.choose_effect_fragment_recycler_view) lateinit var recyclerView: RecyclerView
 
@@ -52,12 +51,12 @@ class ChooseEffectFragment : StepFragment(), GeneratorTypeAdapter.ClickListener,
     }
 
     override fun onSelected(type: GeneratorType) {
-        logger.log(this, "onSelected: " + type.name)
+        Timber.d("onSelected: ${type.name}")
         presenter.chooseEffectType(type)
     }
 
     override fun onDeselected() {
-        logger.log(this, "onDeselected")
+        Timber.d("onDeselected")
         presenter.chooseEffectType(null)
     }
 

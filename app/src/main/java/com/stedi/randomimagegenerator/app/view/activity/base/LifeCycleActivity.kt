@@ -2,55 +2,48 @@ package com.stedi.randomimagegenerator.app.view.activity.base
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.stedi.randomimagegenerator.app.other.getApp
-import com.stedi.randomimagegenerator.app.other.logger.Logger
-import javax.inject.Inject
+import timber.log.Timber
 
 abstract class LifeCycleActivity : AppCompatActivity() {
     private val LOG = false
 
-    @Inject lateinit var lifeCycleLogger: Logger
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (LOG) {
-            getApp().component.inject(this)
-            lifeCycleLogger.log(this, "onCreate")
-        }
+        if (LOG) Timber.i("onCreate")
         super.onCreate(savedInstanceState)
     }
 
     override fun onRestart() {
-        if (LOG) lifeCycleLogger.log(this, "onRestart")
+        if (LOG) Timber.i("onRestart")
         super.onRestart()
     }
 
     override fun onStart() {
-        if (LOG) lifeCycleLogger.log(this, "onStart")
+        if (LOG) Timber.i("onStart")
         super.onStart()
     }
 
     override fun onResume() {
-        if (LOG) lifeCycleLogger.log(this, "onResume")
+        if (LOG) Timber.i("onResume")
         super.onResume()
     }
 
     override fun onPause() {
-        if (LOG) lifeCycleLogger.log(this, "onPause")
+        if (LOG) Timber.i("onPause")
         super.onPause()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        if (LOG) lifeCycleLogger.log(this, "onSaveInstanceState")
+        if (LOG) Timber.i("onSaveInstanceState")
         super.onSaveInstanceState(outState)
     }
 
     override fun onStop() {
-        if (LOG) lifeCycleLogger.log(this, "onStop")
+        if (LOG) Timber.i("onStop")
         super.onStop()
     }
 
     override fun onDestroy() {
-        if (LOG) lifeCycleLogger.log(this, "onDestroy")
+        if (LOG) Timber.i("onDestroy")
         super.onDestroy()
     }
 }

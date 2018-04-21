@@ -15,10 +15,10 @@ import android.widget.RadioGroup
 import butterknife.BindView
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.other.dp2px
-import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSaveOptionsPresenter
 import com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity
 import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment
+import timber.log.Timber
 import javax.inject.Inject
 
 class ChooseSaveOptionsFragment : StepFragment(),
@@ -30,7 +30,6 @@ class ChooseSaveOptionsFragment : StepFragment(),
     private val KEY_QUALITY_VALUE = "KEY_QUALITY_VALUE"
 
     @Inject lateinit var presenter: ChooseSaveOptionsPresenter
-    @Inject lateinit var logger: Logger
 
     @BindView(R.id.choose_save_options_fragment_rg_format) lateinit var rgFormat: RadioGroup
     @BindView(R.id.choose_save_options_fragment_value_picker) lateinit var npQuality: NumberPicker
@@ -119,7 +118,7 @@ class ChooseSaveOptionsFragment : StepFragment(),
     }
 
     override fun onIncorrectQualityValue() {
-        logger.log(this, "onIncorrectQualityValue")
+        Timber.e("onIncorrectQualityValue")
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

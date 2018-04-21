@@ -20,8 +20,8 @@ class SlowPresetRepository(private val target: PresetRepository) : PresetReposit
         return target.get(id)
     }
 
-    override fun getAll(): MutableList<Preset> {
+    override fun getAll(): List<Preset> {
         sleep(3000)
-        return target.all
+        return target.getAll()
     }
 }

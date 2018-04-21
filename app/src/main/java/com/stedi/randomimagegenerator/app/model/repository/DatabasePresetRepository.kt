@@ -13,12 +13,10 @@ import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.*
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams
-import com.stedi.randomimagegenerator.app.other.logger.Logger
+import timber.log.Timber
 import java.sql.SQLException
 
-class DatabasePresetRepository(
-        @AppContext context: Context,
-        private val logger: Logger) : OrmLiteSqliteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION), PresetRepository {
+class DatabasePresetRepository(@AppContext context: Context) : OrmLiteSqliteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION), PresetRepository {
 
     companion object {
         const val DATABASE_NAME = "presets_database"
@@ -32,7 +30,7 @@ class DatabasePresetRepository(
                 TableUtils.createTableIfNotExists(connectionSource, getGeneratorParamsClassFromType(type))
             }
         } catch (e: Exception) {
-            logger.log(this, e)
+            Timber.e(e)
         }
     }
 

@@ -14,7 +14,6 @@ import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.di.modules.HomeModule
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.other.dim2px
-import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.other.showToast
 import com.stedi.randomimagegenerator.app.presenter.interfaces.HomePresenter
 import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity
@@ -32,7 +31,6 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
     private val REQUEST_CONFIRM_GENERATE = 231
 
     @Inject lateinit var presenter: HomePresenter
-    @Inject lateinit var logger: Logger
 
     @BindView(R.id.home_activity_recycler_view) lateinit var recyclerView: RecyclerView
     @BindView(R.id.home_activity_empty_view) lateinit var emptyView: View
@@ -123,7 +121,6 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
     }
 
     override fun onPresetDeleted(preset: Preset) {
-        logger.log(this, "onPresetDeleted $preset")
         adapter.remove(preset)
         refreshEmptyView()
     }
@@ -165,7 +162,6 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
 
     @Subscribe
     fun onConfirmDialogCallback(callback: ConfirmDialog.Callback) {
-        logger.log(this, "onConfirmDialogCallback " + callback.confirm)
         if (callback.requestCode == REQUEST_CONFIRM_DELETE) {
             presenter.confirmDeletePreset(callback.confirm)
         } else if (callback.requestCode == REQUEST_CONFIRM_GENERATE) {

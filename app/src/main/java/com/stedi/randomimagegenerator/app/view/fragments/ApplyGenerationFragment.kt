@@ -17,7 +17,6 @@ import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams
 import com.stedi.randomimagegenerator.app.other.CachedBus
 import com.stedi.randomimagegenerator.app.other.formatTime
-import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.other.showToast
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter
 import com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity
@@ -33,7 +32,6 @@ class ApplyGenerationFragment : StepFragment(), ApplyGenerationPresenter.UIImpl 
 
     @Inject lateinit var presenter: ApplyGenerationPresenter
     @Inject lateinit var bus: CachedBus
-    @Inject lateinit var logger: Logger
 
     @BindView(R.id.apply_generation_fragment_tv) lateinit var tvOut: TextView
     @BindView(R.id.apply_generation_fragment_btn_save) lateinit var btnSave: Button

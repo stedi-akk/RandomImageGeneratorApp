@@ -9,13 +9,13 @@ import com.stedi.randomimagegenerator.app.di.DefaultScheduler
 import com.stedi.randomimagegenerator.app.di.UiScheduler
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.other.CachedBus
-import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationPresenter
 import com.stedi.randomimagegenerator.callbacks.GenerateCallback
 import com.stedi.randomimagegenerator.callbacks.SaveCallback
 import rx.Completable
 import rx.Scheduler
 import rx.functions.Action0
+import timber.log.Timber
 import java.io.File
 import java.io.Serializable
 import javax.inject.Inject
@@ -23,8 +23,7 @@ import javax.inject.Inject
 class GenerationPresenterImpl @Inject constructor(
         @DefaultScheduler private val subscribeOn: Scheduler,
         @UiScheduler private val observeOn: Scheduler,
-        private val bus: CachedBus,
-        private val logger: Logger) : GenerationPresenter {
+        private val bus: CachedBus) : GenerationPresenter {
 
     private var ui: GenerationPresenter.UIImpl? = null
     private var generationInProgress: Boolean = false
@@ -45,7 +44,7 @@ class GenerationPresenterImpl @Inject constructor(
         }
         generationInProgress = true
 
-        logger.log(this, "GENERATION STARTED")
+        Timber.d("GENERATION STARTED")
         bus.post(Event(Event.Type.ON_START_GENERATION))
 
         Completable.fromAction(object : Action0 {
@@ -83,7 +82,7 @@ class GenerationPresenterImpl @Inject constructor(
                         }
 
                         override fun onFailedToGenerate(imageParams: ImageParams, e: Exception) {
-                            logger.log(this@GenerationPresenterImpl, e)
+                            Timber.e(e)
                             post(Event(Event.Type.ON_FAILED_TO_GENERATE, imageParams))
                         }
                     })
@@ -95,7 +94,7 @@ class GenerationPresenterImpl @Inject constructor(
                         }
 
                         override fun onFailedToSave(bitmap: Bitmap, e: Exception) {
-                            logger.log(this@GenerationPresenterImpl, e)
+                            Timber.e(e)
                             val generationForRef = generationFor
                             post(Event(Event.Type.ON_FAILED_TO_GENERATE, generationForRef))
                         }
@@ -110,10 +109,10 @@ class GenerationPresenterImpl @Inject constructor(
         }).subscribeOn(subscribeOn)
                 .observeOn(observeOn)
                 .subscribe({
-                    logger.log(this, "GENERATION FINISHED")
+                    Timber.d("GENERATION FINISHED")
                     bus.post(Event(Event.Type.ON_FINISH_GENERATION))
                 }, { throwable ->
-                    logger.log(this, throwable)
+                    Timber.e(throwable)
                     bus.post(Event(Event.Type.ON_GENERATION_UNKNOWN_ERROR))
                 })
     }
@@ -124,7 +123,7 @@ class GenerationPresenterImpl @Inject constructor(
             val ui = ui
             if (ui == null) {
                 generationInProgress = false
-                logger.log(this@GenerationPresenterImpl, "busTarget onEvent ui == null")
+                Timber.d("busTarget onEvent ui == null")
                 return
             }
 

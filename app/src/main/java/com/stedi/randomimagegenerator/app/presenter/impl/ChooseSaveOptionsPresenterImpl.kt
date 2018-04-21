@@ -4,13 +4,12 @@ import android.graphics.Bitmap
 import com.stedi.randomimagegenerator.Quality
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.model.data.Preset
-import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSaveOptionsPresenter
+import timber.log.Timber
 import javax.inject.Inject
 
 class ChooseSaveOptionsPresenterImpl @Inject constructor(
-        private val pendingPreset: PendingPreset,
-        private val logger: Logger) : ChooseSaveOptionsPresenter {
+        private val pendingPreset: PendingPreset) : ChooseSaveOptionsPresenter {
 
     private val candidate: Preset
         get() = pendingPreset.getCandidate()
@@ -33,7 +32,7 @@ class ChooseSaveOptionsPresenterImpl @Inject constructor(
 
     override fun setQualityFormat(format: Bitmap.CompressFormat) {
         candidate.setQuality(Quality(format, candidate.getQuality().qualityValue))
-        logger.log(this, "after setQualityFormat " + candidate.getQuality())
+        Timber.d("after setQualityFormat ${candidate.getQuality()}")
     }
 
     override fun setQualityValue(value: Int) {
@@ -42,6 +41,6 @@ class ChooseSaveOptionsPresenterImpl @Inject constructor(
             return
         }
         candidate.setQuality(Quality(candidate.getQuality().format, value))
-        logger.log(this, "after setQualityValue " + candidate.getQuality())
+        Timber.d("after setQualityValue ${candidate.getQuality()}")
     }
 }

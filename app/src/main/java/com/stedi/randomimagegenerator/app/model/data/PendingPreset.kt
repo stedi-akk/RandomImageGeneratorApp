@@ -3,11 +3,11 @@ package com.stedi.randomimagegenerator.app.model.data
 import android.os.Parcelable
 import com.stedi.randomimagegenerator.Quality
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams
-import com.stedi.randomimagegenerator.app.other.logger.Logger
+import timber.log.Timber
 import javax.inject.Singleton
 
 @Singleton
-class PendingPreset(private val logger: Logger) {
+class PendingPreset() {
 
     private var preset: Preset? = null
     private var candidateFrom: Preset? = null
@@ -22,7 +22,7 @@ class PendingPreset(private val logger: Logger) {
                     setHeight(800)
                     setCount(5)
                 }
-        logger.log(this, "after newDefaultCandidate: $this")
+        Timber.d("after newDefaultCandidate: $this")
     }
 
     fun prepareCandidateFrom(preset: Preset) {
@@ -33,7 +33,7 @@ class PendingPreset(private val logger: Logger) {
             this.candidateFrom = preset
             this.candidate = preset.makeCopy()
         }
-        logger.log(this, "after prepareCandidateFrom: $this")
+        Timber.d("after prepareCandidateFrom: $this")
     }
 
     fun getPreset() = preset
@@ -46,18 +46,18 @@ class PendingPreset(private val logger: Logger) {
 
     fun applyCandidate() {
         preset = candidate
-        logger.log(this, "after applyCandidate: $this")
+        Timber.d("after applyCandidate: $this")
     }
 
     fun clearCandidate() {
         candidateFrom = null
         candidate = null
-        logger.log(this, "after clearCandidate: $this")
+        Timber.d("after clearCandidate: $this")
     }
 
     fun clearPreset() {
         preset = null
-        logger.log(this, "after clearPreset: $this")
+        Timber.d("after clearPreset: $this")
     }
 
     fun retain(): Array<Parcelable?> = arrayOf(preset, candidateFrom, candidate)
@@ -66,7 +66,7 @@ class PendingPreset(private val logger: Logger) {
         preset = state[0] as Preset?
         candidateFrom = state[1] as Preset?
         candidate = state[2] as Preset?
-        logger.log(this, "after restore: $this")
+        Timber.d("after restore: $this")
     }
 
     override fun toString() = "PendingPreset{" +

@@ -9,18 +9,16 @@ import butterknife.ButterKnife
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.di.components.GenerationComponent
 import com.stedi.randomimagegenerator.app.di.modules.GenerationModule
-import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity
 import com.stedi.randomimagegenerator.app.view.adapters.GenerationStepperAdapter
 import com.stepstone.stepper.StepperLayout
-import javax.inject.Inject
 
 class GenerationStepsActivity : BaseActivity() {
     private val KEY_CURRENT_STEP = "KEY_CURRENT_STEP"
 
-    lateinit var generationComponent: GenerationComponent
-
-    @Inject lateinit var logger: Logger
+    val generationComponent: GenerationComponent by lazy {
+        component.plus(GenerationModule())
+    }
 
     @BindView(R.id.generation_steps_activity_stepper) lateinit var stepper: StepperLayout
 
@@ -35,8 +33,6 @@ class GenerationStepsActivity : BaseActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        generationComponent = component.plus(GenerationModule())
-        generationComponent.inject(this)
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.generation_steps_activity)

@@ -10,12 +10,12 @@ import android.widget.EditText
 import android.widget.Toast
 import butterknife.BindView
 import com.stedi.randomimagegenerator.app.R
-import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.other.showToast
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSizeAndCountPresenter
 import com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity
 import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment
 import com.stepstone.stepper.VerificationError
+import timber.log.Timber
 import javax.inject.Inject
 
 class ChooseSizeAndCountFragment : StepFragment(),
@@ -23,7 +23,6 @@ class ChooseSizeAndCountFragment : StepFragment(),
         ChooseSizeAndCountPresenter.UIImpl {
 
     @Inject lateinit var presenter: ChooseSizeAndCountPresenter
-    @Inject lateinit var logger: Logger
 
     @BindView(R.id.choose_size_and_count_et_width) lateinit var etWidth: EditText
     @BindView(R.id.choose_size_and_count_et_height) lateinit var etHeight: EditText
@@ -71,7 +70,7 @@ class ChooseSizeAndCountFragment : StepFragment(),
 
     override fun afterTextChanged(s: Editable) {
         if (etWidth.hasFocus()) {
-            logger.log(this, "afterTextChanged for etWidth")
+            Timber.d("afterTextChanged for etWidth")
             clearSilently(etWidthRangeFrom, etWidthRangeTo, etWidthRangeStep)
             if (!isHeightRangeInEdit()) {
                 fillIfEmptySilently(etHeight, etCount)
@@ -86,7 +85,7 @@ class ChooseSizeAndCountFragment : StepFragment(),
             }
             presenter.setWidth(getValue(etWidth))
         } else if (etHeight.hasFocus()) {
-            logger.log(this, "afterTextChanged for etHeight")
+            Timber.d("afterTextChanged for etHeight")
             clearSilently(etHeightRangeFrom, etHeightRangeTo, etHeightRangeStep)
             if (!isWidthRangeInEdit()) {
                 fillIfEmptySilently(etWidth, etCount)
@@ -101,7 +100,7 @@ class ChooseSizeAndCountFragment : StepFragment(),
             }
             presenter.setHeight(getValue(etHeight))
         } else if (etCount.hasFocus()) {
-            logger.log(this, "afterTextChanged for etCount")
+            Timber.d("afterTextChanged for etCount")
             clearSilently(etWidthRangeFrom, etWidthRangeTo, etWidthRangeStep, etHeightRangeFrom, etHeightRangeTo, etHeightRangeStep)
             fillIfEmptySilently(etWidth, etHeight)
             presenter.setWidth(getValue(etWidth))
@@ -112,27 +111,27 @@ class ChooseSizeAndCountFragment : StepFragment(),
             }
             presenter.setCount(getValue(etCount))
         } else if (etWidthRangeFrom.hasFocus()) {
-            logger.log(this, "afterTextChanged for etWidthRangeFrom")
+            Timber.d("afterTextChanged for etWidthRangeFrom")
             fillIfEmptySilently(etWidthRangeTo, etWidthRangeStep)
             afterWidthRangeTextChanged(etWidthRangeFrom)
         } else if (etWidthRangeTo.hasFocus()) {
-            logger.log(this, "afterTextChanged for etWidthRangeTo")
+            Timber.d("afterTextChanged for etWidthRangeTo")
             fillIfEmptySilently(etWidthRangeFrom, etWidthRangeStep)
             afterWidthRangeTextChanged(etWidthRangeTo)
         } else if (etWidthRangeStep.hasFocus()) {
-            logger.log(this, "afterTextChanged for etWidthRangeStep")
+            Timber.d("afterTextChanged for etWidthRangeStep")
             fillIfEmptySilently(etWidthRangeFrom, etWidthRangeTo)
             afterWidthRangeTextChanged(etWidthRangeStep)
         } else if (etHeightRangeFrom.hasFocus()) {
-            logger.log(this, "afterTextChanged for etHeightRangeFrom")
+            Timber.d("afterTextChanged for etHeightRangeFrom")
             fillIfEmptySilently(etHeightRangeTo, etHeightRangeStep)
             afterHeightRangeTextChanged(etHeightRangeFrom)
         } else if (etHeightRangeTo.hasFocus()) {
-            logger.log(this, "afterTextChanged for etHeightRangeTo")
+            Timber.d("afterTextChanged for etHeightRangeTo")
             fillIfEmptySilently(etHeightRangeFrom, etHeightRangeStep)
             afterHeightRangeTextChanged(etHeightRangeTo)
         } else if (etHeightRangeStep.hasFocus()) {
-            logger.log(this, "afterTextChanged for etHeightRangeStep")
+            Timber.d("afterTextChanged for etHeightRangeStep")
             fillIfEmptySilently(etHeightRangeFrom, etHeightRangeTo)
             afterHeightRangeTextChanged(etHeightRangeStep)
         }
@@ -220,7 +219,7 @@ class ChooseSizeAndCountFragment : StepFragment(),
         try {
             return Integer.parseInt(et.text.toString())
         } catch (e: NumberFormatException) {
-            logger.log(this, e)
+            Timber.e(e)
             return 0
         }
     }

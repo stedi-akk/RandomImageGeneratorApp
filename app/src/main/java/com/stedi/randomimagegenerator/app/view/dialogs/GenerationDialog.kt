@@ -15,10 +15,10 @@ import com.stedi.randomimagegenerator.ImageParams
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.other.CachedBus
-import com.stedi.randomimagegenerator.app.other.getApp
-import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationPresenter
+import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity
 import com.stedi.randomimagegenerator.app.view.dialogs.base.ButterKnifeDialogFragment
+import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
@@ -45,7 +45,6 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
 
     @Inject lateinit var presenter: GenerationPresenter
     @Inject lateinit var bus: CachedBus
-    @Inject lateinit var logger: Logger
 
     private lateinit var appContext: Context
 
@@ -66,7 +65,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appContext = context!!.applicationContext
-        appContext.getApp().component.inject(this)
+        (activity as BaseActivity).component.inject(this)
         presenter.onAttach(this)
     }
 
@@ -155,7 +154,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
 
     private fun changeStateTo(state: State) {
         if (currentState == State.ERROR || currentState == State.FINISH) {
-            logger.log(this, "ignoring passed state because the end state is achieved (currentState=$currentState)")
+            Timber.e("ignoring passed state because the end state is achieved (currentState=$currentState)")
             return
         }
 

@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import butterknife.BindView
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
-import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseGeneratorPresenter
 import com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity
 import com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapter
@@ -21,7 +20,6 @@ import javax.inject.Inject
 class ChooseGeneratorFragment : StepFragment(), ChooseGeneratorPresenter.UIImpl, GeneratorTypeAdapter.ClickListener {
 
     @Inject lateinit var presenter: ChooseGeneratorPresenter
-    @Inject lateinit var logger: Logger
 
     @BindView(R.id.choose_generator_fragment_recycler_view) lateinit var recyclerView: RecyclerView
 

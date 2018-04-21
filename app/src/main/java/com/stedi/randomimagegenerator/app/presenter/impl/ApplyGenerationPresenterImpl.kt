@@ -7,10 +7,10 @@ import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.model.repository.PresetRepository
 import com.stedi.randomimagegenerator.app.other.CachedBus
-import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter
 import rx.Completable
 import rx.Scheduler
+import timber.log.Timber
 import java.io.File
 import java.io.Serializable
 import javax.inject.Inject
@@ -22,8 +22,7 @@ class ApplyGenerationPresenterImpl @Inject constructor(
         private val defaultName: String,
         @DefaultScheduler private val subscribeOn: Scheduler,
         @UiScheduler private val observeOn: Scheduler,
-        private val bus: CachedBus,
-        private val logger: Logger) : ApplyGenerationPresenter {
+        private val bus: CachedBus) : ApplyGenerationPresenter {
 
     private val candidate: Preset
         get() = pendingPreset.getCandidate()
@@ -99,7 +98,7 @@ class ApplyGenerationPresenterImpl @Inject constructor(
 
     @Subscribe
     fun onPresetSaveEvent(event: OnPresetSaveEvent) {
-        logger.log(this, "onPresetSaveEvent")
+        Timber.d("onPresetSaveEvent")
         saveInProgress = false
 
         if (event.throwable == null) {
@@ -109,12 +108,12 @@ class ApplyGenerationPresenterImpl @Inject constructor(
         }
 
         if (ui == null) {
-            logger.log(this, "onPresetSaveEvent when ui == null")
+            Timber.d("onPresetSaveEvent when ui == null")
             return
         }
 
         event.throwable?.apply {
-            logger.log(this@ApplyGenerationPresenterImpl, this)
+            Timber.e(this)
             ui?.failedToSavePreset()
         } ?: ui?.onPresetSaved()
     }

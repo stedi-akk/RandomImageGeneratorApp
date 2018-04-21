@@ -5,13 +5,12 @@ import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams
-import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseEffectPresenter
+import timber.log.Timber
 import javax.inject.Inject
 
 class ChooseEffectPresenterImpl @Inject constructor(
-        private val pendingPreset: PendingPreset,
-        private val logger: Logger) : ChooseEffectPresenter {
+        private val pendingPreset: PendingPreset) : ChooseEffectPresenter {
 
     private val candidate: Preset
         get() = pendingPreset.getCandidate()
@@ -53,6 +52,6 @@ class ChooseEffectPresenterImpl @Inject constructor(
             newParams = prevParams
         }
         candidate.setGeneratorParams(newParams)
-        logger.log(this, "chooseGeneratorType result = " + candidate.getGeneratorParams())
+        Timber.d("chooseGeneratorType result = ${candidate.getGeneratorParams()}")
     }
 }

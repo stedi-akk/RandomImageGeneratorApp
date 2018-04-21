@@ -9,7 +9,6 @@ import com.stedi.randomimagegenerator.app.di.UiScheduler
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.model.repository.PresetRepository
 import com.stedi.randomimagegenerator.app.other.CachedBus
-import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.presenter.impl.*
 import com.stedi.randomimagegenerator.app.presenter.interfaces.*
 import dagger.Binds
@@ -42,12 +41,12 @@ class GenerationModule {
 
     @Provides
     fun provideApplyGenerationPresenter(@AppContext context: Context, pendingPreset: PendingPreset, presetRepository: PresetRepository,
-                                        @DefaultScheduler subscribeOn: Scheduler, @UiScheduler observeOn: Scheduler, bus: CachedBus, logger: Logger): ApplyGenerationPresenter {
+                                        @DefaultScheduler subscribeOn: Scheduler, @UiScheduler observeOn: Scheduler, bus: CachedBus): ApplyGenerationPresenter {
         return ApplyGenerationPresenterImpl(
                 pendingPreset,
                 presetRepository,
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).resolve("RIG").path,
                 context.resources.getString(R.string.unsaved_preset_name),
-                subscribeOn, observeOn, bus, logger)
+                subscribeOn, observeOn, bus)
     }
 }

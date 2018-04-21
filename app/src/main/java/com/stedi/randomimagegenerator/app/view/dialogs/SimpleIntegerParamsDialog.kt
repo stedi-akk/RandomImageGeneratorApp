@@ -14,10 +14,10 @@ import android.widget.TextView
 import butterknife.BindView
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
-import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.presenter.interfaces.SimpleIntegerParamsPresenter
 import com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity
 import com.stedi.randomimagegenerator.app.view.dialogs.base.ButterKnifeDialogFragment
+import timber.log.Timber
 import javax.inject.Inject
 
 class SimpleIntegerParamsDialog : ButterKnifeDialogFragment(),
@@ -26,7 +26,6 @@ class SimpleIntegerParamsDialog : ButterKnifeDialogFragment(),
         SimpleIntegerParamsPresenter.UIImpl {
 
     @Inject lateinit var presenter: SimpleIntegerParamsPresenter
-    @Inject lateinit var logger: Logger
 
     @BindView(R.id.simple_integer_params_tv_input) lateinit var tvInput: TextView
     @BindView(R.id.simple_integer_params_dialog_et_value) lateinit var etValue: EditText
@@ -90,23 +89,23 @@ class SimpleIntegerParamsDialog : ButterKnifeDialogFragment(),
     }
 
     override fun afterTextChanged(s: Editable) {
-        logger.log(this, "afterTextChanged")
+        Timber.d("afterTextChanged")
         setRandomCheckSilently(false)
     }
 
     override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-        logger.log(this, "onChecked $isChecked")
+        Timber.d("onChecked $isChecked")
         setValueTextSilently("")
     }
 
     override fun showRandomValue() {
-        logger.log(this, "showRandomValue")
+        Timber.d("showRandomValue")
         setValueTextSilently("")
         setRandomCheckSilently(true)
     }
 
     override fun showValue(value: Int) {
-        logger.log(this, "showValue $value")
+        Timber.d("showValue $value")
         setValueTextSilently(value.toString())
         if (canBeRandom) {
             setRandomCheckSilently(false)
@@ -139,7 +138,7 @@ class SimpleIntegerParamsDialog : ButterKnifeDialogFragment(),
             try {
                 success = presenter.setValue(Integer.parseInt(input))
             } catch (e: NumberFormatException) {
-                logger.log(this, e)
+                Timber.e(e)
                 showErrorIncorrectValue()
                 return
             }

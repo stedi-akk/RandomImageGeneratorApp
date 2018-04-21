@@ -11,8 +11,10 @@ import com.stedi.randomimagegenerator.Rig
 import com.stedi.randomimagegenerator.app.di.components.AppComponent
 import com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent
 import com.stedi.randomimagegenerator.app.di.modules.AppModule
+import com.stedi.randomimagegenerator.app.other.getTrees
 import com.stedi.randomimagegenerator.app.view.components.RigRequestHandler
 import io.fabric.sdk.android.Fabric
+import timber.log.Timber
 
 class App : Application() {
 
@@ -45,6 +47,8 @@ class App : Application() {
         if (!debug) {
             Fabric.with(this, Crashlytics())
         }
+
+        Timber.plant(* getTrees())
 
         Picasso.setSingletonInstance(Picasso.Builder(this).loggingEnabled(debug)
                 .addRequestHandler(RigRequestHandler()).build())

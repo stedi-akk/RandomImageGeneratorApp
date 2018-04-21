@@ -7,81 +7,74 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.stedi.randomimagegenerator.app.other.getApp
-import com.stedi.randomimagegenerator.app.other.logger.Logger
-import javax.inject.Inject
+import timber.log.Timber
 
 abstract class LifeCycleFragment : Fragment() {
     private val LOG = false
 
-    @Inject lateinit var lifeCycleLogger: Logger
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (LOG) {
-            context.getApp().component.inject(this)
-            lifeCycleLogger.log(this, "onAttach")
-        }
+        if (LOG) Timber.i("onAttach")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (LOG) lifeCycleLogger.log(this, "onCreate")
+        if (LOG) Timber.i("onCreate")
     }
 
     @CallSuper
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        if (LOG) lifeCycleLogger.log(this, "onCreateView")
+        if (LOG) Timber.i("onCreateView")
         return null
     }
 
     @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (LOG) lifeCycleLogger.log(this, "onViewCreated")
+        if (LOG) Timber.i("onViewCreated")
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        if (LOG) lifeCycleLogger.log(this, "onActivityCreated")
+        if (LOG) Timber.i("onActivityCreated")
     }
 
     override fun onStart() {
         super.onStart()
-        if (LOG) lifeCycleLogger.log(this, "onStart")
+        if (LOG) Timber.i("onStart")
     }
 
     override fun onResume() {
         super.onResume()
-        if (LOG) lifeCycleLogger.log(this, "onResume")
+        if (LOG) Timber.i("onResume")
     }
 
     override fun onPause() {
         super.onPause()
-        if (LOG) lifeCycleLogger.log(this, "onPause")
+        if (LOG) Timber.i("onPause")
     }
 
     @CallSuper
     override fun onSaveInstanceState(outState: Bundle) {
-        if (LOG) lifeCycleLogger.log(this, "onSaveInstanceState")
+        if (LOG) Timber.i("onSaveInstanceState")
     }
 
     override fun onStop() {
         super.onStop()
-        if (LOG) lifeCycleLogger.log(this, "onStop")
+        if (LOG) Timber.i("onStop")
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        if (LOG) lifeCycleLogger.log(this, "onDestroyView")
+        if (LOG) Timber.i("onDestroyView")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if (LOG) lifeCycleLogger.log(this, "onDestroy")
+        if (LOG) Timber.i("onDestroy")
     }
 
     override fun onDetach() {
         super.onDetach()
-        if (LOG) lifeCycleLogger.log(this, "onDetach")
+        if (LOG) Timber.i("onDetach")
     }
 }

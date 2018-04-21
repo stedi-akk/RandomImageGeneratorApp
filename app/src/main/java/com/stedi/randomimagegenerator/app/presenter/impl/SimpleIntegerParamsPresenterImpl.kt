@@ -4,13 +4,12 @@ import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.SimpleIntegerParams
-import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.presenter.interfaces.SimpleIntegerParamsPresenter
+import timber.log.Timber
 import javax.inject.Inject
 
 class SimpleIntegerParamsPresenterImpl @Inject constructor(
-        private val pendingPreset: PendingPreset,
-        private val logger: Logger) : SimpleIntegerParamsPresenter {
+        private val pendingPreset: PendingPreset) : SimpleIntegerParamsPresenter {
 
     private val candidate: Preset
         get() = pendingPreset.getCandidate()
@@ -21,7 +20,7 @@ class SimpleIntegerParamsPresenterImpl @Inject constructor(
     private lateinit var params: SimpleIntegerParams
 
     override fun onAttach(ui: SimpleIntegerParamsPresenter.UIImpl) {
-        logger.log(this, "onAttach")
+        Timber.d("onAttach")
         this.ui = ui
         val currentParams = candidate.getGeneratorParams()
         if (currentParams is EffectGeneratorParams) {
@@ -32,7 +31,7 @@ class SimpleIntegerParamsPresenterImpl @Inject constructor(
     }
 
     override fun onDetach() {
-        logger.log(this, "onDetach")
+        Timber.d("onDetach")
         this.ui = null
     }
 
@@ -48,7 +47,7 @@ class SimpleIntegerParamsPresenterImpl @Inject constructor(
         if (!params.canBeRandom()) {
             throw IllegalStateException("setRandomValue called when canBeRandom is false")
         }
-        logger.log(this, "setRandomValue")
+        Timber.d("setRandomValue")
         params.setRandomValue()
     }
 
@@ -57,7 +56,7 @@ class SimpleIntegerParamsPresenterImpl @Inject constructor(
             ui?.showErrorIncorrectValue()
             return false
         }
-        logger.log(this, "setValue $value")
+        Timber.d("setValue $value")
         params.setValue(value)
         return true
     }

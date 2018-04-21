@@ -95,6 +95,7 @@ dependencies {
         transitive = true
     }
 
+    implementation 'com.jakewharton.timber:timber:4.7.0'
     implementation 'com.jakewharton:butterknife:8.8.1'
     kapt 'com.jakewharton:butterknife-compiler:8.8.1'
 

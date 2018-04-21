@@ -7,10 +7,10 @@ import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.model.repository.PresetRepository
 import com.stedi.randomimagegenerator.app.other.CachedBus
-import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.presenter.interfaces.HomePresenter
 import rx.Scheduler
 import rx.Single
+import timber.log.Timber
 import java.io.Serializable
 import javax.inject.Inject
 
@@ -19,8 +19,7 @@ class HomePresenterImpl @Inject constructor(
         private val pendingPreset: PendingPreset,
         @DefaultScheduler private val subscribeOn: Scheduler,
         @UiScheduler private val observeOn: Scheduler,
-        private val bus: CachedBus,
-        private val logger: Logger) : HomePresenter {
+        private val bus: CachedBus) : HomePresenter {
 
     private var ui: HomePresenter.UIImpl? = null
     private var fetchInProgress: Boolean = false
@@ -47,7 +46,7 @@ class HomePresenterImpl @Inject constructor(
         }
         fetchInProgress = true
 
-        logger.log(this, "fetching presets")
+        Timber.d("fetching presets")
         Single.fromCallable { presetRepository.getAll() }
                 .subscribeOn(subscribeOn)
                 .observeOn(observeOn)
@@ -70,11 +69,11 @@ class HomePresenterImpl @Inject constructor(
 
     override fun deletePreset(preset: Preset) {
         if (deletePresetId != 0) {
-            logger.log(this, "ignoring deletePreset, because last deletePreset is not confirmed/canceled")
+            Timber.d("ignoring deletePreset, because last deletePreset is not confirmed/canceled")
             return
         }
 
-        logger.log(this, "deletePreset $preset")
+        Timber.d("deletePreset $preset")
         if (pendingPreset.getPreset() === preset) {
             pendingPreset.clearPreset()
             ui?.onPresetDeleted(preset)
@@ -91,12 +90,12 @@ class HomePresenterImpl @Inject constructor(
         }
 
         if (!confirm) {
-            logger.log(this, "cancelDeletePreset")
+            Timber.d("cancelDeletePreset")
             deletePresetId = 0
             return
         }
 
-        logger.log(this, "confirmDeletePreset")
+        Timber.d("confirmDeletePreset")
         val presetId = deletePresetId
         deletePresetId = 0
 
@@ -115,11 +114,11 @@ class HomePresenterImpl @Inject constructor(
 
     override fun startGeneration(preset: Preset) {
         if (generatePresetId != 0) {
-            logger.log(this, "ignoring startGeneration, because last startGeneration is not confirmed/canceled")
+            Timber.d("ignoring startGeneration, because last startGeneration is not confirmed/canceled")
             return
         }
 
-        logger.log(this, "startGeneration $preset")
+        Timber.d("startGeneration $preset")
         generatePresetId = preset.id
         ui?.showConfirmGeneratePreset()
     }
@@ -130,49 +129,49 @@ class HomePresenterImpl @Inject constructor(
         }
 
         if (!confirm) {
-            logger.log(this, "cancelStartGeneration")
+            Timber.d("cancelStartGeneration")
             generatePresetId = 0
             return
         }
 
-        logger.log(this, "confirmStartGeneration")
+        Timber.d("confirmStartGeneration")
         generatePresetId = 0
         ui?.showGenerationDialog()
     }
 
     @Subscribe
     fun onFetchPresetsEvent(event: FetchPresetsEvent) {
-        logger.log(this, "onFetchPresetsEvent")
+        Timber.d("onFetchPresetsEvent")
 
         if (!fetchInProgress) {
-            logger.log(this, "ignoring event from not retained presenter!")
+            Timber.d("ignoring event from not retained presenter!")
             return
         }
 
         fetchInProgress = false
 
         if (ui == null) {
-            logger.log(this, "onFetchPresetsEvent when ui == null")
+            Timber.d("onFetchPresetsEvent when ui == null")
             return
         }
 
         event.throwable?.apply {
-            logger.log(this@HomePresenterImpl, this)
+            Timber.e(this)
             ui?.onFailedToFetchPresets()
         } ?: ui?.onPresetsFetched(pendingPreset.getPreset(), event.presets)
     }
 
     @Subscribe
     fun onDeletePresetEvent(event: DeletePresetEvent) {
-        logger.log(this, "onDeletePresetEvent")
+        Timber.d("onDeletePresetEvent")
 
         if (ui == null) {
-            logger.log(this, "onDeletePresetEvent when ui == null")
+            Timber.d("onDeletePresetEvent when ui == null")
             return
         }
 
         if (event.throwable != null || event.preset == null) {
-            logger.log(this, "failed to delete preset", event.throwable)
+            Timber.e(event.throwable, "failed to delete preset")
             ui?.onFailedToDeletePreset()
         } else {
             ui?.onPresetDeleted(event.preset)

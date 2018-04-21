@@ -1,7 +1,6 @@
 package com.stedi.randomimagegenerator.app.di.components
 
 import com.stedi.randomimagegenerator.app.di.modules.GenerationModule
-import com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity
 import com.stedi.randomimagegenerator.app.view.dialogs.ColoredNoiseParamsDialog
 import com.stedi.randomimagegenerator.app.view.dialogs.SimpleIntegerParamsDialog
 import com.stedi.randomimagegenerator.app.view.fragments.*
@@ -9,8 +8,6 @@ import dagger.Subcomponent
 
 @Subcomponent(modules = [(GenerationModule::class)])
 interface GenerationComponent {
-    fun inject(activity: GenerationStepsActivity)
-
     fun inject(fragment: ChooseGeneratorFragment)
 
     fun inject(dialog: SimpleIntegerParamsDialog)

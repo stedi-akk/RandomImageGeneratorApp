@@ -2,13 +2,12 @@ package com.stedi.randomimagegenerator.app.presenter.impl
 
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.model.data.Preset
-import com.stedi.randomimagegenerator.app.other.logger.Logger
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSizeAndCountPresenter
+import timber.log.Timber
 import javax.inject.Inject
 
 class ChooseSizeAndCountPresenterImpl @Inject constructor(
-        private val pendingPreset: PendingPreset,
-        private val logger: Logger) : ChooseSizeAndCountPresenter {
+        private val pendingPreset: PendingPreset) : ChooseSizeAndCountPresenter {
 
     private val candidate: Preset
         get() = pendingPreset.getCandidate()
@@ -48,7 +47,7 @@ class ChooseSizeAndCountPresenterImpl @Inject constructor(
             return
         }
         candidate.setCount(count)
-        logger.log(this, "after setCount: $candidate")
+        Timber.d("after setCount: $candidate")
     }
 
     override fun setWidth(width: Int) {
@@ -57,7 +56,7 @@ class ChooseSizeAndCountPresenterImpl @Inject constructor(
             return
         }
         candidate.setWidth(width)
-        logger.log(this, "after setWidth: $candidate")
+        Timber.d("after setWidth: $candidate")
     }
 
     override fun setHeight(height: Int) {
@@ -66,7 +65,7 @@ class ChooseSizeAndCountPresenterImpl @Inject constructor(
             return
         }
         candidate.setHeight(height)
-        logger.log(this, "after setHeight: $candidate")
+        Timber.d("after setHeight: $candidate")
     }
 
     override fun setWidthRange(from: Int, to: Int, step: Int) {
@@ -75,7 +74,7 @@ class ChooseSizeAndCountPresenterImpl @Inject constructor(
             return
         }
         candidate.setWidthRange(from, to, step)
-        logger.log(this, "after setWidthRange: $candidate")
+        Timber.d("after setWidthRange: $candidate")
     }
 
     override fun setHeightRange(from: Int, to: Int, step: Int) {
@@ -84,6 +83,6 @@ class ChooseSizeAndCountPresenterImpl @Inject constructor(
             return
         }
         candidate.setHeightRange(from, to, step)
-        logger.log(this, "after setHeightRange: $candidate")
+        Timber.d("after setHeightRange: $candidate")
     }
 }

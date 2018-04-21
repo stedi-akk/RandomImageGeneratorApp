@@ -4,14 +4,12 @@ import android.support.annotation.VisibleForTesting
 import com.squareup.otto.Bus
 import com.squareup.otto.DeadEvent
 import com.squareup.otto.ThreadEnforcer
-import com.stedi.randomimagegenerator.app.other.logger.Logger
+import timber.log.Timber
 import java.util.*
 import javax.inject.Singleton
 
 @Singleton
-class CachedBus(
-        enforcer: ThreadEnforcer = ThreadEnforcer.MAIN,
-        private val logger: Logger) : Bus(enforcer) {
+class CachedBus(enforcer: ThreadEnforcer = ThreadEnforcer.MAIN) : Bus(enforcer) {
 
     private val cache = LinkedList<Runnable>()
     private val allowedDeadEvents = HashSet<Any>()
@@ -20,44 +18,44 @@ class CachedBus(
     private var locked: Boolean = false
 
     fun lock() {
-        logger.log(this, "lock")
+        Timber.d("lock")
         ensureCreationThread()
         locked = true
     }
 
     fun unlock() {
-        logger.log(this, "unlock")
+        Timber.d("unlock")
         ensureCreationThread()
         locked = false
         releaseCache()
     }
 
     fun postDeadEvent(event: Any) {
-        logger.log(this, "postDeadEvent")
+        Timber.d("postDeadEvent")
         ensureCreationThread()
         allowedDeadEvents.add(event)
         post(event)
     }
 
     override fun post(event: Any) {
-        logger.log(this, "posting $event")
+        Timber.d("posting $event")
         ensureCreationThread()
         if (!locked && event !is DeadEvent) {
-            logger.log(this, "posting $event successfully")
+            Timber.d("posting $event successfully")
             super.post(event)
             allowedDeadEvents.remove(event)
         } else {
-            logger.log(this, "posting $event failed")
+            Timber.d("posting $event failed")
             var actualEvent = event
             if (event is DeadEvent) {
                 actualEvent = event.event
                 if (allowedDeadEvents.contains(actualEvent)) {
-                    logger.log(this, "ignoring postDeadEvent event $actualEvent")
+                    Timber.d("ignoring postDeadEvent event $actualEvent")
                     allowedDeadEvents.remove(actualEvent)
                     return
                 }
             }
-            logger.log(this, "adding to the cache")
+            Timber.d("adding to the cache")
             cache.add(Runnable { post(actualEvent) })
         }
     }
