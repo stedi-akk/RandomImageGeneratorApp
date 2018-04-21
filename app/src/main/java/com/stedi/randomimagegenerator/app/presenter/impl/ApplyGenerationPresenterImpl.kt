@@ -12,7 +12,6 @@ import rx.Completable
 import rx.Scheduler
 import timber.log.Timber
 import java.io.File
-import java.io.Serializable
 import javax.inject.Inject
 
 class ApplyGenerationPresenterImpl @Inject constructor(
@@ -117,10 +116,4 @@ class ApplyGenerationPresenterImpl @Inject constructor(
             ui?.failedToSavePreset()
         } ?: ui?.onPresetSaved()
     }
-
-    override fun onRestore(state: Serializable) {
-        saveInProgress = state as Boolean
-    }
-
-    override fun onRetain() = saveInProgress
 }

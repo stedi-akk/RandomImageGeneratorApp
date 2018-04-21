@@ -24,12 +24,6 @@ class GenerationModule {
         fun provideChooseGeneratorPresenter(presenter: ChooseGeneratorPresenterImpl): ChooseGeneratorPresenter
 
         @Binds
-        fun provideEditColoredCirclesPresenter(presenter: SimpleIntegerParamsPresenterImpl): SimpleIntegerParamsPresenter
-
-        @Binds
-        fun provideColoredNoiseParamsPresenter(presenter: ColoredNoiseParamsPresenterImpl): ColoredNoiseParamsPresenter
-
-        @Binds
         fun provideChooseEffectPresenter(presenter: ChooseEffectPresenterImpl): ChooseEffectPresenter
 
         @Binds

@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.view.fragments
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.ColorDrawable
@@ -16,12 +17,21 @@ import butterknife.BindView
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.other.dp2px
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSaveOptionsPresenter
-import com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity
-import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment
+import com.stedi.randomimagegenerator.app.view.components.BaseViewModel
+import com.stedi.randomimagegenerator.app.view.fragments.base.GenerationFragment
 import timber.log.Timber
 import javax.inject.Inject
 
-class ChooseSaveOptionsFragment : StepFragment(),
+class ChooseSaveOptionsFragmentModel : BaseViewModel<ChooseSaveOptionsFragment>() {
+    @Inject lateinit var presenter: ChooseSaveOptionsPresenter
+
+    override fun onCreate(view: ChooseSaveOptionsFragment) {
+        Timber.d("ChooseSaveOptionsFragmentModel onCreate")
+        view.generationComponent.inject(this)
+    }
+}
+
+class ChooseSaveOptionsFragment : GenerationFragment(),
         RadioGroup.OnCheckedChangeListener,
         NumberPicker.OnValueChangeListener,
         ChooseSaveOptionsPresenter.UIImpl {
@@ -29,7 +39,7 @@ class ChooseSaveOptionsFragment : StepFragment(),
     private val KEY_QUALITY_FORMAT = "KEY_QUALITY_FORMAT"
     private val KEY_QUALITY_VALUE = "KEY_QUALITY_VALUE"
 
-    @Inject lateinit var presenter: ChooseSaveOptionsPresenter
+    private lateinit var viewModel: ChooseSaveOptionsFragmentModel
 
     @BindView(R.id.choose_save_options_fragment_rg_format) lateinit var rgFormat: RadioGroup
     @BindView(R.id.choose_save_options_fragment_value_picker) lateinit var npQuality: NumberPicker
@@ -39,8 +49,11 @@ class ChooseSaveOptionsFragment : StepFragment(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity as GenerationStepsActivity).generationComponent.inject(this)
-        presenter.onAttach(this)
+
+        viewModel = ViewModelProviders.of(this).get(ChooseSaveOptionsFragmentModel::class.java)
+        viewModel.init(this)
+
+        viewModel.presenter.onAttach(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -57,7 +70,7 @@ class ChooseSaveOptionsFragment : StepFragment(),
         setDividerColor(npQuality, resources.getColor(R.color.colorAccent))
         rgFormat.setOnCheckedChangeListener(this)
         if (savedInstanceState == null) {
-            presenter.getData()
+            viewModel.presenter.getData()
         } else {
             selectedFormat = savedInstanceState.getSerializable(KEY_QUALITY_FORMAT) as Bitmap.CompressFormat?
             selectedValue = savedInstanceState.getInt(KEY_QUALITY_VALUE)
@@ -109,12 +122,12 @@ class ChooseSaveOptionsFragment : StepFragment(),
     override fun onCheckedChanged(group: RadioGroup, @IdRes checkedId: Int) {
         val format = Bitmap.CompressFormat.values()[checkedId]
         selectedFormat = format
-        presenter.setQualityFormat(format)
+        viewModel.presenter.setQualityFormat(format)
     }
 
     override fun onValueChange(picker: NumberPicker, oldVal: Int, newVal: Int) {
         selectedValue = newVal
-        presenter.setQualityValue(selectedValue)
+        viewModel.presenter.setQualityValue(selectedValue)
     }
 
     override fun onIncorrectQualityValue() {
@@ -129,7 +142,7 @@ class ChooseSaveOptionsFragment : StepFragment(),
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.onDetach()
+        viewModel.presenter.onDetach()
     }
 
     // https://stackoverflow.com/questions/24233556/changing-numberpicker-divider-color

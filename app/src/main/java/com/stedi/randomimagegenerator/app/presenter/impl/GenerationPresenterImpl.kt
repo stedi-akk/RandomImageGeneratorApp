@@ -17,7 +17,6 @@ import rx.Scheduler
 import rx.functions.Action0
 import timber.log.Timber
 import java.io.File
-import java.io.Serializable
 import javax.inject.Inject
 
 class GenerationPresenterImpl @Inject constructor(
@@ -151,13 +150,5 @@ class GenerationPresenterImpl @Inject constructor(
     override fun onDetach() {
         bus.unregister(busTarget)
         ui = null
-    }
-
-    override fun onRestore(state: Serializable) {
-        generationInProgress = state as Boolean
-    }
-
-    override fun onRetain(): Serializable? {
-        return generationInProgress
     }
 }

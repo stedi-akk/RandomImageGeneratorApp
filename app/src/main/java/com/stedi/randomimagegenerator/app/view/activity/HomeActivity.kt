@@ -1,6 +1,7 @@
 package com.stedi.randomimagegenerator.app.view.activity
 
 import android.Manifest
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.widget.LinearLayoutManager
@@ -13,24 +14,36 @@ import com.squareup.otto.Subscribe
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.di.modules.HomeModule
 import com.stedi.randomimagegenerator.app.model.data.Preset
+import com.stedi.randomimagegenerator.app.other.CachedBus
 import com.stedi.randomimagegenerator.app.other.dim2px
 import com.stedi.randomimagegenerator.app.other.showToast
 import com.stedi.randomimagegenerator.app.presenter.interfaces.HomePresenter
 import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity
 import com.stedi.randomimagegenerator.app.view.adapters.PresetsAdapter
+import com.stedi.randomimagegenerator.app.view.components.BaseViewModel
 import com.stedi.randomimagegenerator.app.view.components.ListSpaceDecoration
 import com.stedi.randomimagegenerator.app.view.dialogs.ConfirmDialog
 import com.stedi.randomimagegenerator.app.view.dialogs.GenerationDialog
+import timber.log.Timber
 import javax.inject.Inject
 
+class HomeActivityModel : BaseViewModel<HomeActivity>() {
+    @Inject lateinit var presenter: HomePresenter
+    @Inject lateinit var bus: CachedBus
+
+    override fun onCreate(view: HomeActivity) {
+        Timber.d("HomeActivityModel onCreate")
+        view.activityComponent.plus(HomeModule()).inject(this)
+    }
+}
+
 class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickListener {
-    private val KEY_HOME_PRESENTER_STATE = "KEY_HOME_PRESENTER_STATE"
     private val KEY_CONFIRM_PRESET = "KEY_CONFIRM_PRESET"
     private val REQUEST_CODE_WRITE_EXTERNAL = 123
     private val REQUEST_CONFIRM_DELETE = 321
     private val REQUEST_CONFIRM_GENERATE = 231
 
-    @Inject lateinit var presenter: HomePresenter
+    private lateinit var viewModel: HomeActivityModel
 
     @BindView(R.id.home_activity_recycler_view) lateinit var recyclerView: RecyclerView
     @BindView(R.id.home_activity_empty_view) lateinit var emptyView: View
@@ -41,16 +54,15 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
     private var confirmPreset: Preset? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        component.plus(HomeModule()).inject(this)
         super.onCreate(savedInstanceState)
+
+        viewModel = ViewModelProviders.of(this).get(HomeActivityModel::class.java)
+        viewModel.init(this)
 
         setContentView(R.layout.home_activity)
         ButterKnife.bind(this)
 
         savedInstanceState?.apply {
-            savedInstanceState.getSerializable(KEY_HOME_PRESENTER_STATE)?.apply {
-                presenter.onRestore(this)
-            }
             confirmPreset = savedInstanceState.getParcelable(KEY_CONFIRM_PRESET)
         }
 
@@ -58,47 +70,47 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
         recyclerView.addItemDecoration(ListSpaceDecoration(dim2px(R.dimen.common_v_spacing), dim2px(R.dimen.common_lr_spacing)))
-        adapter = PresetsAdapter(this)
+        adapter = PresetsAdapter(this, this)
         recyclerView.adapter = adapter
         recyclerView.addOnScrollListener(recyclerScrollListener)
     }
 
     override fun onStart() {
         super.onStart()
-        presenter.onAttach(this)
-        bus.register(this)
-        presenter.fetchPresets()
+        viewModel.presenter.onAttach(this)
+        viewModel.bus.register(this)
+        viewModel.presenter.fetchPresets()
     }
 
     override fun onStop() {
         super.onStop()
-        bus.unregister(this)
-        presenter.onDetach()
+        viewModel.bus.unregister(this)
+        viewModel.presenter.onDetach()
     }
 
     @OnClick(R.id.home_activity_fab)
     fun onFabClick(v: View) {
-        presenter.newPreset()
+        viewModel.presenter.newPreset()
     }
 
     override fun onCardClick(preset: Preset) {
-        presenter.editPreset(preset)
+        viewModel.presenter.editPreset(preset)
     }
 
     override fun onDeleteClick(preset: Preset) {
         confirmPreset = preset
-        presenter.deletePreset(preset)
+        viewModel.presenter.deletePreset(preset)
     }
 
     override fun onGenerateClick(preset: Preset) {
         confirmPreset = preset
         if (checkForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_CODE_WRITE_EXTERNAL)) {
-            presenter.startGeneration(preset)
+            viewModel.presenter.startGeneration(preset)
         }
     }
 
     override fun onSaveClick(preset: Preset) {
-        presenter.editPreset(preset)
+        viewModel.presenter.editPreset(preset)
     }
 
     override fun onPresetsFetched(pendingPreset: Preset?, presets: List<Preset>) {
@@ -154,7 +166,7 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
         if (event.requestCode == REQUEST_CODE_WRITE_EXTERNAL) {
             confirmPreset?.apply {
                 if (event.isGranted) {
-                    presenter.startGeneration(this)
+                    viewModel.presenter.startGeneration(this)
                 }
             }
         }
@@ -163,15 +175,14 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
     @Subscribe
     fun onConfirmDialogCallback(callback: ConfirmDialog.Callback) {
         if (callback.requestCode == REQUEST_CONFIRM_DELETE) {
-            presenter.confirmDeletePreset(callback.confirm)
+            viewModel.presenter.confirmDeletePreset(callback.confirm)
         } else if (callback.requestCode == REQUEST_CONFIRM_GENERATE) {
-            presenter.confirmStartGeneration(callback.confirm)
+            viewModel.presenter.confirmStartGeneration(callback.confirm)
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putSerializable(KEY_HOME_PRESENTER_STATE, presenter.onRetain())
         outState.putParcelable(KEY_CONFIRM_PRESET, confirmPreset)
     }
 

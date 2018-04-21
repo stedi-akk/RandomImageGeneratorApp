@@ -7,18 +7,12 @@ import android.view.MenuItem
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.stedi.randomimagegenerator.app.R
-import com.stedi.randomimagegenerator.app.di.components.GenerationComponent
-import com.stedi.randomimagegenerator.app.di.modules.GenerationModule
 import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity
 import com.stedi.randomimagegenerator.app.view.adapters.GenerationStepperAdapter
 import com.stepstone.stepper.StepperLayout
 
 class GenerationStepsActivity : BaseActivity() {
     private val KEY_CURRENT_STEP = "KEY_CURRENT_STEP"
-
-    val generationComponent: GenerationComponent by lazy {
-        component.plus(GenerationModule())
-    }
 
     @BindView(R.id.generation_steps_activity_stepper) lateinit var stepper: StepperLayout
 

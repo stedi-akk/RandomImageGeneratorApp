@@ -65,7 +65,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appContext = context!!.applicationContext
-        (activity as BaseActivity).component.inject(this)
+        (activity as BaseActivity).activityComponent.inject(this)
         presenter.onAttach(this)
     }
 

@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.view.adapters
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -11,11 +12,13 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.squareup.picasso.Picasso
 import com.stedi.randomimagegenerator.app.R
+import com.stedi.randomimagegenerator.app.di.ActivityContext
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
 import com.stedi.randomimagegenerator.app.other.dim2px
 import com.stedi.randomimagegenerator.app.view.components.RigRequestHandler
 
 class GeneratorTypeAdapter(
+        @ActivityContext private val context: Context,
         private val generatorType: Array<GeneratorType>,
         private var selectedType: GeneratorType?,
         private val targetType: GeneratorType?,
@@ -39,7 +42,7 @@ class GeneratorTypeAdapter(
     override fun getItemId(position: Int) = generatorType[position].ordinal.toLong()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GeneratorTypeAdapter.ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.generator_type_item, parent, false))
+        return ViewHolder(LayoutInflater.from(context).inflate(R.layout.generator_type_item, parent, false))
     }
 
     override fun onBindViewHolder(holder: GeneratorTypeAdapter.ViewHolder, position: Int) {
@@ -50,7 +53,7 @@ class GeneratorTypeAdapter(
         holder.btnEdit.visibility = if (type.isEditable && type === selectedType) View.VISIBLE else View.INVISIBLE
         holder.isSelected.visibility = if (type === selectedType) View.VISIBLE else View.INVISIBLE
 
-        val size = holder.itemView.context.dim2px(R.dimen.adapter_rig_image_size)
+        val size = context.dim2px(R.dimen.adapter_rig_image_size)
         Picasso.get().load(RigRequestHandler.makeUri(type, targetType, size, size))
                 .placeholder(R.drawable.ic_texture_adapter_rig_image_size)
                 .into(holder.image)

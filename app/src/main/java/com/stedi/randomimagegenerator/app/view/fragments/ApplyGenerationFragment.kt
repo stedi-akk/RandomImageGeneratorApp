@@ -1,6 +1,7 @@
 package com.stedi.randomimagegenerator.app.view.fragments
 
 import android.Manifest
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.view.LayoutInflater
@@ -19,19 +20,28 @@ import com.stedi.randomimagegenerator.app.other.CachedBus
 import com.stedi.randomimagegenerator.app.other.formatTime
 import com.stedi.randomimagegenerator.app.other.showToast
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter
-import com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity
 import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity
+import com.stedi.randomimagegenerator.app.view.components.BaseViewModel
 import com.stedi.randomimagegenerator.app.view.dialogs.EditPresetNameDialog
 import com.stedi.randomimagegenerator.app.view.dialogs.GenerationDialog
-import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment
+import com.stedi.randomimagegenerator.app.view.fragments.base.GenerationFragment
+import timber.log.Timber
 import javax.inject.Inject
 
-class ApplyGenerationFragment : StepFragment(), ApplyGenerationPresenter.UIImpl {
-    private val REQUEST_CODE_WRITE_EXTERNAL = 22
-    private val KEY_APPLY_GENERATION_PRESENTER_STATE = "KEY_APPLY_GENERATION_PRESENTER_STATE"
-
+class ApplyGenerationFragmentModel : BaseViewModel<ApplyGenerationFragment>() {
     @Inject lateinit var presenter: ApplyGenerationPresenter
     @Inject lateinit var bus: CachedBus
+
+    override fun onCreate(view: ApplyGenerationFragment) {
+        Timber.d("ApplyGenerationFragmentModel onCreate")
+        view.generationComponent.inject(this)
+    }
+}
+
+class ApplyGenerationFragment : GenerationFragment(), ApplyGenerationPresenter.UIImpl {
+    private val REQUEST_CODE_WRITE_EXTERNAL = 22
+
+    private lateinit var viewModel: ApplyGenerationFragmentModel
 
     @BindView(R.id.apply_generation_fragment_tv) lateinit var tvOut: TextView
     @BindView(R.id.apply_generation_fragment_btn_save) lateinit var btnSave: Button
@@ -40,13 +50,11 @@ class ApplyGenerationFragment : StepFragment(), ApplyGenerationPresenter.UIImpl 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity as GenerationStepsActivity).generationComponent.inject(this)
-        presenter.onAttach(this)
-        savedInstanceState?.apply {
-            getSerializable(KEY_APPLY_GENERATION_PRESENTER_STATE)?.apply {
-                presenter.onRestore(this)
-            }
-        }
+
+        viewModel = ViewModelProviders.of(this).get(ApplyGenerationFragmentModel::class.java)
+        viewModel.init(this)
+
+        viewModel.presenter.onAttach(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -61,12 +69,12 @@ class ApplyGenerationFragment : StepFragment(), ApplyGenerationPresenter.UIImpl 
 
     override fun onStart() {
         super.onStart()
-        bus.register(this)
+        viewModel.bus.register(this)
     }
 
     override fun onStop() {
         super.onStop()
-        bus.unregister(this)
+        viewModel.bus.unregister(this)
     }
 
     override fun onSelected() {
@@ -75,16 +83,16 @@ class ApplyGenerationFragment : StepFragment(), ApplyGenerationPresenter.UIImpl 
 
     @OnClick(R.id.apply_generation_fragment_btn_save)
     fun onSaveClick(v: View) {
-        val preset = presenter.getPreset()
+        val preset = viewModel.presenter.getPreset()
         EditPresetNameDialog.newInstance(if (preset.id == 0) "" else preset.name).show(fragmentManager!!)
     }
 
     @OnClick(R.id.apply_generation_fragment_btn_generate)
     fun onGenerateClick(v: View) {
         if (checkForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_CODE_WRITE_EXTERNAL)) {
-            presenter.startGeneration()
+            viewModel.presenter.startGeneration()
         } else {
-            startGenerationPreset = presenter.getPreset()
+            startGenerationPreset = viewModel.presenter.getPreset()
         }
     }
 
@@ -102,7 +110,7 @@ class ApplyGenerationFragment : StepFragment(), ApplyGenerationPresenter.UIImpl 
 
     @Subscribe
     fun onEditedPresetName(onEdited: EditPresetNameDialog.OnEdited) {
-        presenter.savePreset(onEdited.name)
+        viewModel.presenter.savePreset(onEdited.name)
     }
 
     @Subscribe
@@ -110,7 +118,7 @@ class ApplyGenerationFragment : StepFragment(), ApplyGenerationPresenter.UIImpl 
         if (event.requestCode == REQUEST_CODE_WRITE_EXTERNAL) {
             startGenerationPreset?.apply {
                 if (event.isGranted) {
-                    presenter.startGeneration()
+                    viewModel.presenter.startGeneration()
                 }
                 startGenerationPreset = null
             }
@@ -122,18 +130,14 @@ class ApplyGenerationFragment : StepFragment(), ApplyGenerationPresenter.UIImpl 
         activity?.finish()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putSerializable(KEY_APPLY_GENERATION_PRESENTER_STATE, presenter.onRetain())
-    }
-
     override fun onDestroy() {
         super.onDestroy()
-        presenter.onDetach()
+        viewModel.presenter.onDetach()
     }
 
     private fun refreshFromPreset() {
         if (view != null) {
+            val presenter = viewModel.presenter
             tvOut.text = getSummaryFromPreset(presenter.getPreset())
             btnSave.setText(if (presenter.isPresetNew() || presenter.isPresetChanged()) R.string.unsaved_save else R.string.save)
         }

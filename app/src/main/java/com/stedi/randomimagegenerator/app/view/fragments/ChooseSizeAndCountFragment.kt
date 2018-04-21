@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.view.fragments
 
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,17 +13,26 @@ import butterknife.BindView
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.other.showToast
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSizeAndCountPresenter
-import com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity
-import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment
+import com.stedi.randomimagegenerator.app.view.components.BaseViewModel
+import com.stedi.randomimagegenerator.app.view.fragments.base.GenerationFragment
 import com.stepstone.stepper.VerificationError
 import timber.log.Timber
 import javax.inject.Inject
 
-class ChooseSizeAndCountFragment : StepFragment(),
+class ChooseSizeAndCountFragmentModel : BaseViewModel<ChooseSizeAndCountFragment>() {
+    @Inject lateinit var presenter: ChooseSizeAndCountPresenter
+
+    override fun onCreate(view: ChooseSizeAndCountFragment) {
+        Timber.d("ChooseSizeAndCountFragmentModel onCreate")
+        view.generationComponent.inject(this)
+    }
+}
+
+class ChooseSizeAndCountFragment : GenerationFragment(),
         TextWatcher,
         ChooseSizeAndCountPresenter.UIImpl {
 
-    @Inject lateinit var presenter: ChooseSizeAndCountPresenter
+    private lateinit var viewModel: ChooseSizeAndCountFragmentModel
 
     @BindView(R.id.choose_size_and_count_et_width) lateinit var etWidth: EditText
     @BindView(R.id.choose_size_and_count_et_height) lateinit var etHeight: EditText
@@ -36,8 +46,11 @@ class ChooseSizeAndCountFragment : StepFragment(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity as GenerationStepsActivity).generationComponent.inject(this)
-        presenter.onAttach(this)
+
+        viewModel = ViewModelProviders.of(this).get(ChooseSizeAndCountFragmentModel::class.java)
+        viewModel.init(this)
+
+        viewModel.presenter.onAttach(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -57,7 +70,7 @@ class ChooseSizeAndCountFragment : StepFragment(),
         etHeightRangeTo.addTextChangedListener(this)
         etHeightRangeStep.addTextChangedListener(this)
         if (savedInstanceState == null) {
-            presenter.getValues()
+            viewModel.presenter.getValues()
         }
     }
 
@@ -74,42 +87,42 @@ class ChooseSizeAndCountFragment : StepFragment(),
             clearSilently(etWidthRangeFrom, etWidthRangeTo, etWidthRangeStep)
             if (!isHeightRangeInEdit()) {
                 fillIfEmptySilently(etHeight, etCount)
-                presenter.setWidth(1)
-                presenter.setHeight(getValue(etHeight))
-                presenter.setCount(getValue(etCount))
+                viewModel.presenter.setWidth(1)
+                viewModel.presenter.setHeight(getValue(etHeight))
+                viewModel.presenter.setCount(getValue(etCount))
             }
             if (isEmpty(etWidth) || getValue(etWidth) == 0) {
-                presenter.setWidth(1)
+                viewModel.presenter.setWidth(1)
                 etWidth.error = getString(R.string.value_bigger_zero)
                 return
             }
-            presenter.setWidth(getValue(etWidth))
+            viewModel.presenter.setWidth(getValue(etWidth))
         } else if (etHeight.hasFocus()) {
             Timber.d("afterTextChanged for etHeight")
             clearSilently(etHeightRangeFrom, etHeightRangeTo, etHeightRangeStep)
             if (!isWidthRangeInEdit()) {
                 fillIfEmptySilently(etWidth, etCount)
-                presenter.setWidth(getValue(etWidth))
-                presenter.setHeight(1)
-                presenter.setCount(getValue(etCount))
+                viewModel.presenter.setWidth(getValue(etWidth))
+                viewModel.presenter.setHeight(1)
+                viewModel.presenter.setCount(getValue(etCount))
             }
             if (isEmpty(etHeight) || getValue(etHeight) == 0) {
-                presenter.setHeight(1)
+                viewModel.presenter.setHeight(1)
                 etHeight.error = getString(R.string.value_bigger_zero)
                 return
             }
-            presenter.setHeight(getValue(etHeight))
+            viewModel.presenter.setHeight(getValue(etHeight))
         } else if (etCount.hasFocus()) {
             Timber.d("afterTextChanged for etCount")
             clearSilently(etWidthRangeFrom, etWidthRangeTo, etWidthRangeStep, etHeightRangeFrom, etHeightRangeTo, etHeightRangeStep)
             fillIfEmptySilently(etWidth, etHeight)
-            presenter.setWidth(getValue(etWidth))
-            presenter.setHeight(getValue(etHeight))
+            viewModel.presenter.setWidth(getValue(etWidth))
+            viewModel.presenter.setHeight(getValue(etHeight))
             if (isEmpty(etCount) || getValue(etCount) == 0) {
                 etCount.error = getString(R.string.value_bigger_zero)
                 return
             }
-            presenter.setCount(getValue(etCount))
+            viewModel.presenter.setCount(getValue(etCount))
         } else if (etWidthRangeFrom.hasFocus()) {
             Timber.d("afterTextChanged for etWidthRangeFrom")
             fillIfEmptySilently(etWidthRangeTo, etWidthRangeStep)
@@ -143,7 +156,7 @@ class ChooseSizeAndCountFragment : StepFragment(),
             etRangeType.error = getString(R.string.value_bigger_zero)
             return
         }
-        presenter.setWidthRange(getValue(etWidthRangeFrom), getValue(etWidthRangeTo), getValue(etWidthRangeStep))
+        viewModel.presenter.setWidthRange(getValue(etWidthRangeFrom), getValue(etWidthRangeTo), getValue(etWidthRangeStep))
     }
 
     private fun afterHeightRangeTextChanged(etRangeType: EditText) {
@@ -152,7 +165,7 @@ class ChooseSizeAndCountFragment : StepFragment(),
             etRangeType.error = getString(R.string.value_bigger_zero)
             return
         }
-        presenter.setHeightRange(getValue(etHeightRangeFrom), getValue(etHeightRangeTo), getValue(etHeightRangeStep))
+        viewModel.presenter.setHeightRange(getValue(etHeightRangeFrom), getValue(etHeightRangeTo), getValue(etHeightRangeStep))
     }
 
     override fun showWidth(width: Int) {
@@ -208,7 +221,7 @@ class ChooseSizeAndCountFragment : StepFragment(),
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.onDetach()
+        viewModel.presenter.onDetach()
     }
 
     private fun isEmpty(et: EditText): Boolean {

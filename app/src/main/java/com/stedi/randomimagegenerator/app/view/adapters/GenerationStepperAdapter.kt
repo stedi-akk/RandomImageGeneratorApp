@@ -4,12 +4,13 @@ import android.content.Context
 import android.support.annotation.IntRange
 import android.support.v4.app.FragmentManager
 import com.stedi.randomimagegenerator.app.R
+import com.stedi.randomimagegenerator.app.di.ActivityContext
 import com.stedi.randomimagegenerator.app.view.fragments.*
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter
 import com.stepstone.stepper.viewmodel.StepViewModel
 
-class GenerationStepperAdapter(fm: FragmentManager, context: Context) : AbstractFragmentStepAdapter(fm, context) {
+class GenerationStepperAdapter(fm: FragmentManager, @ActivityContext context: Context) : AbstractFragmentStepAdapter(fm, context) {
 
     override fun getCount() = 5
 

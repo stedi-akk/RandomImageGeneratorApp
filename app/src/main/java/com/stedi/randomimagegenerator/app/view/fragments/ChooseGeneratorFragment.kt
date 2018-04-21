@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.view.fragments
 
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -10,23 +11,36 @@ import butterknife.BindView
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseGeneratorPresenter
-import com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity
 import com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapter
+import com.stedi.randomimagegenerator.app.view.components.BaseViewModel
 import com.stedi.randomimagegenerator.app.view.dialogs.ColoredNoiseParamsDialog
 import com.stedi.randomimagegenerator.app.view.dialogs.SimpleIntegerParamsDialog
-import com.stedi.randomimagegenerator.app.view.fragments.base.StepFragment
+import com.stedi.randomimagegenerator.app.view.fragments.base.GenerationFragment
+import timber.log.Timber
 import javax.inject.Inject
 
-class ChooseGeneratorFragment : StepFragment(), ChooseGeneratorPresenter.UIImpl, GeneratorTypeAdapter.ClickListener {
-
+class ChooseGeneratorFragmentModel : BaseViewModel<ChooseGeneratorFragment>() {
     @Inject lateinit var presenter: ChooseGeneratorPresenter
+
+    override fun onCreate(view: ChooseGeneratorFragment) {
+        Timber.d("ChooseGeneratorFragmentModel onCreate")
+        view.generationComponent.inject(this)
+    }
+}
+
+class ChooseGeneratorFragment : GenerationFragment(), ChooseGeneratorPresenter.UIImpl, GeneratorTypeAdapter.ClickListener {
+
+    private lateinit var viewModel: ChooseGeneratorFragmentModel
 
     @BindView(R.id.choose_generator_fragment_recycler_view) lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity as GenerationStepsActivity).generationComponent.inject(this)
-        presenter.onAttach(this)
+
+        viewModel = ViewModelProviders.of(this).get(ChooseGeneratorFragmentModel::class.java)
+        viewModel.init(this)
+
+        viewModel.presenter.onAttach(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -38,19 +52,19 @@ class ChooseGeneratorFragment : StepFragment(), ChooseGeneratorPresenter.UIImpl,
         super.onViewCreated(view, savedInstanceState)
         recyclerView.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.generator_type_adapter_grid_items))
         recyclerView.setHasFixedSize(true)
-        presenter.getGeneratorTypes()
+        viewModel.presenter.getGeneratorTypes()
     }
 
     override fun showTypes(types: Array<GeneratorType>, selectedType: GeneratorType) {
-        recyclerView.adapter = GeneratorTypeAdapter(types, selectedType, null, this, false)
+        recyclerView.adapter = GeneratorTypeAdapter(activity!!, types, selectedType, null, this, false)
     }
 
     override fun onSelected(type: GeneratorType) {
-        presenter.chooseGeneratorType(type)
+        viewModel.presenter.chooseGeneratorType(type)
     }
 
     override fun onEditSelected() {
-        presenter.editChoseGeneratorParams()
+        viewModel.presenter.editChoseGeneratorParams()
     }
 
     override fun showEditGeneratorParams(type: GeneratorType) {
@@ -64,7 +78,7 @@ class ChooseGeneratorFragment : StepFragment(), ChooseGeneratorPresenter.UIImpl,
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.onDetach()
+        viewModel.presenter.onDetach()
     }
 
     override fun onDeselected() {}

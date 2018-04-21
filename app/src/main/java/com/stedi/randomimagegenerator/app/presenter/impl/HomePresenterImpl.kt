@@ -11,7 +11,6 @@ import com.stedi.randomimagegenerator.app.presenter.interfaces.HomePresenter
 import rx.Scheduler
 import rx.Single
 import timber.log.Timber
-import java.io.Serializable
 import javax.inject.Inject
 
 class HomePresenterImpl @Inject constructor(
@@ -176,18 +175,5 @@ class HomePresenterImpl @Inject constructor(
         } else {
             ui?.onPresetDeleted(event.preset)
         }
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    override fun onRestore(state: Serializable) {
-        (state as Array<Any>).apply {
-            fetchInProgress = this[0] as Boolean
-            deletePresetId = this[1] as Int
-            generatePresetId = this[2] as Int
-        }
-    }
-
-    override fun onRetain(): Serializable? {
-        return arrayOf(fetchInProgress, deletePresetId, generatePresetId)
     }
 }

@@ -1,7 +1,6 @@
 package com.stedi.randomimagegenerator.app.view.dialogs
 
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.support.v7.app.AlertDialog
@@ -11,7 +10,7 @@ import butterknife.BindView
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ColoredNoiseParamsPresenter
-import com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity
+import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity
 import com.stedi.randomimagegenerator.app.view.dialogs.base.ButterKnifeDialogFragment
 import com.stedi.randomimagegenerator.generators.ColoredNoiseGenerator
 import javax.inject.Inject
@@ -41,7 +40,7 @@ class ColoredNoiseParamsDialog : ButterKnifeDialogFragment(), ColoredNoiseParams
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity as GenerationStepsActivity).generationComponent.inject(this)
+        (activity as BaseActivity).activityComponent.inject(this)
         presenter.onAttach(this)
     }
 

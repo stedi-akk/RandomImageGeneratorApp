@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.other.CachedBus
-import com.stedi.randomimagegenerator.app.other.getApp
+import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity
 import com.stedi.randomimagegenerator.app.view.dialogs.base.BaseDialogFragment
 import javax.inject.Inject
 
@@ -36,7 +36,7 @@ class ConfirmDialog : BaseDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        context!!.getApp().component.inject(this)
+        (activity as BaseActivity).activityComponent.inject(this)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

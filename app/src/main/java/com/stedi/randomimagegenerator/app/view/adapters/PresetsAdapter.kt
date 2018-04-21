@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.view.adapters
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.squareup.picasso.Picasso
 import com.stedi.randomimagegenerator.app.R
+import com.stedi.randomimagegenerator.app.di.ActivityContext
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams
@@ -19,7 +21,9 @@ import com.stedi.randomimagegenerator.app.other.formatTime
 import com.stedi.randomimagegenerator.app.view.components.RigRequestHandler
 import java.util.*
 
-class PresetsAdapter(private val listener: ClickListener) : RecyclerView.Adapter<PresetsAdapter.ViewHolder>() {
+class PresetsAdapter(
+        @ActivityContext private val context: Context,
+        private val listener: ClickListener) : RecyclerView.Adapter<PresetsAdapter.ViewHolder>() {
 
     private val presetsList = ArrayList<Preset>()
 
@@ -62,7 +66,7 @@ class PresetsAdapter(private val listener: ClickListener) : RecyclerView.Adapter
     override fun getItemId(position: Int) = presetsList[position].id.toLong()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.preset_item, parent, false))
+        return ViewHolder(LayoutInflater.from(context).inflate(R.layout.preset_item, parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -81,7 +85,7 @@ class PresetsAdapter(private val listener: ClickListener) : RecyclerView.Adapter
         holder.tvCreated.text = formatTime(preset.timestamp)
         holder.btnAction.setText(if (preset === pendingPreset) R.string.save else R.string.generate)
 
-        val size = holder.itemView.context.dim2px(R.dimen.adapter_rig_image_size)
+        val size = context.dim2px(R.dimen.adapter_rig_image_size)
         Picasso.get().load(RigRequestHandler.makeUri(mainType, secondType, size, size, preset.getQuality().format, preset.getQuality().qualityValue))
                 .placeholder(R.drawable.ic_texture_adapter_rig_image_size)
                 .into(holder.imageView)

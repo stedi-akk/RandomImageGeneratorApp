@@ -20,7 +20,7 @@ class App : Application() {
 
     lateinit var leakWatcher: RefWatcher
         private set
-    lateinit var component: AppComponent
+    lateinit var appComponent: AppComponent
         private set
 
     override fun onCreate() {
@@ -53,7 +53,7 @@ class App : Application() {
         Picasso.setSingletonInstance(Picasso.Builder(this).loggingEnabled(debug)
                 .addRequestHandler(RigRequestHandler()).build())
 
-        component = DaggerAppComponent.builder()
+        appComponent = DaggerAppComponent.builder()
                 .appModule(AppModule(this))
                 .build()
 

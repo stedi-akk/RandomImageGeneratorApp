@@ -1,10 +1,10 @@
 package com.stedi.randomimagegenerator.app.presenter.interfaces
 
 import com.stedi.randomimagegenerator.app.model.data.Preset
-import com.stedi.randomimagegenerator.app.presenter.interfaces.core.RetainedPresenter
+import com.stedi.randomimagegenerator.app.presenter.interfaces.core.Presenter
 import com.stedi.randomimagegenerator.app.presenter.interfaces.core.UI
 
-interface HomePresenter : RetainedPresenter<HomePresenter.UIImpl> {
+interface HomePresenter : Presenter<HomePresenter.UIImpl> {
 
     fun fetchPresets()
 
