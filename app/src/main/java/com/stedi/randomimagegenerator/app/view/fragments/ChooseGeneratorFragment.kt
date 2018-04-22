@@ -24,6 +24,11 @@ class ChooseGeneratorFragmentModel : BaseViewModel<ChooseGeneratorFragment>() {
     override fun onCreate(view: ChooseGeneratorFragment) {
         view.generationComponent.inject(this)
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        presenter.onDestroy()
+    }
 }
 
 class ChooseGeneratorFragment : GenerationFragment(), ChooseGeneratorPresenter.UIImpl, GeneratorTypeAdapter.ClickListener {

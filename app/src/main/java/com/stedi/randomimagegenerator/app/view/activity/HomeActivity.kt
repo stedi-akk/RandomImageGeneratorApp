@@ -33,6 +33,11 @@ class HomeActivityModel : BaseViewModel<HomeActivity>() {
     override fun onCreate(view: HomeActivity) {
         view.activityComponent.plus(HomeModule()).inject(this)
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        presenter.onDestroy()
+    }
 }
 
 class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickListener {
@@ -64,7 +69,6 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
             confirmPreset = savedInstanceState.getParcelable(KEY_CONFIRM_PRESET)
         }
 
-        fab.hide(fabShowHideListener)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
         recyclerView.addItemDecoration(ListSpaceDecoration(dim2px(R.dimen.common_v_spacing), dim2px(R.dimen.common_lr_spacing)))
@@ -112,13 +116,11 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
     }
 
     override fun onPresetsFetched(pendingPreset: Preset?, presets: List<Preset>) {
-        fab.show(fabShowHideListener)
         adapter.set(presets, pendingPreset)
         refreshEmptyView()
     }
 
     override fun onFailedToFetchPresets() {
-        fab.show(fabShowHideListener)
         showToast(R.string.failed_fetch_presets)
         refreshEmptyView()
     }

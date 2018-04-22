@@ -8,6 +8,8 @@ interface Presenter<in T : UI> {
     fun onAttach(ui: T)
 
     fun onDetach()
+
+    fun onDestroy() {}
 }
 
 interface RetainedPresenter<in T : UI> : Presenter<T> {

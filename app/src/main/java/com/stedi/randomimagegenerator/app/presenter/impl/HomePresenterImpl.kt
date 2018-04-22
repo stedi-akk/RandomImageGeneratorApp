@@ -30,14 +30,20 @@ class HomePresenterImpl @Inject constructor(
     class FetchPresetsEvent(val presets: List<Preset> = emptyList(), val throwable: Throwable? = null)
     class DeletePresetEvent(val preset: Preset?, val throwable: Throwable? = null)
 
-    override fun onAttach(ui: HomePresenter.UIImpl) {
-        this.ui = ui
+    init {
         bus.register(this)
     }
 
+    override fun onAttach(ui: HomePresenter.UIImpl) {
+        this.ui = ui
+    }
+
     override fun onDetach() {
-        bus.unregister(this)
         ui = null
+    }
+
+    override fun onDestroy() {
+        bus.unregister(this)
     }
 
     override fun fetchPresets() {

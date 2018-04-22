@@ -25,6 +25,11 @@ class ChooseSizeAndCountFragmentModel : BaseViewModel<ChooseSizeAndCountFragment
     override fun onCreate(view: ChooseSizeAndCountFragment) {
         view.generationComponent.inject(this)
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        presenter.onDestroy()
+    }
 }
 
 class ChooseSizeAndCountFragment : GenerationFragment(),

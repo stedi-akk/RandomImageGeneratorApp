@@ -34,6 +34,11 @@ class ApplyGenerationFragmentModel : BaseViewModel<ApplyGenerationFragment>() {
     override fun onCreate(view: ApplyGenerationFragment) {
         view.generationComponent.inject(this)
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        presenter.onDestroy()
+    }
 }
 
 class ApplyGenerationFragment : GenerationFragment(), ApplyGenerationPresenter.UIImpl {

@@ -32,14 +32,20 @@ class ApplyGenerationPresenterImpl @Inject constructor(
 
     class OnPresetSaveEvent(val throwable: Throwable? = null)
 
-    override fun onAttach(ui: ApplyGenerationPresenter.UIImpl) {
-        this.ui = ui
+    init {
         bus.register(this)
     }
 
+    override fun onAttach(ui: ApplyGenerationPresenter.UIImpl) {
+        this.ui = ui
+    }
+
     override fun onDetach() {
-        bus.unregister(this)
         this.ui = null
+    }
+
+    override fun onDestroy() {
+        bus.unregister(this)
     }
 
     override fun getPreset(): Preset {

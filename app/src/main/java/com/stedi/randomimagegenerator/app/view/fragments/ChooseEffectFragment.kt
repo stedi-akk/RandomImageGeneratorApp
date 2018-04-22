@@ -23,6 +23,11 @@ class ChooseEffectFragmentModel : BaseViewModel<ChooseEffectFragment>() {
     override fun onCreate(view: ChooseEffectFragment) {
         view.generationComponent.inject(this)
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        presenter.onDestroy()
+    }
 }
 
 class ChooseEffectFragment : GenerationFragment(), GeneratorTypeAdapter.ClickListener, ChooseEffectPresenter.UIImpl {

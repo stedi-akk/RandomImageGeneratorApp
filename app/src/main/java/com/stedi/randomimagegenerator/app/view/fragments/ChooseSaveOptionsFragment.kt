@@ -28,6 +28,11 @@ class ChooseSaveOptionsFragmentModel : BaseViewModel<ChooseSaveOptionsFragment>(
     override fun onCreate(view: ChooseSaveOptionsFragment) {
         view.generationComponent.inject(this)
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        presenter.onDestroy()
+    }
 }
 
 class ChooseSaveOptionsFragment : GenerationFragment(),
