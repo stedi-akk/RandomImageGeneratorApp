@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.presenter.impl
 
+import android.os.Parcelable
 import com.squareup.otto.Subscribe
 import com.stedi.randomimagegenerator.app.di.DefaultScheduler
 import com.stedi.randomimagegenerator.app.di.UiScheduler
@@ -11,6 +12,7 @@ import com.stedi.randomimagegenerator.app.presenter.interfaces.HomePresenter
 import rx.Scheduler
 import rx.Single
 import timber.log.Timber
+import java.io.Serializable
 import javax.inject.Inject
 
 class HomePresenterImpl @Inject constructor(
@@ -24,8 +26,8 @@ class HomePresenterImpl @Inject constructor(
     private var fetchInProgress: Boolean = false
     private var deleteInProgress: Boolean = false
 
-    private var deletePresetId: Int = 0
-    private var generatePresetId: Int = 0
+    private var deletePreset: Preset? = null
+    private var generatePreset: Preset? = null
 
     class FetchPresetsEvent(val presets: List<Preset> = emptyList(), val throwable: Throwable? = null)
     class DeletePresetEvent(val preset: Preset?, val throwable: Throwable? = null)
@@ -74,7 +76,7 @@ class HomePresenterImpl @Inject constructor(
     }
 
     override fun deletePreset(preset: Preset) {
-        if (deletePresetId != 0) {
+        if (deletePreset != null) {
             Timber.d("ignoring deletePreset, because last deletePreset is not finished")
             return
         }
@@ -86,30 +88,30 @@ class HomePresenterImpl @Inject constructor(
             return
         }
 
-        deletePresetId = preset.id
-        ui?.showConfirmDeletePreset()
+        deletePreset = preset
+        ui?.showConfirmDeletePreset(preset)
     }
 
     override fun confirmDeletePreset(confirm: Boolean) {
-        if (deletePresetId == 0) {
+        val deletePreset = deletePreset
+        if (deletePreset == null) {
             return
         }
 
         if (!confirm) {
             Timber.d("cancelDeletePreset")
-            deletePresetId = 0
+            this.deletePreset = null
             return
         }
 
         Timber.d("confirmDeletePreset")
-        val presetId = deletePresetId
-        deletePresetId = 0
+        val presetId = deletePreset.id
+        this.deletePreset = null
         deleteInProgress = true
 
         Single.fromCallable {
-            val preset = presetRepository.get(presetId)
             presetRepository.remove(presetId)
-            return@fromCallable preset
+            return@fromCallable deletePreset
         }.subscribeOn(subscribeOn)
                 .observeOn(observeOn)
                 .subscribe({
@@ -120,30 +122,31 @@ class HomePresenterImpl @Inject constructor(
     }
 
     override fun startGeneration(preset: Preset) {
-        if (generatePresetId != 0) {
+        if (generatePreset != null) {
             Timber.d("ignoring startGeneration, because last startGeneration is not confirmed/canceled")
             return
         }
 
         Timber.d("startGeneration $preset")
-        generatePresetId = preset.id
-        ui?.showConfirmGeneratePreset()
+        generatePreset = preset
+        ui?.showConfirmGeneratePreset(preset)
     }
 
     override fun confirmStartGeneration(confirm: Boolean) {
-        if (generatePresetId == 0) {
+        val generatePreset = generatePreset
+        if (generatePreset == null) {
             return
         }
 
         if (!confirm) {
             Timber.d("cancelStartGeneration")
-            generatePresetId = 0
+            this.generatePreset = null
             return
         }
 
         Timber.d("confirmStartGeneration")
-        generatePresetId = 0
-        ui?.showGenerationDialog()
+        this.generatePreset = null
+        ui?.showGenerationDialog(generatePreset)
     }
 
     @Subscribe
@@ -188,5 +191,17 @@ class HomePresenterImpl @Inject constructor(
         } else {
             ui?.onPresetDeleted(event.preset)
         }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    override fun onRestore(state: Serializable) {
+        (state as Array<Parcelable?>).apply {
+            deletePreset = this[0] as Preset?
+            generatePreset = this[1] as Preset?
+        }
+    }
+
+    override fun onRetain(): Serializable? {
+        return arrayOf(deletePreset, generatePreset)
     }
 }

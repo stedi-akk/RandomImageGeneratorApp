@@ -41,7 +41,9 @@ class HomeActivityModel : BaseViewModel<HomeActivity>() {
 }
 
 class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickListener {
-    private val KEY_CONFIRM_PRESET = "KEY_CONFIRM_PRESET"
+    private val KEY_PRESENTER_STATE = "KEY_PRESENTER_STATE"
+    private val KEY_PERMISSION_PRESET = "KEY_PERMISSION_PRESET"
+
     private val REQUEST_CODE_WRITE_EXTERNAL = 123
     private val REQUEST_CONFIRM_DELETE = 321
     private val REQUEST_CONFIRM_GENERATE = 231
@@ -54,19 +56,23 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
 
     private lateinit var adapter: PresetsAdapter
 
-    private var confirmPreset: Preset? = null
+    private var permissionPreset: Preset? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         viewModel = ViewModelProviders.of(this).get(HomeActivityModel::class.java)
+        val restorePresenter = !viewModel.isInitialized && savedInstanceState != null
         viewModel.init(this)
 
         setContentView(R.layout.home_activity)
         ButterKnife.bind(this)
 
         savedInstanceState?.apply {
-            confirmPreset = savedInstanceState.getParcelable(KEY_CONFIRM_PRESET)
+            if (restorePresenter) {
+                viewModel.presenter.onRestore(getSerializable(KEY_PRESENTER_STATE))
+            }
+            permissionPreset = getParcelable(KEY_PERMISSION_PRESET)
         }
 
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -100,14 +106,14 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
     }
 
     override fun onDeleteClick(preset: Preset) {
-        confirmPreset = preset
         viewModel.presenter.deletePreset(preset)
     }
 
     override fun onGenerateClick(preset: Preset) {
-        confirmPreset = preset
         if (checkForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_CODE_WRITE_EXTERNAL)) {
             viewModel.presenter.startGeneration(preset)
+        } else {
+            permissionPreset = preset
         }
     }
 
@@ -125,10 +131,9 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
         refreshEmptyView()
     }
 
-    override fun showConfirmDeletePreset() {
-        val confirmPreset = confirmPreset ?: return
+    override fun showConfirmDeletePreset(preset: Preset) {
         ConfirmDialog.newInstance(REQUEST_CONFIRM_DELETE,
-                getString(R.string.confirm_action), getString(R.string.are_you_sure_delete_s_preset, confirmPreset.name))
+                getString(R.string.confirm_action), getString(R.string.are_you_sure_delete_s_preset, preset.name))
                 .show(supportFragmentManager, ConfirmDialog::class.java.simpleName)
     }
 
@@ -141,16 +146,14 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
         showToast(R.string.failed_delete_preset)
     }
 
-    override fun showConfirmGeneratePreset() {
-        val confirmPreset = confirmPreset ?: return
+    override fun showConfirmGeneratePreset(preset: Preset) {
         ConfirmDialog.newInstance(REQUEST_CONFIRM_GENERATE,
-                getString(R.string.confirm_action), getString(R.string.are_you_sure_generate_preset_s, confirmPreset.name))
+                getString(R.string.confirm_action), getString(R.string.are_you_sure_generate_preset_s, preset.name))
                 .show(supportFragmentManager, ConfirmDialog::class.java.simpleName)
     }
 
-    override fun showGenerationDialog() {
-        val confirmPreset = confirmPreset ?: return
-        GenerationDialog.newInstance(confirmPreset).show(supportFragmentManager)
+    override fun showGenerationDialog(preset: Preset) {
+        GenerationDialog.newInstance(preset).show(supportFragmentManager)
     }
 
     override fun showEditPreset() {
@@ -164,7 +167,8 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
     @Subscribe
     fun onPermissionEvent(event: BaseActivity.PermissionEvent) {
         if (event.requestCode == REQUEST_CODE_WRITE_EXTERNAL) {
-            confirmPreset?.apply {
+            permissionPreset?.apply {
+                permissionPreset = null
                 if (event.isGranted) {
                     viewModel.presenter.startGeneration(this)
                 }
@@ -183,7 +187,8 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelable(KEY_CONFIRM_PRESET, confirmPreset)
+        outState.putSerializable(KEY_PRESENTER_STATE, viewModel.presenter.onRetain())
+        outState.putParcelable(KEY_PERMISSION_PRESET, permissionPreset)
     }
 
     private fun refreshEmptyView() {

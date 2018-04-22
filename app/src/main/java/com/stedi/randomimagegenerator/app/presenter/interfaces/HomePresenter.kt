@@ -1,10 +1,10 @@
 package com.stedi.randomimagegenerator.app.presenter.interfaces
 
 import com.stedi.randomimagegenerator.app.model.data.Preset
-import com.stedi.randomimagegenerator.app.presenter.interfaces.core.Presenter
+import com.stedi.randomimagegenerator.app.presenter.interfaces.core.RetainedPresenter
 import com.stedi.randomimagegenerator.app.presenter.interfaces.core.UI
 
-interface HomePresenter : Presenter<HomePresenter.UIImpl> {
+interface HomePresenter : RetainedPresenter<HomePresenter.UIImpl> {
 
     fun fetchPresets()
 
@@ -25,15 +25,15 @@ interface HomePresenter : Presenter<HomePresenter.UIImpl> {
 
         fun onFailedToFetchPresets()
 
-        fun showConfirmDeletePreset()
+        fun showConfirmDeletePreset(preset: Preset)
 
         fun onPresetDeleted(preset: Preset)
 
         fun onFailedToDeletePreset()
 
-        fun showConfirmGeneratePreset()
+        fun showConfirmGeneratePreset(preset: Preset)
 
-        fun showGenerationDialog()
+        fun showGenerationDialog(preset: Preset)
 
         fun showEditPreset()
 
