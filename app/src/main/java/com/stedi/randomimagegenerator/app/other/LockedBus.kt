@@ -30,10 +30,10 @@ class LockedBus(enforcer: ThreadEnforcer = ThreadEnforcer.MAIN) : Bus(enforcer) 
     override fun post(event: Any) {
         ensureCreationThread()
         if (!locked) {
-            Timber.d("posting $event successfully")
+            Timber.d("posting ${event.javaClass.simpleName} successfully")
             super.post(event)
         } else {
-            Timber.d("posting $event failed. adding to the cache")
+            Timber.d("posting ${event.javaClass.simpleName} failed. adding to the cache")
             lockedEvents.add(Runnable { post(event) })
         }
     }

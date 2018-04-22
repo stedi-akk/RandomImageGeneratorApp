@@ -16,14 +16,12 @@ import com.stedi.randomimagegenerator.app.view.components.BaseViewModel
 import com.stedi.randomimagegenerator.app.view.dialogs.ColoredNoiseParamsDialog
 import com.stedi.randomimagegenerator.app.view.dialogs.SimpleIntegerParamsDialog
 import com.stedi.randomimagegenerator.app.view.fragments.base.GenerationFragment
-import timber.log.Timber
 import javax.inject.Inject
 
 class ChooseGeneratorFragmentModel : BaseViewModel<ChooseGeneratorFragment>() {
     @Inject lateinit var presenter: ChooseGeneratorPresenter
 
     override fun onCreate(view: ChooseGeneratorFragment) {
-        Timber.d("ChooseGeneratorFragmentModel onCreate")
         view.generationComponent.inject(this)
     }
 }

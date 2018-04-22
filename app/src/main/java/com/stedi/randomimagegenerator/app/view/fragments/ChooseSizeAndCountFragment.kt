@@ -23,7 +23,6 @@ class ChooseSizeAndCountFragmentModel : BaseViewModel<ChooseSizeAndCountFragment
     @Inject lateinit var presenter: ChooseSizeAndCountPresenter
 
     override fun onCreate(view: ChooseSizeAndCountFragment) {
-        Timber.d("ChooseSizeAndCountFragmentModel onCreate")
         view.generationComponent.inject(this)
     }
 }

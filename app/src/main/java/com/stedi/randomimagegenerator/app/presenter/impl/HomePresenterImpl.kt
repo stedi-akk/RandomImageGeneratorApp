@@ -22,6 +22,7 @@ class HomePresenterImpl @Inject constructor(
 
     private var ui: HomePresenter.UIImpl? = null
     private var fetchInProgress: Boolean = false
+    private var deleteInProgress: Boolean = false
 
     private var deletePresetId: Int = 0
     private var generatePresetId: Int = 0
@@ -68,7 +69,7 @@ class HomePresenterImpl @Inject constructor(
 
     override fun deletePreset(preset: Preset) {
         if (deletePresetId != 0) {
-            Timber.d("ignoring deletePreset, because last deletePreset is not confirmed/canceled")
+            Timber.d("ignoring deletePreset, because last deletePreset is not finished")
             return
         }
 
@@ -97,6 +98,7 @@ class HomePresenterImpl @Inject constructor(
         Timber.d("confirmDeletePreset")
         val presetId = deletePresetId
         deletePresetId = 0
+        deleteInProgress = true
 
         Single.fromCallable {
             val preset = presetRepository.get(presetId)
@@ -140,13 +142,12 @@ class HomePresenterImpl @Inject constructor(
 
     @Subscribe
     fun onFetchPresetsEvent(event: FetchPresetsEvent) {
-        Timber.d("onFetchPresetsEvent")
-
         if (!fetchInProgress) {
-            Timber.d("ignoring event from not retained presenter!")
+            Timber.d("ignoring FetchPresetsEvent from previous presenter")
             return
         }
 
+        Timber.d("onFetchPresetsEvent")
         fetchInProgress = false
 
         if (ui == null) {
@@ -162,7 +163,13 @@ class HomePresenterImpl @Inject constructor(
 
     @Subscribe
     fun onDeletePresetEvent(event: DeletePresetEvent) {
+        if (!deleteInProgress) {
+            Timber.d("ignoring DeletePresetEvent from previous presenter")
+            return
+        }
+
         Timber.d("onDeletePresetEvent")
+        deleteInProgress = false
 
         if (ui == null) {
             Timber.d("onDeletePresetEvent when ui == null")

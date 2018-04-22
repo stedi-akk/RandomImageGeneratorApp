@@ -24,7 +24,6 @@ import com.stedi.randomimagegenerator.app.view.components.BaseViewModel
 import com.stedi.randomimagegenerator.app.view.components.ListSpaceDecoration
 import com.stedi.randomimagegenerator.app.view.dialogs.ConfirmDialog
 import com.stedi.randomimagegenerator.app.view.dialogs.GenerationDialog
-import timber.log.Timber
 import javax.inject.Inject
 
 class HomeActivityModel : BaseViewModel<HomeActivity>() {
@@ -32,7 +31,6 @@ class HomeActivityModel : BaseViewModel<HomeActivity>() {
     @Inject lateinit var bus: LockedBus
 
     override fun onCreate(view: HomeActivity) {
-        Timber.d("HomeActivityModel onCreate")
         view.activityComponent.plus(HomeModule()).inject(this)
     }
 }

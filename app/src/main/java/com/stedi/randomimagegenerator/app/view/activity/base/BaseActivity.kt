@@ -12,7 +12,6 @@ import com.stedi.randomimagegenerator.app.other.LockedBus
 import com.stedi.randomimagegenerator.app.other.getApp
 import com.stedi.randomimagegenerator.app.view.components.BaseViewModel
 import com.stedi.randomimagegenerator.app.view.components.RequireViewModel
-import timber.log.Timber
 import javax.inject.Inject
 
 class BaseActivityModel : BaseViewModel<BaseActivity>() {
@@ -20,7 +19,6 @@ class BaseActivityModel : BaseViewModel<BaseActivity>() {
     @Inject lateinit var bus: LockedBus
 
     override fun onCreate(view: BaseActivity) {
-        Timber.d("BaseActivityModel onCreate")
         view.activityComponent.inject(this)
     }
 }

@@ -25,7 +25,6 @@ import com.stedi.randomimagegenerator.app.view.components.BaseViewModel
 import com.stedi.randomimagegenerator.app.view.dialogs.EditPresetNameDialog
 import com.stedi.randomimagegenerator.app.view.dialogs.GenerationDialog
 import com.stedi.randomimagegenerator.app.view.fragments.base.GenerationFragment
-import timber.log.Timber
 import javax.inject.Inject
 
 class ApplyGenerationFragmentModel : BaseViewModel<ApplyGenerationFragment>() {
@@ -33,7 +32,6 @@ class ApplyGenerationFragmentModel : BaseViewModel<ApplyGenerationFragment>() {
     @Inject lateinit var bus: LockedBus
 
     override fun onCreate(view: ApplyGenerationFragment) {
-        Timber.d("ApplyGenerationFragmentModel onCreate")
         view.generationComponent.inject(this)
     }
 }

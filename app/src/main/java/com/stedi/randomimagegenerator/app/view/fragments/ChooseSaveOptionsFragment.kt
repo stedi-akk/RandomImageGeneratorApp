@@ -26,7 +26,6 @@ class ChooseSaveOptionsFragmentModel : BaseViewModel<ChooseSaveOptionsFragment>(
     @Inject lateinit var presenter: ChooseSaveOptionsPresenter
 
     override fun onCreate(view: ChooseSaveOptionsFragment) {
-        Timber.d("ChooseSaveOptionsFragmentModel onCreate")
         view.generationComponent.inject(this)
     }
 }

@@ -21,7 +21,6 @@ class ChooseEffectFragmentModel : BaseViewModel<ChooseEffectFragment>() {
     @Inject lateinit var presenter: ChooseEffectPresenter
 
     override fun onCreate(view: ChooseEffectFragment) {
-        Timber.d("ChooseEffectFragmentModel onCreate")
         view.generationComponent.inject(this)
     }
 }
