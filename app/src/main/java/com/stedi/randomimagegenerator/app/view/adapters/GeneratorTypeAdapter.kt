@@ -25,6 +25,8 @@ class GeneratorTypeAdapter(
         private val listener: ClickListener,
         private val isDeselectAllowed: Boolean) : RecyclerView.Adapter<GeneratorTypeAdapter.ViewHolder>() {
 
+    private val imageSize = context.dim2px(R.dimen.adapter_rig_image_size)
+
     interface ClickListener {
         fun onSelected(type: GeneratorType)
 
@@ -53,8 +55,7 @@ class GeneratorTypeAdapter(
         holder.btnEdit.visibility = if (type.isEditable && type === selectedType) View.VISIBLE else View.INVISIBLE
         holder.isSelected.visibility = if (type === selectedType) View.VISIBLE else View.INVISIBLE
 
-        val size = context.dim2px(R.dimen.adapter_rig_image_size)
-        Picasso.get().load(RigRequestHandler.makeUri(type, targetType, size, size))
+        Picasso.get().load(RigRequestHandler.makeUri(type, targetType, imageSize, imageSize))
                 .placeholder(R.drawable.ic_texture_adapter_rig_image_size)
                 .into(holder.image)
 

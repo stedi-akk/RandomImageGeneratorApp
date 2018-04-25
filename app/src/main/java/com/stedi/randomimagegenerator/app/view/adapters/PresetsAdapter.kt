@@ -26,6 +26,7 @@ class PresetsAdapter(
         private val listener: ClickListener) : RecyclerView.Adapter<PresetsAdapter.ViewHolder>() {
 
     private val presetsList = ArrayList<Preset>()
+    private val imageSize = context.dim2px(R.dimen.adapter_rig_image_size)
 
     private var pendingPreset: Preset? = null
 
@@ -43,7 +44,7 @@ class PresetsAdapter(
         setHasStableIds(true)
     }
 
-    operator fun set(presets: List<Preset>, pendingPreset: Preset?) {
+    fun set(presets: List<Preset>, pendingPreset: Preset?) {
         this.pendingPreset = pendingPreset
         presetsList.clear()
         if (pendingPreset != null) {
@@ -85,8 +86,7 @@ class PresetsAdapter(
         holder.tvCreated.text = formatTime(preset.timestamp)
         holder.btnAction.setText(if (preset === pendingPreset) R.string.save else R.string.generate)
 
-        val size = context.dim2px(R.dimen.adapter_rig_image_size)
-        Picasso.get().load(RigRequestHandler.makeUri(mainType, secondType, size, size, preset.getQuality().format, preset.getQuality().qualityValue))
+        Picasso.get().load(RigRequestHandler.makeUri(mainType, secondType, imageSize, imageSize, preset.getQuality().format, preset.getQuality().qualityValue))
                 .placeholder(R.drawable.ic_texture_adapter_rig_image_size)
                 .into(holder.imageView)
 
