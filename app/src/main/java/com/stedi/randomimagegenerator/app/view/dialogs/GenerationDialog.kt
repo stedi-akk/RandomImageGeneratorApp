@@ -71,12 +71,14 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         if (savedInstanceState != null) {
-//            currentState = savedInstanceState.getSerializable(KEY_CURRENT_STATE) as State
-//            if (currentState != State.FINISH) {
-//                currentState = State.ERROR
-//            }
-//            generatedCount = savedInstanceState.getInt(KEY_GENERATED_COUNT)
-//            failedCount = savedInstanceState.getInt(KEY_FAILED_COUNT)
+            if (!isStarted) {
+                currentState = savedInstanceState.getSerializable(KEY_CURRENT_STATE) as State
+                generatedCount = savedInstanceState.getInt(KEY_GENERATED_COUNT)
+                failedCount = savedInstanceState.getInt(KEY_FAILED_COUNT)
+                if (currentState != State.FINISH) {
+                    currentState = State.ERROR
+                }
+            }
         } else {
             val arguments = arguments;
             if (arguments != null) {
@@ -120,6 +122,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
     override fun onDestroy() {
         super.onDestroy()
         presenter.onDetach()
+        presenter.onDestroy()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -130,31 +133,31 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
     }
 
     override fun onStartGeneration() {
-        changeStateTo(State.START)
+        invalidateState(State.START)
     }
 
     override fun onGenerated(imageParams: ImageParams, imageFile: File) {
         appContext.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(imageFile)))
         generatedCount++
-        changeStateTo(State.PROGRESS)
+        invalidateState(State.PROGRESS)
     }
 
     override fun onGenerationUnknownError() {
-        changeStateTo(State.ERROR)
+        invalidateState(State.ERROR)
     }
 
     override fun onFailedToGenerate(imageParams: ImageParams) {
         failedCount++
-        changeStateTo(State.PROGRESS)
+        invalidateState(State.PROGRESS)
     }
 
     override fun onFinishGeneration() {
-        changeStateTo(State.FINISH)
+        invalidateState(State.FINISH)
     }
 
-    private fun changeStateTo(state: State) {
+    private fun invalidateState(state: State) {
         if (currentState == State.ERROR || currentState == State.FINISH) {
-            Timber.e("ignoring passed state because the end state is achieved (currentState=$currentState)")
+            Timber.e("ignoring passed state because the end state is achieved")
             return
         }
 

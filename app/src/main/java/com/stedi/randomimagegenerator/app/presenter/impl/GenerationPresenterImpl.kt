@@ -12,9 +12,9 @@ import com.stedi.randomimagegenerator.app.other.LockedBus
 import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationPresenter
 import com.stedi.randomimagegenerator.callbacks.GenerateCallback
 import com.stedi.randomimagegenerator.callbacks.SaveCallback
-import rx.Completable
+import rx.Observable
 import rx.Scheduler
-import rx.functions.Action0
+import rx.Subscriber
 import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
@@ -27,7 +27,7 @@ class GenerationPresenterImpl @Inject constructor(
     private var ui: GenerationPresenter.UIImpl? = null
     private var generationInProgress: Boolean = false
 
-    class Event(val type: Type, val imageParams: ImageParams? = null, val imageFile: File? = null) {
+    class GenerationEvent(val type: Type, val imageParams: ImageParams? = null, val imageFile: File? = null) {
         enum class Type {
             ON_START_GENERATION,
             ON_GENERATION_UNKNOWN_ERROR,
@@ -37,118 +37,122 @@ class GenerationPresenterImpl @Inject constructor(
         }
     }
 
+    init {
+        bus.register(this)
+    }
+
+    override fun onAttach(ui: GenerationPresenter.UIImpl) {
+        this.ui = ui
+    }
+
+    override fun onDetach() {
+        ui = null
+    }
+
+    override fun onDestroy() {
+        bus.unregister(this)
+    }
+
     override fun startGeneration(preset: Preset) {
         if (generationInProgress) {
             return
         }
         generationInProgress = true
 
-        Timber.d("GENERATION STARTED")
-        bus.post(Event(Event.Type.ON_START_GENERATION))
-
-        Completable.fromAction(object : Action0 {
+        Observable.unsafeCreate(object : Observable.OnSubscribe<GenerationEvent> {
             private var generationFor: ImageParams? = null
 
-            override fun call() {
-                Rig.Builder().apply {
-                    setGenerator(preset.getGeneratorParams().getGenerator())
+            override fun call(subscriber: Subscriber<in GenerationEvent>) {
+                try {
+                    subscriber.onNext(GenerationEvent(GenerationEvent.Type.ON_START_GENERATION))
 
-                    if (preset.getWidth() != 0) {
-                        setFixedWidth(preset.getWidth())
-                    }
-                    if (preset.getHeight() != 0) {
-                        setFixedHeight(preset.getHeight())
-                    }
-                    if (preset.getCount() != 0) {
-                        setCount(preset.getCount())
-                    }
+                    Rig.Builder().apply {
+                        setGenerator(preset.getGeneratorParams().getGenerator())
 
-                    preset.getWidthRange()?.apply {
-                        setWidthRange(this[0], this[1], this[2])
-                    }
-
-                    preset.getHeightRange()?.apply {
-                        setHeightRange(this[0], this[1], this[2])
-                    }
-
-                    setQuality(preset.getQuality())
-                    setFileNamePolicy(DefaultFileNamePolicy())
-                    setFileSavePath(preset.pathToSave)
-
-                    setCallback(object : GenerateCallback {
-                        override fun onGenerated(imageParams: ImageParams, bitmap: Bitmap) {
-                            generationFor = imageParams
+                        if (preset.getWidth() != 0) {
+                            setFixedWidth(preset.getWidth())
+                        }
+                        if (preset.getHeight() != 0) {
+                            setFixedHeight(preset.getHeight())
+                        }
+                        if (preset.getCount() != 0) {
+                            setCount(preset.getCount())
                         }
 
-                        override fun onFailedToGenerate(imageParams: ImageParams, e: Exception) {
-                            Timber.e(e)
-                            post(Event(Event.Type.ON_FAILED_TO_GENERATE, imageParams))
-                        }
-                    })
-
-                    setFileSaveCallback(object : SaveCallback {
-                        override fun onSaved(bitmap: Bitmap, file: File) {
-                            val generationForRef = generationFor
-                            post(Event(Event.Type.ON_GENERATED, generationForRef, file))
+                        preset.getWidthRange()?.apply {
+                            setWidthRange(this[0], this[1], this[2])
                         }
 
-                        override fun onFailedToSave(bitmap: Bitmap, e: Exception) {
-                            Timber.e(e)
-                            val generationForRef = generationFor
-                            post(Event(Event.Type.ON_FAILED_TO_GENERATE, generationForRef))
+                        preset.getHeightRange()?.apply {
+                            setHeightRange(this[0], this[1], this[2])
                         }
-                    })
-                }.build().generate()
+
+                        setQuality(preset.getQuality())
+                        setFileNamePolicy(DefaultFileNamePolicy())
+                        setFileSavePath(preset.pathToSave)
+
+                        setCallback(object : GenerateCallback {
+                            override fun onGenerated(imageParams: ImageParams, bitmap: Bitmap) {
+                                generationFor = imageParams
+                            }
+
+                            override fun onFailedToGenerate(imageParams: ImageParams, e: Exception) {
+                                Timber.w(e)
+                                subscriber.onNext(GenerationEvent(GenerationEvent.Type.ON_FAILED_TO_GENERATE, imageParams))
+                            }
+                        })
+
+                        setFileSaveCallback(object : SaveCallback {
+                            override fun onSaved(bitmap: Bitmap, file: File) {
+                                subscriber.onNext(GenerationEvent(GenerationEvent.Type.ON_GENERATED, generationFor, file))
+                            }
+
+                            override fun onFailedToSave(bitmap: Bitmap, e: Exception) {
+                                Timber.w(e)
+                                subscriber.onNext(GenerationEvent(GenerationEvent.Type.ON_FAILED_TO_GENERATE, generationFor))
+                            }
+                        })
+                    }.build().generate()
+
+                    subscriber.onCompleted()
+                } catch (t: Throwable) {
+                    subscriber.onError(t)
+                }
             }
-
-            private fun post(event: Event) {
-                Completable.fromAction { bus.post(event) }.subscribeOn(observeOn).subscribe()
-            }
-
         }).subscribeOn(subscribeOn)
                 .observeOn(observeOn)
-                .subscribe({
-                    Timber.d("GENERATION FINISHED")
-                    bus.post(Event(Event.Type.ON_FINISH_GENERATION))
-                }, { throwable ->
-                    Timber.e(throwable)
-                    bus.post(Event(Event.Type.ON_GENERATION_UNKNOWN_ERROR))
+                .subscribe({ e ->
+                    bus.post(e)
+                }, { t ->
+                    Timber.e(t)
+                    bus.post(GenerationEvent(GenerationEvent.Type.ON_GENERATION_UNKNOWN_ERROR))
+                }, {
+                    bus.post(GenerationEvent(GenerationEvent.Type.ON_FINISH_GENERATION))
                 })
     }
 
-    private val busTarget: Any = object : Any() {
-        @Subscribe
-        fun onEvent(event: Event) {
-            val ui = ui
-            if (ui == null) {
-                generationInProgress = false
-                Timber.d("busTarget onEvent ui == null")
-                return
-            }
+    @Subscribe
+    fun onGenerationEvent(generationEvent: GenerationEvent) {
+        val ui = ui
 
-            when (event.type) {
-                GenerationPresenterImpl.Event.Type.ON_START_GENERATION -> ui.onStartGeneration()
-                GenerationPresenterImpl.Event.Type.ON_GENERATION_UNKNOWN_ERROR -> {
-                    generationInProgress = false
-                    ui.onGenerationUnknownError()
-                }
-                GenerationPresenterImpl.Event.Type.ON_FINISH_GENERATION -> {
-                    generationInProgress = false
-                    ui.onFinishGeneration()
-                }
-                GenerationPresenterImpl.Event.Type.ON_GENERATED -> ui.onGenerated(event.imageParams!!, event.imageFile!!)
-                GenerationPresenterImpl.Event.Type.ON_FAILED_TO_GENERATE -> ui.onFailedToGenerate(event.imageParams!!)
-            }
+        if (ui == null) {
+            generationInProgress = false
+            Timber.d("onGenerationEvent ui == null")
+            return
         }
-    }
 
-    override fun onAttach(ui: GenerationPresenter.UIImpl) {
-        this.ui = ui
-        bus.register(busTarget)
-    }
-
-    override fun onDetach() {
-        bus.unregister(busTarget)
-        ui = null
+        when (generationEvent.type) {
+            GenerationPresenterImpl.GenerationEvent.Type.ON_START_GENERATION -> ui.onStartGeneration()
+            GenerationPresenterImpl.GenerationEvent.Type.ON_GENERATION_UNKNOWN_ERROR -> {
+                generationInProgress = false
+                ui.onGenerationUnknownError()
+            }
+            GenerationPresenterImpl.GenerationEvent.Type.ON_FINISH_GENERATION -> {
+                generationInProgress = false
+                ui.onFinishGeneration()
+            }
+            GenerationPresenterImpl.GenerationEvent.Type.ON_GENERATED -> ui.onGenerated(generationEvent.imageParams!!, generationEvent.imageFile!!)
+            GenerationPresenterImpl.GenerationEvent.Type.ON_FAILED_TO_GENERATE -> ui.onFailedToGenerate(generationEvent.imageParams!!)
+        }
     }
 }
