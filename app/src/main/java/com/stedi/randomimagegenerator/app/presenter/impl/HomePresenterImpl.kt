@@ -9,6 +9,7 @@ import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.model.repository.PresetRepository
 import com.stedi.randomimagegenerator.app.other.LockedBus
 import com.stedi.randomimagegenerator.app.presenter.interfaces.HomePresenter
+import rx.Completable
 import rx.Scheduler
 import rx.Single
 import timber.log.Timber
@@ -30,7 +31,7 @@ class HomePresenterImpl @Inject constructor(
     private var generatePreset: Preset? = null
 
     class FetchPresetsEvent(val presets: List<Preset> = emptyList(), val throwable: Throwable? = null)
-    class DeletePresetEvent(val preset: Preset?, val throwable: Throwable? = null)
+    class DeletePresetEvent(val preset: Preset, val throwable: Throwable? = null)
 
     init {
         bus.register(this)
@@ -109,15 +110,14 @@ class HomePresenterImpl @Inject constructor(
         this.deletePreset = null
         deleteInProgress = true
 
-        Single.fromCallable {
+        Completable.fromCallable {
             presetRepository.remove(presetId)
-            return@fromCallable deletePreset
         }.subscribeOn(subscribeOn)
                 .observeOn(observeOn)
                 .subscribe({
-                    bus.post(DeletePresetEvent(it))
+                    bus.post(DeletePresetEvent(deletePreset))
                 }, { t ->
-                    bus.post(DeletePresetEvent(null, t))
+                    bus.post(DeletePresetEvent(deletePreset, t))
                 })
     }
 
@@ -185,12 +185,10 @@ class HomePresenterImpl @Inject constructor(
             return
         }
 
-        if (event.throwable != null || event.preset == null) {
-            Timber.e(event.throwable, "failed to delete preset")
+        event.throwable?.apply {
+            Timber.e(this)
             ui?.onFailedToDeletePreset()
-        } else {
-            ui?.onPresetDeleted(event.preset)
-        }
+        } ?: ui?.onPresetDeleted(event.preset)
     }
 
     @Suppress("UNCHECKED_CAST")
