@@ -13,6 +13,7 @@ import android.widget.TextView
 import butterknife.BindView
 import com.stedi.randomimagegenerator.ImageParams
 import com.stedi.randomimagegenerator.app.R
+import com.stedi.randomimagegenerator.app.di.AppContext
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.other.LockedBus
 import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationPresenter
@@ -45,8 +46,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
 
     @Inject lateinit var presenter: GenerationPresenter
     @Inject lateinit var bus: LockedBus
-
-    private lateinit var appContext: Context
+    @Inject @field:AppContext lateinit var appContext: Context
 
     private var isStarted: Boolean = false
 
@@ -64,7 +64,6 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appContext = context!!.applicationContext
         (activity as BaseActivity).activityComponent.inject(this)
         presenter.onAttach(this)
     }
@@ -82,8 +81,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
         } else {
             val arguments = arguments;
             if (arguments != null) {
-                val preset: Preset = arguments.getParcelable(KEY_PRESET)
-                presenter.startGeneration(preset)
+                presenter.startGeneration(arguments.getParcelable(KEY_PRESET))
             } else {
                 currentState = State.ERROR
             }

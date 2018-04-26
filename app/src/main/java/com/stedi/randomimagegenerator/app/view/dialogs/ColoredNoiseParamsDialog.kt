@@ -71,5 +71,6 @@ class ColoredNoiseParamsDialog : ButterKnifeDialogFragment(), ColoredNoiseParams
     override fun onDestroy() {
         super.onDestroy()
         presenter.onDetach()
+        presenter.onDestroy()
     }
 }

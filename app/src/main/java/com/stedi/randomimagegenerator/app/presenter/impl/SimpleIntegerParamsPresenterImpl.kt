@@ -20,7 +20,6 @@ class SimpleIntegerParamsPresenterImpl @Inject constructor(
     private lateinit var params: SimpleIntegerParams
 
     override fun onAttach(ui: SimpleIntegerParamsPresenter.UIImpl) {
-        Timber.d("onAttach")
         this.ui = ui
         val currentParams = candidate.getGeneratorParams()
         if (currentParams is EffectGeneratorParams) {
@@ -31,7 +30,6 @@ class SimpleIntegerParamsPresenterImpl @Inject constructor(
     }
 
     override fun onDetach() {
-        Timber.d("onDetach")
         this.ui = null
     }
 
@@ -41,11 +39,11 @@ class SimpleIntegerParamsPresenterImpl @Inject constructor(
         } ?: ui?.showRandomValue()
     }
 
-    override fun canBeRandom() = params.canBeRandom()
+    override fun isRandomValue() = params.canBeRandom()
 
     override fun setRandomValue() {
         if (!params.canBeRandom()) {
-            throw IllegalStateException("setRandomValue called when canBeRandom is false")
+            throw IllegalStateException("setRandomValue called when isRandomValue is false")
         }
         Timber.d("setRandomValue")
         params.setRandomValue()

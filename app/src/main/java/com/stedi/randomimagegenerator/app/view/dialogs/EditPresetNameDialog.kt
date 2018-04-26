@@ -19,7 +19,7 @@ class EditPresetNameDialog : ButterKnifeDialogFragment() {
 
     @Inject lateinit var bus: LockedBus
 
-    class OnEdited(val name: String)
+    class Callback(val name: String)
 
     companion object {
         private const val KEY_PRESET_NAME = "KEY_PRESET_NAME"
@@ -62,7 +62,7 @@ class EditPresetNameDialog : ButterKnifeDialogFragment() {
             etName.error = getString(R.string.preset_name_empty)
             return
         }
-        bus.post(OnEdited(name))
+        bus.post(Callback(name))
         dismiss()
     }
 }

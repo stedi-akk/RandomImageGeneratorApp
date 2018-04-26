@@ -6,7 +6,7 @@ import com.stedi.randomimagegenerator.app.presenter.interfaces.core.UI
 interface SimpleIntegerParamsPresenter : Presenter<SimpleIntegerParamsPresenter.UIImpl> {
     fun getValues()
 
-    fun canBeRandom(): Boolean
+    fun isRandomValue(): Boolean
 
     fun setRandomValue()
 

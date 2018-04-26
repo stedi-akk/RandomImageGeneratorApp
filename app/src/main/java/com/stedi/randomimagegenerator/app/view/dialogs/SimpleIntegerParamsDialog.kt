@@ -31,7 +31,7 @@ class SimpleIntegerParamsDialog : ButterKnifeDialogFragment(),
     @BindView(R.id.simple_integer_params_dialog_et_value) lateinit var etValue: EditText
     @BindView(R.id.simple_integer_params_dialog_cb_random) lateinit var cbRandom: CheckBox
 
-    private var canBeRandom: Boolean = false
+    private var isRandomValue: Boolean = false
 
     companion object {
         private const val KEY_TYPE = "KEY_TYPE"
@@ -70,8 +70,8 @@ class SimpleIntegerParamsDialog : ButterKnifeDialogFragment(),
             else -> throw IllegalArgumentException(type.name + " is not supported")
         }
 
-        canBeRandom = presenter.canBeRandom()
-        if (canBeRandom) {
+        isRandomValue = presenter.isRandomValue()
+        if (isRandomValue) {
             etValue.addTextChangedListener(this)
             cbRandom.setOnCheckedChangeListener(this)
         } else {
@@ -107,7 +107,7 @@ class SimpleIntegerParamsDialog : ButterKnifeDialogFragment(),
     override fun showValue(value: Int) {
         Timber.d("showValue $value")
         setValueTextSilently(value.toString())
-        if (canBeRandom) {
+        if (isRandomValue) {
             setRandomCheckSilently(false)
         }
     }
@@ -119,12 +119,13 @@ class SimpleIntegerParamsDialog : ButterKnifeDialogFragment(),
     override fun onDestroy() {
         super.onDestroy()
         presenter.onDetach()
+        presenter.onDestroy()
     }
 
     private fun apply() {
         val success: Boolean
 
-        if (canBeRandom && cbRandom.isChecked) {
+        if (isRandomValue && cbRandom.isChecked) {
             presenter.setRandomValue()
             success = true
         } else {
@@ -150,7 +151,7 @@ class SimpleIntegerParamsDialog : ButterKnifeDialogFragment(),
     }
 
     private fun setValueTextSilently(text: String) {
-        if (canBeRandom) {
+        if (isRandomValue) {
             etValue.removeTextChangedListener(this)
         }
 
@@ -158,7 +159,7 @@ class SimpleIntegerParamsDialog : ButterKnifeDialogFragment(),
         etValue.setSelection(text.length)
         etValue.error = null
 
-        if (canBeRandom) {
+        if (isRandomValue) {
             etValue.addTextChangedListener(this)
         }
     }

@@ -121,8 +121,8 @@ class GenerationPresenterImpl @Inject constructor(
             }
         }).subscribeOn(subscribeOn)
                 .observeOn(observeOn)
-                .subscribe({ e ->
-                    bus.post(e)
+                .subscribe({ event ->
+                    bus.post(event)
                 }, { t ->
                     Timber.e(t)
                     bus.post(GenerationEvent(GenerationEvent.Type.ON_GENERATION_UNKNOWN_ERROR))

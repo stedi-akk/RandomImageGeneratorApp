@@ -112,8 +112,8 @@ class ApplyGenerationFragment : GenerationFragment(), ApplyGenerationPresenter.U
     }
 
     @Subscribe
-    fun onEditedPresetName(onEdited: EditPresetNameDialog.OnEdited) {
-        viewModel.presenter.savePreset(onEdited.name)
+    fun onEditPresetNameDialogCallback(callback: EditPresetNameDialog.Callback) {
+        viewModel.presenter.savePreset(callback.name)
     }
 
     @Subscribe

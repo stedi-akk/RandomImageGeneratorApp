@@ -73,6 +73,7 @@ class ChooseSizeAndCountFragment : GenerationFragment(),
         etHeightRangeFrom.addTextChangedListener(this)
         etHeightRangeTo.addTextChangedListener(this)
         etHeightRangeStep.addTextChangedListener(this)
+
         if (savedInstanceState == null) {
             viewModel.presenter.getValues()
         }
@@ -87,7 +88,6 @@ class ChooseSizeAndCountFragment : GenerationFragment(),
 
     override fun afterTextChanged(s: Editable) {
         if (etWidth.hasFocus()) {
-            Timber.d("afterTextChanged for etWidth")
             clearSilently(etWidthRangeFrom, etWidthRangeTo, etWidthRangeStep)
             if (!isHeightRangeInEdit()) {
                 fillIfEmptySilently(etHeight, etCount)
@@ -102,7 +102,6 @@ class ChooseSizeAndCountFragment : GenerationFragment(),
             }
             viewModel.presenter.setWidth(getValue(etWidth))
         } else if (etHeight.hasFocus()) {
-            Timber.d("afterTextChanged for etHeight")
             clearSilently(etHeightRangeFrom, etHeightRangeTo, etHeightRangeStep)
             if (!isWidthRangeInEdit()) {
                 fillIfEmptySilently(etWidth, etCount)
@@ -117,7 +116,6 @@ class ChooseSizeAndCountFragment : GenerationFragment(),
             }
             viewModel.presenter.setHeight(getValue(etHeight))
         } else if (etCount.hasFocus()) {
-            Timber.d("afterTextChanged for etCount")
             clearSilently(etWidthRangeFrom, etWidthRangeTo, etWidthRangeStep, etHeightRangeFrom, etHeightRangeTo, etHeightRangeStep)
             fillIfEmptySilently(etWidth, etHeight)
             viewModel.presenter.setWidth(getValue(etWidth))
@@ -128,27 +126,21 @@ class ChooseSizeAndCountFragment : GenerationFragment(),
             }
             viewModel.presenter.setCount(getValue(etCount))
         } else if (etWidthRangeFrom.hasFocus()) {
-            Timber.d("afterTextChanged for etWidthRangeFrom")
             fillIfEmptySilently(etWidthRangeTo, etWidthRangeStep)
             afterWidthRangeTextChanged(etWidthRangeFrom)
         } else if (etWidthRangeTo.hasFocus()) {
-            Timber.d("afterTextChanged for etWidthRangeTo")
             fillIfEmptySilently(etWidthRangeFrom, etWidthRangeStep)
             afterWidthRangeTextChanged(etWidthRangeTo)
         } else if (etWidthRangeStep.hasFocus()) {
-            Timber.d("afterTextChanged for etWidthRangeStep")
             fillIfEmptySilently(etWidthRangeFrom, etWidthRangeTo)
             afterWidthRangeTextChanged(etWidthRangeStep)
         } else if (etHeightRangeFrom.hasFocus()) {
-            Timber.d("afterTextChanged for etHeightRangeFrom")
             fillIfEmptySilently(etHeightRangeTo, etHeightRangeStep)
             afterHeightRangeTextChanged(etHeightRangeFrom)
         } else if (etHeightRangeTo.hasFocus()) {
-            Timber.d("afterTextChanged for etHeightRangeTo")
             fillIfEmptySilently(etHeightRangeFrom, etHeightRangeStep)
             afterHeightRangeTextChanged(etHeightRangeTo)
         } else if (etHeightRangeStep.hasFocus()) {
-            Timber.d("afterTextChanged for etHeightRangeStep")
             fillIfEmptySilently(etHeightRangeFrom, etHeightRangeTo)
             afterHeightRangeTextChanged(etHeightRangeStep)
         }
