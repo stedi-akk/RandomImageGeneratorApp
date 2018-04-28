@@ -58,7 +58,7 @@
     <string name="fixed_size">Fixed size:</string>
     <string name="format">Format:</string>
     <string name="percent_quality">Quality (%):</string>
-    <string name="unsaved_preset_name">(*) unsaved</string>
+    <string name="unsaved_preset_name">Unsaved</string>
     <string name="failed_save_preset">Failed to save preset</string>
     <string name="preset_name_empty">Preset name is empty</string>
     <string name="name_s">Name\u0020\u0020—\u0020\u0020%s</string>

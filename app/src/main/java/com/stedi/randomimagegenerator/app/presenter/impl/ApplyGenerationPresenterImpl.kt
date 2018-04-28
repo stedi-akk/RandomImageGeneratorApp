@@ -23,6 +23,8 @@ class ApplyGenerationPresenterImpl @Inject constructor(
         @UiScheduler private val observeOn: Scheduler,
         private val bus: LockedBus) : ApplyGenerationPresenter {
 
+    private val UNSAVED_FOLDER_NAME = "0"
+
     private val candidate: Preset
         get() = pendingPreset.getCandidate()
                 ?: throw IllegalStateException("pending preset candidate must not be null")
@@ -52,7 +54,7 @@ class ApplyGenerationPresenterImpl @Inject constructor(
         val preset = candidate.makeCopy()
         if (pendingPreset.isCandidateNew()) {
             preset.name = defaultName
-            preset.pathToSave = File(generationPath, "0").path
+            preset.pathToSave = File(generationPath, UNSAVED_FOLDER_NAME).path
         }
         return preset
     }
@@ -81,6 +83,9 @@ class ApplyGenerationPresenterImpl @Inject constructor(
         }.subscribeOn(subscribeOn)
                 .observeOn(observeOn)
                 .subscribe({
+                    if (candidate === pendingPreset.getPreset()) {
+                        pendingPreset.clearPreset()
+                    }
                     bus.post(OnPresetSaveEvent())
                 }, { t ->
                     preset.name = originalName
@@ -94,7 +99,7 @@ class ApplyGenerationPresenterImpl @Inject constructor(
         if (pendingPreset.isCandidateNew() || pendingPreset.isCandidateChanged()) {
             candidate.clearIds()
             candidate.name = defaultName
-            candidate.pathToSave = File(generationPath, "0").path
+            candidate.pathToSave = File(generationPath, UNSAVED_FOLDER_NAME).path
             candidate.timestamp = System.currentTimeMillis()
             pendingPreset.applyCandidate()
         }
@@ -105,12 +110,6 @@ class ApplyGenerationPresenterImpl @Inject constructor(
     fun onPresetSaveEvent(event: OnPresetSaveEvent) {
         Timber.d("onPresetSaveEvent")
         saveInProgress = false
-
-        if (event.throwable == null) {
-            if (candidate === pendingPreset.getPreset()) {
-                pendingPreset.clearPreset()
-            }
-        }
 
         if (ui == null) {
             Timber.d("onPresetSaveEvent when ui == null")

@@ -42,14 +42,12 @@ class ApplyGenerationFragmentModel : BaseViewModel<ApplyGenerationFragment>() {
 }
 
 class ApplyGenerationFragment : GenerationFragment(), ApplyGenerationPresenter.UIImpl {
-    private val REQUEST_CODE_WRITE_EXTERNAL = 22
+    private val REQUEST_CODE_WRITE_EXTERNAL = 222
 
     private lateinit var viewModel: ApplyGenerationFragmentModel
 
     @BindView(R.id.apply_generation_fragment_tv) lateinit var tvOut: TextView
     @BindView(R.id.apply_generation_fragment_btn_save) lateinit var btnSave: Button
-
-    private var startGenerationPreset: Preset? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,8 +92,6 @@ class ApplyGenerationFragment : GenerationFragment(), ApplyGenerationPresenter.U
     fun onGenerateClick(v: View) {
         if (checkForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_CODE_WRITE_EXTERNAL)) {
             viewModel.presenter.startGeneration()
-        } else {
-            startGenerationPreset = viewModel.presenter.getPreset()
         }
     }
 
@@ -119,11 +115,8 @@ class ApplyGenerationFragment : GenerationFragment(), ApplyGenerationPresenter.U
     @Subscribe
     fun onPermissionEvent(event: BaseActivity.PermissionEvent) {
         if (event.requestCode == REQUEST_CODE_WRITE_EXTERNAL) {
-            startGenerationPreset?.apply {
-                if (event.isGranted) {
-                    viewModel.presenter.startGeneration()
-                }
-                startGenerationPreset = null
+            if (event.isGranted) {
+                viewModel.presenter.startGeneration()
             }
         }
     }
