@@ -9,4 +9,5 @@
     <color name="gray_dark_semi_transparent">#80212121</color>
     <color name="gray_medium">#9E9E9E</color>
     <color name="gray_medium_semi_transparent">#809E9E9E</color>
+    <color name="pending_preset">#FFFDE7</color>
 </resources>

@@ -167,7 +167,7 @@ class HomePresenterImpl @Inject constructor(
         event.throwable?.apply {
             Timber.e(this)
             ui?.onFailedToFetchPresets()
-        } ?: ui?.onPresetsFetched(pendingPreset.getPreset(), event.presets)
+        } ?: ui?.onPresetsFetched(pendingPreset.getPreset(), event.presets.sortedByDescending { it.timestamp })
     }
 
     @Subscribe

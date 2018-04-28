@@ -1,7 +1,9 @@
 package com.stedi.randomimagegenerator.app.view.adapters
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Environment
+import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -70,7 +72,7 @@ class PresetsAdapter(
     override fun getItemId(position: Int) = presetsList[position].id.toLong()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(context).inflate(R.layout.preset_item, parent, false))
+        return ViewHolder(LayoutInflater.from(context).inflate(R.layout.preset_item, parent, false) as CardView)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -85,6 +87,7 @@ class PresetsAdapter(
             secondType = generatorParams.target.getType()
         }
 
+        holder.cardView.setCardBackgroundColor(if (preset === pendingPreset) context.resources.getColor(R.color.pending_preset) else Color.WHITE)
         holder.tvName.text = preset.name
         holder.tvFolder.text = context.getString(R.string.storage_s, preset.pathToSave.removePrefix(storageDir.absolutePath))
         holder.tvCreated.text = formatTime(preset.timestamp)
@@ -95,12 +98,12 @@ class PresetsAdapter(
                 .placeholder(R.drawable.ic_texture_rig)
                 .into(holder.imageView)
 
-        holder.itemView.setOnClickListener(holder)
+        holder.cardView.setOnClickListener(holder)
         holder.btnAction.setOnClickListener(holder)
         holder.btnDelete.setOnClickListener(holder)
     }
 
-    inner class ViewHolder(item: View) : RecyclerView.ViewHolder(item), View.OnClickListener {
+    inner class ViewHolder(val cardView: CardView) : RecyclerView.ViewHolder(cardView), View.OnClickListener {
         @BindView(R.id.preset_item_tv_name) lateinit var tvName: TextView
         @BindView(R.id.preset_item_tv_folder) lateinit var tvFolder: TextView
         @BindView(R.id.preset_item_tv_created) lateinit var tvCreated: TextView
@@ -112,12 +115,12 @@ class PresetsAdapter(
         var preset: Preset? = null
 
         init {
-            ButterKnife.bind(this, itemView)
+            ButterKnife.bind(this, cardView)
         }
 
         override fun onClick(v: View) {
             val preset = preset ?: return
-            if (v === itemView) {
+            if (v === cardView) {
                 listener.onCardClick(preset)
             } else if (v === btnAction) {
                 if (preset === pendingPreset) {
