@@ -25,18 +25,23 @@ class ChooseSaveOptionsPresenterImpl @Inject constructor(
         this.ui = null
     }
 
-    override fun getData() {
+    override fun getValues() {
         ui?.showQualityFormat(candidate.getQuality().format)
         ui?.showQualityValue(candidate.getQuality().qualityValue)
     }
 
     override fun setQualityFormat(format: Bitmap.CompressFormat) {
-        candidate.setQuality(Quality(format, candidate.getQuality().qualityValue))
+        if (format == Bitmap.CompressFormat.PNG) {
+            candidate.setQuality(Quality(format, 100))
+            ui?.showQualityValue(100)
+        } else {
+            candidate.setQuality(Quality(format, candidate.getQuality().qualityValue))
+        }
         Timber.d("after setQualityFormat ${candidate.getQuality()}")
     }
 
     override fun setQualityValue(value: Int) {
-        if (value < 0 || value > 100) {
+        if (value < 0 || value > 100 || (candidate.getQuality().format == Bitmap.CompressFormat.PNG && value != 100)) {
             ui?.onIncorrectQualityValue()
             return
         }

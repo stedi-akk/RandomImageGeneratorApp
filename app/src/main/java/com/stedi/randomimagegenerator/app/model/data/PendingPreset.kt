@@ -16,7 +16,7 @@ class PendingPreset() {
     fun newDefaultCandidate() {
         candidateFrom = null
         // name and save path are set in ApplyGenerationPresenterImpl
-        candidate = Preset("", GeneratorParams.createDefaultParams(GeneratorType.COLORED_CIRCLES), Quality.png(), "")
+        candidate = Preset("", GeneratorParams.createDefaultParams(GeneratorType.COLORED_CIRCLES), Quality.jpg(100), "")
                 .apply {
                     setWidth(800)
                     setHeight(800)

@@ -9,7 +9,7 @@ interface ChooseSaveOptionsPresenter : Presenter<ChooseSaveOptionsPresenter.UIIm
 
     fun setQualityValue(value: Int)
 
-    fun getData()
+    fun getValues()
 
     interface UIImpl : UI {
         fun showQualityFormat(format: Bitmap.CompressFormat)
