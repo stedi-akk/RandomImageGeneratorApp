@@ -5,11 +5,13 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.di.components.ActivityComponent
 import com.stedi.randomimagegenerator.app.di.modules.ActivityModule
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.other.LockedBus
 import com.stedi.randomimagegenerator.app.other.getApp
+import com.stedi.randomimagegenerator.app.other.showToast
 import com.stedi.randomimagegenerator.app.view.components.BaseViewModel
 import com.stedi.randomimagegenerator.app.view.components.RequireViewModel
 import javax.inject.Inject
@@ -67,8 +69,12 @@ abstract class BaseActivity : LifeCycleActivity(), RequireViewModel {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        val permission = permissions[0]
         val isGranted = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
-        viewModel.bus.post(PermissionEvent(permissions[0], requestCode, isGranted))
+        if (!isGranted) {
+            showToast(getString(R.string.s_permission_required, permission))
+        }
+        viewModel.bus.post(PermissionEvent(permission, requestCode, isGranted))
     }
 
     fun checkForPermission(permission: String, requestCode: Int): Boolean {

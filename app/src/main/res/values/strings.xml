@@ -73,4 +73,5 @@
     <string name="vertical">Vertical</string>
     <string name="horizontal">Horizontal</string>
     <string name="type_s">Type %s</string>
+    <string name="s_permission_required">%s permission is required for this functionality to work</string>
 </resources>
