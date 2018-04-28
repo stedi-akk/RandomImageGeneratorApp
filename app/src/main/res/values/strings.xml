@@ -69,9 +69,11 @@
     <string name="height_s">Height\u0020\u0020—\u0020\u0020%s</string>
     <string name="count_s">Count\u0020\u0020—\u0020\u0020%s</string>
     <string name="quality_s_percent">Quality\u0020\u0020—\u0020\u0020%1$s (%2$s%%)</string>
+    <string name="quality_s_percent_short">%1$s (%2$s%%)</string>
     <string name="folder_s">Folder\u0020\u0020—\u0020\u0020%s</string>
     <string name="vertical">Vertical</string>
     <string name="horizontal">Horizontal</string>
     <string name="type_s">Type %s</string>
     <string name="s_permission_required">%s permission is required for this functionality to work</string>
+    <string name="storage_s">Storage: %s</string>
 </resources>

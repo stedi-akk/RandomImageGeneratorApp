@@ -1,6 +1,7 @@
 package com.stedi.randomimagegenerator.app.view.adapters
 
 import android.content.Context
+import android.os.Environment
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,8 @@ import java.util.*
 class PresetsAdapter(
         @ActivityContext private val context: Context,
         private val listener: ClickListener) : RecyclerView.Adapter<PresetsAdapter.ViewHolder>() {
+
+    private val storageDir = Environment.getExternalStorageDirectory()
 
     private val presetsList = ArrayList<Preset>()
     private val imageSize = context.dim2px(R.dimen.adapter_rig_image_size)
@@ -72,6 +75,7 @@ class PresetsAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val preset = presetsList[position]
+        val quality = preset.getQuality()
         holder.preset = preset
 
         val generatorParams = preset.getGeneratorParams()
@@ -82,12 +86,13 @@ class PresetsAdapter(
         }
 
         holder.tvName.text = preset.name
-        holder.tvFolder.text = preset.pathToSave
+        holder.tvFolder.text = context.getString(R.string.storage_s, preset.pathToSave.removePrefix(storageDir.absolutePath))
         holder.tvCreated.text = formatTime(preset.timestamp)
+        holder.tvQuality.text = context.getString(R.string.quality_s_percent_short, quality.format.name, quality.qualityValue.toString())
         holder.btnAction.setText(if (preset === pendingPreset) R.string.save else R.string.generate)
 
-        Picasso.get().load(RigRequestHandler.makeUri(mainType, secondType, imageSize, imageSize, preset.getQuality().format, preset.getQuality().qualityValue))
-                .placeholder(R.drawable.ic_texture_adapter_rig_image_size)
+        Picasso.get().load(RigRequestHandler.makeUri(mainType, secondType, imageSize, imageSize, quality.format, quality.qualityValue))
+                .placeholder(R.drawable.ic_texture_rig)
                 .into(holder.imageView)
 
         holder.itemView.setOnClickListener(holder)
@@ -99,6 +104,7 @@ class PresetsAdapter(
         @BindView(R.id.preset_item_tv_name) lateinit var tvName: TextView
         @BindView(R.id.preset_item_tv_folder) lateinit var tvFolder: TextView
         @BindView(R.id.preset_item_tv_created) lateinit var tvCreated: TextView
+        @BindView(R.id.preset_item_tv_quality) lateinit var tvQuality: TextView
         @BindView(R.id.preset_item_image) lateinit var imageView: ImageView
         @BindView(R.id.preset_item_btn_action) lateinit var btnAction: Button
         @BindView(R.id.preset_item_btn_delete) lateinit var btnDelete: View
