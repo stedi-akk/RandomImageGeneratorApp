@@ -79,7 +79,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
                 }
             }
         } else {
-            val arguments = arguments;
+            val arguments = arguments
             if (arguments != null) {
                 presenter.startGeneration(arguments.getParcelable(KEY_PRESET))
             } else {
@@ -169,7 +169,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
     private fun invalidate() {
         when (currentState) {
             State.START, State.PROGRESS -> {
-                invalidateCountMessage();
+                invalidateCountMessage()
                 (dialog as AlertDialog).getButton(DialogInterface.BUTTON_POSITIVE).visibility = View.GONE
             }
             State.ERROR, State.FINISH -> {

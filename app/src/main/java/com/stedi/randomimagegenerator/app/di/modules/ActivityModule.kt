@@ -29,5 +29,5 @@ class ActivityModule(private val activity: BaseActivity) {
 
     @Provides
     @ActivityContext
-    fun provideActivityContext(): Context = activity;
+    fun provideActivityContext(): Context = activity
 }

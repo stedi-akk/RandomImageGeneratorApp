@@ -61,7 +61,7 @@ class PendingPreset() {
     }
 
     fun retain(): Array<Parcelable?> {
-        Timber.d("before retain: $this")
+        Timber.d("retain: $this")
         return arrayOf(preset, candidateFrom, candidate)
     }
 
@@ -69,7 +69,7 @@ class PendingPreset() {
         preset = state[0] as Preset?
         candidateFrom = state[1] as Preset?
         candidate = state[2] as Preset?
-        Timber.d("after restore: $this")
+        Timber.d("restore: $this")
     }
 
     override fun toString() = "PendingPreset{" +

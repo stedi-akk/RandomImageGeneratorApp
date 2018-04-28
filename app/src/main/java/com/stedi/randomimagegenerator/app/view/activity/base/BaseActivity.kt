@@ -1,6 +1,5 @@
 package com.stedi.randomimagegenerator.app.view.activity.base
 
-import android.arch.lifecycle.ViewModelProviders
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
@@ -12,29 +11,21 @@ import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.other.LockedBus
 import com.stedi.randomimagegenerator.app.other.getApp
 import com.stedi.randomimagegenerator.app.other.showToast
-import com.stedi.randomimagegenerator.app.view.components.BaseViewModel
 import com.stedi.randomimagegenerator.app.view.components.RequireViewModel
 import javax.inject.Inject
 
-class BaseActivityModel : BaseViewModel<BaseActivity>() {
+abstract class BaseActivity : LifeCycleActivity(), RequireViewModel {
+    private val KEY_PENDING_PRESET_STATE = "KEY_PENDING_PRESET_STATE"
+
     @Inject lateinit var pendingPreset: PendingPreset
     @Inject lateinit var bus: LockedBus
-
-    override fun onCreate(view: BaseActivity) {
-        view.activityComponent.inject(this)
-    }
-}
-
-abstract class BaseActivity : LifeCycleActivity(), RequireViewModel {
 
     val activityComponent: ActivityComponent by lazy {
         getApp().appComponent.plus(ActivityModule(this))
     }
 
-    private lateinit var viewModel: BaseActivityModel
-
     private companion object {
-        const val KEY_PENDING_PRESET_STATE = "KEY_PENDING_PRESET_STATE"
+        var restorePendingPreset = true
     }
 
     class PermissionEvent(val permission: String, val requestCode: Int, val isGranted: Boolean)
@@ -42,29 +33,29 @@ abstract class BaseActivity : LifeCycleActivity(), RequireViewModel {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this).get(BaseActivityModel::class.java)
-        viewModel.init(this)
+        activityComponent.inject(this)
 
-        savedInstanceState?.apply {
+        if (restorePendingPreset && savedInstanceState != null) {
             savedInstanceState.getParcelableArray(KEY_PENDING_PRESET_STATE)?.apply {
-                viewModel.pendingPreset.restore(this)
+                pendingPreset.restore(this)
             }
         }
+        restorePendingPreset = false
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.bus.unlock()
+        bus.unlock()
     }
 
     override fun onPause() {
         super.onPause()
-        viewModel.bus.lock()
+        bus.lock()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelableArray(KEY_PENDING_PRESET_STATE, viewModel.pendingPreset.retain())
+        outState.putParcelableArray(KEY_PENDING_PRESET_STATE, pendingPreset.retain())
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -74,7 +65,7 @@ abstract class BaseActivity : LifeCycleActivity(), RequireViewModel {
         if (!isGranted) {
             showToast(getString(R.string.s_permission_required, permission))
         }
-        viewModel.bus.post(PermissionEvent(permission, requestCode, isGranted))
+        bus.post(PermissionEvent(permission, requestCode, isGranted))
     }
 
     fun checkForPermission(permission: String, requestCode: Int): Boolean {
