@@ -37,6 +37,8 @@ class ChooseGeneratorFragment : GenerationFragment(), ChooseGeneratorPresenter.U
 
     @BindView(R.id.choose_generator_fragment_recycler_view) lateinit var recyclerView: RecyclerView
 
+    private lateinit var adapter: GeneratorTypeAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -55,11 +57,13 @@ class ChooseGeneratorFragment : GenerationFragment(), ChooseGeneratorPresenter.U
         super.onViewCreated(view, savedInstanceState)
         recyclerView.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.generator_type_adapter_grid_items))
         recyclerView.setHasFixedSize(true)
+        adapter = GeneratorTypeAdapter(activity!!, this, false)
+        recyclerView.adapter = adapter
         viewModel.presenter.getGeneratorTypes()
     }
 
     override fun showTypes(types: Array<GeneratorType>, selectedType: GeneratorType) {
-        recyclerView.adapter = GeneratorTypeAdapter(activity!!, types, selectedType, null, this, false)
+        adapter.set(types, selectedType, null)
     }
 
     override fun onSelected(type: GeneratorType) {

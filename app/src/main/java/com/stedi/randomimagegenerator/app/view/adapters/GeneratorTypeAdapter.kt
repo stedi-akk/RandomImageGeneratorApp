@@ -19,11 +19,12 @@ import com.stedi.randomimagegenerator.app.view.components.RigRequestHandler
 
 class GeneratorTypeAdapter(
         @ActivityContext private val context: Context,
-        private val generatorType: Array<GeneratorType>,
-        private var selectedType: GeneratorType?,
-        private val targetType: GeneratorType?,
         private val listener: ClickListener,
         private val isDeselectAllowed: Boolean) : RecyclerView.Adapter<GeneratorTypeAdapter.ViewHolder>() {
+
+    private var generatorTypes: Array<GeneratorType> = emptyArray()
+    private var selectedType: GeneratorType? = null
+    private var targetType: GeneratorType? = null
 
     private val imageSize = context.dim2px(R.dimen.adapter_rig_image_size)
 
@@ -39,16 +40,23 @@ class GeneratorTypeAdapter(
         setHasStableIds(true)
     }
 
-    override fun getItemCount() = generatorType.size
+    fun set(generatorTypes: Array<GeneratorType>, selectedType: GeneratorType?, targetType: GeneratorType?) {
+        this.generatorTypes = generatorTypes
+        this.selectedType = selectedType
+        this.targetType = targetType
+        notifyDataSetChanged()
+    }
 
-    override fun getItemId(position: Int) = generatorType[position].ordinal.toLong()
+    override fun getItemCount() = generatorTypes.size
+
+    override fun getItemId(position: Int) = generatorTypes[position].ordinal.toLong()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GeneratorTypeAdapter.ViewHolder {
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.generator_type_item, parent, false))
     }
 
     override fun onBindViewHolder(holder: GeneratorTypeAdapter.ViewHolder, position: Int) {
-        val type = generatorType[position]
+        val type = generatorTypes[position]
         holder.generatorType = type
 
         holder.text.setText(type.nameRes)

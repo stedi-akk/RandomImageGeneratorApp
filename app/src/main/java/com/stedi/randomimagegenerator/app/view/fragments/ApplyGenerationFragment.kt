@@ -79,7 +79,9 @@ class ApplyGenerationFragment : GenerationFragment(), ApplyGenerationPresenter.U
     }
 
     override fun onSelected() {
-        refreshFromPreset()
+        if (view != null) {
+            refreshFromPreset()
+        }
     }
 
     @OnClick(R.id.apply_generation_fragment_btn_save)
@@ -132,11 +134,9 @@ class ApplyGenerationFragment : GenerationFragment(), ApplyGenerationPresenter.U
     }
 
     private fun refreshFromPreset() {
-        if (view != null) {
-            val presenter = viewModel.presenter
-            tvOut.text = getSummaryFromPreset(presenter.getPreset())
-            btnSave.setText(if (presenter.isPresetNew() || presenter.isPresetChanged()) R.string.unsaved_save else R.string.save)
-        }
+        val presenter = viewModel.presenter
+        tvOut.text = getSummaryFromPreset(presenter.getPreset())
+        btnSave.setText(if (presenter.isPresetNew() || presenter.isPresetChanged()) R.string.unsaved_save else R.string.save)
     }
 
     private fun getSummaryFromPreset(preset: Preset): String {

@@ -35,6 +35,7 @@ class GenerationStepsActivity : BaseActivity() {
         val stepper = findViewById<StepperLayout>(R.id.generation_steps_activity_stepper)
         val stepperAdapter = GenerationStepperAdapter(supportFragmentManager, this)
         stepper.adapter = stepperAdapter
+        stepper.setOffscreenPageLimit(stepperAdapter.count)
 
         val isNew = intent.getBooleanExtra(KEY_NEW_GENERATION, true)
         if (savedInstanceState != null) {

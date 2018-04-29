@@ -31,9 +31,9 @@ class PresetsAdapter(
     private val storageDir = Environment.getExternalStorageDirectory()
 
     private val presetsList = ArrayList<Preset>()
-    private val imageSize = context.dim2px(R.dimen.adapter_rig_image_size)
-
     private var pendingPreset: Preset? = null
+
+    private val imageSize = context.dim2px(R.dimen.adapter_rig_image_size)
 
     interface ClickListener {
         fun onCardClick(preset: Preset)

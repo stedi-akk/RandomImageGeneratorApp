@@ -36,6 +36,8 @@ class ChooseEffectFragment : GenerationFragment(), GeneratorTypeAdapter.ClickLis
 
     @BindView(R.id.choose_effect_fragment_recycler_view) lateinit var recyclerView: RecyclerView
 
+    private lateinit var adapter: GeneratorTypeAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -54,6 +56,8 @@ class ChooseEffectFragment : GenerationFragment(), GeneratorTypeAdapter.ClickLis
         super.onViewCreated(view, savedInstanceState)
         recyclerView.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.generator_type_adapter_grid_items))
         recyclerView.setHasFixedSize(true)
+        adapter = GeneratorTypeAdapter(activity!!, this, false)
+        recyclerView.adapter = adapter
         viewModel.presenter.getEffectTypes()
     }
 
@@ -64,7 +68,7 @@ class ChooseEffectFragment : GenerationFragment(), GeneratorTypeAdapter.ClickLis
     }
 
     override fun showTypes(types: Array<GeneratorType>, selectedType: GeneratorType?, targetType: GeneratorType) {
-        recyclerView.adapter = GeneratorTypeAdapter(activity!!, types, selectedType, targetType, this, true)
+        adapter.set(types, selectedType, targetType)
     }
 
     override fun onSelected(type: GeneratorType) {
