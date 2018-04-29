@@ -111,11 +111,6 @@ class ApplyGenerationPresenterImpl @Inject constructor(
         Timber.d("onPresetSaveEvent")
         saveInProgress = false
 
-        if (ui == null) {
-            Timber.d("onPresetSaveEvent when ui == null")
-            return
-        }
-
         event.throwable?.apply {
             Timber.e(this)
             ui?.failedToSavePreset()

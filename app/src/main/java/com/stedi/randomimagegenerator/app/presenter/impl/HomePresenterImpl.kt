@@ -159,11 +159,6 @@ class HomePresenterImpl @Inject constructor(
         Timber.d("onFetchPresetsEvent")
         fetchInProgress = false
 
-        if (ui == null) {
-            Timber.d("onFetchPresetsEvent when ui == null")
-            return
-        }
-
         event.throwable?.apply {
             Timber.e(this)
             ui?.onFailedToFetchPresets()
@@ -179,11 +174,6 @@ class HomePresenterImpl @Inject constructor(
 
         Timber.d("onDeletePresetEvent")
         deleteInProgress = false
-
-        if (ui == null) {
-            Timber.d("onDeletePresetEvent when ui == null")
-            return
-        }
 
         event.throwable?.apply {
             Timber.e(this)
