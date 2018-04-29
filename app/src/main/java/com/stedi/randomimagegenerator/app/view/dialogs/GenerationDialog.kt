@@ -6,12 +6,12 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.annotation.WorkerThread
 import android.support.v7.app.AlertDialog
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import butterknife.BindView
-import com.stedi.randomimagegenerator.ImageParams
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.di.AppContext
 import com.stedi.randomimagegenerator.app.model.data.Preset
@@ -31,12 +31,11 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
     @BindView(R.id.generation_dialog_progress) lateinit var progressBar: View
     @BindView(R.id.generation_dialog_message) lateinit var tvMessage: TextView
 
-    private var currentState = State.START
+    private var currentState = State.PROGRESS
     private var generatedCount: Int = 0
     private var failedCount: Int = 0
 
     private enum class State {
-        START,
         PROGRESS,
         FINISH,
         ERROR
@@ -48,7 +47,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
     @Inject lateinit var bus: LockedBus
     @Inject @field:AppContext lateinit var appContext: Context
 
-    private var isStarted: Boolean = false
+    private var isDialogStarted: Boolean = false
 
     companion object {
         private const val KEY_PRESET = "KEY_PRESET"
@@ -70,7 +69,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         if (savedInstanceState != null) {
-            if (!isStarted) {
+            if (!isDialogStarted) {
                 currentState = savedInstanceState.getSerializable(KEY_CURRENT_STATE) as State
                 generatedCount = savedInstanceState.getInt(KEY_GENERATED_COUNT)
                 failedCount = savedInstanceState.getInt(KEY_FAILED_COUNT)
@@ -108,8 +107,27 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
 
     override fun onStart() {
         super.onStart()
-        isStarted = true
-        invalidate()
+        isDialogStarted = true
+        invalidateViews()
+    }
+
+    @WorkerThread
+    override fun imageSaved(imageFile: File) {
+        appContext.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(imageFile)))
+    }
+
+    override fun onResult(generatedCount: Int, failedCount: Int) {
+        this.generatedCount = generatedCount
+        this.failedCount = failedCount
+        invalidateState(State.PROGRESS)
+    }
+
+    override fun onFinishGeneration() {
+        invalidateState(State.FINISH)
+    }
+
+    override fun onGenerationFailed() {
+        invalidateState(State.ERROR)
     }
 
     override fun onDestroyView() {
@@ -130,29 +148,6 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
         outState.putInt(KEY_FAILED_COUNT, failedCount)
     }
 
-    override fun onStartGeneration() {
-        invalidateState(State.START)
-    }
-
-    override fun onGenerated(imageParams: ImageParams, imageFile: File) {
-        appContext.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(imageFile)))
-        generatedCount++
-        invalidateState(State.PROGRESS)
-    }
-
-    override fun onGenerationUnknownError() {
-        invalidateState(State.ERROR)
-    }
-
-    override fun onFailedToGenerate(imageParams: ImageParams) {
-        failedCount++
-        invalidateState(State.PROGRESS)
-    }
-
-    override fun onFinishGeneration() {
-        invalidateState(State.FINISH)
-    }
-
     private fun invalidateState(state: State) {
         if (currentState == State.ERROR || currentState == State.FINISH) {
             Timber.e("ignoring passed state because the end state is achieved")
@@ -161,14 +156,14 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
 
         currentState = state
 
-        if (isStarted) {
-            invalidate()
+        if (isDialogStarted) {
+            invalidateViews()
         }
     }
 
-    private fun invalidate() {
+    private fun invalidateViews() {
         when (currentState) {
-            State.START, State.PROGRESS -> {
+            State.PROGRESS -> {
                 invalidateCountMessage()
                 (dialog as AlertDialog).getButton(DialogInterface.BUTTON_POSITIVE).visibility = View.GONE
             }

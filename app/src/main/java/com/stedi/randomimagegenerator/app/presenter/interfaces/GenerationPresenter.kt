@@ -1,6 +1,6 @@
 package com.stedi.randomimagegenerator.app.presenter.interfaces
 
-import com.stedi.randomimagegenerator.ImageParams
+import android.support.annotation.WorkerThread
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.presenter.interfaces.core.Presenter
 import com.stedi.randomimagegenerator.app.presenter.interfaces.core.UI
@@ -11,14 +11,13 @@ interface GenerationPresenter : Presenter<GenerationPresenter.UIImpl> {
     fun startGeneration(preset: Preset)
 
     interface UIImpl : UI {
-        fun onStartGeneration()
+        @WorkerThread
+        fun imageSaved(imageFile: File) {}
 
-        fun onGenerated(imageParams: ImageParams, imageFile: File)
-
-        fun onFailedToGenerate(imageParams: ImageParams)
-
-        fun onGenerationUnknownError()
+        fun onResult(generatedCount: Int, failedCount: Int)
 
         fun onFinishGeneration()
+
+        fun onGenerationFailed()
     }
 }

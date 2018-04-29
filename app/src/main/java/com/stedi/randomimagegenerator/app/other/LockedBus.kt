@@ -12,24 +12,24 @@ class LockedBus(enforcer: ThreadEnforcer = ThreadEnforcer.MAIN) : Bus(enforcer) 
     private val lockedEvents = LinkedList<Runnable>()
     private val creationThread = Thread.currentThread()
 
-    private var locked: Boolean = false
+    var isLocked: Boolean = false
 
     fun lock() {
         Timber.d("locked")
         ensureCreationThread()
-        locked = true
+        isLocked = true
     }
 
     fun unlock() {
         Timber.d("unlocked")
         ensureCreationThread()
-        locked = false
+        isLocked = false
         releaseLockedEvents()
     }
 
     override fun post(event: Any) {
         ensureCreationThread()
-        if (!locked) {
+        if (!isLocked) {
             Timber.d("posting ${event.javaClass.simpleName} successfully")
             super.post(event)
         } else {
