@@ -18,7 +18,7 @@ public class FakePresetRepository implements PresetRepository {
 
     private int latestId;
 
-    FakePresetRepository(int initialCount) {
+    public FakePresetRepository(int initialCount) {
         if (initialCount > 0) {
             Random random = new Random();
             for (int id = 1; id <= initialCount; id++) {
@@ -29,7 +29,7 @@ public class FakePresetRepository implements PresetRepository {
                 } else {
                     generatorParams = GeneratorParams.Companion.createDefaultParams(gt);
                 }
-                items.put(id, createTestPreset(id, generatorParams));
+                items.put(id, createPreset(id, generatorParams));
             }
             latestId = initialCount;
         }
@@ -63,7 +63,7 @@ public class FakePresetRepository implements PresetRepository {
         return CommonKt.toList(items);
     }
 
-    private Preset createTestPreset(int id, GeneratorParams generatorParams) {
+    private Preset createPreset(int id, GeneratorParams generatorParams) {
         Preset preset = TestUtils.newSimplePreset();
         preset.setName("test" + id);
         preset.setGeneratorParams(generatorParams);
