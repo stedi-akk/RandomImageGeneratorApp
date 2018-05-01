@@ -20,7 +20,7 @@ public class CachedPresetRepositoryTest {
     private CachedPresetRepository cachedPresetRepository;
 
     @Before
-    public void before() throws Exception {
+    public void before() {
         target = spy(new FakePresetRepository(0));
         cachedPresetRepository = new CachedPresetRepository(target);
     }

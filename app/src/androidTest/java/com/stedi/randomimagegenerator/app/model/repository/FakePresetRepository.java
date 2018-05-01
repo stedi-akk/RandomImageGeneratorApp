@@ -18,7 +18,7 @@ public class FakePresetRepository implements PresetRepository {
 
     private int latestId;
 
-    public FakePresetRepository(int initialCount) {
+    FakePresetRepository(int initialCount) {
         if (initialCount > 0) {
             Random random = new Random();
             for (int id = 1; id <= initialCount; id++) {
@@ -36,7 +36,7 @@ public class FakePresetRepository implements PresetRepository {
     }
 
     @Override
-    public void save(@NonNull Preset preset) throws Exception {
+    public void save(@NonNull Preset preset) {
         if (preset.getId() == 0) {
             latestId++;
             preset.setId(latestId);
@@ -47,19 +47,19 @@ public class FakePresetRepository implements PresetRepository {
     }
 
     @Override
-    public void remove(int id) throws Exception {
+    public void remove(int id) {
         items.remove(id);
     }
 
     @Nullable
     @Override
-    public Preset get(int id) throws Exception {
+    public Preset get(int id) {
         return items.get(id);
     }
 
     @NonNull
     @Override
-    public List<Preset> getAll() throws Exception {
+    public List<Preset> getAll() {
         return CommonKt.toList(items);
     }
 

@@ -3,12 +3,10 @@ package com.stedi.randomimagegenerator.app.model.repository;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.stedi.randomimagegenerator.Quality;
 import com.stedi.randomimagegenerator.app.TestUtils;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
-import com.stedi.randomimagegenerator.app.other.logger.SoutLogger;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -28,13 +26,13 @@ public class DatabasePresetRepositoryTest {
     @Before
     public void before() {
         TestUtils.deletePresetDatabase();
-        repository = new DatabasePresetRepository(InstrumentationRegistry.getTargetContext(), new SoutLogger("DatabasePresetRepositoryTest"));
+        repository = new DatabasePresetRepository(InstrumentationRegistry.getTargetContext());
     }
 
     @Test
     public void simpleTest() throws Exception {
         long timestamp = System.currentTimeMillis();
-        Preset preset = new Preset("name", GeneratorParams.Companion.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), "folder");
+        Preset preset = TestUtils.newSimplePreset();
         preset.setTimestamp(timestamp);
         preset.setWidth(666);
         preset.setHeight(999);
@@ -62,7 +60,8 @@ public class DatabasePresetRepositoryTest {
 
     @Test
     public void saveUpdateTest() throws Exception {
-        Preset preset = new Preset("name", GeneratorParams.Companion.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), "folder");
+        Preset preset = TestUtils.newSimplePreset();
+        preset.setName("name");
 
         repository.save(preset);
         Preset databasePreset = repository.get(1);
@@ -78,7 +77,7 @@ public class DatabasePresetRepositoryTest {
     public void nonEffectParamsTest() throws Exception {
         int ids = 1;
         for (GeneratorType type : GeneratorType.Companion.getNON_EFFECT_TYPES()) {
-            Preset preset = new Preset("name", GeneratorParams.Companion.createDefaultParams(type), Quality.png(), "folder");
+            Preset preset = TestUtils.newSimplePreset(GeneratorParams.Companion.createDefaultParams(type));
 
             repository.save(preset);
             assertTrue(preset.getId() == ids);
@@ -105,7 +104,7 @@ public class DatabasePresetRepositoryTest {
         int ids = 1;
         for (GeneratorType effectType : GeneratorType.Companion.getEFFECT_TYPES()) {
             for (GeneratorType nonEffecttype : GeneratorType.Companion.getNON_EFFECT_TYPES()) {
-                Preset preset = new Preset("name", GeneratorParams.Companion.createDefaultEffectParams(effectType, GeneratorParams.Companion.createDefaultParams(nonEffecttype)), Quality.png(), "folder");
+                Preset preset = TestUtils.newSimplePreset(GeneratorParams.Companion.createDefaultEffectParams(effectType, GeneratorParams.Companion.createDefaultParams(nonEffecttype)));
 
                 repository.save(preset);
                 assertTrue(preset.getId() == ids);
