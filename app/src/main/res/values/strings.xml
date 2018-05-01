@@ -26,7 +26,7 @@
     <string name="quality">Quality</string>
     <string name="n_choose_quality">4. Choose quality:</string>
     <string name="summary">Summary</string>
-    <string name="n_summary">5. Summary</string>
+    <string name="n_summary">5. Summary:</string>
     <string name="configure">Configure</string>
     <string name="new_preset">New preset</string>
     <string name="preset_edit">Edit preset</string>

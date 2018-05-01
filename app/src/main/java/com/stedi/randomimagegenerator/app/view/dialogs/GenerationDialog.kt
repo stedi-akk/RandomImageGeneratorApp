@@ -10,6 +10,7 @@ import android.support.annotation.WorkerThread
 import android.support.v7.app.AlertDialog
 import android.view.View
 import android.view.WindowManager
+import android.widget.ImageView
 import android.widget.TextView
 import butterknife.BindView
 import com.stedi.randomimagegenerator.app.R
@@ -30,6 +31,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
 
     @BindView(R.id.generation_dialog_progress) lateinit var progressBar: View
     @BindView(R.id.generation_dialog_message) lateinit var tvMessage: TextView
+    @BindView(R.id.generation_dialog_result_icon) lateinit var ivResult: ImageView
 
     private var currentState = State.PROGRESS
     private var generatedCount: Int = 0
@@ -164,31 +166,22 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
     private fun invalidateViews() {
         when (currentState) {
             State.PROGRESS -> {
-                invalidateCountMessage()
+                tvMessage.text = getString(R.string.generating_image_s, (generatedCount + failedCount + 1).toString())
                 (dialog as AlertDialog).getButton(DialogInterface.BUTTON_POSITIVE).visibility = View.GONE
             }
             State.ERROR, State.FINISH -> {
                 if (currentState == State.ERROR) {
-                    showErrorMessage()
+                    tvMessage.setText(R.string.generation_error)
+                    ivResult.setImageResource(R.drawable.ic_fail)
                 } else if (currentState == State.FINISH) {
-                    showFinishMessage()
+                    tvMessage.text = getString(R.string.generated_stats, generatedCount.toString(), failedCount.toString())
+                    ivResult.setImageResource(if (failedCount > 0) R.drawable.ic_warning else R.drawable.ic_success)
                 }
                 dialog.setTitle(R.string.generation_results)
                 (dialog as AlertDialog).getButton(DialogInterface.BUTTON_POSITIVE).visibility = View.VISIBLE
                 progressBar.visibility = View.GONE
+                ivResult.visibility = View.VISIBLE
             }
         }
-    }
-
-    private fun invalidateCountMessage() {
-        tvMessage.text = getString(R.string.generating_image_s, (generatedCount + failedCount + 1).toString())
-    }
-
-    private fun showErrorMessage() {
-        tvMessage.setText(R.string.generation_error)
-    }
-
-    private fun showFinishMessage() {
-        tvMessage.text = getString(R.string.generated_stats, generatedCount.toString(), failedCount.toString())
     }
 }

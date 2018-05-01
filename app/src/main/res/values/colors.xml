@@ -10,4 +10,7 @@
     <color name="gray_medium">#9E9E9E</color>
     <color name="gray_medium_semi_transparent">#809E9E9E</color>
     <color name="pending_preset">#FFFDE7</color>
+    <color name="material_red">#F44336</color>
+    <color name="material_orange">#FF9800</color>
+    <color name="material_green">#8BC34A</color>
 </resources>
