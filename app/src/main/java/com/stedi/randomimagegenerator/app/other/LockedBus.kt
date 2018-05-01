@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.other
 
+import android.support.annotation.VisibleForTesting
 import com.squareup.otto.Bus
 import com.squareup.otto.ThreadEnforcer
 import timber.log.Timber
@@ -11,6 +12,9 @@ class LockedBus(enforcer: ThreadEnforcer = ThreadEnforcer.MAIN) : Bus(enforcer) 
 
     private val lockedEvents = LinkedList<Runnable>()
     private val creationThread = Thread.currentThread()
+
+    @VisibleForTesting
+    fun getLockedEvents() = lockedEvents
 
     var isLocked: Boolean = false
 
