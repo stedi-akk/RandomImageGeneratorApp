@@ -38,10 +38,11 @@ abstract class SimpleIntegerParams : GeneratorParams {
     override fun hashCode() = value?.hashCode() ?: 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
+        super.writeToParcel(dest, flags)
         dest.writeValue(this.value)
     }
 
-    protected constructor(parcel: Parcel) {
+    protected constructor(parcel: Parcel) : super(parcel) {
         this.value = parcel.readValue(Int::class.java.classLoader) as Int?
     }
 }

@@ -47,11 +47,12 @@ abstract class EffectGeneratorParams : GeneratorParams {
     override fun hashCode() = target.hashCode()
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
+        super.writeToParcel(dest, flags)
         dest.writeParcelable(this.target, flags)
         dest.writeInt(this.targetGeneratorParamsId)
     }
 
-    protected constructor(parcel: Parcel) {
+    protected constructor(parcel: Parcel) : super(parcel) {
         setTargetParams(parcel.readParcelable(GeneratorParams::class.java.classLoader))
         this.targetGeneratorParamsId = parcel.readInt()
     }

@@ -19,18 +19,8 @@ public class EffectGeneratorParamsEqualsTest {
 
         @NonNull
         @Override
-        protected Generator createEffectGenerator(@NonNull com.stedi.randomimagegenerator.generators.Generator target) {
+        protected Generator createEffectGenerator(@NonNull Generator target) {
             return null;
-        }
-
-        @Override
-        public void setId(int id) {
-
-        }
-
-        @Override
-        public int getId() {
-            return 0;
         }
 
         @NonNull

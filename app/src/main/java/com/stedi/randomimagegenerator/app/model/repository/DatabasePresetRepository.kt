@@ -43,7 +43,7 @@ class DatabasePresetRepository(@AppContext context: Context) : OrmLiteSqliteOpen
         TransactionManager.callInTransaction(getConnectionSource()) {
             deleteGeneratorParams(preset)
             saveGeneratorParams(preset.getGeneratorParams())
-            preset.generatorParamsId = preset.getGeneratorParams().getId()
+            preset.generatorParamsId = preset.getGeneratorParams().id
             val status = getDao<Dao<Preset, Int>, Preset>(Preset::class.java).createOrUpdate(preset)
             if (!status.isCreated && !status.isUpdated) {
                 throw SQLException("failed to save or update preset")
@@ -99,7 +99,7 @@ class DatabasePresetRepository(@AppContext context: Context) : OrmLiteSqliteOpen
         if (generatorParams is EffectGeneratorParams) {
             val targetParams = generatorParams.target
             saveGeneratorParams(targetParams)
-            generatorParams.targetGeneratorParamsId = targetParams.getId()
+            generatorParams.targetGeneratorParamsId = targetParams.id
         }
         val status = getDao(generatorParams.javaClass).createOrUpdate(generatorParams)
         if (!status.isCreated && !status.isUpdated) {

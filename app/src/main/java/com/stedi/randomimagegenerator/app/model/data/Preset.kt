@@ -88,10 +88,10 @@ class Preset : Parcelable {
         id = 0
         generatorParamsId = 0
         val generatorParams = getGeneratorParams()
-        generatorParams.setId(0)
+        generatorParams.id = 0
         if (generatorParams is EffectGeneratorParams) {
             generatorParams.targetGeneratorParamsId = 0
-            generatorParams.target.setId(0)
+            generatorParams.target.id = 0
         }
     }
 

@@ -11,9 +11,6 @@ import com.stedi.randomimagegenerator.generators.ColoredNoiseGenerator
 @DatabaseTable(tableName = "colored_noise_params")
 class ColoredNoiseParams : GeneratorParams {
 
-    @DatabaseField(generatedId = true)
-    private var id: Int = 0
-
     @DatabaseField(columnName = "orientation", canBeNull = false)
     var noiseOrientation: ColoredNoiseGenerator.Orientation = ColoredNoiseGenerator.Orientation.RANDOM
 
@@ -24,12 +21,6 @@ class ColoredNoiseParams : GeneratorParams {
     constructor()
 
     public override fun createGenerator() = ColoredNoiseGenerator(noiseOrientation, noiseType)
-
-    override fun setId(id: Int) {
-        this.id = id
-    }
-
-    override fun getId() = id
 
     override fun getType() = GeneratorType.COLORED_NOISE
 
@@ -46,15 +37,14 @@ class ColoredNoiseParams : GeneratorParams {
     }
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
+        super.writeToParcel(dest, flags)
         dest.writeInt(this.noiseOrientation.ordinal)
         dest.writeInt(this.noiseType.ordinal)
-        dest.writeInt(this.id)
     }
 
-    protected constructor(parcel: Parcel) {
+    protected constructor(parcel: Parcel) : super(parcel) {
         this.noiseOrientation = ColoredNoiseGenerator.Orientation.values()[parcel.readInt()]
         this.noiseType = ColoredNoiseGenerator.Type.values()[parcel.readInt()]
-        this.id = parcel.readInt()
     }
 
     companion object {

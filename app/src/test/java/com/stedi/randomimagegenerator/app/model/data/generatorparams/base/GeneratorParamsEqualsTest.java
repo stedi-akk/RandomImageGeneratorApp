@@ -14,15 +14,6 @@ import static junit.framework.Assert.*;
 public class GeneratorParamsEqualsTest {
     @SuppressLint("ParcelCreator")
     private class GeneratorParams1 extends GeneratorParams {
-        @Override
-        public void setId(int id) {
-
-        }
-
-        @Override
-        public int getId() {
-            return 0;
-        }
 
         @NonNull
         @Override
