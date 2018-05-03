@@ -56,7 +56,7 @@ class ChooseEffectFragment : GenerationFragment(), GeneratorTypeAdapter.ClickLis
         super.onViewCreated(view, savedInstanceState)
         recyclerView.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.generator_type_adapter_grid_items))
         recyclerView.setHasFixedSize(true)
-        adapter = GeneratorTypeAdapter(activity!!, this, false)
+        adapter = GeneratorTypeAdapter(activity!!, this, true)
         recyclerView.adapter = adapter
         viewModel.presenter.getEffectTypes()
     }
