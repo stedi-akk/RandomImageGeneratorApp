@@ -48,7 +48,7 @@ public class HomePresenterImplTest {
     private ArgumentCaptor<List<Preset>> presetsCaptor;
 
     @Before
-    public void beforeClass() {
+    public void before() {
         Rig.enableDebugLogging(true);
         repository = spy(new FakePresetRepository(FAKE_PRESEST_REPO_SIZE));
         pendingPreset = new PendingPreset();

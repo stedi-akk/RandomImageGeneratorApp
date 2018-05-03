@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.support.annotation.WorkerThread
@@ -114,8 +115,8 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
     }
 
     @WorkerThread
-    override fun imageSaved(imageFile: File) {
-        appContext.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(imageFile)))
+    override fun imageSaved(bitmap: Bitmap, file: File) {
+        appContext.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)))
     }
 
     override fun onResult(generatedCount: Int, failedCount: Int) {

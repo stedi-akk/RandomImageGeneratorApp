@@ -28,8 +28,12 @@ class GenerationPresenterImpl @Inject constructor(
     private var ui: GenerationPresenter.UIImpl? = null
 
     private var subscription: Subscription? = null
+
     private var generatedCount: Int = 0
     private var failedCount: Int = 0
+
+    private var generatedCountPosted: Int = 0
+    private var failedCountPosted: Int = 0
 
     class GenerationResult(val generatedCount: Int, val failedCount: Int)
     class GenerationEnd(val throwable: Throwable? = null)
@@ -58,7 +62,10 @@ class GenerationPresenterImpl @Inject constructor(
         generatedCount = 0
         failedCount = 0
 
-        subscription = Observable.create<Any>({ subscriber ->
+        generatedCountPosted = -1
+        failedCountPosted = -1
+
+        subscription = Observable.create<GenerationResult>({ subscriber ->
             try {
                 Rig.Builder().apply {
                     setGenerator(preset.getGeneratorParams().getGenerator())
@@ -86,7 +93,9 @@ class GenerationPresenterImpl @Inject constructor(
                     setFileSavePath(preset.pathToSave)
 
                     setCallback(object : GenerateCallback {
-                        override fun onGenerated(imageParams: ImageParams, bitmap: Bitmap) {}
+                        override fun onGenerated(imageParams: ImageParams, bitmap: Bitmap) {
+                            ui?.imageGenerated(imageParams, bitmap)
+                        }
 
                         override fun onFailedToGenerate(imageParams: ImageParams, e: Exception) {
                             failedCount++
@@ -98,7 +107,7 @@ class GenerationPresenterImpl @Inject constructor(
                     setFileSaveCallback(object : SaveCallback {
                         override fun onSaved(bitmap: Bitmap, file: File) {
                             generatedCount++
-                            ui?.imageSaved(file)
+                            ui?.imageSaved(bitmap, file)
                             subscriber.onNext(GenerationResult(generatedCount, failedCount))
                         }
 
@@ -116,16 +125,16 @@ class GenerationPresenterImpl @Inject constructor(
         }, Emitter.BackpressureMode.LATEST)
                 .subscribeOn(subscribeOn)
                 .observeOn(observeOn)
-                .subscribe({ event ->
-                    if (!bus.isLocked) {
-                        bus.post(event)
+                .skipWhile { bus.isLocked }
+                .doOnTerminate {
+                    if (generatedCountPosted != generatedCount || failedCountPosted != failedCount) {
+                        bus.post(GenerationResult(generatedCount, failedCount))
                     }
-                }, { t ->
-                    bus.post(GenerationEnd(t))
-                }, {
-                    bus.post(GenerationResult(generatedCount, failedCount))
-                    bus.post(GenerationEnd())
-                })
+                }.subscribe({ result ->
+                    generatedCountPosted = result.generatedCount
+                    failedCountPosted = result.failedCount
+                    bus.post(result)
+                }, { t -> bus.post(GenerationEnd(t)) }, { bus.post(GenerationEnd()) })
     }
 
     @Subscribe

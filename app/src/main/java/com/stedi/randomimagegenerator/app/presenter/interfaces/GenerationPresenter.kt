@@ -1,6 +1,8 @@
 package com.stedi.randomimagegenerator.app.presenter.interfaces
 
+import android.graphics.Bitmap
 import android.support.annotation.WorkerThread
+import com.stedi.randomimagegenerator.ImageParams
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.presenter.interfaces.core.Presenter
 import com.stedi.randomimagegenerator.app.presenter.interfaces.core.UI
@@ -12,7 +14,10 @@ interface GenerationPresenter : Presenter<GenerationPresenter.UIImpl> {
 
     interface UIImpl : UI {
         @WorkerThread
-        fun imageSaved(imageFile: File) {}
+        fun imageGenerated(imageParams: ImageParams, bitmap: Bitmap) {}
+
+        @WorkerThread
+        fun imageSaved(bitmap: Bitmap, file: File) {}
 
         fun onResult(generatedCount: Int, failedCount: Int)
 
