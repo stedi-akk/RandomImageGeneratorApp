@@ -3,15 +3,12 @@ package com.stedi.randomimagegenerator.app.presenter.impl;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.squareup.otto.ThreadEnforcer;
-import com.stedi.randomimagegenerator.Rig;
-import com.stedi.randomimagegenerator.app.TestUtils;
+import com.stedi.randomimagegenerator.app.FakePresetRepository;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
-import com.stedi.randomimagegenerator.app.model.repository.FakePresetRepository;
 import com.stedi.randomimagegenerator.app.model.repository.PresetRepository;
 import com.stedi.randomimagegenerator.app.other.LockedBus;
 
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,7 +46,6 @@ public class HomePresenterImplTest {
 
     @Before
     public void before() {
-        Rig.enableDebugLogging(true);
         repository = spy(new FakePresetRepository(FAKE_PRESEST_REPO_SIZE));
         pendingPreset = new PendingPreset();
         presenter = new HomePresenterImpl(repository, pendingPreset, Schedulers.immediate(), Schedulers.immediate(), new LockedBus(ThreadEnforcer.ANY));
@@ -57,11 +53,6 @@ public class HomePresenterImplTest {
         pendingPresetCaptor = ArgumentCaptor.forClass(Preset.class);
         //noinspection unchecked
         presetsCaptor = ArgumentCaptor.forClass(List.class);
-    }
-
-    @AfterClass
-    public static void afterClass() {
-        TestUtils.deleteTestFolder();
     }
 
     @Test

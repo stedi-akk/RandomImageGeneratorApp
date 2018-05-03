@@ -8,6 +8,7 @@ import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,6 +28,11 @@ public class DatabasePresetRepositoryTest {
     public void before() {
         TestUtils.deletePresetDatabase();
         repository = new DatabasePresetRepository(InstrumentationRegistry.getTargetContext());
+    }
+
+    @AfterClass
+    public static void afterClass() {
+        TestUtils.deletePresetDatabase();
     }
 
     @Test

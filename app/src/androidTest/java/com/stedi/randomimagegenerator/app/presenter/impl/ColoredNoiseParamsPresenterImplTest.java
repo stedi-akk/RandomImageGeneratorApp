@@ -11,22 +11,25 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static junit.framework.Assert.*;
-import static org.mockito.Mockito.*;
+import static junit.framework.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.timeout;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(AndroidJUnit4.class)
 public class ColoredNoiseParamsPresenterImplTest {
     private ColoredNoiseParamsPresenterImpl presenter;
     private ColoredNoiseParams noiseParams;
-    private PendingPreset pendingPreset;
 
     private ColoredNoiseParamsPresenterImpl.UIImpl ui;
 
     @Before
     public void before() {
-        pendingPreset = new PendingPreset();
+        PendingPreset pendingPreset = new PendingPreset();
         noiseParams = new ColoredNoiseParams();
-        pendingPreset.prepareCandidateFrom(TestUtils.newSimplePreset(noiseParams));
+        pendingPreset.prepareCandidateFrom(TestUtils.newSimplePreset());
+        pendingPreset.getCandidate().setGeneratorParams(noiseParams);
         presenter = new ColoredNoiseParamsPresenterImpl(pendingPreset);
         ui = mock(ColoredNoiseParamsPresenterImpl.UIImpl.class);
     }

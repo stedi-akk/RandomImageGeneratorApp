@@ -11,8 +11,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @RunWith(AndroidJUnit4.class)
 public class ChooseSizeAndCountPresenterImplTest {
@@ -106,14 +110,14 @@ public class ChooseSizeAndCountPresenterImplTest {
         assertTrue(pendingPreset.getCandidate().getWidthRange() == null);
 
         presenter.setWidthRange(10, 111, 10);
-        assertArrayEquals(pendingPreset.getCandidate().getWidthRange(), new int[] {10, 111, 10});
+        assertArrayEquals(pendingPreset.getCandidate().getWidthRange(), new int[]{10, 111, 10});
 
         presenter.setHeightRange(100, 10, -20);
         verify(ui, times(1)).onError(ChooseSizeAndCountPresenter.Error.INCORRECT_HEIGHT_RANGE);
         assertTrue(pendingPreset.getCandidate().getHeightRange() == null);
 
         presenter.setHeightRange(100, 10, 20);
-        assertArrayEquals(pendingPreset.getCandidate().getHeightRange(), new int[] {100, 10, 20});
+        assertArrayEquals(pendingPreset.getCandidate().getHeightRange(), new int[]{100, 10, 20});
 
         verifyNoMoreInteractions(ui);
     }

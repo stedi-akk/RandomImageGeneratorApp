@@ -32,7 +32,7 @@ class ApplyGenerationPresenterImpl @Inject constructor(
     private var ui: ApplyGenerationPresenter.UIImpl? = null
     private var saveInProgress: Boolean = false
 
-    class OnPresetSaveEvent(val throwable: Throwable? = null)
+    class PresetSaveEvent(val throwable: Throwable? = null)
 
     init {
         bus.register(this)
@@ -86,12 +86,12 @@ class ApplyGenerationPresenterImpl @Inject constructor(
                     if (candidate === pendingPreset.getPreset()) {
                         pendingPreset.clearPreset()
                     }
-                    bus.post(OnPresetSaveEvent())
+                    bus.post(PresetSaveEvent())
                 }, { t ->
                     preset.name = originalName
                     preset.timestamp = originalTimestamp
                     preset.pathToSave = originalSavePath
-                    bus.post(OnPresetSaveEvent(t))
+                    bus.post(PresetSaveEvent(t))
                 })
     }
 
@@ -107,7 +107,7 @@ class ApplyGenerationPresenterImpl @Inject constructor(
     }
 
     @Subscribe
-    fun onPresetSaveEvent(event: OnPresetSaveEvent) {
+    fun onPresetSaveEvent(event: PresetSaveEvent) {
         Timber.d("onPresetSaveEvent")
         saveInProgress = false
 
