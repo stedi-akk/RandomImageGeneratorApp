@@ -5,8 +5,6 @@ import android.support.test.runner.AndroidJUnit4;
 import com.stedi.randomimagegenerator.app.TestUtils;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
-import com.stedi.randomimagegenerator.app.other.logger.Logger;
-import com.stedi.randomimagegenerator.app.other.logger.SoutLogger;
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSizeAndCountPresenter;
 
 import org.junit.Before;
@@ -20,20 +18,18 @@ import static org.mockito.Mockito.*;
 public class ChooseSizeAndCountPresenterImplTest {
     private ChooseSizeAndCountPresenterImpl presenter;
     private PendingPreset pendingPreset;
-    private Logger logger;
 
     private ChooseSizeAndCountPresenterImpl.UIImpl ui;
 
     @Before
     public void before() {
-        logger = new SoutLogger("ChooseSizeAndCountPresenterImplTest");
-        pendingPreset = new PendingPreset(logger);
+        pendingPreset = new PendingPreset();
         pendingPreset.prepareCandidateFrom(TestUtils.newSimplePreset());
         Preset preset = pendingPreset.getCandidate();
         preset.setWidth(100);
         preset.setHeight(200);
         preset.setCount(3);
-        presenter = new ChooseSizeAndCountPresenterImpl(pendingPreset, logger);
+        presenter = new ChooseSizeAndCountPresenterImpl(pendingPreset);
         ui = mock(ChooseSizeAndCountPresenterImpl.UIImpl.class);
     }
 
@@ -63,6 +59,7 @@ public class ChooseSizeAndCountPresenterImplTest {
     @Test
     public void testSetCount() {
         presenter.onAttach(ui);
+
         presenter.setCount(0);
         verify(ui, times(1)).onError(ChooseSizeAndCountPresenter.Error.INCORRECT_COUNT);
         assertTrue(pendingPreset.getCandidate().getCount() == 3);
@@ -82,6 +79,7 @@ public class ChooseSizeAndCountPresenterImplTest {
     @Test
     public void testSetWidthHeight() {
         presenter.onAttach(ui);
+
         presenter.setWidth(0);
         verify(ui, times(1)).onError(ChooseSizeAndCountPresenter.Error.INCORRECT_WIDTH);
         assertTrue(pendingPreset.getCandidate().getWidth() == 100);
@@ -102,6 +100,7 @@ public class ChooseSizeAndCountPresenterImplTest {
     @Test
     public void testSetWidthHeightRange() {
         presenter.onAttach(ui);
+
         presenter.setWidthRange(0, 100, 1);
         verify(ui, times(1)).onError(ChooseSizeAndCountPresenter.Error.INCORRECT_WIDTH_RANGE);
         assertTrue(pendingPreset.getCandidate().getWidthRange() == null);
