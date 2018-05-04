@@ -138,14 +138,14 @@ final class EspressoUtils {
     }
 
     static void savePresetAndComebackToStep(@NonNull String name, @NonNull String step) {
-        navigateInGenerationSteps(step, "Summary");
+        navigateInGenerationSteps(step, GENERATION_STEPS.get(GENERATION_STEPS.size() - 2));
 
         savePreset(name);
 
         onView(withId(R.id.home_activity_recycler_view))
                 .perform(actionOnItemAtPosition(0, click()));
 
-        navigateInGenerationSteps("Summary", step);
+        navigateInGenerationSteps(GENERATION_STEPS.get(GENERATION_STEPS.size() - 2), step);
     }
 
     static void savePreset(@NonNull String name) {
