@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.view;
 
+import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.View;
@@ -30,7 +31,7 @@ import static com.stedi.randomimagegenerator.app.view.EspressoUtils.savePresetAn
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 
-@android.support.test.filters.LargeTest
+@LargeTest
 @RunWith(AndroidJUnit4.class)
 public class ChooseEffectsTest {
     @Rule

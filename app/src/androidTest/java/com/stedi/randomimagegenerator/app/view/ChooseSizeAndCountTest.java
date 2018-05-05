@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.view;
 
+import android.support.test.filters.LargeTest;
 import android.support.annotation.IdRes;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -28,7 +29,7 @@ import static com.stedi.randomimagegenerator.app.view.EspressoUtils.savePresetAn
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.isEmptyString;
 
-@android.support.test.filters.LargeTest
+@LargeTest
 @RunWith(AndroidJUnit4.class)
 public class ChooseSizeAndCountTest {
     @Rule
@@ -224,19 +225,16 @@ public class ChooseSizeAndCountTest {
     }
 
     private void type(@IdRes int id, String text) {
-        onView(allOf(withId(id), isDisplayed()))
-                .perform(scrollTo(), click(), clearText(), typeText(text));
+        onView(withId(id)).perform(scrollTo(), click(), clearText(), typeText(text));
     }
 
     private void verifyEmpty(@IdRes Integer... ids) {
         for (int id : ids) {
-            onView(allOf(withId(id), isDisplayed()))
-                    .check(matches(withText(isEmptyString())));
+            onView(withId(id)).perform(scrollTo()).check(matches(withText(isEmptyString())));
         }
     }
 
     private void verifyText(@IdRes int id, String text) {
-        onView(allOf(withId(id), isDisplayed()))
-                .check(matches(withText(text)));
+        onView(withId(id)).perform(scrollTo()).check(matches(withText(text)));
     }
 }
