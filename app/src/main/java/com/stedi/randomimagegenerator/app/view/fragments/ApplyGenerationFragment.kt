@@ -141,8 +141,11 @@ class ApplyGenerationFragment : GenerationFragment(), ApplyGenerationPresenter.U
 
     private fun getSummaryFromPreset(preset: Preset): String {
         return StringBuilder().apply {
-            append(getString(R.string.name_s, preset.name))
-            append("\n\n")
+            if (!viewModel.presenter.isPresetNew()) {
+                append(getString(R.string.name_s, preset.name))
+                append("\n\n")
+            }
+
             if (preset.timestamp != 0L) {
                 append(getString(R.string.created_s, formatTime(preset.timestamp)))
                 append("\n\n")
