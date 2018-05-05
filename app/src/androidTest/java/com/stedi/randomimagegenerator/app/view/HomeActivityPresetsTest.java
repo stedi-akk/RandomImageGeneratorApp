@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.view;
 
+import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -29,7 +30,7 @@ import static com.stedi.randomimagegenerator.app.view.EspressoUtils.savePreset;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 
-@android.support.test.filters.LargeTest
+@LargeTest
 @RunWith(AndroidJUnit4.class)
 public class HomeActivityPresetsTest {
     @Rule
@@ -45,11 +46,11 @@ public class HomeActivityPresetsTest {
         onView(withId(R.id.home_activity_empty_view))
                 .check(matches(isDisplayed()));
 
-        savePresetAndCheckIfExist("test 1", 0);
-        savePresetAndCheckIfExist("test 2", 1);
+        savePresetAndCheckIfExist("test 1");
+        savePresetAndCheckIfExist("test 2");
 
-        cancelDeletePresetAndCheckIfExist("test 1", 0);
-        deletePresetAndCheckIfExist("test 1", 0);
+        cancelDeletePresetAndCheckIfExist("test 1", 1);
+        deletePresetAndCheckIfExist("test 1", 1);
         cancelDeletePresetAndCheckIfExist("test 2", 0);
         deletePresetAndCheckIfExist("test 2", 0);
 
@@ -57,7 +58,7 @@ public class HomeActivityPresetsTest {
                 .check(matches(isDisplayed()));
     }
 
-    private void savePresetAndCheckIfExist(String name, int position) {
+    private void savePresetAndCheckIfExist(String name) {
         onView(allOf(withId(R.id.home_activity_fab), isDisplayed()))
                 .perform(click());
 
@@ -66,7 +67,7 @@ public class HomeActivityPresetsTest {
         savePreset(name);
 
         onView(withId(R.id.home_activity_recycler_view))
-                .check(matches(atRecyclerViewPosition(position, hasDescendant(withText(name)))));
+                .check(matches(atRecyclerViewPosition(0, hasDescendant(withText(name)))));
     }
 
     private void cancelDeletePresetAndCheckIfExist(String name, int position) {
