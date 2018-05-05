@@ -22,6 +22,6 @@ enum class GeneratorType(val isEffect: Boolean, val isEditable: Boolean, val nam
     }
 }
 
-fun GeneratorType.effectOrdinal() = GeneratorType.EFFECT_TYPES.indexOf(this)
+fun GeneratorType?.effectOrdinal() = GeneratorType.EFFECT_TYPES.indexOf(this)
 
-fun GeneratorType.nonEffectOrdinal() = GeneratorType.NON_EFFECT_TYPES.indexOf(this)
+fun GeneratorType?.nonEffectOrdinal() = GeneratorType.NON_EFFECT_TYPES.indexOf(this)

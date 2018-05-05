@@ -8,6 +8,7 @@ import android.view.View;
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.TestUtils;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
+import com.stedi.randomimagegenerator.app.model.data.GeneratorTypeKt;
 import com.stedi.randomimagegenerator.app.view.activity.HomeActivity;
 
 import org.hamcrest.Matcher;
@@ -72,14 +73,12 @@ public class ChooseEffectsTest {
     }
 
     private void selectEffect(GeneratorType effectType) {
-        int indexToSelect = findEffectIndex(effectType);
-
         onView(withId(R.id.choose_effect_fragment_recycler_view))
-                .perform(actionOnItemAtPosition(indexToSelect, clickChildViewWithId(R.id.generator_type_item_card)));
+                .perform(actionOnItemAtPosition(GeneratorTypeKt.effectOrdinal(effectType), clickChildViewWithId(R.id.generator_type_item_card)));
     }
 
     private void checkEffectSelected(GeneratorType effectType) {
-        int indexShouldBeSelected = findEffectIndex(effectType);
+        int indexShouldBeSelected = GeneratorTypeKt.effectOrdinal(effectType);
 
         for (int i = 0; i < GeneratorType.Companion.getEFFECT_TYPES().length; i++) {
             Matcher<View> isSelected = i == indexShouldBeSelected ? isDisplayed() : not(isDisplayed());
@@ -87,20 +86,5 @@ public class ChooseEffectsTest {
                     .perform(scrollToPosition(i))
                     .check(matches(atRecyclerViewPosition(i, atView(R.id.generator_type_item_selected, isSelected))));
         }
-    }
-
-    private int findEffectIndex(GeneratorType effectType) {
-        GeneratorType[] effectTypes = GeneratorType.Companion.getEFFECT_TYPES();
-        int index = -1;
-
-        if (effectType != null) {
-            for (int i = 0; i < effectTypes.length; i++) {
-                if (effectTypes[i] == effectType) {
-                    return i;
-                }
-            }
-        }
-
-        return index;
     }
 }
