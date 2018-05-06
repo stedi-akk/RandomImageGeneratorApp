@@ -92,6 +92,7 @@ class PresetsAdapter(
         holder.tvFolder.text = context.getString(R.string.storage_s, preset.pathToSave.removePrefix(storageDir.absolutePath))
         holder.tvCreated.text = formatTime(preset.timestamp)
         holder.tvQuality.text = context.getString(R.string.quality_s_percent_short, quality.format.name, quality.qualityValue.toString())
+        holder.tvCount.text = context.getString(R.string.count_s_short, preset.getRealCount().toString())
         holder.btnAction.setText(if (preset === pendingPreset) R.string.save else R.string.generate)
 
         Picasso.get().load(RigRequestHandler.makeUri(mainType, secondType, imageSize, imageSize, quality.format, quality.qualityValue))
@@ -108,6 +109,7 @@ class PresetsAdapter(
         @BindView(R.id.preset_item_tv_folder) lateinit var tvFolder: TextView
         @BindView(R.id.preset_item_tv_created) lateinit var tvCreated: TextView
         @BindView(R.id.preset_item_tv_quality) lateinit var tvQuality: TextView
+        @BindView(R.id.preset_item_tv_count) lateinit var tvCount: TextView
         @BindView(R.id.preset_item_image) lateinit var imageView: ImageView
         @BindView(R.id.preset_item_btn_action) lateinit var btnAction: Button
         @BindView(R.id.preset_item_btn_delete) lateinit var btnDelete: View

@@ -15,7 +15,8 @@
     <string name="please_wait">Please wait</string>
     <string name="generation_results">Generation results</string>
     <string name="generation_error">An unknown error occurred during generation</string>
-    <string name="generating_image_s">Generating image #%s…</string>
+    <string name="generating_image">Generating image…</string>
+    <string name="generating_image_s_from_s">Generating %1$s from %2$s…</string>
     <string name="generated_stats">Successfully generated - %1$s\nFailed to generate - %2$s</string>
     <string name="generator">Generator</string>
     <string name="n_choose_generator">1. Choose generator:</string>
@@ -68,6 +69,7 @@
     <string name="width_s">Width\u0020\u0020—\u0020\u0020%s</string>
     <string name="height_s">Height\u0020\u0020—\u0020\u0020%s</string>
     <string name="count_s">Count\u0020\u0020—\u0020\u0020%s</string>
+    <string name="count_s_short">x%s</string>
     <string name="quality_s_percent">Quality\u0020\u0020—\u0020\u0020%1$s (%2$s%%)</string>
     <string name="quality_s_percent_short">%1$s (%2$s%%)</string>
     <string name="folder_s">Folder\u0020\u0020—\u0020\u0020%s</string>
@@ -75,5 +77,5 @@
     <string name="horizontal">Horizontal</string>
     <string name="type_s">Type %s</string>
     <string name="s_permission_required">%s permission is required for this functionality to work</string>
-    <string name="storage_s">Storage: %s</string>
+    <string name="storage_s">/Storage%s</string>
 </resources>

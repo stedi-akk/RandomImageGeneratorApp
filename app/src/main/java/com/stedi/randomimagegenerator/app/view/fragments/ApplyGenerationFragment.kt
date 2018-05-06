@@ -162,23 +162,17 @@ class ApplyGenerationFragment : GenerationFragment(), ApplyGenerationPresenter.U
                 append("\n\n")
             }
 
-            var showCount = true
-            if (appendRangeSize(this, R.string.width_s, preset.getWidthRange())) {
-                showCount = false
-            } else {
+            if (!appendRangeSize(this, R.string.width_s, preset.getWidthRange())) {
                 append(getString(R.string.width_s, preset.getWidth().toString()))
             }
             append("\n\n")
-            if (appendRangeSize(this, R.string.height_s, preset.getHeightRange())) {
-                showCount = false
-            } else {
+            if (!appendRangeSize(this, R.string.height_s, preset.getHeightRange())) {
                 append(getString(R.string.height_s, preset.getHeight().toString()))
             }
+
             append("\n\n")
-            if (showCount) {
-                append(getString(R.string.count_s, preset.getCount().toString()))
-                append("\n\n")
-            }
+            append(getString(R.string.count_s, preset.getRealCount().toString()))
+            append("\n\n")
 
             append(getString(R.string.quality_s_percent, preset.getQuality().format.name, preset.getQuality().qualityValue.toString()))
             append("\n\n")

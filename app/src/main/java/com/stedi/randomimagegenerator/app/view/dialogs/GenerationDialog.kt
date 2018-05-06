@@ -26,6 +26,7 @@ import java.io.File
 import javax.inject.Inject
 
 class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl {
+    private val KEY_TARGET_COUNT = "KEY_TARGET_COUNT"
     private val KEY_CURRENT_STATE = "KEY_CURRENT_STATE"
     private val KEY_GENERATED_COUNT = "KEY_GENERATED_COUNT"
     private val KEY_FAILED_COUNT = "KEY_FAILED_COUNT"
@@ -34,6 +35,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
     @BindView(R.id.generation_dialog_message) lateinit var tvMessage: TextView
     @BindView(R.id.generation_dialog_result_icon) lateinit var ivResult: ImageView
 
+    private var targetCount: Int = 0
     private var currentState = State.PROGRESS
     private var generatedCount: Int = 0
     private var failedCount: Int = 0
@@ -73,6 +75,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         if (savedInstanceState != null) {
             if (!isDialogStarted) {
+                targetCount = savedInstanceState.getInt(KEY_TARGET_COUNT)
                 currentState = savedInstanceState.getSerializable(KEY_CURRENT_STATE) as State
                 generatedCount = savedInstanceState.getInt(KEY_GENERATED_COUNT)
                 failedCount = savedInstanceState.getInt(KEY_FAILED_COUNT)
@@ -83,7 +86,9 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
         } else {
             val arguments = arguments
             if (arguments != null) {
-                presenter.startGeneration(arguments.getParcelable(KEY_PRESET))
+                val preset: Preset = arguments.getParcelable(KEY_PRESET)
+                targetCount = preset.getRealCount()
+                presenter.startGeneration(preset)
             } else {
                 currentState = State.ERROR
             }
@@ -146,6 +151,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        outState.putInt(KEY_TARGET_COUNT, targetCount)
         outState.putSerializable(KEY_CURRENT_STATE, currentState)
         outState.putInt(KEY_GENERATED_COUNT, generatedCount)
         outState.putInt(KEY_FAILED_COUNT, failedCount)
@@ -167,7 +173,12 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
     private fun invalidateViews() {
         when (currentState) {
             State.PROGRESS -> {
-                tvMessage.text = getString(R.string.generating_image_s, (generatedCount + failedCount + 1).toString())
+                if (targetCount > 1) {
+                    val generatingN = (generatedCount + failedCount + 1).let { if (it > targetCount) targetCount else it }
+                    tvMessage.text = getString(R.string.generating_image_s_from_s, generatingN.toString(), targetCount.toString())
+                } else {
+                    tvMessage.text = getString(R.string.generating_image)
+                }
                 (dialog as AlertDialog).getButton(DialogInterface.BUTTON_POSITIVE).visibility = View.GONE
             }
             State.ERROR, State.FINISH -> {

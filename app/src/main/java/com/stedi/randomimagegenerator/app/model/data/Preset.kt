@@ -7,6 +7,7 @@ import com.j256.ormlite.field.DataType
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
 import com.stedi.randomimagegenerator.Quality
+import com.stedi.randomimagegenerator.Rig
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams
 import java.util.*
@@ -92,6 +93,22 @@ class Preset : Parcelable {
         if (generatorParams is EffectGeneratorParams) {
             generatorParams.targetGeneratorParamsId = 0
             generatorParams.target.id = 0
+        }
+    }
+
+    fun getRealCount(): Int {
+        val widthRange = widthRange
+        val heightRange = heightRange
+        if (widthRange != null) {
+            val widthRangeSize = Rig.createRangeArray(widthRange[0], widthRange[1], widthRange[2]).size
+            if (heightRange != null) {
+                return widthRangeSize * Rig.createRangeArray(heightRange[0], heightRange[1], heightRange[2]).size
+            }
+            return widthRangeSize
+        } else if (heightRange != null) {
+            return Rig.createRangeArray(heightRange[0], heightRange[1], heightRange[2]).size
+        } else {
+            return getCount()
         }
     }
 
