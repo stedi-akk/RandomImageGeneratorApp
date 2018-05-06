@@ -67,7 +67,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.stedi.randomimagegenerator:rig:1.0.0'
+    implementation 'com.stedi.randomimagegenerator:rig:1.1.0'
 
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2.31'
 

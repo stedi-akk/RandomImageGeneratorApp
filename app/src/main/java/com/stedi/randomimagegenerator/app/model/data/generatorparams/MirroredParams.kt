@@ -7,7 +7,7 @@ import com.stedi.randomimagegenerator.app.model.data.GeneratorType
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams
 import com.stedi.randomimagegenerator.generators.Generator
-import com.stedi.randomimagegenerator.generators.MirroredGenerator
+import com.stedi.randomimagegenerator.generators.effects.MirroredEffect
 
 @DatabaseTable(tableName = "mirrored_params")
 class MirroredParams : EffectGeneratorParams {
@@ -17,7 +17,7 @@ class MirroredParams : EffectGeneratorParams {
 
     constructor(target: GeneratorParams) : super(target)
 
-    override fun createEffectGenerator(target: Generator) = MirroredGenerator(target)
+    override fun createEffectGenerator(target: Generator) = MirroredEffect(target)
 
     override fun getType() = GeneratorType.MIRRORED
 

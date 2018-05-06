@@ -3,12 +3,11 @@ package com.stedi.randomimagegenerator.app.model.data.generatorparams
 import android.os.Parcel
 import android.os.Parcelable
 import com.j256.ormlite.table.DatabaseTable
-import com.stedi.randomimagegenerator.DefaultFileNamePolicy
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams
 import com.stedi.randomimagegenerator.generators.Generator
-import com.stedi.randomimagegenerator.generators.TextOverlayGenerator
+import com.stedi.randomimagegenerator.generators.effects.TextOverlayEffect
 
 @DatabaseTable(tableName = "text_overlay_params")
 class TextOverlayParams : EffectGeneratorParams {
@@ -19,10 +18,8 @@ class TextOverlayParams : EffectGeneratorParams {
     constructor(target: GeneratorParams) : super(target)
 
     override fun createEffectGenerator(target: Generator): Generator {
-        val fileNamePolicy = DefaultFileNamePolicy()
-        return TextOverlayGenerator.Builder()
+        return TextOverlayEffect.Builder()
                 .setGenerator(target)
-                .setTextPolicy { fileNamePolicy.getName(it) }
                 .build()
     }
 
