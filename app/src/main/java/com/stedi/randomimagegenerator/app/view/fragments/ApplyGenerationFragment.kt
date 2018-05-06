@@ -15,9 +15,13 @@ import butterknife.OnClick
 import com.squareup.otto.Subscribe
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.model.data.Preset
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredNoiseParams
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.SimpleIntegerParams
 import com.stedi.randomimagegenerator.app.other.LockedBus
 import com.stedi.randomimagegenerator.app.other.formatTime
+import com.stedi.randomimagegenerator.app.other.nameRes
 import com.stedi.randomimagegenerator.app.other.showToast
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter
 import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity
@@ -153,12 +157,12 @@ class ApplyGenerationFragment : GenerationFragment(), ApplyGenerationPresenter.U
 
             val generatorParams = preset.getGeneratorParams()
             if (generatorParams is EffectGeneratorParams) {
-                append(getString(R.string.generator_type_s, getString(generatorParams.target.getType().nameRes)))
+                append(getString(R.string.generator_type_s, getMainGeneratorInfo(generatorParams.target)))
                 append("\n\n")
-                append(getString(R.string.effect_type_s, getString(generatorParams.getType().nameRes)))
+                append(getString(R.string.effect_type_s, getString(generatorParams.getType().nameRes())))
                 append("\n\n")
             } else {
-                append(getString(R.string.generator_type_s, getString(generatorParams.getType().nameRes)))
+                append(getString(R.string.generator_type_s, getMainGeneratorInfo(generatorParams)))
                 append("\n\n")
             }
 
@@ -178,6 +182,20 @@ class ApplyGenerationFragment : GenerationFragment(), ApplyGenerationPresenter.U
             append("\n\n")
             append(getString(R.string.folder_s, preset.pathToSave))
         }.toString()
+    }
+
+    private fun getMainGeneratorInfo(params: GeneratorParams): String {
+        return when (params) {
+            is SimpleIntegerParams -> {
+                getString(R.string.generator_info_s,
+                        getString(params.getType().nameRes()), params.getValue() ?: getString(R.string.random))
+            }
+            is ColoredNoiseParams -> {
+                getString(R.string.generator_info_s,
+                        getString(params.getType().nameRes()), "${getString(params.noiseOrientation.nameRes())} / ${getString(params.noiseType.nameRes())}")
+            }
+            else -> getString(params.getType().nameRes())
+        }
     }
 
     private fun appendRangeSize(sb: StringBuilder, @StringRes res: Int, size: IntArray?): Boolean {

@@ -15,6 +15,7 @@ import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.di.ActivityContext
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
 import com.stedi.randomimagegenerator.app.other.dim2px
+import com.stedi.randomimagegenerator.app.other.nameRes
 import com.stedi.randomimagegenerator.app.view.components.RigRequestHandler
 
 class GeneratorTypeAdapter(
@@ -59,7 +60,7 @@ class GeneratorTypeAdapter(
         val type = generatorTypes[position]
         holder.generatorType = type
 
-        holder.text.setText(type.nameRes)
+        holder.text.setText(type.nameRes())
         holder.btnEdit.visibility = if (type.isEditable && type === selectedType) View.VISIBLE else View.INVISIBLE
         holder.isSelected.visibility = if (type === selectedType) View.VISIBLE else View.INVISIBLE
 

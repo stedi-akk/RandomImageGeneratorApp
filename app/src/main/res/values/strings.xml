@@ -65,6 +65,7 @@
     <string name="name_s">Name\u0020\u0020—\u0020\u0020%s</string>
     <string name="created_s">Created\u0020\u0020—\u0020\u0020%s</string>
     <string name="generator_type_s">Generator type\u0020\u0020—\u0020\u0020%s</string>
+    <string name="generator_info_s">%1$s (%2$s)</string>
     <string name="effect_type_s">Effect type\u0020\u0020—\u0020\u0020%s</string>
     <string name="width_s">Width\u0020\u0020—\u0020\u0020%s</string>
     <string name="height_s">Height\u0020\u0020—\u0020\u0020%s</string>
@@ -75,7 +76,12 @@
     <string name="folder_s">Folder\u0020\u0020—\u0020\u0020%s</string>
     <string name="vertical">Vertical</string>
     <string name="horizontal">Horizontal</string>
-    <string name="type_s">Type %s</string>
+    <string name="type_1">Type 1</string>
+    <string name="type_2">Type 2</string>
+    <string name="type_3">Type 3</string>
+    <string name="type_4">Type 4</string>
+    <string name="type_5">Type 5</string>
+    <string name="type_6">Type 6</string>
     <string name="s_permission_required">%s permission is required for this functionality to work</string>
     <string name="storage_s">/Storage%s</string>
 </resources>

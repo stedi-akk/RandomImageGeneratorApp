@@ -12,6 +12,9 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.NumberPicker
 import android.widget.Toast
 import com.stedi.randomimagegenerator.app.App
+import com.stedi.randomimagegenerator.app.R
+import com.stedi.randomimagegenerator.app.model.data.GeneratorType
+import com.stedi.randomimagegenerator.generators.ColoredNoiseGenerator
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -68,6 +71,41 @@ fun NumberPicker.setDividerColor(color: Int) {
             }
             break
         }
+    }
+}
+
+@StringRes
+fun GeneratorType.nameRes(): Int {
+    return when (this) {
+        GeneratorType.COLORED_CIRCLES -> R.string.generator_colored_circles
+        GeneratorType.COLORED_RECTANGLE -> R.string.generator_colored_rectangle
+        GeneratorType.COLORED_PIXELS -> R.string.generator_colored_pixels
+        GeneratorType.FLAT_COLOR -> R.string.generator_flat_color
+        GeneratorType.COLORED_NOISE -> R.string.generator_colored_noise
+        GeneratorType.MIRRORED -> R.string.effect_mirrored
+        GeneratorType.TEXT_OVERLAY -> R.string.effect_text_overlay
+    }
+}
+
+@StringRes
+fun ColoredNoiseGenerator.Orientation.nameRes(): Int {
+    return when (this) {
+        ColoredNoiseGenerator.Orientation.VERTICAL -> R.string.vertical
+        ColoredNoiseGenerator.Orientation.HORIZONTAL -> R.string.horizontal
+        ColoredNoiseGenerator.Orientation.RANDOM -> R.string.random
+    }
+}
+
+@StringRes
+fun ColoredNoiseGenerator.Type.nameRes(): Int {
+    return when (this) {
+        ColoredNoiseGenerator.Type.TYPE_1 -> R.string.type_1
+        ColoredNoiseGenerator.Type.TYPE_2 -> R.string.type_2
+        ColoredNoiseGenerator.Type.TYPE_3 -> R.string.type_3
+        ColoredNoiseGenerator.Type.TYPE_4 -> R.string.type_4
+        ColoredNoiseGenerator.Type.TYPE_5 -> R.string.type_5
+        ColoredNoiseGenerator.Type.TYPE_6 -> R.string.type_6
+        ColoredNoiseGenerator.Type.RANDOM -> R.string.random
     }
 }
 

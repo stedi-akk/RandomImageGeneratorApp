@@ -14,6 +14,7 @@ import android.widget.TextView
 import butterknife.BindView
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
+import com.stedi.randomimagegenerator.app.other.nameRes
 import com.stedi.randomimagegenerator.app.presenter.interfaces.SimpleIntegerParamsPresenter
 import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity
 import com.stedi.randomimagegenerator.app.view.dialogs.base.ButterKnifeDialogFragment
@@ -60,7 +61,7 @@ class SimpleIntegerParamsDialog : ButterKnifeDialogFragment(),
 
         val builder = AlertDialog.Builder(context!!)
         builder.setPositiveButton(R.string.ok, null)
-        builder.setTitle(getString(R.string.s_parameters, getString(type.nameRes)))
+        builder.setTitle(getString(R.string.s_parameters, getString(type.nameRes())))
         builder.setView(inflateAndBind(R.layout.simple_integer_params_dialog))
 
         when (type) {

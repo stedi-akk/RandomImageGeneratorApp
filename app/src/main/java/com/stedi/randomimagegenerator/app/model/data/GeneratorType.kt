@@ -1,15 +1,13 @@
 package com.stedi.randomimagegenerator.app.model.data
 
-import com.stedi.randomimagegenerator.app.R
-
-enum class GeneratorType(val isEffect: Boolean, val isEditable: Boolean, val nameRes: Int) {
-    COLORED_CIRCLES(false, true, R.string.generator_colored_circles),
-    COLORED_RECTANGLE(false, true, R.string.generator_colored_rectangle),
-    COLORED_PIXELS(false, true, R.string.generator_colored_pixels),
-    FLAT_COLOR(false, false, R.string.generator_flat_color),
-    COLORED_NOISE(false, true, R.string.generator_colored_noise),
-    MIRRORED(true, false, R.string.effect_mirrored),
-    TEXT_OVERLAY(true, false, R.string.effect_text_overlay);
+enum class GeneratorType(val isEffect: Boolean, val isEditable: Boolean) {
+    COLORED_CIRCLES(false, true),
+    COLORED_RECTANGLE(false, true),
+    COLORED_PIXELS(false, true),
+    FLAT_COLOR(false, false),
+    COLORED_NOISE(false, true),
+    MIRRORED(true, false),
+    TEXT_OVERLAY(true, false);
 
     companion object {
         val EFFECT_TYPES: Array<GeneratorType> by lazy {
