@@ -11,6 +11,7 @@ import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.TestUtils;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
 import com.stedi.randomimagegenerator.app.model.data.GeneratorTypeKt;
+import com.stedi.randomimagegenerator.app.other.CommonKt;
 import com.stedi.randomimagegenerator.app.view.activity.HomeActivity;
 
 import org.junit.BeforeClass;
@@ -78,8 +79,8 @@ public class ApplyGenerationTest {
         navigateInGenerationSteps("Quality", "Summary");
 
         onView(withId(R.id.apply_generation_fragment_tv)).check(matches(withText(allOf(
-                containsString(res.getString(R.string.generator_type_s, res.getString(selectedNonEffect.getNameRes()))),
-                containsString(res.getString(R.string.effect_type_s, res.getString(selectedEffect.getNameRes()))),
+                containsString(res.getString(R.string.generator_type_s, res.getString(CommonKt.nameRes(selectedNonEffect)))),
+                containsString(res.getString(R.string.effect_type_s, res.getString(CommonKt.nameRes(selectedEffect)))),
                 containsString(res.getString(R.string.width_s, "10")),
                 containsString(res.getString(R.string.height_s, "1000")),
                 containsString(res.getString(R.string.count_s, "69")),
@@ -102,8 +103,8 @@ public class ApplyGenerationTest {
         navigateInGenerationSteps("Size/count", "Summary");
 
         onView(withId(R.id.apply_generation_fragment_tv)).check(matches(withText(allOf(
-                containsString(res.getString(R.string.generator_type_s, res.getString(selectedNonEffect.getNameRes()))),
-                containsString(res.getString(R.string.effect_type_s, res.getString(selectedEffect.getNameRes()))),
+                containsString(res.getString(R.string.generator_type_s, res.getString(CommonKt.nameRes(selectedNonEffect)))),
+                containsString(res.getString(R.string.effect_type_s, res.getString(CommonKt.nameRes(selectedEffect)))),
                 containsString(res.getString(R.string.width_s, "10")),
                 containsString(res.getString(R.string.height_s, res.getString(R.string.from_s_to_s_step_s, "11", "222", "33"))),
                 containsString(res.getString(R.string.quality_s_percent, Bitmap.CompressFormat.WEBP.name(), "100")
@@ -113,8 +114,8 @@ public class ApplyGenerationTest {
 
         onView(withId(R.id.apply_generation_fragment_tv)).check(matches(withText(allOf(
                 containsString(res.getString(R.string.name_s, "name")),
-                containsString(res.getString(R.string.generator_type_s, res.getString(selectedNonEffect.getNameRes()))),
-                containsString(res.getString(R.string.effect_type_s, res.getString(selectedEffect.getNameRes()))),
+                containsString(res.getString(R.string.generator_type_s, res.getString(CommonKt.nameRes(selectedNonEffect)))),
+                containsString(res.getString(R.string.effect_type_s, res.getString(CommonKt.nameRes(selectedEffect)))),
                 containsString(res.getString(R.string.width_s, "10")),
                 containsString(res.getString(R.string.height_s, res.getString(R.string.from_s_to_s_step_s, "11", "222", "33"))),
                 containsString(res.getString(R.string.quality_s_percent, Bitmap.CompressFormat.WEBP.name(), "100")
