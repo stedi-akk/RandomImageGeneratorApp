@@ -65,7 +65,7 @@ class GeneratorTypeAdapter(
         holder.isSelected.visibility = if (type === selectedType) View.VISIBLE else View.INVISIBLE
 
         Picasso.get().load(RigRequestHandler.makeUri(type, targetType, imageSize, imageSize))
-                .placeholder(R.drawable.ic_texture_rig)
+                .placeholder(context.resources.getDrawable(R.drawable.ic_texture_rig))
                 .into(holder.image)
 
         holder.card.setOnClickListener(holder)

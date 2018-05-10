@@ -96,7 +96,7 @@ class PresetsAdapter(
         holder.btnAction.setText(if (preset === pendingPreset) R.string.save else R.string.generate)
 
         Picasso.get().load(RigRequestHandler.makeUri(mainType, secondType, imageSize, imageSize, quality.format))
-                .placeholder(R.drawable.ic_texture_rig)
+                .placeholder(context.resources.getDrawable(R.drawable.ic_texture_rig))
                 .into(holder.imageView)
 
         holder.cardView.setOnClickListener(holder)
