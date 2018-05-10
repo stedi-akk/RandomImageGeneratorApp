@@ -1,12 +1,15 @@
 package com.stedi.randomimagegenerator.app.view;
 
+import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.stedi.randomimagegenerator.app.R;
-import com.stedi.randomimagegenerator.app.other.Utils;
+import com.stedi.randomimagegenerator.app.TestUtils;
+import com.stedi.randomimagegenerator.app.other.CommonKt;
 import com.stedi.randomimagegenerator.app.view.activity.HomeActivity;
 
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,22 +30,27 @@ import static com.stedi.randomimagegenerator.app.view.EspressoUtils.savePreset;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 
-@android.support.test.filters.LargeTest
+@LargeTest
 @RunWith(AndroidJUnit4.class)
 public class HomeActivityPresetsTest {
     @Rule
     public ActivityTestRule<HomeActivity> mActivityTestRule = new ActivityTestRule<>(HomeActivity.class);
+
+    @BeforeClass
+    public static void beforeClass() {
+        TestUtils.deletePresetDatabase();
+    }
 
     @Test
     public void testPresetSaveDeleteX2() {
         onView(withId(R.id.home_activity_empty_view))
                 .check(matches(isDisplayed()));
 
-        savePresetAndCheckIfExist("test 1", 0);
-        savePresetAndCheckIfExist("test 2", 1);
+        savePresetAndCheckIfExist("test 1");
+        savePresetAndCheckIfExist("test 2");
 
-        cancelDeletePresetAndCheckIfExist("test 1", 0);
-        deletePresetAndCheckIfExist("test 1", 0);
+        cancelDeletePresetAndCheckIfExist("test 1", 1);
+        deletePresetAndCheckIfExist("test 1", 1);
         cancelDeletePresetAndCheckIfExist("test 2", 0);
         deletePresetAndCheckIfExist("test 2", 0);
 
@@ -50,7 +58,7 @@ public class HomeActivityPresetsTest {
                 .check(matches(isDisplayed()));
     }
 
-    private void savePresetAndCheckIfExist(String name, int position) {
+    private void savePresetAndCheckIfExist(String name) {
         onView(allOf(withId(R.id.home_activity_fab), isDisplayed()))
                 .perform(click());
 
@@ -59,19 +67,19 @@ public class HomeActivityPresetsTest {
         savePreset(name);
 
         onView(withId(R.id.home_activity_recycler_view))
-                .check(matches(atRecyclerViewPosition(position, hasDescendant(withText(name)))));
+                .check(matches(atRecyclerViewPosition(0, hasDescendant(withText(name)))));
     }
 
     private void cancelDeletePresetAndCheckIfExist(String name, int position) {
         onView(withId(R.id.home_activity_recycler_view))
                 .perform(actionOnItemAtPosition(position, clickChildViewWithId(R.id.preset_item_btn_delete)));
 
-        Utils.sleep(500);
+        CommonKt.sleep(500);
 
         onView(allOf(withId(android.R.id.button2), withText("Cancel")))
                 .perform(scrollTo(), click());
 
-        Utils.sleep(500);
+        CommonKt.sleep(500);
 
         onView(withId(R.id.home_activity_recycler_view))
                 .check(matches(atRecyclerViewPosition(position, hasDescendant(withText(name)))));
@@ -81,12 +89,12 @@ public class HomeActivityPresetsTest {
         onView(withId(R.id.home_activity_recycler_view))
                 .perform(actionOnItemAtPosition(position, clickChildViewWithId(R.id.preset_item_btn_delete)));
 
-        Utils.sleep(500);
+        CommonKt.sleep(500);
 
         onView(allOf(withId(android.R.id.button1), withText("OK")))
                 .perform(scrollTo(), click());
 
-        Utils.sleep(500);
+        CommonKt.sleep(500);
 
         onView(withId(R.id.home_activity_recycler_view))
                 .check(matches(not(atRecyclerViewPosition(position, hasDescendant(withText(name))))));

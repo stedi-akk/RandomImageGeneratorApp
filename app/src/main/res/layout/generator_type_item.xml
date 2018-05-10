@@ -22,11 +22,11 @@
 
             <ImageView
                 android:id="@+id/generator_type_item_image"
-                android:layout_width="@dimen/adapter_rig_image_size_big"
-                android:layout_height="@dimen/adapter_rig_image_size_big"
+                android:layout_width="@dimen/adapter_rig_image_size"
+                android:layout_height="@dimen/adapter_rig_image_size"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_texture_adapter_rig_image_size" />
+                app:srcCompat="@drawable/ic_texture_rig" />
 
             <FrameLayout
                 android:layout_width="0dp"

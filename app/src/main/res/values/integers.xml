@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="generator_type_adapter_grid_items">1</integer>
-    <integer name="max_preset_name_length">20</integer>
+    <integer name="max_preset_name_length">40</integer>
     <integer name="max_simple_integers_params_input_length">4</integer>
     <integer name="max_size_count_input_length">4</integer>
 </resources>
