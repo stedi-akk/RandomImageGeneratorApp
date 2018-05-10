@@ -4,6 +4,8 @@ import android.app.Application
 import android.os.StrictMode
 import android.support.v7.app.AppCompatDelegate
 import com.crashlytics.android.Crashlytics
+import com.j256.ormlite.logger.LocalLog
+import com.j256.ormlite.logger.LoggerFactory
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
 import com.squareup.picasso.Picasso
@@ -50,8 +52,16 @@ class App : Application() {
 
         Timber.plant(* getTrees())
 
-        Picasso.setSingletonInstance(Picasso.Builder(this).loggingEnabled(debug)
-                .addRequestHandler(RigRequestHandler()).build())
+        if (!debug) {
+            // reduce OrmLite logs
+            System.setProperty(LoggerFactory.LOG_TYPE_SYSTEM_PROPERTY, "LOCAL")
+            System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
+        }
+
+        Picasso.setSingletonInstance(Picasso.Builder(this)
+                .loggingEnabled(debug)
+                .addRequestHandler(RigRequestHandler())
+                .build())
 
         appComponent = DaggerAppComponent.builder()
                 .appModule(AppModule(this))
