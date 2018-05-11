@@ -15,7 +15,7 @@ import java.util.*
 @DatabaseTable(tableName = "preset")
 class Preset : Parcelable {
 
-    @DatabaseField(generatedId = true)
+    @DatabaseField(generatedId = true, columnName = "id")
     var id: Int = 0
 
     @DatabaseField(columnName = "timestamp")

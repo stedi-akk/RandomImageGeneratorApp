@@ -20,7 +20,7 @@ class DatabasePresetRepository(@AppContext context: Context) : OrmLiteSqliteOpen
 
     companion object {
         const val DATABASE_NAME = "presets_database"
-        const val DATABASE_VERSION = 1
+        const val DATABASE_VERSION = 2
     }
 
     override fun onCreate(database: SQLiteDatabase, connectionSource: ConnectionSource) {
@@ -35,6 +35,21 @@ class DatabasePresetRepository(@AppContext context: Context) : OrmLiteSqliteOpen
     }
 
     override fun onUpgrade(database: SQLiteDatabase, connectionSource: ConnectionSource, oldVersion: Int, newVersion: Int) {
+        if (oldVersion < 2) {
+            // the first version has incorrect fields because of wrong proguard configuration
+            // let the bass drop...
+            try {
+                TableUtils.dropTable<Preset, Any>(connectionSource, Preset::class.java, false)
+                for (type in GeneratorType.values()) {
+                    @Suppress("UNCHECKED_CAST")
+                    val paramsClass = getGeneratorParamsClassFromType(type) as Class<GeneratorParams>
+                    TableUtils.dropTable<GeneratorParams, Any>(connectionSource, paramsClass, false)
+                }
+                onCreate(database, connectionSource)
+            } catch (e: Exception) {
+                Timber.e(e)
+            }
+        }
     }
 
     @Throws(Exception::class)

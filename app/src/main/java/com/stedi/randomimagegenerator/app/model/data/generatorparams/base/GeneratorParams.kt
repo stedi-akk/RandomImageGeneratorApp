@@ -11,7 +11,7 @@ import com.stedi.randomimagegenerator.generators.Generator
 @Suppress("EqualsOrHashCode")
 abstract class GeneratorParams : Parcelable {
 
-    @DatabaseField(generatedId = true)
+    @DatabaseField(generatedId = true, columnName = "id")
     var id: Int = 0
 
     // OrmLite required
