@@ -99,7 +99,7 @@ class GenerationPresenterImpl @Inject constructor(
 
                         override fun onFailedToGenerate(imageParams: ImageParams, e: Exception) {
                             failedCount++
-                            Timber.w(e)
+                            Timber.e(e)
                             subscriber.onNext(GenerationResult(generatedCount, failedCount))
                         }
                     })
@@ -113,7 +113,7 @@ class GenerationPresenterImpl @Inject constructor(
 
                         override fun onFailedToSave(bitmap: Bitmap, e: Exception) {
                             failedCount++
-                            Timber.w(e)
+                            Timber.e(e)
                             subscriber.onNext(GenerationResult(generatedCount, failedCount))
                         }
                     })

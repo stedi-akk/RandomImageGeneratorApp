@@ -159,7 +159,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
 
     private fun invalidateState(state: State) {
         if (currentState == State.ERROR || currentState == State.FINISH) {
-            Timber.e("ignoring passed state because the end state is achieved")
+            Timber.w("ignoring passed state because the end state is achieved")
             return
         }
 
