@@ -7,7 +7,7 @@ import com.stedi.randomimagegenerator.generators.Generator
 
 class SlowGenerator(private val target: Generator) : Generator {
 
-    override fun generate(imageParams: ImageParams): Bitmap {
+    override fun generate(imageParams: ImageParams): Bitmap? {
         sleep(2000)
         return target.generate(imageParams)
     }
