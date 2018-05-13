@@ -2,6 +2,7 @@ package com.stedi.randomimagegenerator.app.model.repository;
 
 import android.support.test.runner.AndroidJUnit4;
 
+import com.stedi.randomimagegenerator.app.FakePresetRepository;
 import com.stedi.randomimagegenerator.app.TestUtils;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
 
@@ -11,8 +12,13 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
-import static junit.framework.Assert.*;
-import static org.mockito.Mockito.*;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 @RunWith(AndroidJUnit4.class)
 public class CachedPresetRepositoryTest {
@@ -20,7 +26,7 @@ public class CachedPresetRepositoryTest {
     private CachedPresetRepository cachedPresetRepository;
 
     @Before
-    public void before() throws Exception {
+    public void before() {
         target = spy(new FakePresetRepository(0));
         cachedPresetRepository = new CachedPresetRepository(target);
     }

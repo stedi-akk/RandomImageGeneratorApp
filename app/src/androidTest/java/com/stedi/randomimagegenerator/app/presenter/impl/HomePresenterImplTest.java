@@ -3,17 +3,12 @@ package com.stedi.randomimagegenerator.app.presenter.impl;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.squareup.otto.ThreadEnforcer;
-import com.stedi.randomimagegenerator.Rig;
-import com.stedi.randomimagegenerator.app.TestUtils;
+import com.stedi.randomimagegenerator.app.FakePresetRepository;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.data.Preset;
-import com.stedi.randomimagegenerator.app.model.repository.FakePresetRepository;
 import com.stedi.randomimagegenerator.app.model.repository.PresetRepository;
-import com.stedi.randomimagegenerator.app.other.CachedBus;
-import com.stedi.randomimagegenerator.app.other.logger.SoutLogger;
-import com.stedi.randomimagegenerator.app.presenter.interfaces.HomePresenter;
+import com.stedi.randomimagegenerator.app.other.LockedBus;
 
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,13 +18,24 @@ import java.util.List;
 
 import rx.schedulers.Schedulers;
 
-import static junit.framework.Assert.*;
-import static org.mockito.Mockito.*;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
-@SuppressWarnings("MissingPermission")
 @RunWith(AndroidJUnit4.class)
 public class HomePresenterImplTest {
-    private static final int PRESETS_REPO_INITIAL_COUNT = 3;
+    private static final int FAKE_PRESEST_REPO_SIZE = 10;
 
     private HomePresenterImpl presenter;
     private PresetRepository repository;
@@ -39,45 +45,56 @@ public class HomePresenterImplTest {
     private ArgumentCaptor<List<Preset>> presetsCaptor;
 
     @Before
-    public void before() throws Exception {
-        Rig.enableDebugLogging(true);
-        repository = spy(new FakePresetRepository(PRESETS_REPO_INITIAL_COUNT));
-        SoutLogger logger = new SoutLogger("HomePresenterImplTest");
-        pendingPreset = new PendingPreset("unsaved", TestUtils.getTestFolder().getAbsolutePath(), logger);
-        presenter = new HomePresenterImpl(repository, pendingPreset, Schedulers.immediate(), Schedulers.immediate(), Schedulers.immediate(),
-                new CachedBus(ThreadEnforcer.ANY, logger), logger);
+    public void before() {
+        repository = spy(new FakePresetRepository(FAKE_PRESEST_REPO_SIZE));
+        pendingPreset = new PendingPreset();
+        presenter = new HomePresenterImpl(repository, pendingPreset, Schedulers.immediate(), Schedulers.immediate(), new LockedBus(ThreadEnforcer.ANY));
         ui = mock(HomePresenterImpl.UIImpl.class);
         pendingPresetCaptor = ArgumentCaptor.forClass(Preset.class);
-        presetsCaptor = ArgumentCaptor.forClass((Class) List.class);
-    }
-
-    @AfterClass
-    public static void afterClass() {
-        TestUtils.deleteTestFolder();
+        //noinspection unchecked
+        presetsCaptor = ArgumentCaptor.forClass(List.class);
     }
 
     @Test
-    public void testFetchPresets() throws Exception {
+    public void testFetchPresets() {
+        // create pending
         pendingPreset.newDefaultCandidate();
         pendingPreset.applyCandidate();
-        pendingPreset.killCandidate();
+        pendingPreset.clearCandidate();
+
         presenter.onAttach(ui);
         presenter.fetchPresets();
         verify(ui, times(1)).onPresetsFetched(pendingPresetCaptor.capture(), presetsCaptor.capture());
-        assertTrue(pendingPreset.get() == pendingPresetCaptor.getValue());
-        assertTrue(presetsCaptor.getValue().size() == 3);
+
+        assertTrue(pendingPreset.getPreset() == pendingPresetCaptor.getValue());
+        List<Preset> presets = presetsCaptor.getValue();
+        assertTrue(presets.size() == FAKE_PRESEST_REPO_SIZE);
+
+        // check if sorted correctly
+        Preset prevPreset = null;
+        for (Preset preset : presets) {
+            if (prevPreset != null && preset.getTimestamp() > prevPreset.getTimestamp()) {
+                fail();
+            }
+            prevPreset = preset;
+        }
+
         verifyNoMoreInteractions(ui);
     }
 
     @Test
     public void testFetchPresetsFailed() throws Exception {
+        // create pending
         pendingPreset.newDefaultCandidate();
         pendingPreset.applyCandidate();
-        pendingPreset.killCandidate();
+        pendingPreset.clearCandidate();
+
         when(repository.getAll()).thenThrow(new NullPointerException("nope"));
+
         presenter.onAttach(ui);
         presenter.fetchPresets();
         verify(ui, times(1)).onFailedToFetchPresets();
+
         verifyNoMoreInteractions(ui);
     }
 
@@ -86,23 +103,48 @@ public class HomePresenterImplTest {
         presenter.onAttach(ui);
         presenter.fetchPresets();
         verify(ui, times(1)).onPresetsFetched(any(), presetsCaptor.capture());
-        presenter.editPreset(presetsCaptor.getValue().get(0));
+
+        Preset preset = presetsCaptor.getValue().get(0);
+        presenter.editPreset(preset);
+        assertNotNull(pendingPreset.getCandidate());
+        assertTrue(pendingPreset.getCandidate().equals(preset));
+        assertFalse(pendingPreset.isCandidateNew());
+
         verify(ui, times(1)).showEditPreset();
+
+        verifyNoMoreInteractions(ui);
+    }
+
+    @Test
+    public void testNewPreset() {
+        presenter.onAttach(ui);
+        presenter.newPreset();
+
+        assertNotNull(pendingPreset.getCandidate());
+        assertTrue(pendingPreset.isCandidateNew());
+
+        verify(ui, times(1)).showCreatePreset();
+
         verifyNoMoreInteractions(ui);
     }
 
     @Test
     public void testDeletePendingPreset() {
+        // create pending
         pendingPreset.newDefaultCandidate();
         pendingPreset.applyCandidate();
-        pendingPreset.killCandidate();
+        pendingPreset.clearCandidate();
+
         presenter.onAttach(ui);
         presenter.fetchPresets();
         verify(ui, times(1)).onPresetsFetched(pendingPresetCaptor.capture(), any());
+
         Preset preset = pendingPresetCaptor.getValue();
         presenter.deletePreset(preset);
-        assertNull(pendingPreset.get());
+        assertNull(pendingPreset.getPreset());
+
         verify(ui, times(1)).onPresetDeleted(preset);
+
         verifyNoMoreInteractions(ui);
     }
 
@@ -110,27 +152,37 @@ public class HomePresenterImplTest {
     public void testDeletePresetConfirm() throws Exception {
         presenter.onAttach(ui);
         presenter.fetchPresets();
+
         verify(ui, times(1)).onPresetsFetched(any(), presetsCaptor.capture());
         Preset preset = presetsCaptor.getValue().get(0);
         presenter.deletePreset(preset);
-        verify(ui, times(1)).showConfirmLastAction(HomePresenter.Confirm.DELETE_PRESET);
-        presenter.confirmLastAction();
+
+        verify(ui, times(1)).showConfirmDeletePreset(preset);
+        presenter.confirmDeletePreset(true);
+
         verify(ui, times(1)).onPresetDeleted(preset);
-        assertTrue(repository.getAll().size() == PRESETS_REPO_INITIAL_COUNT - 1);
+        assertTrue(repository.getAll().size() == FAKE_PRESEST_REPO_SIZE - 1);
+
         verifyNoMoreInteractions(ui);
     }
 
     @Test
     public void testDeletePresetConfirmFailed() throws Exception {
         doThrow(new NullPointerException("nope")).when(repository).remove(anyInt());
+
         presenter.onAttach(ui);
         presenter.fetchPresets();
+
         verify(ui, times(1)).onPresetsFetched(any(), presetsCaptor.capture());
-        presenter.deletePreset(presetsCaptor.getValue().get(0));
-        verify(ui, times(1)).showConfirmLastAction(HomePresenter.Confirm.DELETE_PRESET);
-        presenter.confirmLastAction();
+        Preset preset = presetsCaptor.getValue().get(0);
+        presenter.deletePreset(preset);
+
+        verify(ui, times(1)).showConfirmDeletePreset(preset);
+        presenter.confirmDeletePreset(true);
+
         verify(ui, times(1)).onFailedToDeletePreset();
-        assertTrue(repository.getAll().size() == PRESETS_REPO_INITIAL_COUNT);
+        assertTrue(repository.getAll().size() == FAKE_PRESEST_REPO_SIZE);
+
         verifyNoMoreInteractions(ui);
     }
 
@@ -138,39 +190,48 @@ public class HomePresenterImplTest {
     public void testDeletePresetCancel() throws Exception {
         presenter.onAttach(ui);
         presenter.fetchPresets();
+
         verify(ui, times(1)).onPresetsFetched(any(), presetsCaptor.capture());
         Preset preset = presetsCaptor.getValue().get(0);
         presenter.deletePreset(preset);
-        verify(ui, times(1)).showConfirmLastAction(HomePresenter.Confirm.DELETE_PRESET);
-        presenter.cancelLastAction();
-        assertTrue(repository.getAll().size() == PRESETS_REPO_INITIAL_COUNT);
+
+        verify(ui, times(1)).showConfirmDeletePreset(preset);
+        presenter.confirmDeletePreset(false);
+
+        assertTrue(repository.getAll().size() == FAKE_PRESEST_REPO_SIZE);
+
         verifyNoMoreInteractions(ui);
     }
 
     @Test
-    public void testStartGenerationConfirm() throws Exception {
+    public void testStartGenerationConfirm() {
         presenter.onAttach(ui);
         presenter.fetchPresets();
+
         verify(ui, times(1)).onPresetsFetched(any(), presetsCaptor.capture());
         Preset preset = presetsCaptor.getValue().get(0);
         presenter.startGeneration(preset);
-        verify(ui, times(1)).showConfirmLastAction(HomePresenter.Confirm.GENERATE_FROM_PRESET);
-        presenter.confirmLastAction();
-        verify(ui, times(1)).onStartGeneration();
-        verify(ui, times(1)).onGenerated(any(), any());
-        verify(ui, times(1)).onFinishGeneration();
+
+        verify(ui, times(1)).showConfirmGeneratePreset(preset);
+        presenter.confirmStartGeneration(true);
+
+        verify(ui, times(1)).showGenerationDialog(preset);
+
         verifyNoMoreInteractions(ui);
     }
 
     @Test
-    public void testStartGenerationCancel() throws Exception {
+    public void testStartGenerationCancel() {
         presenter.onAttach(ui);
         presenter.fetchPresets();
+
         verify(ui, times(1)).onPresetsFetched(any(), presetsCaptor.capture());
         Preset preset = presetsCaptor.getValue().get(0);
         presenter.startGeneration(preset);
-        verify(ui, times(1)).showConfirmLastAction(HomePresenter.Confirm.GENERATE_FROM_PRESET);
-        presenter.cancelLastAction();
+
+        verify(ui, times(1)).showConfirmGeneratePreset(preset);
+        presenter.confirmStartGeneration(false);
+
         verifyNoMoreInteractions(ui);
     }
 }

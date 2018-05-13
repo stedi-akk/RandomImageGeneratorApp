@@ -35,6 +35,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/common_views_spacing"
+                android:hint="@string/width"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/choose_size_and_count_et_height_holder"
                 app:layout_constraintTop_toBottomOf="@+id/choose_size_and_count_fixed_size_title">
@@ -44,7 +45,6 @@
                     style="@style/SizeAndCountInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/width"
                     android:imeOptions="actionNext"
                     android:nextFocusRight="@+id/choose_size_and_count_et_height" />
 
@@ -56,6 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/common_views_spacing"
                 android:layout_marginRight="@dimen/common_views_spacing"
+                android:hint="@string/height"
                 app:layout_constraintLeft_toRightOf="@+id/choose_size_and_count_et_width_holder"
                 app:layout_constraintRight_toLeftOf="@+id/choose_size_and_count_et_count_holder"
                 app:layout_constraintTop_toBottomOf="@+id/choose_size_and_count_fixed_size_title">
@@ -65,7 +66,6 @@
                     style="@style/SizeAndCountInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/height"
                     android:imeOptions="actionNext"
                     android:nextFocusRight="@+id/choose_size_and_count_et_count" />
 
@@ -76,6 +76,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/common_views_spacing"
+                android:hint="@string/count"
                 app:layout_constraintLeft_toRightOf="@+id/choose_size_and_count_et_height_holder"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/choose_size_and_count_fixed_size_title">
@@ -84,8 +85,7 @@
                     android:id="@+id/choose_size_and_count_et_count"
                     style="@style/SizeAndCountInput"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/count" />
+                    android:layout_height="wrap_content" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -104,6 +104,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/common_views_spacing"
+                android:hint="@string/from"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/choose_size_and_count_et_width_range_to_holder"
                 app:layout_constraintTop_toBottomOf="@+id/choose_size_and_count_width_range_title">
@@ -113,7 +114,6 @@
                     style="@style/SizeAndCountInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/from"
                     android:imeOptions="actionNext"
                     android:nextFocusRight="@+id/choose_size_and_count_et_width_range_to" />
 
@@ -125,6 +125,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/common_views_spacing"
                 android:layout_marginRight="@dimen/common_views_spacing"
+                android:hint="@string/to"
                 app:layout_constraintLeft_toRightOf="@+id/choose_size_and_count_et_width_range_from_holder"
                 app:layout_constraintRight_toLeftOf="@+id/choose_size_and_count_et_width_range_step_holder"
                 app:layout_constraintTop_toBottomOf="@+id/choose_size_and_count_width_range_title">
@@ -134,7 +135,6 @@
                     style="@style/SizeAndCountInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/to"
                     android:imeOptions="actionNext"
                     android:nextFocusRight="@+id/choose_size_and_count_et_width_range_step" />
 
@@ -145,6 +145,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/common_views_spacing"
+                android:hint="@string/step"
                 app:layout_constraintLeft_toRightOf="@+id/choose_size_and_count_et_width_range_to_holder"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/choose_size_and_count_width_range_title">
@@ -153,8 +154,7 @@
                     android:id="@+id/choose_size_and_count_et_width_range_step"
                     style="@style/SizeAndCountInput"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/step" />
+                    android:layout_height="wrap_content" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -173,6 +173,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/common_views_spacing"
+                android:hint="@string/from"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/choose_size_and_count_et_height_range_to_holder"
                 app:layout_constraintTop_toBottomOf="@+id/choose_size_and_count_height_range_title">
@@ -182,7 +183,6 @@
                     style="@style/SizeAndCountInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/from"
                     android:imeOptions="actionNext"
                     android:nextFocusRight="@+id/choose_size_and_count_et_height_range_to" />
 
@@ -194,6 +194,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/common_views_spacing"
                 android:layout_marginRight="@dimen/common_views_spacing"
+                android:hint="@string/to"
                 app:layout_constraintLeft_toRightOf="@+id/choose_size_and_count_et_height_range_from_holder"
                 app:layout_constraintRight_toLeftOf="@+id/choose_size_and_count_et_height_range_step_holder"
                 app:layout_constraintTop_toBottomOf="@+id/choose_size_and_count_height_range_title">
@@ -203,7 +204,6 @@
                     style="@style/SizeAndCountInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/to"
                     android:imeOptions="actionNext"
                     android:nextFocusRight="@+id/choose_size_and_count_et_height_range_step" />
 
@@ -214,6 +214,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/common_views_spacing"
+                android:hint="@string/step"
                 app:layout_constraintLeft_toRightOf="@+id/choose_size_and_count_et_height_range_to_holder"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/choose_size_and_count_height_range_title">
@@ -222,8 +223,7 @@
                     android:id="@+id/choose_size_and_count_et_height_range_step"
                     style="@style/SizeAndCountInput"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/step" />
+                    android:layout_height="wrap_content" />
 
             </android.support.design.widget.TextInputLayout>
 

@@ -4,8 +4,7 @@
     <dimen name="common_lr_spacing">16dp</dimen>
     <dimen name="common_views_spacing">6dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="adapter_rig_image_size">120dp</dimen>
-    <dimen name="adapter_rig_image_size_big">160dp</dimen>
+    <dimen name="adapter_rig_image_size">160dp</dimen>
     <dimen name="generation_step_header_margin_lr">16dp</dimen>
     <dimen name="generation_step_header_margin_tb">8dp</dimen>
 </resources>

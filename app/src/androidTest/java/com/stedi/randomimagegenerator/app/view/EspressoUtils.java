@@ -4,14 +4,18 @@ import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.action.GeneralClickAction;
+import android.support.test.espresso.action.GeneralLocation;
+import android.support.test.espresso.action.Press;
+import android.support.test.espresso.action.Tap;
 import android.support.test.espresso.matcher.BoundedMatcher;
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.v7.widget.RecyclerView;
+import android.view.InputDevice;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.NumberPicker;
 
 import com.stedi.randomimagegenerator.app.R;
-import com.stedi.randomimagegenerator.app.other.Utils;
+import com.stedi.randomimagegenerator.app.other.CommonKt;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -20,6 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.actionWithAssertions;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.replaceText;
@@ -38,11 +43,18 @@ final class EspressoUtils {
     }
 
     @NonNull
+    static ViewAction clickLocation(@NonNull GeneralLocation location) {
+        return actionWithAssertions(
+                new GeneralClickAction(Tap.SINGLE, location, Press.FINGER,
+                        InputDevice.SOURCE_UNKNOWN, MotionEvent.BUTTON_PRIMARY));
+    }
+
+    @NonNull
     static ViewAction clickChildViewWithId(@IdRes final int id) {
         return new ViewAction() {
             @Override
             public Matcher<View> getConstraints() {
-                return null;
+                return isDisplayed();
             }
 
             @Override
@@ -91,27 +103,6 @@ final class EspressoUtils {
         };
     }
 
-    @NonNull
-    static ViewAction setPickerNumber(final int number) {
-        return new ViewAction() {
-            @Override
-            public void perform(UiController uiController, View view) {
-                NumberPicker np = (NumberPicker) view;
-                np.setValue(number);
-            }
-
-            @Override
-            public String getDescription() {
-                return "Set the passed number into the NumberPicker.";
-            }
-
-            @Override
-            public Matcher<View> getConstraints() {
-                return ViewMatchers.isAssignableFrom(NumberPicker.class);
-            }
-        };
-    }
-
     static void navigateInGenerationSteps(@NonNull String from, @NonNull String to) {
         int fromIndex = GENERATION_STEPS.indexOf(from);
         int toIndex = GENERATION_STEPS.indexOf(to);
@@ -138,14 +129,14 @@ final class EspressoUtils {
     }
 
     static void savePresetAndComebackToStep(@NonNull String name, @NonNull String step) {
-        navigateInGenerationSteps(step, "Summary");
+        navigateInGenerationSteps(step, GENERATION_STEPS.get(GENERATION_STEPS.size() - 2));
 
         savePreset(name);
 
         onView(withId(R.id.home_activity_recycler_view))
                 .perform(actionOnItemAtPosition(0, click()));
 
-        navigateInGenerationSteps("Summary", step);
+        navigateInGenerationSteps(GENERATION_STEPS.get(GENERATION_STEPS.size() - 2), step);
     }
 
     static void savePreset(@NonNull String name) {
@@ -158,6 +149,6 @@ final class EspressoUtils {
         onView(allOf(withId(android.R.id.button1), withText("OK")))
                 .perform(scrollTo(), click());
 
-        Utils.sleep(1000);
+        CommonKt.sleep(1000);
     }
 }

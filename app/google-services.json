@@ -1,0 +1,104 @@
+{
+  "project_info": {
+    "project_number": "355698635026",
+    "firebase_url": "https://randomimagegeneratorapp.firebaseio.com",
+    "project_id": "randomimagegeneratorapp",
+    "storage_bucket": "randomimagegeneratorapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:355698635026:android:22f5541e997c3c14",
+        "android_client_info": {
+          "package_name": "com.stedi.randomimagegenerator.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "355698635026-9d75eassedbnok5hibhf1jeai0f9bo7a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAe3I8tol1xJEyKP6dAIuV2OI7prAVogQM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:355698635026:android:685a0c4c54c6456c",
+        "android_client_info": {
+          "package_name": "com.stedi.randomimagegenerator.app.dbg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "355698635026-9d75eassedbnok5hibhf1jeai0f9bo7a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAe3I8tol1xJEyKP6dAIuV2OI7prAVogQM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:355698635026:android:158c7d58bb5a5363",
+        "android_client_info": {
+          "package_name": "com.stedi.randomimagegenerator.app.sdbg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "355698635026-9d75eassedbnok5hibhf1jeai0f9bo7a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAe3I8tol1xJEyKP6dAIuV2OI7prAVogQM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

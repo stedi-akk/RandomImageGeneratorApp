@@ -19,7 +19,11 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 @RunWith(AndroidJUnit4.class)
 public class PresetTest {
@@ -34,8 +38,8 @@ public class PresetTest {
 
     @Test
     public void testCreateCopyAndEquals() {
-        ColoredNoiseParams generatorParams = (ColoredNoiseParams) GeneratorParams.createDefaultParams(GeneratorType.COLORED_NOISE);
-        Preset preset = new Preset("ololo", generatorParams, Quality.png(), "path");
+        ColoredNoiseParams generatorParams = (ColoredNoiseParams) GeneratorParams.Companion.createDefaultParams(GeneratorType.COLORED_NOISE);
+        Preset preset = new Preset("name", generatorParams, Quality.png(), "path");
 
         preset.setId(1);
         preset.setTimestamp(1337L);
@@ -43,11 +47,11 @@ public class PresetTest {
         preset.setHeight(300);
         preset.setCount(666);
 
-        Preset copy = preset.createCopy();
+        Preset copy = preset.makeCopy();
 
         assertTrue(copy.getId() == 1);
         assertTrue(copy.getTimestamp() == 1337L);
-        assertTrue(copy.getName().equals("ololo"));
+        assertTrue(copy.getName().equals("name"));
         assertTrue(copy.getGeneratorParams().equals(generatorParams));
         assertTrue(copy.getWidth() == 100);
         assertTrue(copy.getHeight() == 300);
@@ -68,9 +72,9 @@ public class PresetTest {
     @Test
     public void testCreateCopyAndEqualsNonEffectParams() {
         int ids = 1;
-        for (GeneratorType generatorType : GeneratorType.nonEffectTypes()) {
+        for (GeneratorType generatorType : GeneratorType.Companion.getNON_EFFECT_TYPES()) {
             for (Quality quality : qualities) {
-                GeneratorParams generatorParams = GeneratorParams.createDefaultParams(generatorType);
+                GeneratorParams generatorParams = GeneratorParams.Companion.createDefaultParams(generatorType);
                 String name = "name" + ids;
                 Preset preset = new Preset(name, generatorParams, quality, "path");
 
@@ -80,7 +84,7 @@ public class PresetTest {
                 preset.setWidth(100);
                 preset.setHeightRange(10, 100, 10);
 
-                Preset copy = preset.createCopy();
+                Preset copy = preset.makeCopy();
 
                 assertTrue(copy.getId() == ids);
                 assertTrue(copy.getTimestamp() == timestamp);
@@ -103,10 +107,10 @@ public class PresetTest {
     @Test
     public void testCreateCopyAndEqualsEffectParams() {
         int ids = 1;
-        for (GeneratorType effectType : GeneratorType.effectTypes()) {
-            for (GeneratorType nonEffectType : GeneratorType.nonEffectTypes()) {
+        for (GeneratorType effectType : GeneratorType.Companion.getEFFECT_TYPES()) {
+            for (GeneratorType nonEffectType : GeneratorType.Companion.getNON_EFFECT_TYPES()) {
                 for (Quality quality : qualities) {
-                    GeneratorParams generatorParams = GeneratorParams.createDefaultEffectParams(effectType, GeneratorParams.createDefaultParams(nonEffectType));
+                    GeneratorParams generatorParams = GeneratorParams.Companion.createDefaultEffectParams(effectType, GeneratorParams.Companion.createDefaultParams(nonEffectType));
                     String name = "name" + ids;
                     Preset preset = new Preset(name, generatorParams, quality, "path");
 
@@ -116,7 +120,7 @@ public class PresetTest {
                     preset.setWidthRange(100, 10, 10);
                     preset.setHeightRange(10, 1000, 10);
 
-                    Preset copy = preset.createCopy();
+                    Preset copy = preset.makeCopy();
 
                     assertTrue(copy.getId() == ids);
                     assertTrue(copy.getTimestamp() == timestamp);
@@ -136,19 +140,10 @@ public class PresetTest {
         }
     }
 
+    @SuppressWarnings("EmptyCatchBlock")
     @Test
     public void testSettersExceptions() {
-        Preset preset = new Preset("ololo", GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), "path");
-        try {
-            preset.setTimestamp(0);
-            fail();
-        } catch (IllegalArgumentException e) {
-        }
-        try {
-            preset.setName("");
-            fail();
-        } catch (IllegalArgumentException e) {
-        }
+        Preset preset = new Preset("name", GeneratorParams.Companion.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), "path");
         try {
             preset.setWidth(-1);
             fail();
@@ -171,11 +166,6 @@ public class PresetTest {
         }
         try {
             preset.setCount(-10);
-            fail();
-        } catch (IllegalArgumentException e) {
-        }
-        try {
-            preset.setPathToSave("");
             fail();
         } catch (IllegalArgumentException e) {
         }
