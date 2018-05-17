@@ -20,7 +20,7 @@ class DatabasePresetRepository(@AppContext context: Context) : OrmLiteSqliteOpen
 
     companion object {
         const val DATABASE_NAME = "presets_database"
-        const val DATABASE_VERSION = 2
+        const val DATABASE_VERSION = 3
     }
 
     override fun onCreate(database: SQLiteDatabase, connectionSource: ConnectionSource) {
@@ -46,6 +46,14 @@ class DatabasePresetRepository(@AppContext context: Context) : OrmLiteSqliteOpen
                     TableUtils.dropTable<GeneratorParams, Any>(connectionSource, paramsClass, false)
                 }
                 onCreate(database, connectionSource)
+            } catch (e: Exception) {
+                Timber.e(e)
+            }
+        }
+        if (oldVersion < 3) {
+            try {
+                val dao = getDao<Dao<ColoredNoiseParams, Int>, ColoredNoiseParams>(ColoredNoiseParams::class.java)
+                dao.executeRaw("ALTER TABLE `colored_noise_params` ADD COLUMN integer_value INTEGER DEFAULT ${GeneratorParams.COLORED_NOISE_DEFAULT_MULTIPLIER};")
             } catch (e: Exception) {
                 Timber.e(e)
             }

@@ -186,13 +186,14 @@ class ApplyGenerationFragment : GenerationFragment(), ApplyGenerationPresenter.U
 
     private fun getMainGeneratorInfo(params: GeneratorParams): String {
         return when (params) {
-            is SimpleIntegerParams -> {
-                getString(R.string.generator_info_s,
-                        getString(params.getType().nameRes()), params.getValue() ?: getString(R.string.random))
-            }
             is ColoredNoiseParams -> {
                 getString(R.string.generator_info_s,
-                        getString(params.getType().nameRes()), "${getString(params.noiseOrientation.nameRes())} / ${getString(params.noiseType.nameRes())}")
+                        getString(params.getType().nameRes()),
+                        "${getString(params.noiseOrientation.nameRes())} / ${getString(params.noiseType.nameRes())} / ${params.getValue().toString()}")
+            }
+            is SimpleIntegerParams -> {
+                getString(R.string.generator_info_s,
+                        getString(params.getType().nameRes()), params.getValue()?.toString() ?: getString(R.string.random))
             }
             else -> getString(params.getType().nameRes())
         }

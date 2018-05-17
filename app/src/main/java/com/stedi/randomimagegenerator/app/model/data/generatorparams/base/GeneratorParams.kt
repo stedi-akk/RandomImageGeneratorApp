@@ -18,6 +18,11 @@ abstract class GeneratorParams : Parcelable {
     constructor()
 
     companion object {
+        const val COLORED_PIXELS_DEFAULT_MULTIPLIER = 10
+        const val COLORED_CIRCLES_DEFAULT_COUNT = 50
+        const val COLORED_RECTANGLE_DEFAULT_COUNT = 50
+        const val COLORED_NOISE_DEFAULT_MULTIPLIER = 4
+
         fun createDefaultParams(type: GeneratorType): GeneratorParams {
             if (type.isEffect) {
                 throw IllegalArgumentException("type must not be effect")
@@ -27,20 +32,24 @@ abstract class GeneratorParams : Parcelable {
                 GeneratorType.FLAT_COLOR -> return FlatColorParams()
                 GeneratorType.COLORED_PIXELS -> {
                     val pixelsParams = ColoredPixelsParams()
-                    pixelsParams.setValue(10)
+                    pixelsParams.setValue(COLORED_PIXELS_DEFAULT_MULTIPLIER)
                     return pixelsParams
                 }
                 GeneratorType.COLORED_CIRCLES -> {
                     val circlesParams = ColoredCirclesParams()
-                    circlesParams.setValue(50)
+                    circlesParams.setValue(COLORED_CIRCLES_DEFAULT_COUNT)
                     return circlesParams
                 }
                 GeneratorType.COLORED_RECTANGLE -> {
                     val rectangleParams = ColoredRectangleParams()
-                    rectangleParams.setValue(50)
+                    rectangleParams.setValue(COLORED_RECTANGLE_DEFAULT_COUNT)
                     return rectangleParams
                 }
-                GeneratorType.COLORED_NOISE -> return ColoredNoiseParams()
+                GeneratorType.COLORED_NOISE -> {
+                    val noiseParams = ColoredNoiseParams()
+                    noiseParams.setValue(COLORED_NOISE_DEFAULT_MULTIPLIER)
+                    return noiseParams
+                }
                 else -> throw IllegalStateException("unreachable code")
             }
         }
