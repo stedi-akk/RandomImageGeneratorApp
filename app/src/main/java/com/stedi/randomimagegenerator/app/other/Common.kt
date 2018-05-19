@@ -82,6 +82,7 @@ fun GeneratorType.nameRes(): Int {
         GeneratorType.COLORED_PIXELS -> R.string.generator_colored_pixels
         GeneratorType.FLAT_COLOR -> R.string.generator_flat_color
         GeneratorType.COLORED_NOISE -> R.string.generator_colored_noise
+        GeneratorType.COLORED_LINES -> R.string.generator_colored_lines
         GeneratorType.MIRRORED -> R.string.effect_mirrored
         GeneratorType.TEXT_OVERLAY -> R.string.effect_text_overlay
     }

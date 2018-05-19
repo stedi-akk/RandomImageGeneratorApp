@@ -35,10 +35,12 @@ class SimpleIntegerParamsDialog : ButterKnifeDialogFragment(),
     private var isRandomValue: Boolean = false
 
     companion object {
+        val SUPPORTED_TYPES = arrayOf(GeneratorType.COLORED_CIRCLES, GeneratorType.COLORED_RECTANGLE, GeneratorType.COLORED_PIXELS, GeneratorType.COLORED_LINES)
+
         private const val KEY_TYPE = "KEY_TYPE"
 
         fun newInstance(type: GeneratorType): SimpleIntegerParamsDialog {
-            if (arrayOf(GeneratorType.COLORED_CIRCLES, GeneratorType.COLORED_RECTANGLE, GeneratorType.COLORED_PIXELS).none { it == type }) {
+            if (SUPPORTED_TYPES.none { it == type }) {
                 throw IllegalArgumentException(type.name + " is not supported")
             }
 
@@ -68,6 +70,7 @@ class SimpleIntegerParamsDialog : ButterKnifeDialogFragment(),
             GeneratorType.COLORED_CIRCLES -> tvInput.setText(R.string.circles_count)
             GeneratorType.COLORED_RECTANGLE -> tvInput.setText(R.string.rectangles_count)
             GeneratorType.COLORED_PIXELS -> tvInput.setText(R.string.pixel_multiplier)
+            GeneratorType.COLORED_LINES -> tvInput.setText(R.string.lines_count)
             else -> throw IllegalArgumentException(type.name + " is not supported")
         }
 

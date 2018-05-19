@@ -36,6 +36,7 @@
     <string name="generator_colored_circles">CIRCLES</string>
     <string name="generator_colored_rectangle">RECTANGLES</string>
     <string name="generator_colored_noise">NOISE</string>
+    <string name="generator_colored_lines">LINES</string>
     <string name="effect_mirrored">MIRROR</string>
     <string name="effect_text_overlay">FILE NAME</string>
     <string name="s_parameters">%s parameters</string>
@@ -45,6 +46,7 @@
     <string name="circles_count">Circles count:</string>
     <string name="pixel_multiplier">Pixel multiplier:</string>
     <string name="rectangles_count">Rectangles count:</string>
+    <string name="lines_count">Lines count:</string>
     <string name="value_bigger_zero">Value must be greater than zero</string>
     <string name="width">width</string>
     <string name="width_range">Width range:</string>

@@ -40,6 +40,9 @@ abstract class GeneratorParams : Parcelable {
                     circlesParams.setValue(COLORED_CIRCLES_DEFAULT_COUNT)
                     return circlesParams
                 }
+                GeneratorType.COLORED_LINES -> {
+                    return ColoredLinesParams()
+                }
                 GeneratorType.COLORED_RECTANGLE -> {
                     val rectangleParams = ColoredRectangleParams()
                     rectangleParams.setValue(COLORED_RECTANGLE_DEFAULT_COUNT)

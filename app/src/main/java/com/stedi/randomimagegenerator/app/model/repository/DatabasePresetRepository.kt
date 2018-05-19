@@ -36,9 +36,9 @@ class DatabasePresetRepository(@AppContext context: Context) : OrmLiteSqliteOpen
 
     override fun onUpgrade(database: SQLiteDatabase, connectionSource: ConnectionSource, oldVersion: Int, newVersion: Int) {
         if (oldVersion < 2) {
-            // the first version has incorrect fields because of wrong proguard configuration
-            // let the bass drop...
             try {
+                // the first version has incorrect fields because of wrong proguard configuration
+                // let the bass drop...
                 TableUtils.dropTable<Preset, Any>(connectionSource, Preset::class.java, false)
                 for (type in GeneratorType.values()) {
                     @Suppress("UNCHECKED_CAST")
@@ -52,8 +52,11 @@ class DatabasePresetRepository(@AppContext context: Context) : OrmLiteSqliteOpen
         }
         if (oldVersion < 3) {
             try {
+                // updated colored noise
                 val dao = getDao<Dao<ColoredNoiseParams, Int>, ColoredNoiseParams>(ColoredNoiseParams::class.java)
                 dao.executeRaw("ALTER TABLE `colored_noise_params` ADD COLUMN integer_value INTEGER DEFAULT ${GeneratorParams.COLORED_NOISE_DEFAULT_MULTIPLIER};")
+                // new colored lines generator
+                TableUtils.createTableIfNotExists(connectionSource, ColoredLinesParams::class.java)
             } catch (e: Exception) {
                 Timber.e(e)
             }
@@ -174,6 +177,7 @@ class DatabasePresetRepository(@AppContext context: Context) : OrmLiteSqliteOpen
             GeneratorType.FLAT_COLOR -> FlatColorParams::class.java
             GeneratorType.COLORED_PIXELS -> ColoredPixelsParams::class.java
             GeneratorType.COLORED_CIRCLES -> ColoredCirclesParams::class.java
+            GeneratorType.COLORED_LINES -> ColoredLinesParams::class.java
             GeneratorType.COLORED_RECTANGLE -> ColoredRectangleParams::class.java
             GeneratorType.COLORED_NOISE -> ColoredNoiseParams::class.java
             GeneratorType.MIRRORED -> MirroredParams::class.java
