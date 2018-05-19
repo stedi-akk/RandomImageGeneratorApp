@@ -8,6 +8,7 @@ enum class GeneratorType(val isEffect: Boolean, val isEditable: Boolean) {
     COLORED_PIXELS(false, true),
     COLORED_NOISE(false, true),
     MIRRORED(true, false),
+    THRESHOLD(true, false),
     TEXT_OVERLAY(true, false);
 
     companion object {

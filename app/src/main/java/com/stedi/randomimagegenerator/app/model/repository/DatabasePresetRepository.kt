@@ -52,11 +52,13 @@ class DatabasePresetRepository(@AppContext context: Context) : OrmLiteSqliteOpen
         }
         if (oldVersion < 3) {
             try {
-                // updated colored noise
+                // pixel multiplier for colored noise
                 val dao = getDao<Dao<ColoredNoiseParams, Int>, ColoredNoiseParams>(ColoredNoiseParams::class.java)
                 dao.executeRaw("ALTER TABLE `colored_noise_params` ADD COLUMN integer_value INTEGER DEFAULT ${GeneratorParams.COLORED_NOISE_DEFAULT_MULTIPLIER};")
                 // new colored lines generator
                 TableUtils.createTableIfNotExists(connectionSource, ColoredLinesParams::class.java)
+                // new threshold effect
+                TableUtils.createTableIfNotExists(connectionSource, ThresholdParams::class.java)
             } catch (e: Exception) {
                 Timber.e(e)
             }
@@ -181,6 +183,7 @@ class DatabasePresetRepository(@AppContext context: Context) : OrmLiteSqliteOpen
             GeneratorType.COLORED_RECTANGLE -> ColoredRectangleParams::class.java
             GeneratorType.COLORED_NOISE -> ColoredNoiseParams::class.java
             GeneratorType.MIRRORED -> MirroredParams::class.java
+            GeneratorType.THRESHOLD -> ThresholdParams::class.java
             GeneratorType.TEXT_OVERLAY -> TextOverlayParams::class.java
         }
     }

@@ -38,6 +38,7 @@
     <string name="generator_colored_noise">NOISE</string>
     <string name="generator_colored_lines">LINES</string>
     <string name="effect_mirrored">MIRROR</string>
+    <string name="effect_threshold">THRESHOLD</string>
     <string name="effect_text_overlay">FILE NAME</string>
     <string name="s_parameters">%s parameters</string>
     <string name="type">Type:</string>

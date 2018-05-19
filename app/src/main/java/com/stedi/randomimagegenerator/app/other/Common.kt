@@ -84,6 +84,7 @@ fun GeneratorType.nameRes(): Int {
         GeneratorType.COLORED_NOISE -> R.string.generator_colored_noise
         GeneratorType.COLORED_LINES -> R.string.generator_colored_lines
         GeneratorType.MIRRORED -> R.string.effect_mirrored
+        GeneratorType.THRESHOLD -> R.string.effect_threshold
         GeneratorType.TEXT_OVERLAY -> R.string.effect_text_overlay
     }
 }

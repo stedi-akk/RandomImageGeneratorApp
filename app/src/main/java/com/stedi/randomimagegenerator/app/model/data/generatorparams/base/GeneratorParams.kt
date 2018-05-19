@@ -64,6 +64,7 @@ abstract class GeneratorParams : Parcelable {
 
             when (effectType) {
                 GeneratorType.MIRRORED -> return MirroredParams(target)
+                GeneratorType.THRESHOLD -> return ThresholdParams(target)
                 GeneratorType.TEXT_OVERLAY -> return TextOverlayParams(target)
                 else -> throw IllegalStateException("unreachable code")
             }
