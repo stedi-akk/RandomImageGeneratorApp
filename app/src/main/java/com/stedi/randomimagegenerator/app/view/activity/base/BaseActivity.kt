@@ -31,8 +31,6 @@ abstract class BaseActivity : LifeCycleActivity(), RequireViewModel {
     class PermissionEvent(val permission: String, val requestCode: Int, val isGranted: Boolean)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
         activityComponent.inject(this)
 
         if (restorePendingPreset && savedInstanceState != null) {
@@ -41,6 +39,8 @@ abstract class BaseActivity : LifeCycleActivity(), RequireViewModel {
             }
         }
         restorePendingPreset = false
+
+        super.onCreate(savedInstanceState)
     }
 
     override fun onResume() {
@@ -63,7 +63,7 @@ abstract class BaseActivity : LifeCycleActivity(), RequireViewModel {
         val permission = permissions[0]
         val isGranted = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
         if (!isGranted) {
-            showToast(getString(R.string.s_permission_required, permission))
+            showToast(R.string.this_permission_required)
         }
         bus.post(PermissionEvent(permission, requestCode, isGranted))
     }

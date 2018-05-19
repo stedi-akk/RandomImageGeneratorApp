@@ -82,6 +82,6 @@
     <string name="type_4">Type 4</string>
     <string name="type_5">Type 5</string>
     <string name="type_6">Type 6</string>
-    <string name="s_permission_required">%s permission is required for this functionality to work</string>
+    <string name="this_permission_required">This permission is required for this functionality to work</string>
     <string name="storage_s">/Storage%s</string>
 </resources>
