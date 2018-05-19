@@ -189,7 +189,7 @@ class ApplyGenerationFragment : GenerationFragment(), ApplyGenerationPresenter.U
             is ColoredNoiseParams -> {
                 getString(R.string.generator_info_s,
                         getString(params.getType().nameRes()),
-                        "${getString(params.noiseOrientation.nameRes())} / ${getString(params.noiseType.nameRes())} / ${params.getValue().toString()}")
+                        "${getString(params.noiseOrientation.nameRes())}, ${getString(params.noiseType.nameRes())}, ${params.getValue().toString()}")
             }
             is SimpleIntegerParams -> {
                 getString(R.string.generator_info_s,
