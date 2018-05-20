@@ -63,7 +63,7 @@ abstract class BaseActivity : LifeCycleActivity(), RequireViewModel {
         val permission = permissions[0]
         val isGranted = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
         if (!isGranted) {
-            showToast(R.string.this_permission_required)
+            showToast(getString(R.string.s_permission_required, permission))
         }
         bus.post(PermissionEvent(permission, requestCode, isGranted))
     }
