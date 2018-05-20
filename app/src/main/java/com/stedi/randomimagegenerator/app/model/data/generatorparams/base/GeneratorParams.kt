@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.support.annotation.CallSuper
 import com.j256.ormlite.field.DatabaseField
+import com.stedi.randomimagegenerator.Rig
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.*
 import com.stedi.randomimagegenerator.generators.Generator
@@ -20,6 +21,10 @@ abstract class GeneratorParams : Parcelable {
     companion object {
         const val COLORED_PIXELS_DEFAULT_MULTIPLIER = 10
         const val COLORED_NOISE_DEFAULT_MULTIPLIER = 4
+
+        fun createRandomDefaultParams(): GeneratorParams {
+            return createDefaultParams(GeneratorType.NON_EFFECT_TYPES.let { it[Math.round(Rig.random((it.size - 1).toFloat()))] })
+        }
 
         fun createDefaultParams(type: GeneratorType): GeneratorParams {
             if (type.isEffect) {

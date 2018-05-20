@@ -58,12 +58,12 @@ public class ChooseQualityTest {
 
         navigateInGenerationSteps("Generator", "Quality");
 
-        // initial check
-        checkFormatIs(Bitmap.CompressFormat.JPEG);
-        checkQualityValueIs(100);
-
         // change formats
         selectFormat(Bitmap.CompressFormat.PNG);
+        selectFormat(Bitmap.CompressFormat.JPEG);
+        selectFormat(Bitmap.CompressFormat.WEBP);
+        selectFormat(Bitmap.CompressFormat.PNG);
+        selectFormat(Bitmap.CompressFormat.JPEG);
         selectFormat(Bitmap.CompressFormat.WEBP);
 
         // check changed
