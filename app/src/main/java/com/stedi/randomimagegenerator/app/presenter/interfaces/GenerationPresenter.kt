@@ -12,6 +12,8 @@ interface GenerationPresenter : Presenter<GenerationPresenter.UIImpl> {
 
     fun startGeneration(preset: Preset)
 
+    fun cancelGeneration()
+
     interface UIImpl : UI {
         @WorkerThread
         fun imageGenerated(imageParams: ImageParams, bitmap: Bitmap) {}
