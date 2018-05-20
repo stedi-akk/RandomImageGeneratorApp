@@ -23,7 +23,7 @@ abstract class GeneratorParams : Parcelable {
         const val COLORED_NOISE_DEFAULT_MULTIPLIER = 4
 
         fun createRandomDefaultParams(): GeneratorParams {
-            return createDefaultParams(GeneratorType.NON_EFFECT_TYPES.let { it[Math.round(Rig.random((it.size - 1).toFloat()))] })
+            return createDefaultParams(GeneratorType.NON_EFFECT_TYPES.let { it[Rig.random(it.size.toFloat()).toInt()] })
         }
 
         fun createDefaultParams(type: GeneratorType): GeneratorParams {
