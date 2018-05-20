@@ -19,8 +19,6 @@ abstract class GeneratorParams : Parcelable {
 
     companion object {
         const val COLORED_PIXELS_DEFAULT_MULTIPLIER = 10
-        const val COLORED_CIRCLES_DEFAULT_COUNT = 50
-        const val COLORED_RECTANGLE_DEFAULT_COUNT = 50
         const val COLORED_NOISE_DEFAULT_MULTIPLIER = 4
 
         fun createDefaultParams(type: GeneratorType): GeneratorParams {
@@ -36,17 +34,13 @@ abstract class GeneratorParams : Parcelable {
                     return pixelsParams
                 }
                 GeneratorType.COLORED_CIRCLES -> {
-                    val circlesParams = ColoredCirclesParams()
-                    circlesParams.setValue(COLORED_CIRCLES_DEFAULT_COUNT)
-                    return circlesParams
+                    return ColoredCirclesParams()
                 }
                 GeneratorType.COLORED_LINES -> {
                     return ColoredLinesParams()
                 }
                 GeneratorType.COLORED_RECTANGLE -> {
-                    val rectangleParams = ColoredRectangleParams()
-                    rectangleParams.setValue(COLORED_RECTANGLE_DEFAULT_COUNT)
-                    return rectangleParams
+                    return ColoredRectangleParams()
                 }
                 GeneratorType.COLORED_NOISE -> {
                     val noiseParams = ColoredNoiseParams()

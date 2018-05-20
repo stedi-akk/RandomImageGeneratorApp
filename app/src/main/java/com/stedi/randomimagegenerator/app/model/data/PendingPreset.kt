@@ -2,6 +2,7 @@ package com.stedi.randomimagegenerator.app.model.data
 
 import android.os.Parcelable
 import com.stedi.randomimagegenerator.Quality
+import com.stedi.randomimagegenerator.Rig
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams
 import timber.log.Timber
 import javax.inject.Singleton
@@ -16,7 +17,11 @@ class PendingPreset() {
     fun newDefaultCandidate() {
         candidateFrom = null
         // name and save path are set in ApplyGenerationPresenterImpl
-        candidate = Preset("", GeneratorParams.createDefaultParams(GeneratorType.COLORED_CIRCLES), Quality.jpg(100), "")
+        candidate = Preset(
+                "",
+                GeneratorParams.createDefaultParams(GeneratorType.NON_EFFECT_TYPES.let { it[Math.round(Rig.random((it.size - 1).toFloat()))] }),
+                Quality.png(),
+                "")
                 .apply {
                     setWidth(800)
                     setHeight(800)
