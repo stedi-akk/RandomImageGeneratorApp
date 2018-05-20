@@ -46,7 +46,7 @@ public final class TestUtils {
 
     @NonNull
     public static Preset newSimplePreset() {
-        return newSimplePreset(GeneratorParams.Companion.createDefaultParams(GeneratorType.FLAT_COLOR));
+        return newSimplePreset(GeneratorParams.Companion.createRandomDefaultParams());
     }
 
 

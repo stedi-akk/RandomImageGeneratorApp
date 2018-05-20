@@ -31,8 +31,6 @@ abstract class BaseActivity : LifeCycleActivity(), RequireViewModel {
     class PermissionEvent(val permission: String, val requestCode: Int, val isGranted: Boolean)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
         activityComponent.inject(this)
 
         if (restorePendingPreset && savedInstanceState != null) {
@@ -41,6 +39,8 @@ abstract class BaseActivity : LifeCycleActivity(), RequireViewModel {
             }
         }
         restorePendingPreset = false
+
+        super.onCreate(savedInstanceState)
     }
 
     override fun onResume() {

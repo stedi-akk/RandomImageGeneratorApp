@@ -29,7 +29,7 @@ public class GeneratorParamsCreateDefaultTest {
 
     @Test
     public void testCreateDefaultEffectParams() {
-        GeneratorParams target = GeneratorParams.Companion.createDefaultParams(GeneratorType.Companion.getNON_EFFECT_TYPES()[0]);
+        GeneratorParams target = GeneratorParams.Companion.createRandomDefaultParams();
         for (GeneratorType gt : GeneratorType.Companion.getEFFECT_TYPES()) {
             GeneratorParams gp = GeneratorParams.Companion.createDefaultEffectParams(gt, target);
             assertNotNull(gp);
@@ -38,7 +38,7 @@ public class GeneratorParamsCreateDefaultTest {
 
     @Test
     public void testCreateDefaultEffectParamsFail() {
-        GeneratorParams target = GeneratorParams.Companion.createDefaultParams(GeneratorType.Companion.getNON_EFFECT_TYPES()[0]);
+        GeneratorParams target = GeneratorParams.Companion.createRandomDefaultParams();
         for (GeneratorType gt : GeneratorType.Companion.getNON_EFFECT_TYPES()) {
             try {
                 GeneratorParams.Companion.createDefaultEffectParams(gt, target);

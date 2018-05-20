@@ -6,6 +6,8 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.stedi.randomimagegenerator.app.R;
 import com.stedi.randomimagegenerator.app.TestUtils;
+import com.stedi.randomimagegenerator.app.model.data.GeneratorType;
+import com.stedi.randomimagegenerator.app.model.data.GeneratorTypeKt;
 import com.stedi.randomimagegenerator.app.view.activity.HomeActivity;
 
 import org.junit.BeforeClass;
@@ -15,7 +17,6 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.contrib.RecyclerViewActions.scrollToPosition;
@@ -46,11 +47,9 @@ public class ChooseGeneratorsTest {
         onView(allOf(withId(R.id.home_activity_fab), isDisplayed()))
                 .perform(click());
 
-        selectGeneratorSaveAndCheck(1, "rectangles");
-        selectGeneratorSaveAndCheck(0, "circles");
-        selectGeneratorSaveAndCheck(2, "pixels");
-        selectGeneratorSaveAndCheck(3, "flat color");
-        selectGeneratorSaveAndCheck(4, "noise");
+        for (GeneratorType type : GeneratorType.Companion.getNON_EFFECT_TYPES()) {
+            selectGeneratorSaveAndCheck(GeneratorTypeKt.nonEffectOrdinal(type), type.name());
+        }
     }
 
     private void selectGeneratorSaveAndCheck(int generatorIndex, String name) {

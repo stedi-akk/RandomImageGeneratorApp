@@ -8,7 +8,7 @@ import com.stedi.randomimagegenerator.app.presenter.interfaces.SimpleIntegerPara
 import timber.log.Timber
 import javax.inject.Inject
 
-class SimpleIntegerParamsPresenterImpl @Inject constructor(
+open class SimpleIntegerParamsPresenterImpl @Inject constructor(
         private val pendingPreset: PendingPreset) : SimpleIntegerParamsPresenter {
 
     private val candidate: Preset

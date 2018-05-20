@@ -27,7 +27,8 @@ class GenerationPresenterImpl @Inject constructor(
 
     private var ui: GenerationPresenter.UIImpl? = null
 
-    private var subscription: Subscription? = null
+    @Volatile private var subscription: Subscription? = null
+    @Volatile private var rig: Rig? = null
 
     private var generatedCount: Int = 0
     private var failedCount: Int = 0
@@ -55,7 +56,7 @@ class GenerationPresenterImpl @Inject constructor(
     }
 
     override fun startGeneration(preset: Preset) {
-        if (subscription != null) {
+        if (subscription != null || rig != null) {
             return
         }
 
@@ -67,7 +68,7 @@ class GenerationPresenterImpl @Inject constructor(
 
         subscription = Observable.create<GenerationResult>({ subscriber ->
             try {
-                Rig.Builder().apply {
+                rig = Rig.Builder().apply {
                     setGenerator(preset.getGeneratorParams().getGenerator())
 
                     if (preset.getWidth() != 0) {
@@ -94,34 +95,49 @@ class GenerationPresenterImpl @Inject constructor(
 
                     setCallback(object : GenerateCallback {
                         override fun onGenerated(imageParams: ImageParams, bitmap: Bitmap) {
-                            ui?.imageGenerated(imageParams, bitmap)
+                            if (!isCanceled()) {
+                                ui?.imageGenerated(imageParams, bitmap)
+                            }
                         }
 
                         override fun onFailedToGenerate(imageParams: ImageParams, e: Exception) {
-                            failedCount++
-                            Timber.e(e)
-                            subscriber.onNext(GenerationResult(generatedCount, failedCount))
+                            if (!isCanceled()) {
+                                failedCount++
+                                Timber.e(e)
+                                subscriber.onNext(GenerationResult(generatedCount, failedCount))
+                            }
                         }
                     })
 
                     setFileSaveCallback(object : SaveCallback {
                         override fun onSaved(bitmap: Bitmap, file: File) {
-                            generatedCount++
-                            ui?.imageSaved(bitmap, file)
-                            subscriber.onNext(GenerationResult(generatedCount, failedCount))
+                            if (!isCanceled()) {
+                                generatedCount++
+                                ui?.imageSaved(bitmap, file)
+                                subscriber.onNext(GenerationResult(generatedCount, failedCount))
+                            }
                         }
 
                         override fun onFailedToSave(bitmap: Bitmap, e: Exception) {
-                            failedCount++
-                            Timber.e(e)
-                            subscriber.onNext(GenerationResult(generatedCount, failedCount))
+                            if (!isCanceled()) {
+                                failedCount++
+                                Timber.e(e)
+                                subscriber.onNext(GenerationResult(generatedCount, failedCount))
+                            }
                         }
                     })
-                }.build().generate()
+                }.build()
+                rig?.generate()
+
                 subscriber.onCompleted()
             } catch (t: Throwable) {
                 subscriber.onError(t)
             }
+
+            subscription = null
+            rig = null
+            Timber.d("startGeneration finished")
+
         }, Emitter.BackpressureMode.LATEST)
                 .subscribeOn(subscribeOn)
                 .observeOn(observeOn)
@@ -134,28 +150,38 @@ class GenerationPresenterImpl @Inject constructor(
                     generatedCountPosted = result.generatedCount
                     failedCountPosted = result.failedCount
                     bus.post(result)
-                }, { t -> bus.post(GenerationEnd(t)) }, { bus.post(GenerationEnd()) })
+                }, { throwable ->
+                    bus.post(GenerationEnd(throwable))
+                }, {
+                    bus.post(GenerationEnd())
+                })
+    }
+
+    override fun cancelGeneration() {
+        Timber.d("cancelGeneration")
+        subscription?.unsubscribe()
     }
 
     @Subscribe
     fun onGenerationResult(result: GenerationResult) {
-        ui?.onResult(result.generatedCount, result.failedCount) ?: let { stopGeneration() }
+        ui?.onResult(result.generatedCount, result.failedCount) ?: let { cancelGeneration() }
     }
 
     @Subscribe
     fun onGenerationEnd(result: GenerationEnd) {
         Timber.d("onGenerationEnd")
-        stopGeneration()
-
+        cancelGeneration()
         result.throwable?.apply {
             Timber.e(this)
             ui?.onGenerationFailed()
         } ?: ui?.onFinishGeneration()
     }
 
-    private fun stopGeneration() {
-        subscription?.unsubscribe()
-        subscription = null
-        // TODO actual thread stop
+    private fun isCanceled(): Boolean {
+        if (subscription?.isUnsubscribed == true) {
+            rig?.cancel()
+            return true
+        }
+        return false
     }
 }
