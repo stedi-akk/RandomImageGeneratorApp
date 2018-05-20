@@ -1,6 +1,7 @@
 package com.stedi.randomimagegenerator.app.model.data
 
 enum class GeneratorType(val isEffect: Boolean, val isEditable: Boolean) {
+    RANDOM_NON_EFFECT(false, false),
     FLAT_COLOR(false, false),
     COLORED_RECTANGLE(false, true),
     COLORED_CIRCLES(false, true),

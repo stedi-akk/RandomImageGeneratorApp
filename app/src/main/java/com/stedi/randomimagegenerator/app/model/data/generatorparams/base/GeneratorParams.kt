@@ -32,6 +32,7 @@ abstract class GeneratorParams : Parcelable {
             }
 
             when (type) {
+                GeneratorType.RANDOM_NON_EFFECT -> return RandomParams()
                 GeneratorType.FLAT_COLOR -> return FlatColorParams()
                 GeneratorType.COLORED_PIXELS -> {
                     val pixelsParams = ColoredPixelsParams()

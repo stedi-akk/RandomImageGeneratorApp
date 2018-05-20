@@ -59,6 +59,8 @@ class DatabasePresetRepository(@AppContext context: Context) : OrmLiteSqliteOpen
                 TableUtils.createTableIfNotExists(connectionSource, ColoredLinesParams::class.java)
                 // new threshold effect
                 TableUtils.createTableIfNotExists(connectionSource, ThresholdParams::class.java)
+                // new random params
+                TableUtils.createTableIfNotExists(connectionSource, RandomParams::class.java)
             } catch (e: Exception) {
                 Timber.e(e)
             }
@@ -176,6 +178,7 @@ class DatabasePresetRepository(@AppContext context: Context) : OrmLiteSqliteOpen
 
     private fun getGeneratorParamsClassFromType(type: GeneratorType): Class<out GeneratorParams> {
         return when (type) {
+            GeneratorType.RANDOM_NON_EFFECT -> RandomParams::class.java
             GeneratorType.FLAT_COLOR -> FlatColorParams::class.java
             GeneratorType.COLORED_PIXELS -> ColoredPixelsParams::class.java
             GeneratorType.COLORED_CIRCLES -> ColoredCirclesParams::class.java
