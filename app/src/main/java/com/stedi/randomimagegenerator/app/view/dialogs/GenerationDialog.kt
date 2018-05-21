@@ -101,7 +101,10 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
             setTitle(R.string.please_wait)
             setView(inflateAndBind(R.layout.generation_dialog))
             setPositiveButton(R.string.ok, null)
-            setNegativeButton(R.string.cancel, { _, _ -> presenter.cancelGeneration() })
+            setNegativeButton(R.string.cancel, { _, _ ->
+                bus.post(OnDismissed())
+                presenter.cancelGeneration()
+            })
         }.create().apply {
             setCancelable(false)
             setCanceledOnTouchOutside(false)
