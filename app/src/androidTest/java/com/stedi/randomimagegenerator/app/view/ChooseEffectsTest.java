@@ -54,21 +54,29 @@ public class ChooseEffectsTest {
         navigateInGenerationSteps("Generator", "Effect");
 
         checkEffectSelected(null);
+
         selectEffect(GeneratorType.MIRRORED);
         savePresetAndComebackToStep("name", "Effect");
-
         checkEffectSelected(GeneratorType.MIRRORED);
+
         selectEffect(GeneratorType.MIRRORED);
         savePresetAndComebackToStep("name", "Effect");
-
         checkEffectSelected(null);
+
         selectEffect(GeneratorType.TEXT_OVERLAY);
         savePresetAndComebackToStep("name", "Effect");
-
         checkEffectSelected(GeneratorType.TEXT_OVERLAY);
+
         selectEffect(GeneratorType.TEXT_OVERLAY);
         savePresetAndComebackToStep("name", "Effect");
+        checkEffectSelected(null);
 
+        selectEffect(GeneratorType.THRESHOLD);
+        savePresetAndComebackToStep("name", "Effect");
+        checkEffectSelected(GeneratorType.THRESHOLD);
+
+        selectEffect(GeneratorType.THRESHOLD);
+        savePresetAndComebackToStep("name", "Effect");
         checkEffectSelected(null);
     }
 

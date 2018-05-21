@@ -143,7 +143,7 @@ public class PresetTest {
     @SuppressWarnings("EmptyCatchBlock")
     @Test
     public void testSettersExceptions() {
-        Preset preset = new Preset("name", GeneratorParams.Companion.createDefaultParams(GeneratorType.FLAT_COLOR), Quality.png(), "path");
+        Preset preset = new Preset("name", GeneratorParams.Companion.createRandomDefaultParams(), Quality.png(), "path");
         try {
             preset.setWidth(-1);
             fail();

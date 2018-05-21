@@ -118,7 +118,7 @@ class Preset : Parcelable {
     }
 
     fun getGeneratorParams(): GeneratorParams {
-        return generatorParams?.let { it } ?: GeneratorParams.createDefaultParams(GeneratorType.FLAT_COLOR).apply { generatorParams = this }
+        return generatorParams?.let { it } ?: GeneratorParams.createDefaultParams(generatorType).apply { generatorParams = this }
     }
 
     fun getGeneratorType(): GeneratorType = generatorType

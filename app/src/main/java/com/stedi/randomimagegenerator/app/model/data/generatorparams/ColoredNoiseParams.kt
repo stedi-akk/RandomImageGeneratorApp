@@ -5,11 +5,12 @@ import android.os.Parcelable
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
-import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.SimpleIntegerParams
 import com.stedi.randomimagegenerator.generators.ColoredNoiseGenerator
+import com.stedi.randomimagegenerator.generators.Generator
 
 @DatabaseTable(tableName = "colored_noise_params")
-class ColoredNoiseParams : GeneratorParams {
+class ColoredNoiseParams : SimpleIntegerParams {
 
     @DatabaseField(columnName = "orientation", canBeNull = false)
     var noiseOrientation: ColoredNoiseGenerator.Orientation = ColoredNoiseGenerator.Orientation.RANDOM
@@ -20,7 +21,11 @@ class ColoredNoiseParams : GeneratorParams {
     // OrmLite required
     constructor()
 
-    public override fun createGenerator() = ColoredNoiseGenerator(noiseOrientation, noiseType)
+    public override fun createGenerator(): Generator {
+        return getValue()?.let { ColoredNoiseGenerator(noiseOrientation, noiseType, it) } ?: ColoredNoiseGenerator(noiseOrientation, noiseType)
+    }
+
+    override fun canBeRandom() = false
 
     override fun getType() = GeneratorType.COLORED_NOISE
 
@@ -31,7 +36,8 @@ class ColoredNoiseParams : GeneratorParams {
     }
 
     override fun hashCode(): Int {
-        var result = noiseOrientation.hashCode()
+        var result = super.hashCode()
+        result = 31 * result + noiseOrientation.hashCode()
         result = 31 * result + noiseType.hashCode()
         return result
     }

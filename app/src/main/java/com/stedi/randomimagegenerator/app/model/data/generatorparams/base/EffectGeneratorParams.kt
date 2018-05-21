@@ -1,6 +1,7 @@
 package com.stedi.randomimagegenerator.app.model.data.generatorparams.base
 
 import android.os.Parcel
+import android.support.annotation.CallSuper
 import com.j256.ormlite.field.DatabaseField
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
 import com.stedi.randomimagegenerator.generators.Generator
@@ -38,14 +39,17 @@ abstract class EffectGeneratorParams : GeneratorParams {
             ", target=$target" +
             '}'
 
+    @CallSuper
     override fun equals(other: Any?): Boolean {
         if (!super.equals(other)) return false
         val that = other as EffectGeneratorParams
         return target == that.target
     }
 
+    @CallSuper
     override fun hashCode() = target.hashCode()
 
+    @CallSuper
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)
         dest.writeParcelable(this.target, flags)

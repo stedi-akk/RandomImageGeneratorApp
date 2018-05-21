@@ -80,9 +80,12 @@ fun GeneratorType.nameRes(): Int {
         GeneratorType.COLORED_CIRCLES -> R.string.generator_colored_circles
         GeneratorType.COLORED_RECTANGLE -> R.string.generator_colored_rectangle
         GeneratorType.COLORED_PIXELS -> R.string.generator_colored_pixels
+        GeneratorType.RANDOM_NON_EFFECT -> R.string.generator_random
         GeneratorType.FLAT_COLOR -> R.string.generator_flat_color
         GeneratorType.COLORED_NOISE -> R.string.generator_colored_noise
+        GeneratorType.COLORED_LINES -> R.string.generator_colored_lines
         GeneratorType.MIRRORED -> R.string.effect_mirrored
+        GeneratorType.THRESHOLD -> R.string.effect_threshold
         GeneratorType.TEXT_OVERLAY -> R.string.effect_text_overlay
     }
 }

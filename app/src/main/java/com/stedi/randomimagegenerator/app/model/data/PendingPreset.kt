@@ -7,7 +7,7 @@ import timber.log.Timber
 import javax.inject.Singleton
 
 @Singleton
-class PendingPreset() {
+class PendingPreset {
 
     private var preset: Preset? = null
     private var candidateFrom: Preset? = null
@@ -16,7 +16,7 @@ class PendingPreset() {
     fun newDefaultCandidate() {
         candidateFrom = null
         // name and save path are set in ApplyGenerationPresenterImpl
-        candidate = Preset("", GeneratorParams.createDefaultParams(GeneratorType.COLORED_CIRCLES), Quality.jpg(100), "")
+        candidate = Preset("", GeneratorParams.createRandomDefaultParams(), Quality.png(), "")
                 .apply {
                     setWidth(800)
                     setHeight(800)

@@ -5,11 +5,12 @@ import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredNoiseParams
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ColoredNoiseParamsPresenter
+import com.stedi.randomimagegenerator.app.presenter.interfaces.SimpleIntegerParamsPresenter
 import com.stedi.randomimagegenerator.generators.ColoredNoiseGenerator
 import javax.inject.Inject
 
 class ColoredNoiseParamsPresenterImpl @Inject constructor(
-        private val pendingPreset: PendingPreset) : ColoredNoiseParamsPresenter {
+        private val pendingPreset: PendingPreset) : SimpleIntegerParamsPresenterImpl(pendingPreset), ColoredNoiseParamsPresenter {
 
     private val candidate: Preset
         get() = pendingPreset.getCandidate()
@@ -19,8 +20,9 @@ class ColoredNoiseParamsPresenterImpl @Inject constructor(
 
     private lateinit var params: ColoredNoiseParams
 
-    override fun onAttach(ui: ColoredNoiseParamsPresenter.UIImpl) {
-        this.ui = ui
+    override fun onAttach(ui: SimpleIntegerParamsPresenter.UIImpl) {
+        super.onAttach(ui)
+        this.ui = ui as ColoredNoiseParamsPresenter.UIImpl
         val currentParams = candidate.getGeneratorParams()
         if (currentParams is EffectGeneratorParams) {
             params = currentParams.target as ColoredNoiseParams
@@ -30,10 +32,12 @@ class ColoredNoiseParamsPresenterImpl @Inject constructor(
     }
 
     override fun onDetach() {
+        super.onDetach()
         this.ui = null
     }
 
     override fun getValues() {
+        super.getValues()
         ui?.showOrientation(params.noiseOrientation)
         ui?.showType(params.noiseType)
     }

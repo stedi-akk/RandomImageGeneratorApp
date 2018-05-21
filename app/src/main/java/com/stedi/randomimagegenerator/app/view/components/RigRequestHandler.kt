@@ -2,6 +2,8 @@ package com.stedi.randomimagegenerator.app.view.components
 
 import android.graphics.Bitmap
 import android.graphics.Bitmap.CompressFormat
+import android.graphics.Canvas
+import android.graphics.Paint
 import android.net.Uri
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Request
@@ -10,14 +12,49 @@ import com.stedi.randomimagegenerator.ImageParams
 import com.stedi.randomimagegenerator.Quality
 import com.stedi.randomimagegenerator.Rig
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.RandomParams
+import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams
 import com.stedi.randomimagegenerator.callbacks.GenerateCallback
+import com.stedi.randomimagegenerator.generators.Generator
 import okio.Okio
+import timber.log.Timber
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.lang.Exception
+
+// for thumbnail with 4 generated images
+class FourGenerator(private val target: Generator) : Generator {
+    private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+    override fun generate(imageParams: ImageParams): Bitmap? {
+        val scaledWidth = Math.ceil((imageParams.width / 2f).toDouble()).toInt()
+        val scaledHeight = Math.ceil((imageParams.height / 2f).toDouble()).toInt()
+
+        val parts = arrayOfNulls<Bitmap>(4)
+        for (i in 0..3) {
+            val targetBitmap = target.generate(imageParams) ?: return null
+            parts[i] = Bitmap.createScaledBitmap(targetBitmap, scaledWidth, scaledHeight, true)
+            targetBitmap.recycle()
+        }
+
+        val resultBitmap = Bitmap.createBitmap(imageParams.width, imageParams.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(resultBitmap)
+
+        canvas.drawBitmap(parts[0], 0f, 0f, paint)
+        canvas.drawBitmap(parts[1], imageParams.width / 2f, 0f, paint)
+        canvas.drawBitmap(parts[2], 0f, imageParams.height / 2f, paint)
+        canvas.drawBitmap(parts[3], imageParams.width / 2f, imageParams.height / 2f, paint)
+
+        for (bitmap in parts) {
+            bitmap?.recycle()
+        }
+
+        return resultBitmap
+    }
+}
 
 // showing generated images with Picasso
 class RigRequestHandler : RequestHandler() {
@@ -87,15 +124,26 @@ class RigRequestHandler : RequestHandler() {
 
     private fun generate(generatorParams: GeneratorParams, width: Int, height: Int, quality: Quality): Bitmap? {
         var result: Bitmap? = null
-        Rig.Builder().setGenerator(generatorParams.getGenerator()).setCount(1).setFixedSize(width, height)
-                .setQuality(quality)
+
+        // show 4 images at once if RandomParams is requested
+        var generator = generatorParams.getGenerator()
+        val targetParams = (generatorParams as? EffectGeneratorParams)?.target ?: generatorParams
+        if (targetParams is RandomParams) {
+            generator = FourGenerator(generator)
+        }
+
+        Rig.Builder().setGenerator(generator)
+                .setCount(1).setFixedSize(width, height).setQuality(quality)
                 .setCallback(object : GenerateCallback {
                     override fun onGenerated(imageParams: ImageParams, bitmap: Bitmap) {
                         result = bitmap
                     }
 
-                    override fun onFailedToGenerate(imageParams: ImageParams, e: Exception) {}
+                    override fun onFailedToGenerate(imageParams: ImageParams, e: Exception) {
+                        Timber.e(e)
+                    }
                 }).build().generate()
+
         return result
     }
 

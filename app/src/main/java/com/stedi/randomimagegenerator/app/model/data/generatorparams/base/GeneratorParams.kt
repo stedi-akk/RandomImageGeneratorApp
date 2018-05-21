@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.support.annotation.CallSuper
 import com.j256.ormlite.field.DatabaseField
+import com.stedi.randomimagegenerator.Rig
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.*
 import com.stedi.randomimagegenerator.generators.Generator
@@ -18,29 +19,40 @@ abstract class GeneratorParams : Parcelable {
     constructor()
 
     companion object {
+        const val COLORED_PIXELS_DEFAULT_MULTIPLIER = 10
+        const val COLORED_NOISE_DEFAULT_MULTIPLIER = 4
+
+        fun createRandomDefaultParams(): GeneratorParams {
+            return createDefaultParams(GeneratorType.NON_EFFECT_TYPES.let { it[Rig.random(it.size.toFloat()).toInt()] })
+        }
+
         fun createDefaultParams(type: GeneratorType): GeneratorParams {
             if (type.isEffect) {
                 throw IllegalArgumentException("type must not be effect")
             }
 
             when (type) {
+                GeneratorType.RANDOM_NON_EFFECT -> return RandomParams()
                 GeneratorType.FLAT_COLOR -> return FlatColorParams()
                 GeneratorType.COLORED_PIXELS -> {
                     val pixelsParams = ColoredPixelsParams()
-                    pixelsParams.setValue(10)
+                    pixelsParams.setValue(COLORED_PIXELS_DEFAULT_MULTIPLIER)
                     return pixelsParams
                 }
                 GeneratorType.COLORED_CIRCLES -> {
-                    val circlesParams = ColoredCirclesParams()
-                    circlesParams.setValue(50)
-                    return circlesParams
+                    return ColoredCirclesParams()
+                }
+                GeneratorType.COLORED_LINES -> {
+                    return ColoredLinesParams()
                 }
                 GeneratorType.COLORED_RECTANGLE -> {
-                    val rectangleParams = ColoredRectangleParams()
-                    rectangleParams.setValue(50)
-                    return rectangleParams
+                    return ColoredRectangleParams()
                 }
-                GeneratorType.COLORED_NOISE -> return ColoredNoiseParams()
+                GeneratorType.COLORED_NOISE -> {
+                    val noiseParams = ColoredNoiseParams()
+                    noiseParams.setValue(COLORED_NOISE_DEFAULT_MULTIPLIER)
+                    return noiseParams
+                }
                 else -> throw IllegalStateException("unreachable code")
             }
         }
@@ -52,6 +64,7 @@ abstract class GeneratorParams : Parcelable {
 
             when (effectType) {
                 GeneratorType.MIRRORED -> return MirroredParams(target)
+                GeneratorType.THRESHOLD -> return ThresholdParams(target)
                 GeneratorType.TEXT_OVERLAY -> return TextOverlayParams(target)
                 else -> throw IllegalStateException("unreachable code")
             }

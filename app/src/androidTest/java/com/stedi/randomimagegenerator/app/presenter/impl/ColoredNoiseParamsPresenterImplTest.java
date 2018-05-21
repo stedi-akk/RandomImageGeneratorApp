@@ -5,6 +5,7 @@ import android.support.test.runner.AndroidJUnit4;
 import com.stedi.randomimagegenerator.app.TestUtils;
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset;
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.ColoredNoiseParams;
+import com.stedi.randomimagegenerator.app.presenter.interfaces.ColoredNoiseParamsPresenter;
 import com.stedi.randomimagegenerator.generators.ColoredNoiseGenerator;
 
 import org.junit.Before;
@@ -22,7 +23,7 @@ public class ColoredNoiseParamsPresenterImplTest {
     private ColoredNoiseParamsPresenterImpl presenter;
     private ColoredNoiseParams noiseParams;
 
-    private ColoredNoiseParamsPresenterImpl.UIImpl ui;
+    private ColoredNoiseParamsPresenter.UIImpl ui;
 
     @Before
     public void before() {
@@ -31,7 +32,7 @@ public class ColoredNoiseParamsPresenterImplTest {
         pendingPreset.prepareCandidateFrom(TestUtils.newSimplePreset());
         pendingPreset.getCandidate().setGeneratorParams(noiseParams);
         presenter = new ColoredNoiseParamsPresenterImpl(pendingPreset);
-        ui = mock(ColoredNoiseParamsPresenterImpl.UIImpl.class);
+        ui = mock(ColoredNoiseParamsPresenter.UIImpl.class);
     }
 
     @Test

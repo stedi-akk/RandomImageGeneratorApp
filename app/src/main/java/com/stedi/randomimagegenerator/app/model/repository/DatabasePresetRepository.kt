@@ -20,7 +20,7 @@ class DatabasePresetRepository(@AppContext context: Context) : OrmLiteSqliteOpen
 
     companion object {
         const val DATABASE_NAME = "presets_database"
-        const val DATABASE_VERSION = 2
+        const val DATABASE_VERSION = 3
     }
 
     override fun onCreate(database: SQLiteDatabase, connectionSource: ConnectionSource) {
@@ -36,9 +36,9 @@ class DatabasePresetRepository(@AppContext context: Context) : OrmLiteSqliteOpen
 
     override fun onUpgrade(database: SQLiteDatabase, connectionSource: ConnectionSource, oldVersion: Int, newVersion: Int) {
         if (oldVersion < 2) {
-            // the first version has incorrect fields because of wrong proguard configuration
-            // let the bass drop...
             try {
+                // the first version has incorrect fields because of wrong proguard configuration
+                // let the bass drop...
                 TableUtils.dropTable<Preset, Any>(connectionSource, Preset::class.java, false)
                 for (type in GeneratorType.values()) {
                     @Suppress("UNCHECKED_CAST")
@@ -46,6 +46,21 @@ class DatabasePresetRepository(@AppContext context: Context) : OrmLiteSqliteOpen
                     TableUtils.dropTable<GeneratorParams, Any>(connectionSource, paramsClass, false)
                 }
                 onCreate(database, connectionSource)
+            } catch (e: Exception) {
+                Timber.e(e)
+            }
+        }
+        if (oldVersion < 3) {
+            try {
+                // pixel multiplier for colored noise
+                val dao = getDao<Dao<ColoredNoiseParams, Int>, ColoredNoiseParams>(ColoredNoiseParams::class.java)
+                dao.executeRaw("ALTER TABLE `colored_noise_params` ADD COLUMN integer_value INTEGER DEFAULT ${GeneratorParams.COLORED_NOISE_DEFAULT_MULTIPLIER};")
+                // new colored lines generator
+                TableUtils.createTableIfNotExists(connectionSource, ColoredLinesParams::class.java)
+                // new threshold effect
+                TableUtils.createTableIfNotExists(connectionSource, ThresholdParams::class.java)
+                // new random params
+                TableUtils.createTableIfNotExists(connectionSource, RandomParams::class.java)
             } catch (e: Exception) {
                 Timber.e(e)
             }
@@ -163,12 +178,15 @@ class DatabasePresetRepository(@AppContext context: Context) : OrmLiteSqliteOpen
 
     private fun getGeneratorParamsClassFromType(type: GeneratorType): Class<out GeneratorParams> {
         return when (type) {
+            GeneratorType.RANDOM_NON_EFFECT -> RandomParams::class.java
             GeneratorType.FLAT_COLOR -> FlatColorParams::class.java
             GeneratorType.COLORED_PIXELS -> ColoredPixelsParams::class.java
             GeneratorType.COLORED_CIRCLES -> ColoredCirclesParams::class.java
+            GeneratorType.COLORED_LINES -> ColoredLinesParams::class.java
             GeneratorType.COLORED_RECTANGLE -> ColoredRectangleParams::class.java
             GeneratorType.COLORED_NOISE -> ColoredNoiseParams::class.java
             GeneratorType.MIRRORED -> MirroredParams::class.java
+            GeneratorType.THRESHOLD -> ThresholdParams::class.java
             GeneratorType.TEXT_OVERLAY -> TextOverlayParams::class.java
         }
     }

@@ -1,6 +1,7 @@
 package com.stedi.randomimagegenerator.app.model.data.generatorparams.base
 
 import android.os.Parcel
+import android.support.annotation.CallSuper
 import com.j256.ormlite.field.DatabaseField
 
 abstract class SimpleIntegerParams : GeneratorParams {
@@ -29,14 +30,17 @@ abstract class SimpleIntegerParams : GeneratorParams {
 
     abstract fun canBeRandom(): Boolean
 
+    @CallSuper
     override fun equals(other: Any?): Boolean {
         if (!super.equals(other)) return false
         val that = other as SimpleIntegerParams
         return if (value != null) value == that.value else that.value == null
     }
 
+    @CallSuper
     override fun hashCode() = value?.hashCode() ?: 0
 
+    @CallSuper
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)
         dest.writeValue(this.value)

@@ -60,7 +60,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
         fun newInstance(preset: Preset): GenerationDialog {
             return GenerationDialog().apply {
                 arguments = Bundle().apply {
-                    putParcelable(KEY_PRESET, preset)
+                    putParcelable(KEY_PRESET, preset.makeCopy())
                 }
             }
         }
@@ -101,6 +101,10 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
             setTitle(R.string.please_wait)
             setView(inflateAndBind(R.layout.generation_dialog))
             setPositiveButton(R.string.ok, null)
+            setNegativeButton(R.string.cancel, { _, _ ->
+                bus.post(OnDismissed())
+                presenter.cancelGeneration()
+            })
         }.create().apply {
             setCancelable(false)
             setCanceledOnTouchOutside(false)
@@ -180,6 +184,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
                     tvMessage.text = getString(R.string.generating_image)
                 }
                 (dialog as AlertDialog).getButton(DialogInterface.BUTTON_POSITIVE).visibility = View.GONE
+                (dialog as AlertDialog).getButton(DialogInterface.BUTTON_NEGATIVE).visibility = View.VISIBLE
             }
             State.ERROR, State.FINISH -> {
                 if (currentState == State.ERROR) {
@@ -191,6 +196,7 @@ class GenerationDialog : ButterKnifeDialogFragment(), GenerationPresenter.UIImpl
                 }
                 dialog.setTitle(R.string.generation_results)
                 (dialog as AlertDialog).getButton(DialogInterface.BUTTON_POSITIVE).visibility = View.VISIBLE
+                (dialog as AlertDialog).getButton(DialogInterface.BUTTON_NEGATIVE).visibility = View.GONE
                 progressBar.visibility = View.GONE
                 ivResult.visibility = View.VISIBLE
             }
