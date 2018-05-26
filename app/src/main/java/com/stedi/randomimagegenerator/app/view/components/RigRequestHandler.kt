@@ -66,7 +66,7 @@ class RigRequestHandler : RequestHandler() {
 
         fun makePreviewUri(preset: Preset, width: Int, height: Int): Uri {
             val previewPreset = preset.makeCopy()
-            val uri = Uri.parse("rig:/preview/${previewPreset.hashCode()}?width=$width&height=$height")
+            val uri = Uri.parse("rig:/preview/${previewPreset.hashCode()}_${System.currentTimeMillis()}?width=$width&height=$height")
             previewRequestMap.put(uri, previewPreset)
             return uri
         }

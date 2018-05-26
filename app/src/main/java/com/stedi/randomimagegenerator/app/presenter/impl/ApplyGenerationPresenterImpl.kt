@@ -2,6 +2,7 @@ package com.stedi.randomimagegenerator.app.presenter.impl
 
 import com.squareup.otto.Subscribe
 import com.stedi.randomimagegenerator.app.di.DefaultScheduler
+import com.stedi.randomimagegenerator.app.di.SaveFolder
 import com.stedi.randomimagegenerator.app.di.UiScheduler
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.model.data.Preset
@@ -17,7 +18,7 @@ import javax.inject.Inject
 class ApplyGenerationPresenterImpl @Inject constructor(
         private val pendingPreset: PendingPreset,
         private val presetRepository: PresetRepository,
-        private val generationPath: String,
+        @SaveFolder private val saveFolder: String,
         private val defaultName: String,
         @DefaultScheduler private val subscribeOn: Scheduler,
         @UiScheduler private val observeOn: Scheduler,
@@ -54,7 +55,7 @@ class ApplyGenerationPresenterImpl @Inject constructor(
         val preset = candidate.makeCopy()
         if (pendingPreset.isCandidateNew()) {
             preset.name = defaultName
-            preset.pathToSave = File(generationPath, UNSAVED_FOLDER_NAME).path
+            preset.pathToSave = File(saveFolder, UNSAVED_FOLDER_NAME).path
         }
         return preset
     }
@@ -78,7 +79,7 @@ class ApplyGenerationPresenterImpl @Inject constructor(
             preset.name = name
             preset.timestamp = System.currentTimeMillis()
             presetRepository.save(preset)
-            preset.pathToSave = File(generationPath, preset.id.toString()).path
+            preset.pathToSave = File(saveFolder, preset.id.toString()).path
             presetRepository.save(preset)
         }.subscribeOn(subscribeOn)
                 .observeOn(observeOn)
@@ -99,7 +100,7 @@ class ApplyGenerationPresenterImpl @Inject constructor(
         if (pendingPreset.isCandidateNew() || pendingPreset.isCandidateChanged()) {
             candidate.clearIds()
             candidate.name = defaultName
-            candidate.pathToSave = File(generationPath, UNSAVED_FOLDER_NAME).path
+            candidate.pathToSave = File(saveFolder, UNSAVED_FOLDER_NAME).path
             candidate.timestamp = System.currentTimeMillis()
             pendingPreset.applyCandidate()
         }

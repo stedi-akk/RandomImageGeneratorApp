@@ -12,7 +12,6 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import com.squareup.otto.Subscribe
 import com.stedi.randomimagegenerator.app.R
-import com.stedi.randomimagegenerator.app.di.modules.HomeModule
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.other.LockedBus
 import com.stedi.randomimagegenerator.app.other.dim2px
@@ -31,7 +30,7 @@ class HomeActivityModel : BaseViewModel<HomeActivity>() {
     @Inject lateinit var bus: LockedBus
 
     override fun onCreate(view: HomeActivity) {
-        view.activityComponent.plus(HomeModule()).inject(this)
+        view.activityComponent.inject(this)
     }
 
     override fun onCleared() {

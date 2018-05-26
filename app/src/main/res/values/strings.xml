@@ -88,4 +88,5 @@
     <string name="type_6">Type 6</string>
     <string name="s_permission_required">%s permission is required</string>
     <string name="storage_s">/Storage%s</string>
+    <string name="preview">Preview</string>
 </resources>

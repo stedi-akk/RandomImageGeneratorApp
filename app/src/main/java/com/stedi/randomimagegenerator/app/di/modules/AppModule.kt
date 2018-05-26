@@ -1,9 +1,11 @@
 package com.stedi.randomimagegenerator.app.di.modules
 
 import android.content.Context
+import android.os.Environment
 import com.stedi.randomimagegenerator.app.App
 import com.stedi.randomimagegenerator.app.di.AppContext
 import com.stedi.randomimagegenerator.app.di.DefaultScheduler
+import com.stedi.randomimagegenerator.app.di.SaveFolder
 import com.stedi.randomimagegenerator.app.di.UiScheduler
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.other.LockedBus
@@ -37,4 +39,9 @@ class AppModule(private val app: App) {
     @Provides
     @Singleton
     fun providePendingPreset() = PendingPreset()
+
+    @Provides
+    @Singleton
+    @SaveFolder
+    fun provideSaveFolder(): String = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).resolve("RIG").path
 }
