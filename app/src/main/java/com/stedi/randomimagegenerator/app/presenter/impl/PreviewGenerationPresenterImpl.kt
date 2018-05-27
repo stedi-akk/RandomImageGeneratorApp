@@ -9,8 +9,12 @@ import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.other.LockedBus
 import com.stedi.randomimagegenerator.app.presenter.interfaces.PreviewGenerationPresenter
+import rx.Completable
 import rx.Scheduler
 import timber.log.Timber
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import javax.inject.Inject
 
 class PreviewGenerationPresenterImpl @Inject constructor(
@@ -21,6 +25,7 @@ class PreviewGenerationPresenterImpl @Inject constructor(
         private val bus: LockedBus) : PreviewGenerationPresenter {
 
     private val PREVIEW_FOLDER_NAME = "PREVIEW"
+    private val PREVIEW_FILE_NAME_FORMAT = "rig_preview_%d.%s"
 
     private val candidate: Preset
         get() = pendingPreset.getCandidate()
@@ -56,7 +61,28 @@ class PreviewGenerationPresenterImpl @Inject constructor(
             return
         }
         saveInProgress = true
-        // TODO
+
+        val folderToSave = File(saveFolder, PREVIEW_FOLDER_NAME)
+        val fileName = String.format(PREVIEW_FILE_NAME_FORMAT, System.currentTimeMillis(), candidate.getQuality().fileExtension)
+        val compressFormat = candidate.getQuality().format
+
+        Completable.fromCallable {
+            if (!folderToSave.exists() && !folderToSave.mkdirs()) {
+                throw IOException("preview path is not valid")
+            }
+            FileOutputStream(File(folderToSave.path, fileName)).use {
+                // bitmap should be already compressed, therefore the passed quality is 100
+                if (!bitmap.compress(compressFormat, 100, it)) {
+                    throw IOException("failed to save preview bitmap")
+                }
+            }
+        }.subscribeOn(subscribeOn)
+                .observeOn(observeOn)
+                .subscribe({
+                    bus.post(ImageSaveEvent())
+                }, { t ->
+                    bus.post(ImageSaveEvent(t))
+                })
     }
 
     @Subscribe

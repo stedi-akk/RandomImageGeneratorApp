@@ -1,16 +1,19 @@
 package com.stedi.randomimagegenerator.app.view.activity
 
 import android.arch.lifecycle.ViewModelProviders
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import butterknife.BindView
 import butterknife.ButterKnife
+import butterknife.OnClick
 import com.squareup.picasso.Callback
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.model.data.Preset
+import com.stedi.randomimagegenerator.app.other.showToast
 import com.stedi.randomimagegenerator.app.presenter.interfaces.PreviewGenerationPresenter
 import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity
 import com.stedi.randomimagegenerator.app.view.components.BaseViewModel
@@ -30,12 +33,12 @@ class PreviewActivityModel : BaseViewModel<PreviewActivity>() {
     }
 }
 
-class PreviewActivity : BaseActivity(), View.OnClickListener, PreviewGenerationPresenter.UIImpl {
-
+class PreviewActivity : BaseActivity(), PreviewGenerationPresenter.UIImpl {
     private lateinit var viewModel: PreviewActivityModel
 
     @BindView(R.id.preview_activity_image) lateinit var imageView: ImageView
     @BindView(R.id.preview_activity_progress) lateinit var progressView: View
+    @BindView(R.id.preview_activity_btn_save) lateinit var btnSave: View
 
     private lateinit var preset: Preset
 
@@ -47,8 +50,7 @@ class PreviewActivity : BaseActivity(), View.OnClickListener, PreviewGenerationP
 
         setContentView(R.layout.preview_activity)
         ButterKnife.bind(this)
-
-        imageView.setOnClickListener(this)
+        btnSave.visibility = View.GONE
         showProgressBar(false)
 
         viewModel.presenter.onAttach(this)
@@ -59,22 +61,28 @@ class PreviewActivity : BaseActivity(), View.OnClickListener, PreviewGenerationP
         }
     }
 
-    override fun onClick(v: View?) {
+    @OnClick(R.id.preview_activity_image)
+    fun onImageClick(v: View) {
         generateNewPreviewImage()
+    }
+
+    @OnClick(R.id.preview_activity_btn_save)
+    fun onSaveClick(v: View) {
+        viewModel.presenter.saveImage((imageView.drawable as BitmapDrawable).bitmap)
+    }
+
+    override fun onImageSaved() {
+        showToast(R.string.saved)
+    }
+
+    override fun onImageFailedToSave() {
+        showToast(R.string.failed_to_save)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         viewModel.presenter.onDetach()
         Picasso.get().cancelRequest(imageView)
-    }
-
-    override fun onImageSaved() {
-        // TODO
-    }
-
-    override fun onImageFailedToSave() {
-        // TODO
     }
 
     private fun generateNewPreviewImage() {
@@ -85,6 +93,7 @@ class PreviewActivity : BaseActivity(), View.OnClickListener, PreviewGenerationP
                 .noPlaceholder()
                 .into(imageView, object : Callback.EmptyCallback() {
                     override fun onSuccess() {
+                        btnSave.visibility = View.VISIBLE
                         showProgressBar(false)
                     }
                 })

@@ -89,4 +89,7 @@
     <string name="s_permission_required">%s permission is required</string>
     <string name="storage_s">/Storage%s</string>
     <string name="preview">Preview</string>
+    <string name="saved">Successfully saved</string>
+    <string name="failed_to_save">Failed to save</string>
+    <string name="preview_info">The preview does not take the specified dimensions into account</string>
 </resources>
