@@ -70,6 +70,7 @@
         android:gravity="center"
         android:text="@string/preview_info"
         android:textColor="@color/gray_medium"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />

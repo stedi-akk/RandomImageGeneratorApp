@@ -15,7 +15,7 @@ import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.other.LockedBus
 import com.stedi.randomimagegenerator.app.other.dim2px
-import com.stedi.randomimagegenerator.app.other.showToast
+import com.stedi.randomimagegenerator.app.other.showToastLong
 import com.stedi.randomimagegenerator.app.presenter.interfaces.HomePresenter
 import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity
 import com.stedi.randomimagegenerator.app.view.adapters.PresetsAdapter
@@ -126,7 +126,7 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
     }
 
     override fun onFailedToFetchPresets() {
-        showToast(R.string.failed_fetch_presets)
+        showToastLong(R.string.failed_fetch_presets)
         refreshEmptyView()
     }
 
@@ -142,7 +142,7 @@ class HomeActivity : BaseActivity(), HomePresenter.UIImpl, PresetsAdapter.ClickL
     }
 
     override fun onFailedToDeletePreset() {
-        showToast(R.string.failed_delete_preset)
+        showToastLong(R.string.failed_delete_preset)
     }
 
     override fun showConfirmGeneratePreset(preset: Preset) {

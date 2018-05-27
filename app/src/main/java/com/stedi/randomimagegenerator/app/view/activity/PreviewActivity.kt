@@ -13,7 +13,8 @@ import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.model.data.Preset
-import com.stedi.randomimagegenerator.app.other.showToast
+import com.stedi.randomimagegenerator.app.other.showToastLong
+import com.stedi.randomimagegenerator.app.other.showToastShort
 import com.stedi.randomimagegenerator.app.presenter.interfaces.PreviewGenerationPresenter
 import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity
 import com.stedi.randomimagegenerator.app.view.components.BaseViewModel
@@ -72,11 +73,11 @@ class PreviewActivity : BaseActivity(), PreviewGenerationPresenter.UIImpl {
     }
 
     override fun onImageSaved() {
-        showToast(R.string.saved)
+        showToastShort(R.string.saved)
     }
 
     override fun onImageFailedToSave() {
-        showToast(R.string.failed_to_save)
+        showToastLong(R.string.failed_to_save)
     }
 
     override fun onDestroy() {

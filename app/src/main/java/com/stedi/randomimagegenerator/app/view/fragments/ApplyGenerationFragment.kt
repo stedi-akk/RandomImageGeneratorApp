@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import butterknife.BindView
 import butterknife.OnClick
 import com.squareup.otto.Subscribe
@@ -22,7 +21,7 @@ import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.Simple
 import com.stedi.randomimagegenerator.app.other.LockedBus
 import com.stedi.randomimagegenerator.app.other.formatTime
 import com.stedi.randomimagegenerator.app.other.nameRes
-import com.stedi.randomimagegenerator.app.other.showToast
+import com.stedi.randomimagegenerator.app.other.showToastLong
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter
 import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity
 import com.stedi.randomimagegenerator.app.view.components.BaseViewModel
@@ -106,7 +105,7 @@ class ApplyGenerationFragment : GenerationFragment(), ApplyGenerationPresenter.U
     }
 
     override fun failedToSavePreset() {
-        activity?.showToast(R.string.failed_save_preset, Toast.LENGTH_LONG)
+        activity?.showToastLong(R.string.failed_save_preset)
     }
 
     override fun showGenerationDialog(preset: Preset) {

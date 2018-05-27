@@ -8,10 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.Toast
 import butterknife.BindView
 import com.stedi.randomimagegenerator.app.R
-import com.stedi.randomimagegenerator.app.other.showToast
+import com.stedi.randomimagegenerator.app.other.showToastLong
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSizeAndCountPresenter
 import com.stedi.randomimagegenerator.app.view.components.BaseViewModel
 import com.stedi.randomimagegenerator.app.view.fragments.base.GenerationFragment
@@ -212,7 +211,7 @@ class ChooseSizeAndCountFragment : GenerationFragment(),
     }
 
     override fun onError(error: VerificationError) {
-        context?.showToast(error.errorMessage, Toast.LENGTH_LONG)
+        context?.showToastLong(error.errorMessage)
     }
 
     override fun onDestroy() {
