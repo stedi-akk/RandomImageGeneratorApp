@@ -9,6 +9,7 @@ import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.model.repository.PresetRepository
 import com.stedi.randomimagegenerator.app.other.LockedBus
 import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter
+import com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter.Companion.UNSAVED_FOLDER_NAME
 import rx.Completable
 import rx.Scheduler
 import timber.log.Timber
@@ -23,8 +24,6 @@ class ApplyGenerationPresenterImpl @Inject constructor(
         @DefaultScheduler private val subscribeOn: Scheduler,
         @UiScheduler private val observeOn: Scheduler,
         private val bus: LockedBus) : ApplyGenerationPresenter {
-
-    private val UNSAVED_FOLDER_NAME = "0"
 
     private val candidate: Preset
         get() = pendingPreset.getCandidate()

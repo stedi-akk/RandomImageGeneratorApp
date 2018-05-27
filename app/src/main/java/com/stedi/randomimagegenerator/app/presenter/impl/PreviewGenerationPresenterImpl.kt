@@ -9,8 +9,10 @@ import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.other.LockedBus
 import com.stedi.randomimagegenerator.app.presenter.interfaces.PreviewGenerationPresenter
-import rx.Completable
+import com.stedi.randomimagegenerator.app.presenter.interfaces.PreviewGenerationPresenter.Companion.PREVIEW_FILE_NAME_FORMAT
+import com.stedi.randomimagegenerator.app.presenter.interfaces.PreviewGenerationPresenter.Companion.PREVIEW_FOLDER_NAME
 import rx.Scheduler
+import rx.Single
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
@@ -24,9 +26,6 @@ class PreviewGenerationPresenterImpl @Inject constructor(
         @UiScheduler private val observeOn: Scheduler,
         private val bus: LockedBus) : PreviewGenerationPresenter {
 
-    private val PREVIEW_FOLDER_NAME = "PREVIEW"
-    private val PREVIEW_FILE_NAME_FORMAT = "rig_preview_%d.%s"
-
     private val candidate: Preset
         get() = pendingPreset.getCandidate()
                 ?: throw IllegalStateException("pending preset candidate must not be null")
@@ -34,7 +33,7 @@ class PreviewGenerationPresenterImpl @Inject constructor(
     private var ui: PreviewGenerationPresenter.UIImpl? = null
     private var saveInProgress: Boolean = false
 
-    class ImageSaveEvent(val throwable: Throwable? = null)
+    class ImageSaveEvent(val file: File? = null, val throwable: Throwable? = null)
 
     init {
         bus.register(this)
@@ -66,22 +65,24 @@ class PreviewGenerationPresenterImpl @Inject constructor(
         val fileName = String.format(PREVIEW_FILE_NAME_FORMAT, System.currentTimeMillis(), candidate.getQuality().fileExtension)
         val compressFormat = candidate.getQuality().format
 
-        Completable.fromCallable {
+        Single.fromCallable {
             if (!folderToSave.exists() && !folderToSave.mkdirs()) {
                 throw IOException("preview path is not valid")
             }
-            FileOutputStream(File(folderToSave.path, fileName)).use {
+            val file = File(folderToSave.path, fileName)
+            FileOutputStream(file).use {
                 // bitmap should be already compressed, therefore the passed quality is 100
                 if (!bitmap.compress(compressFormat, 100, it)) {
                     throw IOException("failed to save preview bitmap")
                 }
             }
+            return@fromCallable file
         }.subscribeOn(subscribeOn)
                 .observeOn(observeOn)
                 .subscribe({
-                    bus.post(ImageSaveEvent())
+                    bus.post(ImageSaveEvent(file = it))
                 }, { t ->
-                    bus.post(ImageSaveEvent(t))
+                    bus.post(ImageSaveEvent(throwable = t))
                 })
     }
 
@@ -93,6 +94,6 @@ class PreviewGenerationPresenterImpl @Inject constructor(
         event.throwable?.apply {
             Timber.e(this)
             ui?.onImageFailedToSave()
-        } ?: ui?.onImageSaved()
+        } ?: ui?.onImageSaved(event.file!!)
     }
 }

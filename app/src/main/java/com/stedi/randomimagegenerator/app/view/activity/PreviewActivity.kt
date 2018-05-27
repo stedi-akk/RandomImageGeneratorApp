@@ -3,6 +3,7 @@ package com.stedi.randomimagegenerator.app.view.activity
 import android.arch.lifecycle.ViewModelProviders
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.os.Environment
 import android.view.View
 import android.widget.ImageView
 import butterknife.BindView
@@ -19,6 +20,7 @@ import com.stedi.randomimagegenerator.app.presenter.interfaces.PreviewGeneration
 import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity
 import com.stedi.randomimagegenerator.app.view.components.BaseViewModel
 import com.stedi.randomimagegenerator.app.view.components.RigRequestHandler
+import java.io.File
 import javax.inject.Inject
 
 class PreviewActivityModel : BaseViewModel<PreviewActivity>() {
@@ -72,8 +74,9 @@ class PreviewActivity : BaseActivity(), PreviewGenerationPresenter.UIImpl {
         viewModel.presenter.saveImage((imageView.drawable as BitmapDrawable).bitmap)
     }
 
-    override fun onImageSaved() {
-        showToastShort(R.string.saved)
+    override fun onImageSaved(file: File) {
+        val storageDir = Environment.getExternalStorageDirectory()
+        showToastLong(getString(R.string.saved_into, getString(R.string.storage_s, file.parent.removePrefix(storageDir.absolutePath))))
     }
 
     override fun onImageFailedToSave() {

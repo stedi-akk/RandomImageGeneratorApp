@@ -6,6 +6,10 @@ import com.stedi.randomimagegenerator.app.presenter.interfaces.core.UI
 
 interface ApplyGenerationPresenter : Presenter<ApplyGenerationPresenter.UIImpl> {
 
+    companion object {
+        const val UNSAVED_FOLDER_NAME = "0"
+    }
+
     fun getPreset(): Preset
 
     fun isPresetNew(): Boolean
