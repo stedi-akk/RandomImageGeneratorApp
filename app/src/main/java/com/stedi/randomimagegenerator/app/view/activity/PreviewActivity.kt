@@ -4,6 +4,10 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import butterknife.BindView
+import butterknife.ButterKnife
+import com.squareup.picasso.Callback
+import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.model.data.Preset
@@ -29,7 +33,10 @@ class PreviewActivityModel : BaseViewModel<PreviewActivity>() {
 class PreviewActivity : BaseActivity(), View.OnClickListener, PreviewGenerationPresenter.UIImpl {
 
     private lateinit var viewModel: PreviewActivityModel
-    private lateinit var imageView: ImageView
+
+    @BindView(R.id.preview_activity_image) lateinit var imageView: ImageView
+    @BindView(R.id.preview_activity_progress) lateinit var progressView: View
+
     private lateinit var preset: Preset
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,24 +46,27 @@ class PreviewActivity : BaseActivity(), View.OnClickListener, PreviewGenerationP
         viewModel.init(this)
 
         setContentView(R.layout.preview_activity)
-        imageView = findViewById(R.id.preview_activity_image)
+        ButterKnife.bind(this)
+
         imageView.setOnClickListener(this)
+        showProgressBar(false)
 
         viewModel.presenter.onAttach(this)
         preset = viewModel.presenter.getPreset()
 
         imageView.post {
-            showNewPreviewImage()
+            generateNewPreviewImage()
         }
     }
 
     override fun onClick(v: View?) {
-        showNewPreviewImage()
+        generateNewPreviewImage()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         viewModel.presenter.onDetach()
+        Picasso.get().cancelRequest(imageView)
     }
 
     override fun onImageSaved() {
@@ -67,7 +77,22 @@ class PreviewActivity : BaseActivity(), View.OnClickListener, PreviewGenerationP
         // TODO
     }
 
-    private fun showNewPreviewImage() {
-        Picasso.get().load(RigRequestHandler.makePreviewUri(preset, imageView.width, imageView.width)).into(imageView)
+    private fun generateNewPreviewImage() {
+        val imageSize = Math.min(imageView.width, imageView.height)
+        showProgressBar(true)
+        Picasso.get().load(RigRequestHandler.makePreviewUri(preset, imageSize, imageSize))
+                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                .noPlaceholder()
+                .into(imageView, object : Callback.EmptyCallback() {
+                    override fun onSuccess() {
+                        showProgressBar(false)
+                    }
+                })
+    }
+
+    private fun showProgressBar(show: Boolean) {
+        imageView.isClickable = !show
+        imageView.isFocusable = !show
+        progressView.visibility = if (show) View.VISIBLE else View.GONE
     }
 }
