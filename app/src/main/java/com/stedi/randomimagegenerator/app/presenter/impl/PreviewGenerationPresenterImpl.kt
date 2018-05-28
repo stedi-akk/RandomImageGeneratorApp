@@ -69,13 +69,13 @@ class PreviewGenerationPresenterImpl @Inject constructor(
 
         Single.fromCallable {
             if (!folderToSave.exists() && !folderToSave.mkdirs()) {
-                throw IOException("preview path is not valid")
+                throw IOException("preview path ($folderToSave) is not valid")
             }
             val file = File(folderToSave.path, fileName)
             FileOutputStream(file).use {
                 // bitmap should be already compressed, therefore the passed quality is 100
                 if (!bitmap.compressProxy(compressFormat, 100, it)) {
-                    throw IOException("failed to save preview bitmap")
+                    throw IOException("failed to save preview bitmap into $it")
                 }
             }
             return@fromCallable file

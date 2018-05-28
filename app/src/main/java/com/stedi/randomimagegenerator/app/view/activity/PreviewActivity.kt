@@ -1,5 +1,6 @@
 package com.stedi.randomimagegenerator.app.view.activity
 
+import android.Manifest
 import android.arch.lifecycle.ViewModelProviders
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
@@ -9,11 +10,13 @@ import android.widget.ImageView
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.squareup.otto.Subscribe
 import com.squareup.picasso.Callback
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.model.data.Preset
+import com.stedi.randomimagegenerator.app.other.LockedBus
 import com.stedi.randomimagegenerator.app.other.showToastLong
 import com.stedi.randomimagegenerator.app.presenter.interfaces.PreviewGenerationPresenter
 import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity
@@ -24,6 +27,7 @@ import javax.inject.Inject
 
 class PreviewActivityModel : BaseViewModel<PreviewActivity>() {
     @Inject lateinit var presenter: PreviewGenerationPresenter
+    @Inject lateinit var bus: LockedBus
 
     override fun onCreate(view: PreviewActivity) {
         view.activityComponent.inject(this)
@@ -36,6 +40,8 @@ class PreviewActivityModel : BaseViewModel<PreviewActivity>() {
 }
 
 class PreviewActivity : BaseActivity(), PreviewGenerationPresenter.UIImpl {
+    private val REQUEST_CODE_WRITE_EXTERNAL = 123
+
     private lateinit var viewModel: PreviewActivityModel
 
     @BindView(R.id.preview_activity_image) lateinit var imageView: ImageView
@@ -56,6 +62,7 @@ class PreviewActivity : BaseActivity(), PreviewGenerationPresenter.UIImpl {
         showProgressBar(false)
 
         viewModel.presenter.onAttach(this)
+        viewModel.bus.register(this)
         preset = viewModel.presenter.getPreset()
 
         imageView.post {
@@ -70,7 +77,16 @@ class PreviewActivity : BaseActivity(), PreviewGenerationPresenter.UIImpl {
 
     @OnClick(R.id.preview_activity_btn_save)
     fun onSaveClick(v: View) {
-        viewModel.presenter.saveImage((imageView.drawable as BitmapDrawable).bitmap)
+        if (checkForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_CODE_WRITE_EXTERNAL)) {
+            saveGeneratedPreviewImage()
+        }
+    }
+
+    @Subscribe
+    fun onPermissionEvent(event: BaseActivity.PermissionEvent) {
+        if (event.requestCode == REQUEST_CODE_WRITE_EXTERNAL && event.isGranted) {
+            saveGeneratedPreviewImage()
+        }
     }
 
     override fun onImageSaved(file: File) {
@@ -84,8 +100,15 @@ class PreviewActivity : BaseActivity(), PreviewGenerationPresenter.UIImpl {
 
     override fun onDestroy() {
         super.onDestroy()
+        viewModel.bus.unregister(this)
         viewModel.presenter.onDetach()
         Picasso.get().cancelRequest(imageView)
+    }
+
+    private fun saveGeneratedPreviewImage() {
+        if (!isGeneratingNewPreviewImage()) {
+            viewModel.presenter.saveImage((imageView.drawable as BitmapDrawable).bitmap)
+        }
     }
 
     private fun generateNewPreviewImage() {
@@ -101,6 +124,8 @@ class PreviewActivity : BaseActivity(), PreviewGenerationPresenter.UIImpl {
                     }
                 })
     }
+
+    private fun isGeneratingNewPreviewImage() = progressView.visibility == View.VISIBLE
 
     private fun showProgressBar(show: Boolean) {
         imageView.isClickable = !show
