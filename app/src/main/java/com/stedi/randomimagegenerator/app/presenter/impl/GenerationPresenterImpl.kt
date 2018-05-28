@@ -166,7 +166,7 @@ class GenerationPresenterImpl @Inject constructor(
 
     @Subscribe
     fun onGenerationResult(result: GenerationResult) {
-        ui?.onResult(result.generatedCount, result.failedCount) ?: let { cancelGeneration() }
+        ui?.onResult(result.generatedCount, result.failedCount) ?: cancelGeneration()
     }
 
     @Subscribe
