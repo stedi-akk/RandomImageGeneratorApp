@@ -8,6 +8,7 @@ import com.stedi.randomimagegenerator.app.di.UiScheduler
 import com.stedi.randomimagegenerator.app.model.data.PendingPreset
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.other.LockedBus
+import com.stedi.randomimagegenerator.app.other.compressProxy
 import com.stedi.randomimagegenerator.app.presenter.interfaces.PreviewGenerationPresenter
 import com.stedi.randomimagegenerator.app.presenter.interfaces.PreviewGenerationPresenter.Companion.PREVIEW_FILE_NAME_FORMAT
 import com.stedi.randomimagegenerator.app.presenter.interfaces.PreviewGenerationPresenter.Companion.PREVIEW_FOLDER_NAME
@@ -73,7 +74,7 @@ class PreviewGenerationPresenterImpl @Inject constructor(
             val file = File(folderToSave.path, fileName)
             FileOutputStream(file).use {
                 // bitmap should be already compressed, therefore the passed quality is 100
-                if (!bitmap.compress(compressFormat, 100, it)) {
+                if (!bitmap.compressProxy(compressFormat, 100, it)) {
                     throw IOException("failed to save preview bitmap")
                 }
             }

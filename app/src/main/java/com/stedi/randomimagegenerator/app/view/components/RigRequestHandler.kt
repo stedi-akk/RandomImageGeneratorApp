@@ -14,6 +14,7 @@ import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.RandomParams
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams
+import com.stedi.randomimagegenerator.app.other.compressProxy
 import com.stedi.randomimagegenerator.app.presenter.impl.generateBitmap
 import com.stedi.randomimagegenerator.generators.Generator
 import okio.Okio
@@ -143,7 +144,7 @@ class RigRequestHandler : RequestHandler() {
 
     private fun toInputStream(bitmap: Bitmap, format: Bitmap.CompressFormat, quality: Int): InputStream {
         val bos = ByteArrayOutputStream()
-        bitmap.compress(format, quality, bos)
+        bitmap.compressProxy(format, quality, bos)
         return ByteArrayInputStream(bos.toByteArray())
     }
 }
