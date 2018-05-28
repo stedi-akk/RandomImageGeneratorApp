@@ -19,6 +19,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 import javax.inject.Inject
 
+// actual generation should be performed with GenerationPresenterImpl
 class PreviewGenerationPresenterImpl @Inject constructor(
         private val pendingPreset: PendingPreset,
         @SaveFolder private val saveFolder: String,

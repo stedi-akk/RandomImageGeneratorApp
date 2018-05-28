@@ -15,7 +15,6 @@ import com.squareup.picasso.Picasso
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.other.showToastLong
-import com.stedi.randomimagegenerator.app.other.showToastShort
 import com.stedi.randomimagegenerator.app.presenter.interfaces.PreviewGenerationPresenter
 import com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity
 import com.stedi.randomimagegenerator.app.view.components.BaseViewModel

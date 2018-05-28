@@ -9,22 +9,19 @@ import com.squareup.picasso.Request
 import com.squareup.picasso.RequestHandler
 import com.stedi.randomimagegenerator.ImageParams
 import com.stedi.randomimagegenerator.Quality
-import com.stedi.randomimagegenerator.Rig
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.RandomParams
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams
-import com.stedi.randomimagegenerator.callbacks.GenerateCallback
+import com.stedi.randomimagegenerator.app.presenter.impl.generateBitmap
 import com.stedi.randomimagegenerator.generators.Generator
 import okio.Okio
 import okio.Source
-import timber.log.Timber
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
-import java.lang.Exception
 import java.util.concurrent.ConcurrentHashMap
 
 // for thumbnail with 4 generated images
@@ -142,24 +139,6 @@ class RigRequestHandler : RequestHandler() {
 
     private fun generatePreviewBitmap(preset: Preset, width: Int, height: Int): Bitmap? {
         return generateBitmap(preset.getGeneratorParams().getGenerator(), width, height, preset.getQuality())
-    }
-
-    private fun generateBitmap(generator: Generator, width: Int, height: Int, quality: Quality): Bitmap? {
-        var result: Bitmap? = null
-
-        Rig.Builder().setGenerator(generator)
-                .setCount(1).setFixedSize(width, height).setQuality(quality)
-                .setCallback(object : GenerateCallback {
-                    override fun onGenerated(imageParams: ImageParams, bitmap: Bitmap) {
-                        result = bitmap
-                    }
-
-                    override fun onFailedToGenerate(imageParams: ImageParams, e: Exception) {
-                        Timber.e(e)
-                    }
-                }).build().generate()
-
-        return result
     }
 
     private fun toInputStream(bitmap: Bitmap, format: Bitmap.CompressFormat, quality: Int): InputStream {
