@@ -1,30 +1,25 @@
 package com.stedi.randomimagegenerator.app.presenter.interfaces
 
+import android.graphics.Bitmap
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.presenter.interfaces.core.Presenter
 import com.stedi.randomimagegenerator.app.presenter.interfaces.core.UI
+import java.io.File
 
-interface ApplyGenerationPresenter : Presenter<ApplyGenerationPresenter.UIImpl> {
+interface PreviewGenerationPresenter : Presenter<PreviewGenerationPresenter.UIImpl> {
 
     companion object {
-        const val UNSAVED_FOLDER_NAME = "0"
+        const val PREVIEW_FOLDER_NAME = "PREVIEW"
+        const val PREVIEW_FILE_NAME_FORMAT = "rig_preview_%d.%s"
     }
 
     fun getPreset(): Preset
 
-    fun isPresetNew(): Boolean
-
-    fun isPresetChanged(): Boolean
-
-    fun savePreset(name: String)
-
-    fun startGeneration()
+    fun saveImage(bitmap: Bitmap)
 
     interface UIImpl : UI {
-        fun onPresetSaved()
+        fun onImageSaved(file: File)
 
-        fun failedToSavePreset()
-
-        fun showGenerationDialog(preset: Preset)
+        fun onImageFailedToSave()
     }
 }

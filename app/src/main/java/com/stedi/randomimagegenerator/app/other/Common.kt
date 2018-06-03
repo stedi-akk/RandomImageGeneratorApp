@@ -28,12 +28,20 @@ fun Context.dp2px(dp: Float): Float {
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics)
 }
 
-fun Context.showToast(@StringRes id: Int, duration: Int = Toast.LENGTH_LONG) {
-    showToast(resources.getString(id), duration)
+fun Context.showToastLong(@StringRes id: Int) {
+    Toast.makeText(this, id, Toast.LENGTH_LONG).show()
 }
 
-fun Context.showToast(message: String, duration: Int = Toast.LENGTH_LONG) {
-    Toast.makeText(this, message, duration).show()
+fun Context.showToastShort(@StringRes id: Int) {
+    Toast.makeText(this, id, Toast.LENGTH_SHORT).show()
+}
+
+fun Context.showToastLong(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+}
+
+fun Context.showToastShort(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }
 
 fun Activity.hideInput() {

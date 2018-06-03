@@ -64,7 +64,7 @@ class GeneratorTypeAdapter(
         holder.btnEdit.visibility = if (type.isEditable && type === selectedType) View.VISIBLE else View.INVISIBLE
         holder.isSelected.visibility = if (type === selectedType) View.VISIBLE else View.INVISIBLE
 
-        Picasso.get().load(RigRequestHandler.makeUri(type, targetType, imageSize, imageSize))
+        Picasso.get().load(RigRequestHandler.makeThumbnailUri(type, targetType, imageSize, imageSize))
                 .placeholder(context.resources.getDrawable(R.drawable.ic_texture_rig))
                 .into(holder.image)
 

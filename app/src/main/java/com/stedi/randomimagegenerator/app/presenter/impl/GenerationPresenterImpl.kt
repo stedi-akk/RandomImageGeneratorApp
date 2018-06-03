@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import com.squareup.otto.Subscribe
 import com.stedi.randomimagegenerator.DefaultFileNamePolicy
 import com.stedi.randomimagegenerator.ImageParams
+import com.stedi.randomimagegenerator.Quality
 import com.stedi.randomimagegenerator.Rig
 import com.stedi.randomimagegenerator.app.di.DefaultScheduler
 import com.stedi.randomimagegenerator.app.di.UiScheduler
@@ -12,6 +13,7 @@ import com.stedi.randomimagegenerator.app.other.LockedBus
 import com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationPresenter
 import com.stedi.randomimagegenerator.callbacks.GenerateCallback
 import com.stedi.randomimagegenerator.callbacks.SaveCallback
+import com.stedi.randomimagegenerator.generators.Generator
 import rx.Emitter
 import rx.Observable
 import rx.Scheduler
@@ -164,7 +166,7 @@ class GenerationPresenterImpl @Inject constructor(
 
     @Subscribe
     fun onGenerationResult(result: GenerationResult) {
-        ui?.onResult(result.generatedCount, result.failedCount) ?: let { cancelGeneration() }
+        ui?.onResult(result.generatedCount, result.failedCount) ?: cancelGeneration()
     }
 
     @Subscribe
@@ -184,4 +186,23 @@ class GenerationPresenterImpl @Inject constructor(
         }
         return false
     }
+}
+
+// simple one-shot generation
+fun generateBitmap(generator: Generator, width: Int, height: Int, quality: Quality): Bitmap? {
+    var result: Bitmap? = null
+
+    Rig.Builder().setGenerator(generator)
+            .setCount(1).setFixedSize(width, height).setQuality(quality)
+            .setCallback(object : GenerateCallback {
+                override fun onGenerated(imageParams: ImageParams, bitmap: Bitmap) {
+                    result = bitmap
+                }
+
+                override fun onFailedToGenerate(imageParams: ImageParams, e: java.lang.Exception) {
+                    Timber.e(e)
+                }
+            }).build().generate()
+
+    return result
 }
