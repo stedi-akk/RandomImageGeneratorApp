@@ -230,7 +230,7 @@ android.arch.lifecycle.LifecycleDispatcher -> android.arch.lifecycle.f:
     void <clinit>() -> <clinit>
 android.arch.lifecycle.LifecycleDispatcher$DestructionReportFragment -> android.arch.lifecycle.f$a:
     void <init>() -> <init>
-    void onPause() -> o_
+    void onPause() -> p_
     void onStop() -> d
     void onDestroy() -> a
     void dispatch(android.arch.lifecycle.Lifecycle$Event) -> a
@@ -693,13 +693,16 @@ android.support.constraint.ConstraintSet$Constraint -> android.support.constrain
     void applyTo(android.support.constraint.ConstraintLayout$LayoutParams) -> a
     java.lang.Object clone() -> clone
     void <init>(android.support.constraint.ConstraintSet$1) -> <init>
-android.support.constraint.Guideline -> android.support.constraint.b:
+android.support.constraint.Guideline -> android.support.constraint.Guideline:
     void <init>(android.content.Context) -> <init>
+    void <init>(android.content.Context,android.util.AttributeSet) -> <init>
+    void <init>(android.content.Context,android.util.AttributeSet,int) -> <init>
+    void <init>(android.content.Context,android.util.AttributeSet,int,int) -> <init>
     void setVisibility(int) -> setVisibility
     void draw(android.graphics.Canvas) -> draw
     void onMeasure(int,int) -> onMeasure
-android.support.constraint.R -> android.support.constraint.c:
-android.support.constraint.R$styleable -> android.support.constraint.c$a:
+android.support.constraint.R -> android.support.constraint.b:
+android.support.constraint.R$styleable -> android.support.constraint.b$a:
     int[] ConstraintLayout_Layout -> ConstraintLayout_Layout
     int ConstraintLayout_Layout_android_orientation -> ConstraintLayout_Layout_android_orientation
     int ConstraintLayout_Layout_android_maxWidth -> ConstraintLayout_Layout_android_maxWidth
@@ -6014,7 +6017,7 @@ android.support.v4.app.Fragment -> android.support.v4.app.i:
     void onMultiWindowModeChanged(boolean) -> h
     void onPictureInPictureModeChanged(boolean) -> i
     void onConfigurationChanged(android.content.res.Configuration) -> onConfigurationChanged
-    void onPause() -> o_
+    void onPause() -> p_
     void onStop() -> d
     void onLowMemory() -> onLowMemory
     void onDestroyView() -> k
@@ -28866,6 +28869,10 @@ com.squareup.picasso.Cache$1 -> com.squareup.picasso.d$1:
 com.squareup.picasso.Callback -> com.squareup.picasso.e:
     void onSuccess() -> a
     void onError(java.lang.Exception) -> a
+com.squareup.picasso.Callback$EmptyCallback -> com.squareup.picasso.e$a:
+    void <init>() -> <init>
+    void onSuccess() -> a
+    void onError(java.lang.Exception) -> a
 com.squareup.picasso.ContactsPhotoRequestHandler -> com.squareup.picasso.f:
     android.content.UriMatcher matcher -> a
     android.content.Context context -> b
@@ -29271,13 +29278,15 @@ com.squareup.picasso.RequestCreator -> com.squareup.picasso.x:
     java.lang.Object tag -> m
     void <init>(com.squareup.picasso.Picasso,android.net.Uri,int) -> <init>
     void <init>() -> <init>
+    com.squareup.picasso.RequestCreator noPlaceholder() -> a
     com.squareup.picasso.RequestCreator placeholder(android.graphics.drawable.Drawable) -> a
-    com.squareup.picasso.RequestCreator unfit() -> a
-    com.squareup.picasso.RequestCreator clearTag() -> b
+    com.squareup.picasso.RequestCreator unfit() -> b
+    com.squareup.picasso.RequestCreator clearTag() -> c
     com.squareup.picasso.RequestCreator resize(int,int) -> a
+    com.squareup.picasso.RequestCreator memoryPolicy(com.squareup.picasso.MemoryPolicy,com.squareup.picasso.MemoryPolicy[]) -> a
     void into(android.widget.ImageView) -> a
     void into(android.widget.ImageView,com.squareup.picasso.Callback) -> a
-    android.graphics.drawable.Drawable getPlaceholderDrawable() -> c
+    android.graphics.drawable.Drawable getPlaceholderDrawable() -> d
     com.squareup.picasso.Request createRequest(long) -> a
     void <clinit>() -> <clinit>
 com.squareup.picasso.RequestHandler -> com.squareup.picasso.y:
@@ -29529,7 +29538,8 @@ com.stedi.randomimagegenerator.app.di.components.ActivityComponent -> com.stedi.
     void inject(com.stedi.randomimagegenerator.app.view.dialogs.SimpleIntegerParamsDialog) -> a
     void inject(com.stedi.randomimagegenerator.app.view.dialogs.ColoredNoiseParamsDialog) -> a
     void inject(com.stedi.randomimagegenerator.app.view.dialogs.GenerationDialog) -> a
-    com.stedi.randomimagegenerator.app.di.components.HomeComponent plus(com.stedi.randomimagegenerator.app.di.modules.HomeModule) -> a
+    void inject(com.stedi.randomimagegenerator.app.view.activity.HomeActivityModel) -> a
+    void inject(com.stedi.randomimagegenerator.app.view.activity.PreviewActivityModel) -> a
     com.stedi.randomimagegenerator.app.di.components.GenerationComponent plus(com.stedi.randomimagegenerator.app.di.modules.GenerationModule) -> a
 com.stedi.randomimagegenerator.app.di.components.AppComponent -> com.stedi.randomimagegenerator.app.a.a.b:
     com.stedi.randomimagegenerator.app.di.components.ActivityComponent plus(com.stedi.randomimagegenerator.app.di.modules.ActivityModule) -> a
@@ -29540,6 +29550,7 @@ com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent -> com.stedi
     javax.inject.Provider provideAndroidSchedulerProvider -> e
     javax.inject.Provider provideAppContextProvider -> f
     javax.inject.Provider providePresetRepositoryProvider -> g
+    javax.inject.Provider provideSaveFolderProvider -> h
     boolean $assertionsDisabled -> a
     void <init>(com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent$Builder) -> <init>
     com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent$Builder builder() -> a
@@ -29551,7 +29562,8 @@ com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent -> com.stedi
     javax.inject.Provider access$700(com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent) -> c
     javax.inject.Provider access$800(com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent) -> d
     javax.inject.Provider access$900(com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent) -> e
-    javax.inject.Provider access$1200(com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent) -> f
+    javax.inject.Provider access$1000(com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent) -> f
+    javax.inject.Provider access$1100(com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent) -> g
     void <clinit>() -> <clinit>
 com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent$1 -> com.stedi.randomimagegenerator.app.a.a.c$1:
 com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent$ActivityComponentImpl -> com.stedi.randomimagegenerator.app.a.a.c$a:
@@ -29568,6 +29580,12 @@ com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent$ActivityComp
     javax.inject.Provider generationPresenterImplProvider -> l
     javax.inject.Provider provideGenerationPresenterProvider -> m
     dagger.MembersInjector generationDialogMembersInjector -> n
+    javax.inject.Provider homePresenterImplProvider -> o
+    javax.inject.Provider provideHomePresenterProvider -> p
+    dagger.MembersInjector homeActivityModelMembersInjector -> q
+    javax.inject.Provider previewGenerationPresenterImplProvider -> r
+    javax.inject.Provider providePreviewGenerationPresenterProvider -> s
+    dagger.MembersInjector previewActivityModelMembersInjector -> t
     com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent this$0 -> a
     void <init>(com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent,com.stedi.randomimagegenerator.app.di.modules.ActivityModule) -> <init>
     void initialize() -> a
@@ -29577,7 +29595,8 @@ com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent$ActivityComp
     void inject(com.stedi.randomimagegenerator.app.view.dialogs.SimpleIntegerParamsDialog) -> a
     void inject(com.stedi.randomimagegenerator.app.view.dialogs.ColoredNoiseParamsDialog) -> a
     void inject(com.stedi.randomimagegenerator.app.view.dialogs.GenerationDialog) -> a
-    com.stedi.randomimagegenerator.app.di.components.HomeComponent plus(com.stedi.randomimagegenerator.app.di.modules.HomeModule) -> a
+    void inject(com.stedi.randomimagegenerator.app.view.activity.HomeActivityModel) -> a
+    void inject(com.stedi.randomimagegenerator.app.view.activity.PreviewActivityModel) -> a
     com.stedi.randomimagegenerator.app.di.components.GenerationComponent plus(com.stedi.randomimagegenerator.app.di.modules.GenerationModule) -> a
     void <init>(com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent,com.stedi.randomimagegenerator.app.di.modules.ActivityModule,com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent$1) -> <init>
 com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent$ActivityComponentImpl$GenerationComponentImpl -> com.stedi.randomimagegenerator.app.a.a.c$a$a:
@@ -29605,16 +29624,6 @@ com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent$ActivityComp
     void inject(com.stedi.randomimagegenerator.app.view.fragments.ChooseSaveOptionsFragmentModel) -> a
     void inject(com.stedi.randomimagegenerator.app.view.fragments.ApplyGenerationFragmentModel) -> a
     void <init>(com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent$ActivityComponentImpl,com.stedi.randomimagegenerator.app.di.modules.GenerationModule,com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent$1) -> <init>
-com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent$ActivityComponentImpl$HomeComponentImpl -> com.stedi.randomimagegenerator.app.a.a.c$a$b:
-    com.stedi.randomimagegenerator.app.di.modules.HomeModule homeModule -> b
-    javax.inject.Provider homePresenterImplProvider -> c
-    javax.inject.Provider provideHomePresenterProvider -> d
-    dagger.MembersInjector homeActivityModelMembersInjector -> e
-    com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent$ActivityComponentImpl this$1 -> a
-    void <init>(com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent$ActivityComponentImpl,com.stedi.randomimagegenerator.app.di.modules.HomeModule) -> <init>
-    void initialize() -> a
-    void inject(com.stedi.randomimagegenerator.app.view.activity.HomeActivityModel) -> a
-    void <init>(com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent$ActivityComponentImpl,com.stedi.randomimagegenerator.app.di.modules.HomeModule,com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent$1) -> <init>
 com.stedi.randomimagegenerator.app.di.components.DaggerAppComponent$Builder -> com.stedi.randomimagegenerator.app.a.a.c$b:
     com.stedi.randomimagegenerator.app.di.modules.AppModule appModule -> a
     com.stedi.randomimagegenerator.app.di.modules.BuildTypeDependentModule buildTypeDependentModule -> b
@@ -29630,8 +29639,6 @@ com.stedi.randomimagegenerator.app.di.components.GenerationComponent -> com.sted
     void inject(com.stedi.randomimagegenerator.app.view.fragments.ChooseSizeAndCountFragmentModel) -> a
     void inject(com.stedi.randomimagegenerator.app.view.fragments.ChooseSaveOptionsFragmentModel) -> a
     void inject(com.stedi.randomimagegenerator.app.view.fragments.ApplyGenerationFragmentModel) -> a
-com.stedi.randomimagegenerator.app.di.components.HomeComponent -> com.stedi.randomimagegenerator.app.a.a.e:
-    void inject(com.stedi.randomimagegenerator.app.view.activity.HomeActivityModel) -> a
 com.stedi.randomimagegenerator.app.di.modules.ActivityModule -> com.stedi.randomimagegenerator.app.a.b.a:
     com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity activity -> a
     void <init>(com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity) -> <init>
@@ -29642,6 +29649,7 @@ com.stedi.randomimagegenerator.app.di.modules.AppModule -> com.stedi.randomimage
     rx.Scheduler provideDefaultScheduler() -> c
     rx.Scheduler provideAndroidScheduler() -> d
     com.stedi.randomimagegenerator.app.model.data.PendingPreset providePendingPreset() -> e
+    java.lang.String provideSaveFolder() -> f
     void <init>(com.stedi.randomimagegenerator.app.App) -> <init>
 com.stedi.randomimagegenerator.app.di.modules.AppModule_ProvideAndroidSchedulerFactory -> com.stedi.randomimagegenerator.app.a.b.c:
     com.stedi.randomimagegenerator.app.di.modules.AppModule module -> b
@@ -29683,10 +29691,18 @@ com.stedi.randomimagegenerator.app.di.modules.AppModule_ProvidePendingPresetFact
     dagger.internal.Factory create(com.stedi.randomimagegenerator.app.di.modules.AppModule) -> a
     java.lang.Object get() -> b
     void <clinit>() -> <clinit>
-com.stedi.randomimagegenerator.app.di.modules.BuildTypeDependentModule -> com.stedi.randomimagegenerator.app.a.b.h:
+com.stedi.randomimagegenerator.app.di.modules.AppModule_ProvideSaveFolderFactory -> com.stedi.randomimagegenerator.app.a.b.h:
+    com.stedi.randomimagegenerator.app.di.modules.AppModule module -> b
+    boolean $assertionsDisabled -> a
+    void <init>(com.stedi.randomimagegenerator.app.di.modules.AppModule) -> <init>
+    java.lang.String get() -> a
+    dagger.internal.Factory create(com.stedi.randomimagegenerator.app.di.modules.AppModule) -> a
+    java.lang.Object get() -> b
+    void <clinit>() -> <clinit>
+com.stedi.randomimagegenerator.app.di.modules.BuildTypeDependentModule -> com.stedi.randomimagegenerator.app.a.b.i:
     com.stedi.randomimagegenerator.app.model.repository.PresetRepository providePresetRepository(android.content.Context) -> a
     void <init>() -> <init>
-com.stedi.randomimagegenerator.app.di.modules.BuildTypeDependentModule_ProvidePresetRepositoryFactory -> com.stedi.randomimagegenerator.app.a.b.i:
+com.stedi.randomimagegenerator.app.di.modules.BuildTypeDependentModule_ProvidePresetRepositoryFactory -> com.stedi.randomimagegenerator.app.a.b.j:
     com.stedi.randomimagegenerator.app.di.modules.BuildTypeDependentModule module -> b
     javax.inject.Provider contextProvider -> c
     boolean $assertionsDisabled -> a
@@ -29695,25 +29711,24 @@ com.stedi.randomimagegenerator.app.di.modules.BuildTypeDependentModule_ProvidePr
     dagger.internal.Factory create(com.stedi.randomimagegenerator.app.di.modules.BuildTypeDependentModule,javax.inject.Provider) -> a
     java.lang.Object get() -> b
     void <clinit>() -> <clinit>
-com.stedi.randomimagegenerator.app.di.modules.GenerationModule -> com.stedi.randomimagegenerator.app.a.b.j:
-    com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter provideApplyGenerationPresenter(android.content.Context,com.stedi.randomimagegenerator.app.model.data.PendingPreset,com.stedi.randomimagegenerator.app.model.repository.PresetRepository,rx.Scheduler,rx.Scheduler,com.stedi.randomimagegenerator.app.other.LockedBus) -> a
+com.stedi.randomimagegenerator.app.di.modules.GenerationModule -> com.stedi.randomimagegenerator.app.a.b.k:
+    com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter provideApplyGenerationPresenter(android.content.Context,com.stedi.randomimagegenerator.app.model.data.PendingPreset,java.lang.String,com.stedi.randomimagegenerator.app.model.repository.PresetRepository,rx.Scheduler,rx.Scheduler,com.stedi.randomimagegenerator.app.other.LockedBus) -> a
     void <init>() -> <init>
-com.stedi.randomimagegenerator.app.di.modules.GenerationModule_ProvideApplyGenerationPresenterFactory -> com.stedi.randomimagegenerator.app.a.b.k:
+com.stedi.randomimagegenerator.app.di.modules.GenerationModule_ProvideApplyGenerationPresenterFactory -> com.stedi.randomimagegenerator.app.a.b.l:
     com.stedi.randomimagegenerator.app.di.modules.GenerationModule module -> b
     javax.inject.Provider contextProvider -> c
     javax.inject.Provider pendingPresetProvider -> d
-    javax.inject.Provider presetRepositoryProvider -> e
-    javax.inject.Provider subscribeOnProvider -> f
-    javax.inject.Provider observeOnProvider -> g
-    javax.inject.Provider busProvider -> h
+    javax.inject.Provider saveFolderProvider -> e
+    javax.inject.Provider presetRepositoryProvider -> f
+    javax.inject.Provider subscribeOnProvider -> g
+    javax.inject.Provider observeOnProvider -> h
+    javax.inject.Provider busProvider -> i
     boolean $assertionsDisabled -> a
-    void <init>(com.stedi.randomimagegenerator.app.di.modules.GenerationModule,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider) -> <init>
+    void <init>(com.stedi.randomimagegenerator.app.di.modules.GenerationModule,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider) -> <init>
     com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter get() -> a
-    dagger.internal.Factory create(com.stedi.randomimagegenerator.app.di.modules.GenerationModule,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider) -> a
+    dagger.internal.Factory create(com.stedi.randomimagegenerator.app.di.modules.GenerationModule,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider) -> a
     java.lang.Object get() -> b
     void <clinit>() -> <clinit>
-com.stedi.randomimagegenerator.app.di.modules.HomeModule -> com.stedi.randomimagegenerator.app.a.b.l:
-    void <init>() -> <init>
 com.stedi.randomimagegenerator.app.model.data.GeneratorType -> com.stedi.randomimagegenerator.app.model.data.a:
     com.stedi.randomimagegenerator.app.model.data.GeneratorType RANDOM_NON_EFFECT -> a
     com.stedi.randomimagegenerator.app.model.data.GeneratorType FLAT_COLOR -> b
@@ -30074,8 +30089,6 @@ com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorPara
     int[] $EnumSwitchMapping$0 -> $EnumSwitchMapping$0
     int[] $EnumSwitchMapping$1 -> $EnumSwitchMapping$1
     void <clinit>() -> <clinit>
-com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorProxyKt -> com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorProxyKt:
-    com.stedi.randomimagegenerator.generators.Generator proxy(com.stedi.randomimagegenerator.generators.Generator) -> proxy
 com.stedi.randomimagegenerator.app.model.data.generatorparams.base.SimpleIntegerParams -> com.stedi.randomimagegenerator.app.model.data.generatorparams.base.SimpleIntegerParams:
     java.lang.Integer value -> value
     void value$annotations() -> value$annotations
@@ -30141,10 +30154,8 @@ com.stedi.randomimagegenerator.app.other.CommonKt -> com.stedi.randomimagegenera
     com.stedi.randomimagegenerator.app.App getApp(android.content.Context) -> a
     int dim2px(android.content.Context,int) -> a
     float dp2px(android.content.Context,float) -> a
-    void showToast(android.content.Context,int,int) -> a
-    void showToast$default(android.content.Context,int,int,int,java.lang.Object) -> a
-    void showToast(android.content.Context,java.lang.String,int) -> a
-    void showToast$default(android.content.Context,java.lang.String,int,int,java.lang.Object) -> a
+    void showToastLong(android.content.Context,int) -> b
+    void showToastLong(android.content.Context,java.lang.String) -> a
     void hideInput(android.app.Activity) -> a
     java.util.List toList(android.util.SparseArray) -> a
     void setDividerColor(android.widget.NumberPicker,int) -> a
@@ -30191,15 +30202,17 @@ com.stedi.randomimagegenerator.app.other.LockedBus$post$1 -> com.stedi.randomima
     java.lang.Object $event -> b
     void run() -> run
     void <init>(com.stedi.randomimagegenerator.app.other.LockedBus,java.lang.Object) -> <init>
-com.stedi.randomimagegenerator.app.other.TimberTreesKt -> com.stedi.randomimagegenerator.app.b.f:
+com.stedi.randomimagegenerator.app.other.ProxiesKt -> com.stedi.randomimagegenerator.app.b.f:
+    com.stedi.randomimagegenerator.generators.Generator proxy(com.stedi.randomimagegenerator.generators.Generator) -> a
+    boolean compressProxy(android.graphics.Bitmap,android.graphics.Bitmap$CompressFormat,int,java.io.OutputStream) -> a
+com.stedi.randomimagegenerator.app.other.TimberTreesKt -> com.stedi.randomimagegenerator.app.b.g:
     timber.log.Timber$Tree[] getTrees() -> a
 com.stedi.randomimagegenerator.app.presenter.impl.ApplyGenerationPresenterImpl -> com.stedi.randomimagegenerator.app.c.a.a:
-    java.lang.String UNSAVED_FOLDER_NAME -> a
     com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter$UIImpl ui -> b
     boolean saveInProgress -> c
     com.stedi.randomimagegenerator.app.model.data.PendingPreset pendingPreset -> d
     com.stedi.randomimagegenerator.app.model.repository.PresetRepository presetRepository -> e
-    java.lang.String generationPath -> f
+    java.lang.String saveFolder -> f
     java.lang.String defaultName -> g
     rx.Scheduler subscribeOn -> h
     rx.Scheduler observeOn -> i
@@ -30217,7 +30230,7 @@ com.stedi.randomimagegenerator.app.presenter.impl.ApplyGenerationPresenterImpl -
     void onPresetSaveEvent(com.stedi.randomimagegenerator.app.presenter.impl.ApplyGenerationPresenterImpl$PresetSaveEvent) -> onPresetSaveEvent
     void <init>(com.stedi.randomimagegenerator.app.model.data.PendingPreset,com.stedi.randomimagegenerator.app.model.repository.PresetRepository,java.lang.String,java.lang.String,rx.Scheduler,rx.Scheduler,com.stedi.randomimagegenerator.app.other.LockedBus) -> <init>
     com.stedi.randomimagegenerator.app.model.repository.PresetRepository access$getPresetRepository$p(com.stedi.randomimagegenerator.app.presenter.impl.ApplyGenerationPresenterImpl) -> a
-    java.lang.String access$getGenerationPath$p(com.stedi.randomimagegenerator.app.presenter.impl.ApplyGenerationPresenterImpl) -> b
+    java.lang.String access$getSaveFolder$p(com.stedi.randomimagegenerator.app.presenter.impl.ApplyGenerationPresenterImpl) -> b
     com.stedi.randomimagegenerator.app.model.data.Preset access$getCandidate$p(com.stedi.randomimagegenerator.app.presenter.impl.ApplyGenerationPresenterImpl) -> c
     com.stedi.randomimagegenerator.app.model.data.PendingPreset access$getPendingPreset$p(com.stedi.randomimagegenerator.app.presenter.impl.ApplyGenerationPresenterImpl) -> d
     com.stedi.randomimagegenerator.app.other.LockedBus access$getBus$p(com.stedi.randomimagegenerator.app.presenter.impl.ApplyGenerationPresenterImpl) -> e
@@ -30438,7 +30451,14 @@ com.stedi.randomimagegenerator.app.presenter.impl.GenerationPresenterImpl$startG
     com.stedi.randomimagegenerator.app.presenter.impl.GenerationPresenterImpl this$0 -> a
     void call() -> a
     void <init>(com.stedi.randomimagegenerator.app.presenter.impl.GenerationPresenterImpl) -> <init>
-com.stedi.randomimagegenerator.app.presenter.impl.GenerationPresenterImpl_Factory -> com.stedi.randomimagegenerator.app.c.a.m:
+com.stedi.randomimagegenerator.app.presenter.impl.GenerationPresenterImplKt -> com.stedi.randomimagegenerator.app.c.a.m:
+    android.graphics.Bitmap generateBitmap(com.stedi.randomimagegenerator.generators.Generator,int,int,com.stedi.randomimagegenerator.Quality) -> a
+com.stedi.randomimagegenerator.app.presenter.impl.GenerationPresenterImplKt$generateBitmap$1 -> com.stedi.randomimagegenerator.app.c.a.m$a:
+    kotlin.jvm.internal.Ref$ObjectRef $result -> a
+    void onGenerated(com.stedi.randomimagegenerator.ImageParams,android.graphics.Bitmap) -> a
+    void onFailedToGenerate(com.stedi.randomimagegenerator.ImageParams,java.lang.Exception) -> a
+    void <init>(kotlin.jvm.internal.Ref$ObjectRef) -> <init>
+com.stedi.randomimagegenerator.app.presenter.impl.GenerationPresenterImpl_Factory -> com.stedi.randomimagegenerator.app.c.a.n:
     javax.inject.Provider subscribeOnProvider -> b
     javax.inject.Provider observeOnProvider -> c
     javax.inject.Provider busProvider -> d
@@ -30448,7 +30468,7 @@ com.stedi.randomimagegenerator.app.presenter.impl.GenerationPresenterImpl_Factor
     dagger.internal.Factory create(javax.inject.Provider,javax.inject.Provider,javax.inject.Provider) -> a
     java.lang.Object get() -> b
     void <clinit>() -> <clinit>
-com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl -> com.stedi.randomimagegenerator.app.c.a.n:
+com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl -> com.stedi.randomimagegenerator.app.c.a.o:
     com.stedi.randomimagegenerator.app.presenter.interfaces.HomePresenter$UIImpl ui -> a
     boolean fetchInProgress -> b
     boolean deleteInProgress -> c
@@ -30477,14 +30497,14 @@ com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl -> com.stedi
     void <init>(com.stedi.randomimagegenerator.app.model.repository.PresetRepository,com.stedi.randomimagegenerator.app.model.data.PendingPreset,rx.Scheduler,rx.Scheduler,com.stedi.randomimagegenerator.app.other.LockedBus) -> <init>
     com.stedi.randomimagegenerator.app.model.repository.PresetRepository access$getPresetRepository$p(com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl) -> a
     com.stedi.randomimagegenerator.app.other.LockedBus access$getBus$p(com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl) -> b
-com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl$DeletePresetEvent -> com.stedi.randomimagegenerator.app.c.a.n$a:
+com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl$DeletePresetEvent -> com.stedi.randomimagegenerator.app.c.a.o$a:
     com.stedi.randomimagegenerator.app.model.data.Preset preset -> a
     java.lang.Throwable throwable -> b
     com.stedi.randomimagegenerator.app.model.data.Preset getPreset() -> a
     java.lang.Throwable getThrowable() -> b
     void <init>(com.stedi.randomimagegenerator.app.model.data.Preset,java.lang.Throwable) -> <init>
     void <init>(com.stedi.randomimagegenerator.app.model.data.Preset,java.lang.Throwable,int,kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
-com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl$FetchPresetsEvent -> com.stedi.randomimagegenerator.app.c.a.n$b:
+com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl$FetchPresetsEvent -> com.stedi.randomimagegenerator.app.c.a.o$b:
     java.util.List presets -> a
     java.lang.Throwable throwable -> b
     java.util.List getPresets() -> a
@@ -30492,42 +30512,42 @@ com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl$FetchPresets
     void <init>(java.util.List,java.lang.Throwable) -> <init>
     void <init>(java.util.List,java.lang.Throwable,int,kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
     void <init>() -> <init>
-com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl$confirmDeletePreset$1 -> com.stedi.randomimagegenerator.app.c.a.n$c:
+com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl$confirmDeletePreset$1 -> com.stedi.randomimagegenerator.app.c.a.o$c:
     com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl this$0 -> a
     int $presetId -> b
     java.lang.Object call() -> call
     void call() -> a
     void <init>(com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl,int) -> <init>
-com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl$confirmDeletePreset$2 -> com.stedi.randomimagegenerator.app.c.a.n$d:
+com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl$confirmDeletePreset$2 -> com.stedi.randomimagegenerator.app.c.a.o$d:
     com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl this$0 -> a
     com.stedi.randomimagegenerator.app.model.data.Preset $deletePreset -> b
     void call() -> a
     void <init>(com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl,com.stedi.randomimagegenerator.app.model.data.Preset) -> <init>
-com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl$confirmDeletePreset$3 -> com.stedi.randomimagegenerator.app.c.a.n$e:
+com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl$confirmDeletePreset$3 -> com.stedi.randomimagegenerator.app.c.a.o$e:
     com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl this$0 -> a
     com.stedi.randomimagegenerator.app.model.data.Preset $deletePreset -> b
     void call(java.lang.Object) -> a
     void call(java.lang.Throwable) -> a
     void <init>(com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl,com.stedi.randomimagegenerator.app.model.data.Preset) -> <init>
-com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl$fetchPresets$1 -> com.stedi.randomimagegenerator.app.c.a.n$f:
+com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl$fetchPresets$1 -> com.stedi.randomimagegenerator.app.c.a.o$f:
     com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl this$0 -> a
     java.lang.Object call() -> call
     java.util.List call() -> a
     void <init>(com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl) -> <init>
-com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl$fetchPresets$2 -> com.stedi.randomimagegenerator.app.c.a.n$g:
+com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl$fetchPresets$2 -> com.stedi.randomimagegenerator.app.c.a.o$g:
     com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl this$0 -> a
     void call(java.lang.Object) -> a
     void call(java.util.List) -> a
     void <init>(com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl) -> <init>
-com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl$fetchPresets$3 -> com.stedi.randomimagegenerator.app.c.a.n$h:
+com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl$fetchPresets$3 -> com.stedi.randomimagegenerator.app.c.a.o$h:
     com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl this$0 -> a
     void call(java.lang.Object) -> a
     void call(java.lang.Throwable) -> a
     void <init>(com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl) -> <init>
-com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl$onFetchPresetsEvent$$inlined$sortedByDescending$1 -> com.stedi.randomimagegenerator.app.c.a.n$i:
+com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl$onFetchPresetsEvent$$inlined$sortedByDescending$1 -> com.stedi.randomimagegenerator.app.c.a.o$i:
     void <init>() -> <init>
     int compare(java.lang.Object,java.lang.Object) -> compare
-com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl_Factory -> com.stedi.randomimagegenerator.app.c.a.o:
+com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl_Factory -> com.stedi.randomimagegenerator.app.c.a.p:
     javax.inject.Provider presetRepositoryProvider -> b
     javax.inject.Provider pendingPresetProvider -> c
     javax.inject.Provider subscribeOnProvider -> d
@@ -30539,7 +30559,63 @@ com.stedi.randomimagegenerator.app.presenter.impl.HomePresenterImpl_Factory -> c
     dagger.internal.Factory create(javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider) -> a
     java.lang.Object get() -> b
     void <clinit>() -> <clinit>
-com.stedi.randomimagegenerator.app.presenter.impl.SimpleIntegerParamsPresenterImpl -> com.stedi.randomimagegenerator.app.c.a.p:
+com.stedi.randomimagegenerator.app.presenter.impl.PreviewGenerationPresenterImpl -> com.stedi.randomimagegenerator.app.c.a.q:
+    com.stedi.randomimagegenerator.app.presenter.interfaces.PreviewGenerationPresenter$UIImpl ui -> b
+    boolean saveInProgress -> c
+    com.stedi.randomimagegenerator.app.model.data.PendingPreset pendingPreset -> d
+    java.lang.String saveFolder -> e
+    rx.Scheduler subscribeOn -> f
+    rx.Scheduler observeOn -> g
+    com.stedi.randomimagegenerator.app.other.LockedBus bus -> h
+    com.stedi.randomimagegenerator.app.model.data.Preset getCandidate() -> d
+    void onAttach(com.stedi.randomimagegenerator.app.presenter.interfaces.PreviewGenerationPresenter$UIImpl) -> a
+    void onAttach(com.stedi.randomimagegenerator.app.presenter.interfaces.core.UI) -> a
+    void onDetach() -> a
+    void onDestroy() -> b
+    com.stedi.randomimagegenerator.app.model.data.Preset getPreset() -> c
+    void saveImage(android.graphics.Bitmap) -> a
+    void onImageSaveEvent(com.stedi.randomimagegenerator.app.presenter.impl.PreviewGenerationPresenterImpl$ImageSaveEvent) -> onImageSaveEvent
+    void <init>(com.stedi.randomimagegenerator.app.model.data.PendingPreset,java.lang.String,rx.Scheduler,rx.Scheduler,com.stedi.randomimagegenerator.app.other.LockedBus) -> <init>
+    com.stedi.randomimagegenerator.app.other.LockedBus access$getBus$p(com.stedi.randomimagegenerator.app.presenter.impl.PreviewGenerationPresenterImpl) -> a
+com.stedi.randomimagegenerator.app.presenter.impl.PreviewGenerationPresenterImpl$ImageSaveEvent -> com.stedi.randomimagegenerator.app.c.a.q$a:
+    java.io.File file -> a
+    java.lang.Throwable throwable -> b
+    java.io.File getFile() -> a
+    java.lang.Throwable getThrowable() -> b
+    void <init>(java.io.File,java.lang.Throwable) -> <init>
+    void <init>(java.io.File,java.lang.Throwable,int,kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    void <init>() -> <init>
+com.stedi.randomimagegenerator.app.presenter.impl.PreviewGenerationPresenterImpl$saveImage$1 -> com.stedi.randomimagegenerator.app.c.a.q$b:
+    java.io.File $folderToSave -> a
+    java.lang.String $fileName -> b
+    android.graphics.Bitmap $bitmap -> c
+    android.graphics.Bitmap$CompressFormat $compressFormat -> d
+    java.lang.Object call() -> call
+    java.io.File call() -> a
+    void <init>(java.io.File,java.lang.String,android.graphics.Bitmap,android.graphics.Bitmap$CompressFormat) -> <init>
+com.stedi.randomimagegenerator.app.presenter.impl.PreviewGenerationPresenterImpl$saveImage$2 -> com.stedi.randomimagegenerator.app.c.a.q$c:
+    com.stedi.randomimagegenerator.app.presenter.impl.PreviewGenerationPresenterImpl this$0 -> a
+    void call(java.lang.Object) -> a
+    void call(java.io.File) -> a
+    void <init>(com.stedi.randomimagegenerator.app.presenter.impl.PreviewGenerationPresenterImpl) -> <init>
+com.stedi.randomimagegenerator.app.presenter.impl.PreviewGenerationPresenterImpl$saveImage$3 -> com.stedi.randomimagegenerator.app.c.a.q$d:
+    com.stedi.randomimagegenerator.app.presenter.impl.PreviewGenerationPresenterImpl this$0 -> a
+    void call(java.lang.Object) -> a
+    void call(java.lang.Throwable) -> a
+    void <init>(com.stedi.randomimagegenerator.app.presenter.impl.PreviewGenerationPresenterImpl) -> <init>
+com.stedi.randomimagegenerator.app.presenter.impl.PreviewGenerationPresenterImpl_Factory -> com.stedi.randomimagegenerator.app.c.a.r:
+    javax.inject.Provider pendingPresetProvider -> b
+    javax.inject.Provider saveFolderProvider -> c
+    javax.inject.Provider subscribeOnProvider -> d
+    javax.inject.Provider observeOnProvider -> e
+    javax.inject.Provider busProvider -> f
+    boolean $assertionsDisabled -> a
+    void <init>(javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider) -> <init>
+    com.stedi.randomimagegenerator.app.presenter.impl.PreviewGenerationPresenterImpl get() -> a
+    dagger.internal.Factory create(javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider) -> a
+    java.lang.Object get() -> b
+    void <clinit>() -> <clinit>
+com.stedi.randomimagegenerator.app.presenter.impl.SimpleIntegerParamsPresenterImpl -> com.stedi.randomimagegenerator.app.c.a.s:
     com.stedi.randomimagegenerator.app.presenter.interfaces.SimpleIntegerParamsPresenter$UIImpl ui -> a
     com.stedi.randomimagegenerator.app.model.data.generatorparams.base.SimpleIntegerParams params -> b
     com.stedi.randomimagegenerator.app.model.data.PendingPreset pendingPreset -> c
@@ -30553,7 +30629,7 @@ com.stedi.randomimagegenerator.app.presenter.impl.SimpleIntegerParamsPresenterIm
     boolean setValue(int) -> a
     void <init>(com.stedi.randomimagegenerator.app.model.data.PendingPreset) -> <init>
     void onDestroy() -> b
-com.stedi.randomimagegenerator.app.presenter.impl.SimpleIntegerParamsPresenterImpl_Factory -> com.stedi.randomimagegenerator.app.c.a.q:
+com.stedi.randomimagegenerator.app.presenter.impl.SimpleIntegerParamsPresenterImpl_Factory -> com.stedi.randomimagegenerator.app.c.a.t:
     javax.inject.Provider pendingPresetProvider -> b
     boolean $assertionsDisabled -> a
     void <init>(javax.inject.Provider) -> <init>
@@ -30562,13 +30638,19 @@ com.stedi.randomimagegenerator.app.presenter.impl.SimpleIntegerParamsPresenterIm
     java.lang.Object get() -> b
     void <clinit>() -> <clinit>
 com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter -> com.stedi.randomimagegenerator.app.c.b.a:
+    com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter$Companion Companion -> a
     com.stedi.randomimagegenerator.app.model.data.Preset getPreset() -> c
     boolean isPresetNew() -> d
     boolean isPresetChanged() -> e
     void savePreset(java.lang.String) -> a
     void startGeneration() -> f
-com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter$UIImpl -> com.stedi.randomimagegenerator.app.c.b.a$a:
-    void onPresetSaved() -> p_
+    void <clinit>() -> <clinit>
+com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter$Companion -> com.stedi.randomimagegenerator.app.c.b.a$a:
+    com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter$Companion $$INSTANCE -> a
+    void <init>() -> <init>
+    void <clinit>() -> <clinit>
+com.stedi.randomimagegenerator.app.presenter.interfaces.ApplyGenerationPresenter$UIImpl -> com.stedi.randomimagegenerator.app.c.b.a$b:
+    void onPresetSaved() -> q_
     void failedToSavePreset() -> c
     void showGenerationDialog(com.stedi.randomimagegenerator.app.model.data.Preset) -> a
 com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseEffectPresenter -> com.stedi.randomimagegenerator.app.c.b.b:
@@ -30596,7 +30678,7 @@ com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSaveOptionsPresent
 com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSaveOptionsPresenter$UIImpl -> com.stedi.randomimagegenerator.app.c.b.d$b:
     void showQualityFormat(android.graphics.Bitmap$CompressFormat) -> a
     void showQualityValue(int) -> b_
-    void onIncorrectQualityValue() -> r_
+    void onIncorrectQualityValue() -> s_
 com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseSizeAndCountPresenter -> com.stedi.randomimagegenerator.app.c.b.e:
     void getValues() -> c
     void setWidth(int) -> b
@@ -30637,7 +30719,7 @@ com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationPresenter$UIIm
     void imageGenerated(com.stedi.randomimagegenerator.ImageParams,android.graphics.Bitmap) -> a
     void imageSaved(android.graphics.Bitmap,java.io.File) -> a
     void onResult(int,int) -> a
-    void onFinishGeneration() -> n_
+    void onFinishGeneration() -> o_
     void onGenerationFailed() -> c
 com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationPresenter$UIImpl$DefaultImpls -> com.stedi.randomimagegenerator.app.c.b.g$a$a:
     void imageGenerated(com.stedi.randomimagegenerator.app.presenter.interfaces.GenerationPresenter$UIImpl,com.stedi.randomimagegenerator.ImageParams,android.graphics.Bitmap) -> a
@@ -30659,17 +30741,29 @@ com.stedi.randomimagegenerator.app.presenter.interfaces.HomePresenter$UIImpl -> 
     void showGenerationDialog(com.stedi.randomimagegenerator.app.model.data.Preset) -> d
     void showEditPreset() -> j_
     void showCreatePreset() -> d
-com.stedi.randomimagegenerator.app.presenter.interfaces.SimpleIntegerParamsPresenter -> com.stedi.randomimagegenerator.app.c.b.i:
+com.stedi.randomimagegenerator.app.presenter.interfaces.PreviewGenerationPresenter -> com.stedi.randomimagegenerator.app.c.b.i:
+    com.stedi.randomimagegenerator.app.presenter.interfaces.PreviewGenerationPresenter$Companion Companion -> a
+    com.stedi.randomimagegenerator.app.model.data.Preset getPreset() -> c
+    void saveImage(android.graphics.Bitmap) -> a
+    void <clinit>() -> <clinit>
+com.stedi.randomimagegenerator.app.presenter.interfaces.PreviewGenerationPresenter$Companion -> com.stedi.randomimagegenerator.app.c.b.i$a:
+    com.stedi.randomimagegenerator.app.presenter.interfaces.PreviewGenerationPresenter$Companion $$INSTANCE -> a
+    void <init>() -> <init>
+    void <clinit>() -> <clinit>
+com.stedi.randomimagegenerator.app.presenter.interfaces.PreviewGenerationPresenter$UIImpl -> com.stedi.randomimagegenerator.app.c.b.i$b:
+    void onImageSaved(java.io.File) -> a
+    void onImageFailedToSave() -> l_
+com.stedi.randomimagegenerator.app.presenter.interfaces.SimpleIntegerParamsPresenter -> com.stedi.randomimagegenerator.app.c.b.j:
     void getValues() -> c
     boolean isRandomValue() -> d
     void setRandomValue() -> e
     boolean setValue(int) -> a
-com.stedi.randomimagegenerator.app.presenter.interfaces.SimpleIntegerParamsPresenter$DefaultImpls -> com.stedi.randomimagegenerator.app.c.b.i$a:
+com.stedi.randomimagegenerator.app.presenter.interfaces.SimpleIntegerParamsPresenter$DefaultImpls -> com.stedi.randomimagegenerator.app.c.b.j$a:
     void onDestroy(com.stedi.randomimagegenerator.app.presenter.interfaces.SimpleIntegerParamsPresenter) -> a
-com.stedi.randomimagegenerator.app.presenter.interfaces.SimpleIntegerParamsPresenter$UIImpl -> com.stedi.randomimagegenerator.app.c.b.i$b:
-    void showRandomValue() -> m_
+com.stedi.randomimagegenerator.app.presenter.interfaces.SimpleIntegerParamsPresenter$UIImpl -> com.stedi.randomimagegenerator.app.c.b.j$b:
+    void showRandomValue() -> n_
     void showValue(int) -> a_
-    void showErrorIncorrectValue() -> l_
+    void showErrorIncorrectValue() -> m_
 com.stedi.randomimagegenerator.app.presenter.interfaces.core.Presenter -> com.stedi.randomimagegenerator.app.c.b.a.a:
     void onAttach(com.stedi.randomimagegenerator.app.presenter.interfaces.core.UI) -> a
     void onDetach() -> a
@@ -30685,6 +30779,7 @@ com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity -> com.
     com.stepstone.stepper.StepperLayout stepper -> stepper
     com.stedi.randomimagegenerator.app.view.activity.GenerationStepsActivity$Companion Companion -> n
     void onCreate(android.os.Bundle) -> onCreate
+    boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
     boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
     void onSaveInstanceState(android.os.Bundle) -> onSaveInstanceState
     void <init>() -> <init>
@@ -30764,13 +30859,79 @@ com.stedi.randomimagegenerator.app.view.activity.HomeActivityModel_MembersInject
     void <clinit>() -> <clinit>
 com.stedi.randomimagegenerator.app.view.activity.HomeActivity_ViewBinding -> com.stedi.randomimagegenerator.app.view.activity.HomeActivity_ViewBinding:
     com.stedi.randomimagegenerator.app.view.activity.HomeActivity target -> b
-    android.view.View view2131230854 -> c
+    android.view.View view2131230859 -> c
     void <init>(com.stedi.randomimagegenerator.app.view.activity.HomeActivity,android.view.View) -> <init>
     void unbind() -> a
 com.stedi.randomimagegenerator.app.view.activity.HomeActivity_ViewBinding$1 -> com.stedi.randomimagegenerator.app.view.activity.HomeActivity_ViewBinding$1:
     com.stedi.randomimagegenerator.app.view.activity.HomeActivity val$target -> b
     com.stedi.randomimagegenerator.app.view.activity.HomeActivity_ViewBinding this$0 -> c
     void <init>(com.stedi.randomimagegenerator.app.view.activity.HomeActivity_ViewBinding,com.stedi.randomimagegenerator.app.view.activity.HomeActivity) -> <init>
+    void doClick(android.view.View) -> a
+com.stedi.randomimagegenerator.app.view.activity.PreviewActivity -> com.stedi.randomimagegenerator.app.view.activity.PreviewActivity:
+    int REQUEST_CODE_WRITE_EXTERNAL -> n
+    com.stedi.randomimagegenerator.app.view.activity.PreviewActivityModel viewModel -> s
+    android.widget.ImageView imageView -> imageView
+    android.view.View progressView -> progressView
+    android.view.View btnSave -> btnSave
+    com.stedi.randomimagegenerator.app.model.data.Preset preset -> t
+    void setProgressView(android.view.View) -> setProgressView
+    android.view.View getBtnSave() -> l
+    void setBtnSave(android.view.View) -> setBtnSave
+    void onCreate(android.os.Bundle) -> onCreate
+    void onImageClick(android.view.View) -> onImageClick
+    void onSaveClick(android.view.View) -> onSaveClick
+    void onPermissionEvent(com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity$PermissionEvent) -> onPermissionEvent
+    void onImageSaved(java.io.File) -> a
+    void onImageFailedToSave() -> l_
+    void onDestroy() -> onDestroy
+    void saveGeneratedPreviewImage() -> o
+    void generateNewPreviewImage() -> p
+    boolean isGeneratingNewPreviewImage() -> q
+    void showProgressBar(boolean) -> c
+    void <init>() -> <init>
+    void access$generateNewPreviewImage(com.stedi.randomimagegenerator.app.view.activity.PreviewActivity) -> a
+    void access$showProgressBar(com.stedi.randomimagegenerator.app.view.activity.PreviewActivity,boolean) -> a
+com.stedi.randomimagegenerator.app.view.activity.PreviewActivity$generateNewPreviewImage$1 -> com.stedi.randomimagegenerator.app.view.activity.PreviewActivity$a:
+    com.stedi.randomimagegenerator.app.view.activity.PreviewActivity this$0 -> a
+    void onSuccess() -> a
+    void <init>(com.stedi.randomimagegenerator.app.view.activity.PreviewActivity) -> <init>
+com.stedi.randomimagegenerator.app.view.activity.PreviewActivity$onCreate$1 -> com.stedi.randomimagegenerator.app.view.activity.PreviewActivity$b:
+    com.stedi.randomimagegenerator.app.view.activity.PreviewActivity this$0 -> a
+    void run() -> run
+    void <init>(com.stedi.randomimagegenerator.app.view.activity.PreviewActivity) -> <init>
+com.stedi.randomimagegenerator.app.view.activity.PreviewActivityModel -> com.stedi.randomimagegenerator.app.view.activity.PreviewActivityModel:
+    com.stedi.randomimagegenerator.app.presenter.interfaces.PreviewGenerationPresenter presenter -> a
+    com.stedi.randomimagegenerator.app.other.LockedBus bus -> b
+    com.stedi.randomimagegenerator.app.presenter.interfaces.PreviewGenerationPresenter getPresenter() -> b
+    com.stedi.randomimagegenerator.app.other.LockedBus getBus() -> c
+    void onCreate(com.stedi.randomimagegenerator.app.view.activity.PreviewActivity) -> a
+    void onCreate(com.stedi.randomimagegenerator.app.view.components.RequireViewModel) -> a
+    void onCleared() -> a
+    void <init>() -> <init>
+com.stedi.randomimagegenerator.app.view.activity.PreviewActivityModel_MembersInjector -> com.stedi.randomimagegenerator.app.view.activity.b:
+    javax.inject.Provider presenterProvider -> b
+    javax.inject.Provider busProvider -> c
+    boolean $assertionsDisabled -> a
+    void <init>(javax.inject.Provider,javax.inject.Provider) -> <init>
+    dagger.MembersInjector create(javax.inject.Provider,javax.inject.Provider) -> a
+    void injectMembers(com.stedi.randomimagegenerator.app.view.activity.PreviewActivityModel) -> a
+    void injectMembers(java.lang.Object) -> a
+    void <clinit>() -> <clinit>
+com.stedi.randomimagegenerator.app.view.activity.PreviewActivity_ViewBinding -> com.stedi.randomimagegenerator.app.view.activity.PreviewActivity_ViewBinding:
+    com.stedi.randomimagegenerator.app.view.activity.PreviewActivity target -> b
+    android.view.View view2131230925 -> c
+    android.view.View view2131230924 -> d
+    void <init>(com.stedi.randomimagegenerator.app.view.activity.PreviewActivity,android.view.View) -> <init>
+    void unbind() -> a
+com.stedi.randomimagegenerator.app.view.activity.PreviewActivity_ViewBinding$1 -> com.stedi.randomimagegenerator.app.view.activity.PreviewActivity_ViewBinding$1:
+    com.stedi.randomimagegenerator.app.view.activity.PreviewActivity val$target -> b
+    com.stedi.randomimagegenerator.app.view.activity.PreviewActivity_ViewBinding this$0 -> c
+    void <init>(com.stedi.randomimagegenerator.app.view.activity.PreviewActivity_ViewBinding,com.stedi.randomimagegenerator.app.view.activity.PreviewActivity) -> <init>
+    void doClick(android.view.View) -> a
+com.stedi.randomimagegenerator.app.view.activity.PreviewActivity_ViewBinding$2 -> com.stedi.randomimagegenerator.app.view.activity.PreviewActivity_ViewBinding$2:
+    com.stedi.randomimagegenerator.app.view.activity.PreviewActivity val$target -> b
+    com.stedi.randomimagegenerator.app.view.activity.PreviewActivity_ViewBinding this$0 -> c
+    void <init>(com.stedi.randomimagegenerator.app.view.activity.PreviewActivity_ViewBinding,com.stedi.randomimagegenerator.app.view.activity.PreviewActivity) -> <init>
     void doClick(android.view.View) -> a
 com.stedi.randomimagegenerator.app.view.activity.base.BaseActivity -> com.stedi.randomimagegenerator.app.view.activity.a.a:
     kotlin.reflect.KProperty[] $$delegatedProperties -> o
@@ -30855,7 +31016,7 @@ com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapter -> com.ste
     boolean access$isDeselectAllowed$p(com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapter) -> c
 com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapter$ClickListener -> com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapter$a:
     void onSelected(com.stedi.randomimagegenerator.app.model.data.GeneratorType) -> b
-    void onDeselected() -> q_
+    void onDeselected() -> r_
     void onEditSelected() -> c
 com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapter$ViewHolder -> com.stedi.randomimagegenerator.app.view.adapters.GeneratorTypeAdapter$ViewHolder:
     android.view.View card -> card
@@ -30952,29 +31113,28 @@ com.stedi.randomimagegenerator.app.view.components.ListSpaceDecoration -> com.st
     void <init>(int,int) -> <init>
 com.stedi.randomimagegenerator.app.view.components.RequireViewModel -> com.stedi.randomimagegenerator.app.view.components.c:
 com.stedi.randomimagegenerator.app.view.components.RigRequestHandler -> com.stedi.randomimagegenerator.app.view.components.d:
+    java.util.concurrent.ConcurrentHashMap previewRequestMap -> b
     com.stedi.randomimagegenerator.app.view.components.RigRequestHandler$Companion Companion -> a
     boolean canHandleRequest(com.squareup.picasso.Request) -> a
     com.squareup.picasso.RequestHandler$Result load(com.squareup.picasso.Request,int) -> a
-    com.stedi.randomimagegenerator.app.model.data.GeneratorType getMainType(android.net.Uri) -> a
-    com.stedi.randomimagegenerator.app.model.data.GeneratorType getSecondType(android.net.Uri) -> b
-    java.lang.Integer[] getSize(android.net.Uri) -> c
-    com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams createGeneratorParams(com.stedi.randomimagegenerator.app.model.data.GeneratorType,com.stedi.randomimagegenerator.app.model.data.GeneratorType) -> a
-    android.graphics.Bitmap$CompressFormat getCompressFormat(android.net.Uri) -> d
-    int getQualityValue(android.net.Uri) -> e
-    android.graphics.Bitmap generate(com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams,int,int,com.stedi.randomimagegenerator.Quality) -> a
+    java.lang.String getRequestType(android.net.Uri) -> a
+    android.graphics.Bitmap generateThumbnail(android.net.Uri) -> b
+    okio.Source generatePreview(android.net.Uri) -> c
+    com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams createGeneratorParams(android.net.Uri) -> d
+    java.lang.Integer[] getSize(android.net.Uri) -> e
+    android.graphics.Bitmap generateThumbnailBitmap(com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams,int,int) -> a
+    android.graphics.Bitmap generatePreviewBitmap(com.stedi.randomimagegenerator.app.model.data.Preset,int,int) -> a
     java.io.InputStream toInputStream(android.graphics.Bitmap,android.graphics.Bitmap$CompressFormat,int) -> a
     void <init>() -> <init>
+    java.util.concurrent.ConcurrentHashMap access$getPreviewRequestMap$cp() -> c
     void <clinit>() -> <clinit>
 com.stedi.randomimagegenerator.app.view.components.RigRequestHandler$Companion -> com.stedi.randomimagegenerator.app.view.components.d$a:
-    android.net.Uri makeUri(com.stedi.randomimagegenerator.app.model.data.GeneratorType,com.stedi.randomimagegenerator.app.model.data.GeneratorType,int,int,android.graphics.Bitmap$CompressFormat,int) -> a
-    android.net.Uri makeUri$default(com.stedi.randomimagegenerator.app.view.components.RigRequestHandler$Companion,com.stedi.randomimagegenerator.app.model.data.GeneratorType,com.stedi.randomimagegenerator.app.model.data.GeneratorType,int,int,android.graphics.Bitmap$CompressFormat,int,int,java.lang.Object) -> a
+    java.util.concurrent.ConcurrentHashMap getPreviewRequestMap() -> a
+    android.net.Uri makePreviewUri(com.stedi.randomimagegenerator.app.model.data.Preset,int,int) -> a
+    android.net.Uri makeThumbnailUri(com.stedi.randomimagegenerator.app.model.data.GeneratorType,com.stedi.randomimagegenerator.app.model.data.GeneratorType,int,int) -> a
     void <init>() -> <init>
+    java.util.concurrent.ConcurrentHashMap access$getPreviewRequestMap$p(com.stedi.randomimagegenerator.app.view.components.RigRequestHandler$Companion) -> a
     void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
-com.stedi.randomimagegenerator.app.view.components.RigRequestHandler$generate$1 -> com.stedi.randomimagegenerator.app.view.components.d$b:
-    kotlin.jvm.internal.Ref$ObjectRef $result -> a
-    void onGenerated(com.stedi.randomimagegenerator.ImageParams,android.graphics.Bitmap) -> a
-    void onFailedToGenerate(com.stedi.randomimagegenerator.ImageParams,java.lang.Exception) -> a
-    void <init>(kotlin.jvm.internal.Ref$ObjectRef) -> <init>
 com.stedi.randomimagegenerator.app.view.dialogs.ColoredNoiseParamsDialog -> com.stedi.randomimagegenerator.app.view.dialogs.ColoredNoiseParamsDialog:
     com.stedi.randomimagegenerator.app.presenter.interfaces.ColoredNoiseParamsPresenter presenter -> ae
     android.widget.Spinner spOrientation -> spOrientation
@@ -30985,10 +31145,10 @@ com.stedi.randomimagegenerator.app.view.dialogs.ColoredNoiseParamsDialog -> com.
     void showOrientation(com.stedi.randomimagegenerator.generators.ColoredNoiseGenerator$Orientation) -> a
     void showType(com.stedi.randomimagegenerator.generators.ColoredNoiseGenerator$Type) -> a
     void showValue(int) -> a_
-    void showErrorIncorrectValue() -> l_
+    void showErrorIncorrectValue() -> m_
     void onDestroy() -> a
     void apply() -> ah
-    void showRandomValue() -> m_
+    void showRandomValue() -> n_
     void <init>() -> <init>
     void access$apply(com.stedi.randomimagegenerator.app.view.dialogs.ColoredNoiseParamsDialog) -> a
 com.stedi.randomimagegenerator.app.view.dialogs.ColoredNoiseParamsDialog$onCreateDialog$1 -> com.stedi.randomimagegenerator.app.view.dialogs.ColoredNoiseParamsDialog$a:
@@ -31111,7 +31271,7 @@ com.stedi.randomimagegenerator.app.view.dialogs.GenerationDialog -> com.stedi.ra
     void onStart() -> j
     void imageSaved(android.graphics.Bitmap,java.io.File) -> a
     void onResult(int,int) -> a
-    void onFinishGeneration() -> n_
+    void onFinishGeneration() -> o_
     void onGenerationFailed() -> c
     void onDestroyView() -> k
     void onDestroy() -> a
@@ -31178,9 +31338,9 @@ com.stedi.randomimagegenerator.app.view.dialogs.SimpleIntegerParamsDialog -> com
     android.app.Dialog onCreateDialog(android.os.Bundle) -> d
     void afterTextChanged(android.text.Editable) -> afterTextChanged
     void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
-    void showRandomValue() -> m_
+    void showRandomValue() -> n_
     void showValue(int) -> a_
-    void showErrorIncorrectValue() -> l_
+    void showErrorIncorrectValue() -> m_
     void onDestroy() -> a
     void apply() -> ai
     void setValueTextSilently(java.lang.String) -> b
@@ -31244,7 +31404,7 @@ com.stedi.randomimagegenerator.app.view.fragments.ApplyGenerationFragment -> com
     void onSelected() -> f
     void onSaveClick(android.view.View) -> onSaveClick
     void onGenerateClick(android.view.View) -> onGenerateClick
-    void onPresetSaved() -> p_
+    void onPresetSaved() -> q_
     void failedToSavePreset() -> c
     void showGenerationDialog(com.stedi.randomimagegenerator.app.model.data.Preset) -> a
     void onEditPresetNameDialogCallback(com.stedi.randomimagegenerator.app.view.dialogs.EditPresetNameDialog$Callback) -> onEditPresetNameDialogCallback
@@ -31300,7 +31460,7 @@ com.stedi.randomimagegenerator.app.view.fragments.ChooseEffectFragment -> com.st
     void onSelected() -> f
     void showTypes(com.stedi.randomimagegenerator.app.model.data.GeneratorType[],com.stedi.randomimagegenerator.app.model.data.GeneratorType,com.stedi.randomimagegenerator.app.model.data.GeneratorType) -> a
     void onSelected(com.stedi.randomimagegenerator.app.model.data.GeneratorType) -> b
-    void onDeselected() -> q_
+    void onDeselected() -> r_
     void onDestroy() -> a
     void onEditSelected() -> c
     void <init>() -> <init>
@@ -31335,7 +31495,7 @@ com.stedi.randomimagegenerator.app.view.fragments.ChooseGeneratorFragment -> com
     void onEditSelected() -> c
     void showEditGeneratorParams(com.stedi.randomimagegenerator.app.model.data.GeneratorType) -> a
     void onDestroy() -> a
-    void onDeselected() -> q_
+    void onDeselected() -> r_
     void <init>() -> <init>
 com.stedi.randomimagegenerator.app.view.fragments.ChooseGeneratorFragmentModel -> com.stedi.randomimagegenerator.app.view.fragments.ChooseGeneratorFragmentModel:
     com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseGeneratorPresenter presenter -> a
@@ -31368,7 +31528,7 @@ com.stedi.randomimagegenerator.app.view.fragments.ChooseSaveOptionsFragment -> c
     void showQualityValue(int) -> b_
     void onCheckedChanged(android.widget.RadioGroup,int) -> onCheckedChanged
     void onValueChange(android.widget.NumberPicker,int,int) -> onValueChange
-    void onIncorrectQualityValue() -> r_
+    void onIncorrectQualityValue() -> s_
     void onDestroy() -> a
     void updateQualityValuePicker(android.graphics.Bitmap$CompressFormat) -> b
     void <init>() -> <init>
@@ -31485,7 +31645,7 @@ com.stedi.randomimagegenerator.app.view.fragments.base.LifeCycleFragment -> com.
     void onActivityCreated(android.os.Bundle) -> e
     void onStart() -> j
     void onResume() -> A
-    void onPause() -> o_
+    void onPause() -> p_
     void onSaveInstanceState(android.os.Bundle) -> b
     void onStop() -> d
     void onDestroyView() -> k
@@ -34359,13 +34519,13 @@ io.fabric.sdk.android.services.concurrency.AsyncTask -> b.a.a.a.a.c.a:
     void <init>() -> <init>
     void postResultIfNotInvoked(java.lang.Object) -> d
     java.lang.Object postResult(java.lang.Object) -> e
-    io.fabric.sdk.android.services.concurrency.AsyncTask$Status getStatus() -> s_
+    io.fabric.sdk.android.services.concurrency.AsyncTask$Status getStatus() -> t_
     java.lang.Object doInBackground(java.lang.Object[]) -> a
     void onPreExecute() -> a
     void onPostExecute(java.lang.Object) -> a
     void onProgressUpdate(java.lang.Object[]) -> b
     void onCancelled(java.lang.Object) -> b
-    void onCancelled() -> t_
+    void onCancelled() -> u_
     boolean isCancelled() -> e
     boolean cancel(boolean) -> a
     io.fabric.sdk.android.services.concurrency.AsyncTask executeOnExecutor(java.util.concurrent.Executor,java.lang.Object[]) -> a
@@ -35037,15 +35197,18 @@ io.fabric.sdk.android.services.settings.UpdateAppSpiCall -> b.a.a.a.a.g.y:
     boolean invoke(io.fabric.sdk.android.services.settings.AppRequestData) -> a
 javax.inject.Provider -> javax.a.a:
     java.lang.Object get() -> b
-kotlin.KotlinNullPointerException -> c.a:
+kotlin.ExceptionsKt -> c.a:
+kotlin.ExceptionsKt__ExceptionsKt -> c.b:
+    void addSuppressed(java.lang.Throwable,java.lang.Throwable) -> a
+kotlin.KotlinNullPointerException -> c.c:
     void <init>() -> <init>
-kotlin.Lazy -> c.b:
+kotlin.Lazy -> c.d:
     java.lang.Object getValue() -> a
-kotlin.LazyKt -> c.c:
+kotlin.LazyKt -> c.e:
     kotlin.Lazy lazy(kotlin.jvm.functions.Function0) -> a
-kotlin.NoWhenBranchMatchedException -> c.d:
+kotlin.NoWhenBranchMatchedException -> c.f:
     void <init>() -> <init>
-kotlin.SynchronizedLazyImpl -> c.e:
+kotlin.SynchronizedLazyImpl -> c.g:
     kotlin.jvm.functions.Function0 initializer -> a
     java.lang.Object _value -> b
     java.lang.Object lock -> c
@@ -35054,17 +35217,17 @@ kotlin.SynchronizedLazyImpl -> c.e:
     java.lang.String toString() -> toString
     void <init>(kotlin.jvm.functions.Function0,java.lang.Object) -> <init>
     void <init>(kotlin.jvm.functions.Function0,java.lang.Object,int,kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
-kotlin.TypeCastException -> c.f:
+kotlin.TypeCastException -> c.h:
     void <init>() -> <init>
     void <init>(java.lang.String) -> <init>
-kotlin.UNINITIALIZED_VALUE -> c.g:
+kotlin.UNINITIALIZED_VALUE -> c.i:
     kotlin.UNINITIALIZED_VALUE INSTANCE -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
-kotlin.UninitializedPropertyAccessException -> c.h:
+kotlin.UninitializedPropertyAccessException -> c.j:
     void <init>() -> <init>
     void <init>(java.lang.String) -> <init>
-kotlin.Unit -> c.i:
+kotlin.Unit -> c.k:
     kotlin.Unit INSTANCE -> a
     java.lang.String toString() -> toString
     void <init>() -> <init>
@@ -35151,20 +35314,32 @@ kotlin.comparisons.ComparisonsKt -> c.b.a:
 kotlin.comparisons.ComparisonsKt__ComparisonsKt -> c.b.b:
     int compareValues(java.lang.Comparable,java.lang.Comparable) -> a
 kotlin.comparisons.ComparisonsKt___ComparisonsKt -> c.b.c:
-kotlin.io.FilesKt -> c.c.a:
-kotlin.io.FilesKt__FilePathComponentsKt -> c.c.b:
+kotlin.internal.JRE7PlatformImplementations -> c.c.a:
+    void addSuppressed(java.lang.Throwable,java.lang.Throwable) -> a
+    void <init>() -> <init>
+kotlin.internal.PlatformImplementations -> c.c.b:
+    void addSuppressed(java.lang.Throwable,java.lang.Throwable) -> a
+    void <init>() -> <init>
+kotlin.internal.PlatformImplementationsKt -> c.c.c:
+    kotlin.internal.PlatformImplementations IMPLEMENTATIONS -> a
+    int getJavaVersion() -> a
+    void <clinit>() -> <clinit>
+kotlin.io.CloseableKt -> c.d.a:
+    void closeFinally(java.io.Closeable,java.lang.Throwable) -> a
+kotlin.io.FilesKt -> c.d.b:
+kotlin.io.FilesKt__FilePathComponentsKt -> c.d.c:
     int getRootLength$FilesKt__FilePathComponentsKt(java.lang.String) -> a
     boolean isRooted(java.io.File) -> a
-kotlin.io.FilesKt__FileReadWriteKt -> c.c.c:
-kotlin.io.FilesKt__FileTreeWalkKt -> c.c.d:
-kotlin.io.FilesKt__UtilsKt -> c.c.e:
+kotlin.io.FilesKt__FileReadWriteKt -> c.d.d:
+kotlin.io.FilesKt__FileTreeWalkKt -> c.d.e:
+kotlin.io.FilesKt__UtilsKt -> c.d.f:
     java.io.File resolve(java.io.File,java.io.File) -> a
     java.io.File resolve(java.io.File,java.lang.String) -> a
-kotlin.jvm.JvmClassMappingKt -> c.d.a:
+kotlin.jvm.JvmClassMappingKt -> c.e.a:
     java.lang.Class getJavaObjectType(kotlin.reflect.KClass) -> a
-kotlin.jvm.functions.Function0 -> c.d.a.a:
+kotlin.jvm.functions.Function0 -> c.e.a.a:
     java.lang.Object invoke() -> a
-kotlin.jvm.internal.CallableReference -> c.d.b.a:
+kotlin.jvm.internal.CallableReference -> c.e.b.a:
     kotlin.reflect.KCallable reflected -> c
     java.lang.Object receiver -> a
     java.lang.Object NO_RECEIVER -> b
@@ -35177,28 +35352,28 @@ kotlin.jvm.internal.CallableReference -> c.d.b.a:
     java.lang.String getName() -> e
     java.lang.String getSignature() -> f
     void <clinit>() -> <clinit>
-kotlin.jvm.internal.CallableReference$NoReceiver -> c.d.b.a$a:
+kotlin.jvm.internal.CallableReference$NoReceiver -> c.e.b.a$a:
     kotlin.jvm.internal.CallableReference$NoReceiver INSTANCE -> a
     void <init>() -> <init>
     kotlin.jvm.internal.CallableReference$NoReceiver access$000() -> a
     void <clinit>() -> <clinit>
-kotlin.jvm.internal.ClassBasedDeclarationContainer -> c.d.b.b:
+kotlin.jvm.internal.ClassBasedDeclarationContainer -> c.e.b.b:
     java.lang.Class getJClass() -> a
-kotlin.jvm.internal.ClassReference -> c.d.b.c:
+kotlin.jvm.internal.ClassReference -> c.e.b.c:
     java.lang.Class jClass -> a
     boolean equals(java.lang.Object) -> equals
     int hashCode() -> hashCode
     java.lang.String toString() -> toString
     java.lang.Class getJClass() -> a
     void <init>(java.lang.Class) -> <init>
-kotlin.jvm.internal.CollectionToArray -> c.d.b.d:
+kotlin.jvm.internal.CollectionToArray -> c.e.b.d:
     java.lang.Object[] EMPTY -> a
     java.lang.Object[] toArray(java.util.Collection) -> a
     java.lang.Object[] toArray(java.util.Collection,java.lang.Object[]) -> a
     void <clinit>() -> <clinit>
-kotlin.jvm.internal.DefaultConstructorMarker -> c.d.b.e:
-kotlin.jvm.internal.FunctionBase -> c.d.b.f:
-kotlin.jvm.internal.Intrinsics -> c.d.b.g:
+kotlin.jvm.internal.DefaultConstructorMarker -> c.e.b.e:
+kotlin.jvm.internal.FunctionBase -> c.e.b.f:
+kotlin.jvm.internal.Intrinsics -> c.e.b.g:
     void <init>() -> <init>
     void throwNpe() -> a
     void throwUninitializedProperty(java.lang.String) -> a
@@ -35209,19 +35384,19 @@ kotlin.jvm.internal.Intrinsics -> c.d.b.g:
     boolean areEqual(java.lang.Object,java.lang.Object) -> a
     java.lang.Throwable sanitizeStackTrace(java.lang.Throwable) -> a
     java.lang.Throwable sanitizeStackTrace(java.lang.Throwable,java.lang.String) -> a
-kotlin.jvm.internal.Lambda -> c.d.b.h:
+kotlin.jvm.internal.Lambda -> c.e.b.h:
     int arity -> a
     java.lang.String toString() -> toString
     void <init>(int) -> <init>
-kotlin.jvm.internal.PropertyReference -> c.d.b.i:
+kotlin.jvm.internal.PropertyReference -> c.e.b.i:
     void <init>() -> <init>
     boolean equals(java.lang.Object) -> equals
     int hashCode() -> hashCode
     java.lang.String toString() -> toString
-kotlin.jvm.internal.PropertyReference1 -> c.d.b.j:
+kotlin.jvm.internal.PropertyReference1 -> c.e.b.j:
     void <init>() -> <init>
     kotlin.reflect.KCallable computeReflected() -> a
-kotlin.jvm.internal.PropertyReference1Impl -> c.d.b.k:
+kotlin.jvm.internal.PropertyReference1Impl -> c.e.b.k:
     kotlin.reflect.KDeclarationContainer owner -> c
     java.lang.String name -> d
     java.lang.String signature -> e
@@ -35229,47 +35404,51 @@ kotlin.jvm.internal.PropertyReference1Impl -> c.d.b.k:
     kotlin.reflect.KDeclarationContainer getOwner() -> d
     java.lang.String getName() -> e
     java.lang.String getSignature() -> f
-kotlin.jvm.internal.Ref -> c.d.b.l:
-kotlin.jvm.internal.Ref$ObjectRef -> c.d.b.l$a:
+kotlin.jvm.internal.Ref -> c.e.b.l:
+kotlin.jvm.internal.Ref$ObjectRef -> c.e.b.l$a:
     java.lang.Object element -> a
     void <init>() -> <init>
     java.lang.String toString() -> toString
-kotlin.jvm.internal.Reflection -> c.d.b.m:
+kotlin.jvm.internal.Reflection -> c.e.b.m:
     kotlin.jvm.internal.ReflectionFactory factory -> a
     kotlin.reflect.KClass[] EMPTY_K_CLASS_ARRAY -> b
     kotlin.reflect.KClass getOrCreateKotlinClass(java.lang.Class) -> a
     java.lang.String renderLambdaToString(kotlin.jvm.internal.Lambda) -> a
     kotlin.reflect.KProperty1 property1(kotlin.jvm.internal.PropertyReference1) -> a
     void <clinit>() -> <clinit>
-kotlin.jvm.internal.ReflectionFactory -> c.d.b.n:
+kotlin.jvm.internal.ReflectionFactory -> c.e.b.n:
     void <init>() -> <init>
     kotlin.reflect.KClass getOrCreateKotlinClass(java.lang.Class) -> a
     java.lang.String renderLambdaToString(kotlin.jvm.internal.Lambda) -> a
     kotlin.reflect.KProperty1 property1(kotlin.jvm.internal.PropertyReference1) -> a
-kotlin.ranges.RangesKt -> c.e.a:
-kotlin.ranges.RangesKt__RangesKt -> c.e.b:
-kotlin.ranges.RangesKt___RangesKt -> c.e.c:
+kotlin.jvm.internal.StringCompanionObject -> c.e.b.o:
+    kotlin.jvm.internal.StringCompanionObject INSTANCE -> a
+    void <init>() -> <init>
+    void <clinit>() -> <clinit>
+kotlin.ranges.RangesKt -> c.f.a:
+kotlin.ranges.RangesKt__RangesKt -> c.f.b:
+kotlin.ranges.RangesKt___RangesKt -> c.f.c:
     int coerceAtLeast(int,int) -> a
-kotlin.reflect.KCallable -> c.f.a:
-kotlin.reflect.KClass -> c.f.b:
-kotlin.reflect.KDeclarationContainer -> c.f.c:
-kotlin.reflect.KProperty -> c.f.d:
-kotlin.reflect.KProperty1 -> c.f.e:
-kotlin.text.CharsKt -> c.g.a:
-kotlin.text.CharsKt__CharJVMKt -> c.g.b:
-kotlin.text.CharsKt__CharKt -> c.g.c:
+kotlin.reflect.KCallable -> c.g.a:
+kotlin.reflect.KClass -> c.g.b:
+kotlin.reflect.KDeclarationContainer -> c.g.c:
+kotlin.reflect.KProperty -> c.g.d:
+kotlin.reflect.KProperty1 -> c.g.e:
+kotlin.text.CharsKt -> c.h.a:
+kotlin.text.CharsKt__CharJVMKt -> c.h.b:
+kotlin.text.CharsKt__CharKt -> c.h.c:
     boolean equals(char,char,boolean) -> a
-kotlin.text.StringsKt -> c.g.d:
-kotlin.text.StringsKt__IndentKt -> c.g.e:
-kotlin.text.StringsKt__RegexExtensionsKt -> c.g.f:
-kotlin.text.StringsKt__StringBuilderJVMKt -> c.g.g:
-kotlin.text.StringsKt__StringBuilderKt -> c.g.h:
-kotlin.text.StringsKt__StringNumberConversionsKt -> c.g.i:
-kotlin.text.StringsKt__StringsJVMKt -> c.g.j:
+kotlin.text.StringsKt -> c.h.d:
+kotlin.text.StringsKt__IndentKt -> c.h.e:
+kotlin.text.StringsKt__RegexExtensionsKt -> c.h.f:
+kotlin.text.StringsKt__StringBuilderJVMKt -> c.h.g:
+kotlin.text.StringsKt__StringBuilderKt -> c.h.h:
+kotlin.text.StringsKt__StringNumberConversionsKt -> c.h.i:
+kotlin.text.StringsKt__StringsJVMKt -> c.h.j:
     boolean startsWith(java.lang.String,java.lang.String,boolean) -> a
     boolean startsWith$default(java.lang.String,java.lang.String,boolean,int,java.lang.Object) -> a
     boolean regionMatches(java.lang.String,int,java.lang.String,int,int,boolean) -> a
-kotlin.text.StringsKt__StringsKt -> c.g.k:
+kotlin.text.StringsKt__StringsKt -> c.h.k:
     int getLastIndex(java.lang.CharSequence) -> a
     java.lang.String removePrefix(java.lang.String,java.lang.CharSequence) -> a
     boolean regionMatchesImpl(java.lang.CharSequence,int,java.lang.CharSequence,int,int,boolean) -> a
@@ -35280,7 +35459,7 @@ kotlin.text.StringsKt__StringsKt -> c.g.k:
     int indexOfAny(java.lang.CharSequence,char[],int,boolean) -> a
     int indexOf(java.lang.CharSequence,char,int,boolean) -> a
     int indexOf$default(java.lang.CharSequence,char,int,boolean,int,java.lang.Object) -> a
-kotlin.text.StringsKt___StringsKt -> c.g.l:
+kotlin.text.StringsKt___StringsKt -> c.h.l:
 okhttp3.Address -> okhttp3.a:
     okhttp3.HttpUrl url -> a
     okhttp3.Dns dns -> b
@@ -37299,7 +37478,7 @@ okhttp3.internal.platform.ConscryptPlatform -> okhttp3.internal.g.b:
     java.security.Provider getProvider() -> f
     void configureTlsExtensions(javax.net.ssl.SSLSocket,java.lang.String,java.util.List) -> a
     java.lang.String getSelectedProtocol(javax.net.ssl.SSLSocket) -> a
-    javax.net.ssl.SSLContext getSSLContext() -> y_
+    javax.net.ssl.SSLContext getSSLContext() -> z_
     okhttp3.internal.platform.Platform buildIfSupported() -> b
 okhttp3.internal.platform.Jdk9Platform -> okhttp3.internal.g.c:
     java.lang.reflect.Method setProtocolMethod -> a
@@ -37356,7 +37535,7 @@ okhttp3.internal.platform.Platform -> okhttp3.internal.g.f:
     boolean isConscryptPreferred() -> e
     okhttp3.internal.platform.Platform findPlatform() -> b
     byte[] concatLengthPrefixed(java.util.List) -> b
-    javax.net.ssl.SSLContext getSSLContext() -> y_
+    javax.net.ssl.SSLContext getSSLContext() -> z_
     okhttp3.internal.tls.TrustRootIndex buildTrustRootIndex(javax.net.ssl.X509TrustManager) -> b
     void <clinit>() -> <clinit>
 okhttp3.internal.publicsuffix.PublicSuffixDatabase -> okhttp3.internal.publicsuffix.PublicSuffixDatabase:
@@ -37416,7 +37595,7 @@ okio.AsyncTimeout -> d.a:
     void <init>() -> <init>
     void enter() -> c
     void scheduleTimeout(okio.AsyncTimeout,long,boolean) -> a
-    boolean exit() -> u_
+    boolean exit() -> v_
     boolean cancelScheduledTimeout(okio.AsyncTimeout) -> a
     long remainingNanos(long) -> b
     void timedOut() -> a
@@ -37630,11 +37809,11 @@ okio.ForwardingTimeout -> d.i:
     okio.Timeout delegate() -> a
     okio.ForwardingTimeout setDelegate(okio.Timeout) -> a
     okio.Timeout timeout(long,java.util.concurrent.TimeUnit) -> a
-    long timeoutNanos() -> v_
-    boolean hasDeadline() -> w_
+    long timeoutNanos() -> w_
+    boolean hasDeadline() -> x_
     long deadlineNanoTime() -> d
     okio.Timeout deadlineNanoTime(long) -> a
-    okio.Timeout clearTimeout() -> x_
+    okio.Timeout clearTimeout() -> y_
     okio.Timeout clearDeadline() -> f
     void throwIfReached() -> g
 okio.GzipSource -> d.j:
@@ -37833,11 +38012,11 @@ okio.Timeout -> d.t:
     long timeoutNanos -> d
     void <init>() -> <init>
     okio.Timeout timeout(long,java.util.concurrent.TimeUnit) -> a
-    long timeoutNanos() -> v_
-    boolean hasDeadline() -> w_
+    long timeoutNanos() -> w_
+    boolean hasDeadline() -> x_
     long deadlineNanoTime() -> d
     okio.Timeout deadlineNanoTime(long) -> a
-    okio.Timeout clearTimeout() -> x_
+    okio.Timeout clearTimeout() -> y_
     okio.Timeout clearDeadline() -> f
     void throwIfReached() -> g
     void <clinit>() -> <clinit>
@@ -38021,7 +38200,7 @@ rx.SingleSubscriber -> e.i:
     void onSuccess(java.lang.Object) -> a
     void onError(java.lang.Throwable) -> a
     void add(rx.Subscription) -> a
-    void unsubscribe() -> z_
+    void unsubscribe() -> A_
     boolean isUnsubscribed() -> c
 rx.Subscriber -> e.j:
     rx.internal.util.SubscriptionList subscriptions -> a
@@ -38032,14 +38211,14 @@ rx.Subscriber -> e.j:
     void <init>(rx.Subscriber) -> <init>
     void <init>(rx.Subscriber,boolean) -> <init>
     void add(rx.Subscription) -> a
-    void unsubscribe() -> z_
+    void unsubscribe() -> A_
     boolean isUnsubscribed() -> c
     void onStart() -> d
     void request(long) -> a
     void addToRequested(long) -> b
     void setProducer(rx.Producer) -> a
 rx.Subscription -> e.k:
-    void unsubscribe() -> z_
+    void unsubscribe() -> A_
     boolean isUnsubscribed() -> c
 rx.android.plugins.RxAndroidPlugins -> e.a.a.a:
     rx.android.plugins.RxAndroidPlugins INSTANCE -> a
@@ -38071,7 +38250,7 @@ rx.android.schedulers.LooperScheduler$HandlerWorker -> e.a.b.b$a:
     rx.android.plugins.RxAndroidSchedulersHook hook -> b
     boolean unsubscribed -> c
     void <init>(android.os.Handler) -> <init>
-    void unsubscribe() -> z_
+    void unsubscribe() -> A_
     boolean isUnsubscribed() -> c
     rx.Subscription schedule(rx.functions.Action0,long,java.util.concurrent.TimeUnit) -> a
     rx.Subscription schedule(rx.functions.Action0) -> a
@@ -38081,7 +38260,7 @@ rx.android.schedulers.LooperScheduler$ScheduledAction -> e.a.b.b$b:
     boolean unsubscribed -> c
     void <init>(rx.functions.Action0,android.os.Handler) -> <init>
     void run() -> run
-    void unsubscribe() -> z_
+    void unsubscribe() -> A_
     boolean isUnsubscribed() -> c
 rx.exceptions.CompositeException -> e.b.a:
     java.util.List exceptions -> a
@@ -38200,7 +38379,7 @@ rx.internal.operators.OnSubscribeCreate$BaseEmitter -> e.d.a.c$a:
     void <init>(rx.Subscriber) -> <init>
     void onCompleted() -> b
     void onError(java.lang.Throwable) -> a
-    void unsubscribe() -> z_
+    void unsubscribe() -> A_
     void onUnsubscribed() -> a
     boolean isUnsubscribed() -> c
     void request(long) -> a
@@ -38439,7 +38618,7 @@ rx.internal.schedulers.CachedThreadScheduler$EventLoopWorker -> e.d.c.a$b:
     rx.internal.schedulers.CachedThreadScheduler$ThreadWorker threadWorker -> d
     java.util.concurrent.atomic.AtomicBoolean once -> a
     void <init>(rx.internal.schedulers.CachedThreadScheduler$CachedWorkerPool) -> <init>
-    void unsubscribe() -> z_
+    void unsubscribe() -> A_
     void call() -> a
     boolean isUnsubscribed() -> c
     rx.Subscription schedule(rx.functions.Action0) -> a
@@ -38472,7 +38651,7 @@ rx.internal.schedulers.EventLoopsScheduler$EventLoopWorker -> e.d.c.b$a:
     rx.internal.util.SubscriptionList both -> c
     rx.internal.schedulers.EventLoopsScheduler$PoolWorker poolWorker -> d
     void <init>(rx.internal.schedulers.EventLoopsScheduler$PoolWorker) -> <init>
-    void unsubscribe() -> z_
+    void unsubscribe() -> A_
     boolean isUnsubscribed() -> c
     rx.Subscription schedule(rx.functions.Action0) -> a
 rx.internal.schedulers.EventLoopsScheduler$EventLoopWorker$1 -> e.d.c.b$a$1:
@@ -38499,7 +38678,7 @@ rx.internal.schedulers.ImmediateScheduler$InnerImmediateScheduler -> e.d.c.c$a:
     rx.internal.schedulers.ImmediateScheduler this$0 -> b
     void <init>(rx.internal.schedulers.ImmediateScheduler) -> <init>
     rx.Subscription schedule(rx.functions.Action0) -> a
-    void unsubscribe() -> z_
+    void unsubscribe() -> A_
     boolean isUnsubscribed() -> c
 rx.internal.schedulers.NewThreadScheduler -> e.d.c.d:
     java.util.concurrent.ThreadFactory threadFactory -> a
@@ -38524,7 +38703,7 @@ rx.internal.schedulers.NewThreadWorker -> e.d.c.e:
     rx.Subscription schedule(rx.functions.Action0,long,java.util.concurrent.TimeUnit) -> a
     rx.internal.schedulers.ScheduledAction scheduleActual(rx.functions.Action0,long,java.util.concurrent.TimeUnit) -> b
     rx.internal.schedulers.ScheduledAction scheduleActual(rx.functions.Action0,long,java.util.concurrent.TimeUnit,rx.internal.util.SubscriptionList) -> a
-    void unsubscribe() -> z_
+    void unsubscribe() -> A_
     boolean isUnsubscribed() -> c
     void <clinit>() -> <clinit>
 rx.internal.schedulers.NewThreadWorker$1 -> e.d.c.e$1:
@@ -38538,27 +38717,27 @@ rx.internal.schedulers.ScheduledAction -> e.d.c.f:
     void run() -> run
     void signalError(java.lang.Throwable) -> a
     boolean isUnsubscribed() -> c
-    void unsubscribe() -> z_
+    void unsubscribe() -> A_
     void add(java.util.concurrent.Future) -> a
     void addParent(rx.subscriptions.CompositeSubscription) -> a
 rx.internal.schedulers.ScheduledAction$FutureCompleter -> e.d.c.f$a:
     java.util.concurrent.Future f -> b
     rx.internal.schedulers.ScheduledAction this$0 -> a
     void <init>(rx.internal.schedulers.ScheduledAction,java.util.concurrent.Future) -> <init>
-    void unsubscribe() -> z_
+    void unsubscribe() -> A_
     boolean isUnsubscribed() -> c
 rx.internal.schedulers.ScheduledAction$Remover -> e.d.c.f$b:
     rx.internal.schedulers.ScheduledAction s -> a
     rx.subscriptions.CompositeSubscription parent -> b
     void <init>(rx.internal.schedulers.ScheduledAction,rx.subscriptions.CompositeSubscription) -> <init>
     boolean isUnsubscribed() -> c
-    void unsubscribe() -> z_
+    void unsubscribe() -> A_
 rx.internal.schedulers.ScheduledAction$Remover2 -> e.d.c.f$c:
     rx.internal.schedulers.ScheduledAction s -> a
     rx.internal.util.SubscriptionList parent -> b
     void <init>(rx.internal.schedulers.ScheduledAction,rx.internal.util.SubscriptionList) -> <init>
     boolean isUnsubscribed() -> c
-    void unsubscribe() -> z_
+    void unsubscribe() -> A_
 rx.internal.schedulers.SchedulerLifecycle -> e.d.c.g:
     void shutdown() -> c
 rx.internal.schedulers.TrampolineScheduler -> e.d.c.h:
@@ -38575,7 +38754,7 @@ rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler -> e.d.c.
     void <init>() -> <init>
     rx.Subscription schedule(rx.functions.Action0) -> a
     rx.Subscription enqueue(rx.functions.Action0,long) -> a
-    void unsubscribe() -> z_
+    void unsubscribe() -> A_
     boolean isUnsubscribed() -> c
 rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler$1 -> e.d.c.h$a$1:
     rx.internal.schedulers.TrampolineScheduler$TimedAction val$timedAction -> a
@@ -38592,7 +38771,7 @@ rx.internal.schedulers.TrampolineScheduler$TimedAction -> e.d.c.h$b:
 rx.internal.subscriptions.SequentialSubscription -> e.d.d.a:
     void <init>() -> <init>
     boolean replace(rx.Subscription) -> a
-    void unsubscribe() -> z_
+    void unsubscribe() -> A_
     boolean isUnsubscribed() -> c
 rx.internal.subscriptions.Unsubscribed -> e.d.d.b:
     rx.internal.subscriptions.Unsubscribed INSTANCE -> a
@@ -38601,7 +38780,7 @@ rx.internal.subscriptions.Unsubscribed -> e.d.d.b:
     rx.internal.subscriptions.Unsubscribed valueOf(java.lang.String) -> valueOf
     void <init>(java.lang.String,int) -> <init>
     boolean isUnsubscribed() -> c
-    void unsubscribe() -> z_
+    void unsubscribe() -> A_
     void <clinit>() -> <clinit>
 rx.internal.util.ActionObserver -> e.d.e.a:
     rx.functions.Action1 onNext -> a
@@ -38630,7 +38809,7 @@ rx.internal.util.RxRingBuffer -> e.d.e.d:
     java.util.Queue queue -> b
     int SIZE -> a
     void release() -> a
-    void unsubscribe() -> z_
+    void unsubscribe() -> A_
     boolean isUnsubscribed() -> c
     void <clinit>() -> <clinit>
 rx.internal.util.RxThreadFactory -> e.d.e.e:
@@ -38708,7 +38887,7 @@ rx.internal.util.SubscriptionList -> e.d.e.h:
     boolean isUnsubscribed() -> c
     void add(rx.Subscription) -> a
     void remove(rx.Subscription) -> b
-    void unsubscribe() -> z_
+    void unsubscribe() -> A_
     void unsubscribeFromAll(java.util.Collection) -> a
 rx.internal.util.atomic.AtomicReferenceArrayQueue -> e.d.e.a.a:
     java.util.concurrent.atomic.AtomicReferenceArray buffer -> a
@@ -39092,7 +39271,7 @@ rx.subscriptions.BooleanSubscription -> e.h.a:
     rx.subscriptions.BooleanSubscription create() -> a
     rx.subscriptions.BooleanSubscription create(rx.functions.Action0) -> a
     boolean isUnsubscribed() -> c
-    void unsubscribe() -> z_
+    void unsubscribe() -> A_
     void <clinit>() -> <clinit>
 rx.subscriptions.BooleanSubscription$1 -> e.h.a$1:
     void <init>() -> <init>
@@ -39104,19 +39283,19 @@ rx.subscriptions.CompositeSubscription -> e.h.b:
     boolean isUnsubscribed() -> c
     void add(rx.Subscription) -> a
     void remove(rx.Subscription) -> b
-    void unsubscribe() -> z_
+    void unsubscribe() -> A_
     void unsubscribeFromAll(java.util.Collection) -> a
 rx.subscriptions.MultipleAssignmentSubscription -> e.h.c:
     rx.internal.subscriptions.SequentialSubscription state -> a
     void <init>() -> <init>
     boolean isUnsubscribed() -> c
-    void unsubscribe() -> z_
+    void unsubscribe() -> A_
     void set(rx.Subscription) -> a
 rx.subscriptions.SerialSubscription -> e.h.d:
     rx.internal.subscriptions.SequentialSubscription state -> a
     void <init>() -> <init>
     boolean isUnsubscribed() -> c
-    void unsubscribe() -> z_
+    void unsubscribe() -> A_
 rx.subscriptions.Subscriptions -> e.h.e:
     rx.subscriptions.Subscriptions$Unsubscribed UNSUBSCRIBED -> a
     rx.Subscription empty() -> a
@@ -39125,7 +39304,7 @@ rx.subscriptions.Subscriptions -> e.h.e:
     void <clinit>() -> <clinit>
 rx.subscriptions.Subscriptions$Unsubscribed -> e.h.e$a:
     void <init>() -> <init>
-    void unsubscribe() -> z_
+    void unsubscribe() -> A_
     boolean isUnsubscribed() -> c
 timber.log.Timber -> f.a.a:
     timber.log.Timber$Tree[] TREE_ARRAY_EMPTY -> b
