@@ -35,6 +35,11 @@
         <activity
             android:name=".view.activity.GenerationStepsActivity"
             android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <activity
+            android:name=".view.activity.PreviewActivity"
+            android:theme="@style/PreviewTheme" />
+
     </application>
 
 </manifest>

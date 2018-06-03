@@ -95,7 +95,7 @@ class PresetsAdapter(
         holder.tvCount.text = context.getString(R.string.count_s_short, preset.getRealCount().toString())
         holder.btnAction.setText(if (preset === pendingPreset) R.string.save else R.string.generate)
 
-        Picasso.get().load(RigRequestHandler.makeUri(mainType, secondType, imageSize, imageSize, quality.format))
+        Picasso.get().load(RigRequestHandler.makeThumbnailUri(mainType, secondType, imageSize, imageSize))
                 .placeholder(context.resources.getDrawable(R.drawable.ic_texture_rig))
                 .into(holder.imageView)
 

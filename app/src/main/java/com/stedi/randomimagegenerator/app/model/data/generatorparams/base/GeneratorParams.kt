@@ -7,6 +7,7 @@ import com.j256.ormlite.field.DatabaseField
 import com.stedi.randomimagegenerator.Rig
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.*
+import com.stedi.randomimagegenerator.app.other.proxy
 import com.stedi.randomimagegenerator.generators.Generator
 
 @Suppress("EqualsOrHashCode")

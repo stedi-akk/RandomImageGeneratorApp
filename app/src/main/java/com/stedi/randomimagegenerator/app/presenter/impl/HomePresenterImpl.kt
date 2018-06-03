@@ -151,11 +151,6 @@ class HomePresenterImpl @Inject constructor(
 
     @Subscribe
     fun onFetchPresetsEvent(event: FetchPresetsEvent) {
-        if (!fetchInProgress) {
-            Timber.d("ignoring FetchPresetsEvent from previous presenter")
-            return
-        }
-
         Timber.d("onFetchPresetsEvent")
         fetchInProgress = false
 
@@ -167,11 +162,6 @@ class HomePresenterImpl @Inject constructor(
 
     @Subscribe
     fun onDeletePresetEvent(event: DeletePresetEvent) {
-        if (!deleteInProgress) {
-            Timber.d("ignoring DeletePresetEvent from previous presenter")
-            return
-        }
-
         Timber.d("onDeletePresetEvent")
         deleteInProgress = false
 

@@ -6,6 +6,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="PreviewTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
     <style name="SignedIntegerInput">
         <item name="android:digits">0123456789</item>
         <item name="android:inputType">numberSigned</item>
