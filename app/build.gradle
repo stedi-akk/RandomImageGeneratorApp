@@ -82,6 +82,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
     implementation 'com.stepstone.stepper:material-stepper:4.2.0'
+    implementation 'com.edmodo:rangebar:1.0.0'
 
     implementation 'com.google.dagger:dagger:2.11'
     kapt 'com.google.dagger:dagger-compiler:2.11'
