@@ -9,9 +9,25 @@
         style="@style/GenerationStepHeaderText"
         android:text="@string/n_choose_color" />
 
-    <com.stedi.randomimagegenerator.app.view.components.HSVRangeBar
-        android:id="@+id/choose_color_fragment_range_bar"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/common_v_spacing"
+            android:paddingLeft="@dimen/common_lr_spacing"
+            android:paddingRight="@dimen/common_lr_spacing"
+            android:paddingTop="@dimen/common_v_spacing">
+
+            <com.stedi.randomimagegenerator.app.view.components.HSVRangeBar
+                android:id="@+id/choose_color_fragment_range_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
 
 </LinearLayout>
