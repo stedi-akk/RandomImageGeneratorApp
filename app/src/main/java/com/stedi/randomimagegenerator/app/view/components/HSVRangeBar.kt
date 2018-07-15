@@ -5,10 +5,13 @@ import android.graphics.*
 import android.util.AttributeSet
 import com.edmodo.rangebar.RangeBar
 import com.stedi.randomimagegenerator.app.R
+import com.stedi.randomimagegenerator.app.other.dp2px
 
 class HSVRangeBar : RangeBar {
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val HSV = FloatArray(3)
+    private var strokeColor = context.resources.getColor(R.color.colorPrimary)
+    private var strokeWidth = context.dp2px(4f)
 
     private var barBitmap: Bitmap? = null
     private var barWidth = 0
@@ -30,8 +33,8 @@ class HSVRangeBar : RangeBar {
         setTickCount(360)
         setBarColor(Color.TRANSPARENT)
         setConnectingLineColor(Color.TRANSPARENT)
-        setThumbColorNormal(resources.getColor(R.color.colorAccent))
-        setThumbColorPressed(resources.getColor(R.color.colorAccent))
+        setThumbColorNormal(Color.TRANSPARENT)
+        setThumbColorPressed(Color.TRANSPARENT)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -44,11 +47,29 @@ class HSVRangeBar : RangeBar {
     }
 
     override fun onDraw(canvas: Canvas) {
+        drawBar(canvas)
+        overrideThumbsDrawing()
+        super.onDraw(canvas)
+    }
+
+    private fun drawBar(canvas: Canvas) {
         val barBitmap = barBitmap
         if (barBitmap != null) {
             canvas.drawBitmap(barBitmap, barLRPadding, 0f, null)
         }
-        super.onDraw(canvas)
+    }
+
+    private fun overrideThumbsDrawing() {
+        leftThumb.paintStroke.color = strokeColor
+        rightThumb.paintStroke.color = strokeColor
+        leftThumb.paintStroke.strokeWidth = strokeWidth
+        rightThumb.paintStroke.strokeWidth = strokeWidth
+        HSV[0] = leftIndex.toFloat()
+        leftThumb.paintNormal.color = Color.HSVToColor(HSV)
+        leftThumb.paintPressed.color = leftThumb.paintNormal.color
+        HSV[0] = rightIndex.toFloat()
+        rightThumb.paintNormal.color = Color.HSVToColor(HSV)
+        rightThumb.paintPressed.color = rightThumb.paintNormal.color
     }
 
     private fun invalidateBarBitmap() {

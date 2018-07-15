@@ -24,7 +24,7 @@
             <com.stedi.randomimagegenerator.app.view.components.HSVRangeBar
                 android:id="@+id/choose_color_fragment_range_bar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="48dp" />
 
         </android.support.constraint.ConstraintLayout>
 
