@@ -8,10 +8,12 @@ import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.other.dp2px
 
 class HSVRangeBar : RangeBar {
-    private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private val HSV = FloatArray(3)
+    private val barPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val ignoredAreasPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private var strokeColor = context.resources.getColor(R.color.colorPrimary)
     private var strokeWidth = context.dp2px(4f)
+
+    private val HSV = FloatArray(3)
 
     private var barBitmap: Bitmap? = null
     private var barWidth = 0
@@ -28,6 +30,7 @@ class HSVRangeBar : RangeBar {
     constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
     init {
+        ignoredAreasPaint.color = context.resources.getColor(R.color.gray_dark_semi_transparent)
         HSV[1] = 100f
         HSV[2] = 100f
         setTickCount(360)
@@ -48,8 +51,22 @@ class HSVRangeBar : RangeBar {
 
     override fun onDraw(canvas: Canvas) {
         drawBar(canvas)
+        drawIgnoredAreas(canvas)
         overrideThumbsDrawing()
         super.onDraw(canvas)
+    }
+
+    private fun drawIgnoredAreas(canvas: Canvas) {
+        val barWidth = barWidth - barLRPadding * 2f
+        val barHeight = barHeight.toFloat()
+
+        val hueStep = Math.max(barWidth / 361f, 1f)
+
+        val leftEnd = hueStep * leftIndex
+        val rightStart = hueStep * (rightIndex + 1)
+
+        canvas.drawRect(barLRPadding, 0f, leftEnd + barLRPadding, barHeight, ignoredAreasPaint)
+        canvas.drawRect(rightStart + barLRPadding, 0f, barWidth + barLRPadding, barHeight, ignoredAreasPaint)
     }
 
     private fun drawBar(canvas: Canvas) {
@@ -83,8 +100,8 @@ class HSVRangeBar : RangeBar {
         var left = 0f
         for (hue in 0..360) {
             HSV[0] = hue.toFloat()
-            paint.color = Color.HSVToColor(HSV)
-            canvas.drawRect(left, 0f, left + hueStep, barHeight, paint)
+            barPaint.color = Color.HSVToColor(HSV)
+            canvas.drawRect(left, 0f, left + hueStep, barHeight, barPaint)
             left += hueStep
         }
 
