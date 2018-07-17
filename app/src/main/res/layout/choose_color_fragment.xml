@@ -13,9 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.constraint.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:paddingBottom="@dimen/common_v_spacing"
             android:paddingLeft="@dimen/common_lr_spacing"
             android:paddingRight="@dimen/common_lr_spacing"
@@ -26,7 +27,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp" />
 
-        </android.support.constraint.ConstraintLayout>
+            <CheckBox
+                android:id="@+id/choose_color_fragment_cb_use_light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/use_light_colors" />
+
+            <CheckBox
+                android:id="@+id/choose_color_fragment_cb_use_dark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="@dimen/common_views_spacing"
+                android:text="@string/use_dark_colors" />
+
+            <CheckBox
+                android:id="@+id/choose_color_fragment_cb_grayscale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="@dimen/common_views_spacing"
+                android:text="@string/grayscale" />
+
+        </LinearLayout>
 
     </ScrollView>
 
