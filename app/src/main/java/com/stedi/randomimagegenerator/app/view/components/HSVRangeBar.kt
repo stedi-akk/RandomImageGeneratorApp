@@ -13,6 +13,7 @@ class HSVRangeBar : RangeBar {
     private var strokeColor = context.resources.getColor(R.color.colorPrimary)
     private var strokeWidth = context.dp2px(4f)
 
+    private val HUE_MAX = 360
     private val HSV = FloatArray(3)
 
     private var barBitmap: Bitmap? = null
@@ -33,7 +34,7 @@ class HSVRangeBar : RangeBar {
         ignoredAreasPaint.color = context.resources.getColor(R.color.gray_dark_semi_transparent)
         HSV[1] = 100f
         HSV[2] = 100f
-        setTickCount(360)
+        setTickCount(HUE_MAX)
         setBarColor(Color.TRANSPARENT)
         setConnectingLineColor(Color.TRANSPARENT)
         setThumbColorNormal(Color.TRANSPARENT)
@@ -60,10 +61,10 @@ class HSVRangeBar : RangeBar {
         val barWidth = barWidth - barLRPadding * 2f
         val barHeight = barHeight.toFloat()
 
-        val hueStep = Math.max(barWidth / 361f, 1f)
+        val hueStep = Math.max(barWidth / (HUE_MAX - 1f), 1f)
 
         val leftEnd = hueStep * leftIndex
-        val rightStart = hueStep * (rightIndex + 1)
+        val rightStart = hueStep * rightIndex
 
         canvas.drawRect(barLRPadding, 0f, leftEnd + barLRPadding, barHeight, ignoredAreasPaint)
         canvas.drawRect(rightStart + barLRPadding, 0f, barWidth + barLRPadding, barHeight, ignoredAreasPaint)
@@ -96,9 +97,10 @@ class HSVRangeBar : RangeBar {
         barBitmap = Bitmap.createBitmap(barWidth.toInt(), barHeight.toInt(), Bitmap.Config.ARGB_8888)
         val canvas = Canvas(barBitmap)
 
-        val hueStep = Math.max(barWidth / 361f, 1f)
+        val hueStep = Math.max(barWidth / (HUE_MAX - 1f), 1f)
+
         var left = 0f
-        for (hue in 0..360) {
+        for (hue in 0..HUE_MAX) {
             HSV[0] = hue.toFloat()
             barPaint.color = Color.HSVToColor(HSV)
             canvas.drawRect(left, 0f, left + hueStep, barHeight, barPaint)
