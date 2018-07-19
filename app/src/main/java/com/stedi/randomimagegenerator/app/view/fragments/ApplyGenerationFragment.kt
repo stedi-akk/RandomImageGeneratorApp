@@ -172,9 +172,12 @@ class ApplyGenerationFragment : GenerationFragment(), ApplyGenerationPresenter.U
             if (!appendRangeSize(this, R.string.height_s, preset.getHeightRange())) {
                 append(getString(R.string.height_s, preset.getHeight().toString()))
             }
-
             append("\n\n")
+            
             append(getString(R.string.count_s, preset.getRealCount().toString()))
+            append("\n\n")
+
+            append(getString(R.string.colors_s_hue, preset.getColorFrom().toString(), preset.getColorTo().toString()))
             append("\n\n")
 
             append(getString(R.string.quality_s_percent, preset.getQuality().format.name, preset.getQuality().qualityValue.toString()))

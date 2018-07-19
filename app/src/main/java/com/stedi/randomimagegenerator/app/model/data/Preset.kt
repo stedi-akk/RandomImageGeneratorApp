@@ -8,6 +8,7 @@ import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
 import com.stedi.randomimagegenerator.Quality
 import com.stedi.randomimagegenerator.Rig
+import com.stedi.randomimagegenerator.RigPalette
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams
 import com.stedi.randomimagegenerator.app.other.toBoolean
@@ -221,6 +222,14 @@ class Preset : Parcelable {
     }
 
     fun getColorTo() = colorTo
+
+    fun getColorsAsPalette(): RigPalette {
+        return RigPalette.hueRange(colorFrom.toFloat(), colorTo.toFloat()).apply {
+            isUseLightColors = useLightColor
+            isUseDarkColors = useDarkColor
+            isBlackAndWhite = isGrayscale
+        }
+    }
 
     override fun toString() = "Preset{" +
             "id=$id" +

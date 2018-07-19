@@ -34,7 +34,7 @@ class HSVRangeBar : RangeBar {
         ignoredAreasPaint.color = context.resources.getColor(R.color.gray_dark_semi_transparent)
         HSV[1] = 100f
         HSV[2] = 100f
-        setTickCount(HUE_MAX)
+        setTickCount(HUE_MAX + 1)
         setBarColor(Color.TRANSPARENT)
         setConnectingLineColor(Color.TRANSPARENT)
         setThumbColorNormal(Color.TRANSPARENT)
@@ -61,7 +61,7 @@ class HSVRangeBar : RangeBar {
         val barWidth = barWidth - barLRPadding * 2f
         val barHeight = barHeight.toFloat()
 
-        val hueStep = Math.max(barWidth / (HUE_MAX - 1f), 1f)
+        val hueStep = Math.max(barWidth / HUE_MAX, 1f)
 
         val leftEnd = hueStep * leftIndex
         val rightStart = hueStep * rightIndex
@@ -97,7 +97,7 @@ class HSVRangeBar : RangeBar {
         barBitmap = Bitmap.createBitmap(barWidth.toInt(), barHeight.toInt(), Bitmap.Config.ARGB_8888)
         val canvas = Canvas(barBitmap)
 
-        val hueStep = Math.max(barWidth / (HUE_MAX - 1f), 1f)
+        val hueStep = Math.max(barWidth / HUE_MAX, 1f)
 
         var left = 0f
         for (hue in 0..HUE_MAX) {

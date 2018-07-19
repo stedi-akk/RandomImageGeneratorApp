@@ -79,6 +79,7 @@
     <string name="count_s_short">x%s</string>
     <string name="quality_s_percent">Quality — %1$s (%2$s%%)</string>
     <string name="quality_s_percent_short">%1$s (%2$s%%)</string>
+    <string name="colors_s_hue">Colors — %1$s-%2$s (HUE)</string>
     <string name="folder_s">Folder — %s</string>
     <string name="vertical">Vertical</string>
     <string name="horizontal">Horizontal</string>

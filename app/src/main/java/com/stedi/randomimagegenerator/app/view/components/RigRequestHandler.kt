@@ -9,6 +9,7 @@ import com.squareup.picasso.Request
 import com.squareup.picasso.RequestHandler
 import com.stedi.randomimagegenerator.ImageParams
 import com.stedi.randomimagegenerator.Quality
+import com.stedi.randomimagegenerator.RigPalette
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.RandomParams
@@ -135,11 +136,11 @@ class RigRequestHandler : RequestHandler() {
         if (targetParams is RandomParams) {
             generator = FourGenerator(generator)
         }
-        return generateBitmap(generator, width, height, Quality.png())
+        return generateBitmap(generator, width, height, Quality.png(), RigPalette.allColors())
     }
 
     private fun generatePreviewBitmap(preset: Preset, width: Int, height: Int): Bitmap? {
-        return generateBitmap(preset.getGeneratorParams().getGenerator(), width, height, preset.getQuality())
+        return generateBitmap(preset.getGeneratorParams().getGenerator(), width, height, preset.getQuality(), preset.getColorsAsPalette())
     }
 
     private fun toInputStream(bitmap: Bitmap, format: Bitmap.CompressFormat, quality: Int): InputStream {
