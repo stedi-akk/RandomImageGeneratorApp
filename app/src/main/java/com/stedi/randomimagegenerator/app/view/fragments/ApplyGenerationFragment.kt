@@ -178,6 +178,9 @@ class ApplyGenerationFragment : GenerationFragment(), ApplyGenerationPresenter.U
             append("\n\n")
 
             append(getString(R.string.colors_s_hue, preset.getColorFrom().toString(), preset.getColorTo().toString()))
+            if (preset.isGrayscale) {
+                append(" (${getString(R.string.grayscale)})")
+            }
             append("\n\n")
 
             append(getString(R.string.quality_s_percent, preset.getQuality().format.name, preset.getQuality().qualityValue.toString()))
