@@ -173,7 +173,7 @@ class ApplyGenerationFragment : GenerationFragment(), ApplyGenerationPresenter.U
                 append(getString(R.string.height_s, preset.getHeight().toString()))
             }
             append("\n\n")
-            
+
             append(getString(R.string.count_s, preset.getRealCount().toString()))
             append("\n\n")
 
