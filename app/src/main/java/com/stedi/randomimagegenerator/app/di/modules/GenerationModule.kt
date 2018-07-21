@@ -30,6 +30,9 @@ class GenerationModule {
         fun provideChooseSizeAndCountPresenter(presenter: ChooseSizeAndCountPresenterImpl): ChooseSizeAndCountPresenter
 
         @Binds
+        fun provideChooseColorPresenter(presenter: ChooseColorPresenterImpl): ChooseColorPresenter
+
+        @Binds
         fun provideChooseSaveOptionsPresenter(presenter: ChooseSaveOptionsPresenterImpl): ChooseSaveOptionsPresenter
     }
 

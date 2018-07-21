@@ -51,6 +51,10 @@ fun Activity.hideInput() {
     }
 }
 
+fun Boolean.toInt() = if (this) 1 else 0
+
+fun Int.toBoolean() = this == 1
+
 fun sleep(millis: Long) {
     try {
         Thread.sleep(millis)

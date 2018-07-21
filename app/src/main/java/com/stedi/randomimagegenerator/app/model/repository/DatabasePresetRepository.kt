@@ -20,7 +20,7 @@ class DatabasePresetRepository(@AppContext context: Context) : OrmLiteSqliteOpen
 
     companion object {
         const val DATABASE_NAME = "presets_database"
-        const val DATABASE_VERSION = 3
+        const val DATABASE_VERSION = 4
     }
 
     override fun onCreate(database: SQLiteDatabase, connectionSource: ConnectionSource) {
@@ -61,6 +61,19 @@ class DatabasePresetRepository(@AppContext context: Context) : OrmLiteSqliteOpen
                 TableUtils.createTableIfNotExists(connectionSource, ThresholdParams::class.java)
                 // new random params
                 TableUtils.createTableIfNotExists(connectionSource, RandomParams::class.java)
+            } catch (e: Exception) {
+                Timber.e(e)
+            }
+        }
+        if (oldVersion < 4) {
+            try {
+                // color settings in preset
+                val dao = getDao<Dao<Preset, Int>, Preset>(Preset::class.java)
+                dao.executeRaw("ALTER TABLE `preset` ADD COLUMN color_from INTEGER DEFAULT 0;")
+                dao.executeRaw("ALTER TABLE `preset` ADD COLUMN color_to INTEGER DEFAULT 360;")
+                dao.executeRaw("ALTER TABLE `preset` ADD COLUMN use_light_color BOOLEAN DEFAULT 1;")
+                dao.executeRaw("ALTER TABLE `preset` ADD COLUMN use_dark_color BOOLEAN DEFAULT 1;")
+                dao.executeRaw("ALTER TABLE `preset` ADD COLUMN is_grayscale BOOLEAN DEFAULT 0;")
             } catch (e: Exception) {
                 Timber.e(e)
             }

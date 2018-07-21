@@ -12,15 +12,16 @@ import com.stepstone.stepper.viewmodel.StepViewModel
 
 class GenerationStepperAdapter(fm: FragmentManager, @ActivityContext context: Context) : AbstractFragmentStepAdapter(fm, context) {
 
-    override fun getCount() = 5
+    override fun getCount() = 6
 
     override fun createStep(@IntRange(from = 0L) position: Int): Step {
         return when (position) {
             0 -> ChooseGeneratorFragment()
             1 -> ChooseEffectFragment()
             2 -> ChooseSizeAndCountFragment()
-            3 -> ChooseSaveOptionsFragment()
-            4 -> ApplyGenerationFragment()
+            3 -> ChooseColorFragment()
+            4 -> ChooseSaveOptionsFragment()
+            5 -> ApplyGenerationFragment()
             else -> throw IllegalStateException("unreachable code")
         }
     }
@@ -34,10 +35,12 @@ class GenerationStepperAdapter(fm: FragmentManager, @ActivityContext context: Co
             1 -> builder.setBackButtonLabel(R.string.generator)
                     .setEndButtonLabel(R.string.size_count).create()
             2 -> builder.setBackButtonLabel(R.string.effect)
-                    .setEndButtonLabel(R.string.quality).create()
+                    .setEndButtonLabel(R.string.color).create()
             3 -> builder.setBackButtonLabel(R.string.size_count)
+                    .setEndButtonLabel(R.string.quality).create()
+            4 -> builder.setBackButtonLabel(R.string.color)
                     .setEndButtonLabel(R.string.summary).create()
-            4 -> builder.setBackButtonLabel(R.string.configure)
+            5 -> builder.setBackButtonLabel(R.string.configure)
                     .setEndButtonLabel(R.string.summary)
                     .setEndButtonVisible(false).create()
             else -> throw IllegalStateException("unreachable code")

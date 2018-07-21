@@ -12,6 +12,8 @@ interface GenerationComponent {
 
     fun inject(fragmentModel: ChooseSizeAndCountFragmentModel)
 
+    fun inject(fragmentModel: ChooseColorFragmentModel)
+
     fun inject(fragmentModel: ChooseSaveOptionsFragmentModel)
 
     fun inject(fragmentModel: ApplyGenerationFragmentModel)

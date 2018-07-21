@@ -21,13 +21,15 @@
     <string name="generator">Generator</string>
     <string name="n_choose_generator">1. Choose generator:</string>
     <string name="effect">Effect</string>
+    <string name="color">Color</string>
+    <string name="n_choose_color">4. Choose color:</string>
     <string name="n_choose_effect">2. Choose effect:</string>
     <string name="size_count">Size/count</string>
     <string name="n_choose_size_count">3. Choose size/count:</string>
     <string name="quality">Quality</string>
-    <string name="n_choose_quality">4. Choose quality:</string>
+    <string name="n_choose_quality">5. Choose quality:</string>
     <string name="summary">Summary</string>
-    <string name="n_summary">5. Summary:</string>
+    <string name="n_summary">6. Summary:</string>
     <string name="configure">Configure</string>
     <string name="new_preset">New preset</string>
     <string name="preset_edit">Edit preset</string>
@@ -77,6 +79,7 @@
     <string name="count_s_short">x%s</string>
     <string name="quality_s_percent">Quality — %1$s (%2$s%%)</string>
     <string name="quality_s_percent_short">%1$s (%2$s%%)</string>
+    <string name="colors_s_hue">Colors — HUE %1$s-%2$s</string>
     <string name="folder_s">Folder — %s</string>
     <string name="vertical">Vertical</string>
     <string name="horizontal">Horizontal</string>
@@ -92,4 +95,7 @@
     <string name="saved_into">Saved into:\n%s</string>
     <string name="failed_to_save">Failed to save</string>
     <string name="preview_info">The preview does not take the specified dimensions into account</string>
+    <string name="use_light_colors">Use light colors</string>
+    <string name="use_dark_colors">Use dark colors</string>
+    <string name="grayscale">Grayscale</string>
 </resources>
