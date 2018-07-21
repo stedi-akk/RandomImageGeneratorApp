@@ -14,7 +14,6 @@ import com.stedi.randomimagegenerator.app.presenter.interfaces.ChooseColorPresen
 import com.stedi.randomimagegenerator.app.view.components.BaseViewModel
 import com.stedi.randomimagegenerator.app.view.components.HSVRangeBar
 import com.stedi.randomimagegenerator.app.view.fragments.base.GenerationFragment
-import timber.log.Timber
 import javax.inject.Inject
 
 class ChooseColorFragmentModel : BaseViewModel<ChooseColorFragment>() {
@@ -61,12 +60,13 @@ class ChooseColorFragment : GenerationFragment(),
     }
 
     override fun onIndexChangeListener(rangeBar: RangeBar?, left: Int, right: Int) {
-        Timber.d("OnRangeBarChangeListener left=$left right=$right")
         viewModel.presenter.setColorRange(left, right)
     }
 
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
-        Timber.d("onCheckedChanged cbUseLight=${cbUseLight.isChecked} cbUseDark=${cbUseDark.isChecked} cbGrayscale=${cbGrayscale.isChecked}")
+        if (buttonView === cbGrayscale) {
+            onGrayscaleChanged()
+        }
         viewModel.presenter.setColorExtras(cbUseLight.isChecked, cbUseDark.isChecked, cbGrayscale.isChecked)
     }
 
@@ -85,11 +85,26 @@ class ChooseColorFragment : GenerationFragment(),
         cbUseDark.jumpDrawablesToCurrentState()
         cbGrayscale.jumpDrawablesToCurrentState()
         setCheckBoxListener(this)
+        onGrayscaleChanged()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         viewModel.presenter.onDetach()
+    }
+
+    private fun onGrayscaleChanged() {
+        if (cbGrayscale.isChecked) {
+            setCheckBoxListener(null)
+            cbUseLight.isChecked = true
+            cbUseDark.isChecked = true
+            cbUseLight.isEnabled = false
+            cbUseDark.isEnabled = false
+            setCheckBoxListener(this)
+        } else {
+            cbUseLight.isEnabled = true
+            cbUseDark.isEnabled = true
+        }
     }
 
     private fun setCheckBoxListener(listener: CompoundButton.OnCheckedChangeListener?) {
