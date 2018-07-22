@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:text="@string/orientation"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/colored_noise_params_dialog_sp_type_title"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
@@ -27,15 +26,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/type"
-        app:layout_constraintLeft_toRightOf="@+id/colored_noise_params_dialog_sp_orientation_title"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/colored_noise_params_dialog_sp_type"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/colored_noise_params_dialog_sp_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@+id/colored_noise_params_dialog_sp_type_title"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/colored_noise_params_dialog_sp_type_title" />
 
     <TextView

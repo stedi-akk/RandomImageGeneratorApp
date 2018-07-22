@@ -114,12 +114,12 @@ fun ColoredNoiseGenerator.Orientation.nameRes(): Int {
 @StringRes
 fun ColoredNoiseGenerator.Type.nameRes(): Int {
     return when (this) {
-        ColoredNoiseGenerator.Type.TYPE_1 -> R.string.type_1
-        ColoredNoiseGenerator.Type.TYPE_2 -> R.string.type_2
-        ColoredNoiseGenerator.Type.TYPE_3 -> R.string.type_3
-        ColoredNoiseGenerator.Type.TYPE_4 -> R.string.type_4
-        ColoredNoiseGenerator.Type.TYPE_5 -> R.string.type_5
-        ColoredNoiseGenerator.Type.TYPE_6 -> R.string.type_6
+        ColoredNoiseGenerator.Type.TYPE_1 -> R.string.noise_type_1
+        ColoredNoiseGenerator.Type.TYPE_2 -> R.string.noise_type_2
+        ColoredNoiseGenerator.Type.TYPE_3 -> R.string.noise_type_3
+        ColoredNoiseGenerator.Type.TYPE_4 -> R.string.noise_type_4
+        ColoredNoiseGenerator.Type.TYPE_5 -> R.string.noise_type_5
+        ColoredNoiseGenerator.Type.TYPE_6 -> R.string.noise_type_6
         ColoredNoiseGenerator.Type.RANDOM -> R.string.random
     }
 }
