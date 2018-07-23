@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.di.ActivityContext
 import com.stedi.randomimagegenerator.app.view.fragments.*
+import com.stedi.randomimagegenerator.app.view.fragments.base.StubGenerationFragment
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter
 import com.stepstone.stepper.viewmodel.StepViewModel
@@ -16,12 +17,12 @@ class GenerationStepperAdapter(fm: FragmentManager, @ActivityContext context: Co
 
     override fun createStep(@IntRange(from = 0L) position: Int): Step {
         return when (position) {
-            0 -> ChooseGeneratorFragment()
-            1 -> ChooseEffectFragment()
-            2 -> ChooseSizeAndCountFragment()
-            3 -> ChooseColorFragment()
-            4 -> ChooseSaveOptionsFragment()
-            5 -> ApplyGenerationFragment()
+            0 -> StubGenerationFragment.of(ChooseGeneratorFragment::class.java)
+            1 -> StubGenerationFragment.of(ChooseEffectFragment::class.java)
+            2 -> StubGenerationFragment.of(ChooseSizeAndCountFragment::class.java)
+            3 -> StubGenerationFragment.of(ChooseColorFragment::class.java)
+            4 -> StubGenerationFragment.of(ChooseSaveOptionsFragment::class.java)
+            5 -> StubGenerationFragment.of(ApplyGenerationFragment::class.java)
             else -> throw IllegalStateException("unreachable code")
         }
     }
