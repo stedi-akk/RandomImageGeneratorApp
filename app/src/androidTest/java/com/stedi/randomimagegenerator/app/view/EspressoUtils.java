@@ -37,7 +37,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
 final class EspressoUtils {
-    private static List<String> GENERATION_STEPS = Arrays.asList("Generator", "Effect", "Size/count", "Quality", "Summary", "Configure");
+    private static List<String> GENERATION_STEPS = Arrays.asList("Generator", "Effect", "Size/count", "Color", "Quality", "Summary", "Configure");
 
     private EspressoUtils() {
     }
@@ -108,7 +108,7 @@ final class EspressoUtils {
         int toIndex = GENERATION_STEPS.indexOf(to);
         if (fromIndex < 0 || toIndex < 0 || fromIndex == toIndex)
             return;
-        if (fromIndex < toIndex && toIndex != 5) {
+        if (fromIndex < toIndex && toIndex != GENERATION_STEPS.size()) {
             for (int i = fromIndex + 1; i <= toIndex; i++) {
                 onView(allOf(withId(R.id.ms_stepNextButton), withText(GENERATION_STEPS.get(i)),
                         withParent(allOf(withId(R.id.ms_bottomNavigation),
@@ -116,9 +116,9 @@ final class EspressoUtils {
                         .perform(click());
             }
         } else {
-            fromIndex = toIndex == 5 || fromIndex == 4 ? 6 : fromIndex;
+            fromIndex = to.equals("Configure") || from.equals("Summary") ? GENERATION_STEPS.size() : fromIndex;
             for (int i = fromIndex - 1; i >= toIndex; i--) {
-                if (i == 3 || i == 4)
+                if (i == GENERATION_STEPS.indexOf("Quality") || i == GENERATION_STEPS.indexOf("Summary"))
                     continue;
                 onView(allOf(withId(R.id.ms_stepPrevButton), withText(GENERATION_STEPS.get(i)),
                         withParent(allOf(withId(R.id.ms_bottomNavigation),
@@ -129,14 +129,14 @@ final class EspressoUtils {
     }
 
     static void savePresetAndComebackToStep(@NonNull String name, @NonNull String step) {
-        navigateInGenerationSteps(step, GENERATION_STEPS.get(GENERATION_STEPS.size() - 2));
+        navigateInGenerationSteps(step, "Summary");
 
         savePreset(name);
 
         onView(withId(R.id.home_activity_recycler_view))
                 .perform(actionOnItemAtPosition(0, click()));
 
-        navigateInGenerationSteps(GENERATION_STEPS.get(GENERATION_STEPS.size() - 2), step);
+        navigateInGenerationSteps("Summary", step);
     }
 
     static void savePreset(@NonNull String name) {
