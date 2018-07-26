@@ -25,6 +25,9 @@ class ChooseColorPresenterImpl @Inject constructor(
     }
 
     override fun setColorRange(colorFrom: Int, colorTo: Int) {
+        if (colorFrom !in 0..360 || colorTo !in 0..360) {
+            return
+        }
         candidate.setColorFrom(colorFrom)
         candidate.setColorTo(colorTo)
     }

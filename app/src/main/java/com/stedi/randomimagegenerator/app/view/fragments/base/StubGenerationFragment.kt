@@ -14,7 +14,7 @@ import timber.log.Timber
 // for lazy GenerationFragment creation (with StepperLayout)
 class StubGenerationFragment : BaseFragment(), BlockingStep {
 
-    private val FRAGMENT_SHOW_DELAY = 200L
+    private val FRAGMENT_SHOW_DELAY = 100L
 
     companion object {
         private const val KEY_CLAZZ_NAME = "KEY_CLAZZ_NAME"

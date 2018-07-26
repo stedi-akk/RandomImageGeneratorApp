@@ -206,7 +206,7 @@ class Preset : Parcelable {
     fun getHeightRange(): IntArray? = heightRange
 
     fun setColorFrom(colorFrom: Int) {
-        if (colorFrom < 0 || colorFrom > 360) {
+        if (colorFrom !in 0..360) {
             throw IllegalArgumentException("color must be in 0..360 range")
         }
         this.colorFrom = colorFrom
@@ -215,7 +215,7 @@ class Preset : Parcelable {
     fun getColorFrom() = colorFrom
 
     fun setColorTo(colorTo: Int) {
-        if (colorTo < 0 || colorTo > 360) {
+        if (colorTo !in 0..360) {
             throw IllegalArgumentException("color must be in 0..360 range")
         }
         this.colorTo = colorTo
