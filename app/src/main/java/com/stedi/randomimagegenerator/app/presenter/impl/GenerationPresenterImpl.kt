@@ -2,10 +2,7 @@ package com.stedi.randomimagegenerator.app.presenter.impl
 
 import android.graphics.Bitmap
 import com.squareup.otto.Subscribe
-import com.stedi.randomimagegenerator.DefaultFileNamePolicy
-import com.stedi.randomimagegenerator.ImageParams
-import com.stedi.randomimagegenerator.Quality
-import com.stedi.randomimagegenerator.Rig
+import com.stedi.randomimagegenerator.*
 import com.stedi.randomimagegenerator.app.di.DefaultScheduler
 import com.stedi.randomimagegenerator.app.di.UiScheduler
 import com.stedi.randomimagegenerator.app.model.data.Preset
@@ -91,6 +88,7 @@ class GenerationPresenterImpl @Inject constructor(
                         setHeightRange(this[0], this[1], this[2])
                     }
 
+                    setPalette(preset.getColorsAsPalette())
                     setQuality(preset.getQuality())
                     setFileNamePolicy(DefaultFileNamePolicy())
                     setFileSavePath(preset.pathToSave)
@@ -189,11 +187,11 @@ class GenerationPresenterImpl @Inject constructor(
 }
 
 // simple one-shot generation
-fun generateBitmap(generator: Generator, width: Int, height: Int, quality: Quality): Bitmap? {
+fun generateBitmap(generator: Generator, width: Int, height: Int, quality: Quality, palette: RigPalette): Bitmap? {
     var result: Bitmap? = null
 
     Rig.Builder().setGenerator(generator)
-            .setCount(1).setFixedSize(width, height).setQuality(quality)
+            .setCount(1).setFixedSize(width, height).setQuality(quality).setPalette(palette)
             .setCallback(object : GenerateCallback {
                 override fun onGenerated(imageParams: ImageParams, bitmap: Bitmap) {
                     result = bitmap

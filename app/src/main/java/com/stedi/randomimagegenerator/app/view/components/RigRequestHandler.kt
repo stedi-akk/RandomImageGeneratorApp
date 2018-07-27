@@ -9,6 +9,7 @@ import com.squareup.picasso.Request
 import com.squareup.picasso.RequestHandler
 import com.stedi.randomimagegenerator.ImageParams
 import com.stedi.randomimagegenerator.Quality
+import com.stedi.randomimagegenerator.RigPalette
 import com.stedi.randomimagegenerator.app.model.data.GeneratorType
 import com.stedi.randomimagegenerator.app.model.data.Preset
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.RandomParams
@@ -60,28 +61,29 @@ class FourGenerator(private val target: Generator) : Generator {
 class RigRequestHandler : RequestHandler() {
 
     companion object {
-        private val previewRequestMap = ConcurrentHashMap<Uri, Preset>()
+        private val presetRequestMap = ConcurrentHashMap<Uri, Preset>()
 
-        fun makePreviewUri(preset: Preset, width: Int, height: Int): Uri {
-            val previewPreset = preset.makeCopy()
-            val uri = Uri.parse("rig:/preview/${previewPreset.hashCode()}_${System.currentTimeMillis()}?width=$width&height=$height")
-            previewRequestMap.put(uri, previewPreset)
+        fun makeFromPreset(target: Preset, width: Int, height: Int, uniqueUri: Boolean, useFourGenerator: Boolean): Uri {
+            val preset = target.makeCopy()
+            val pathSegment = if (uniqueUri) "${target.hashCode()}_${System.currentTimeMillis()}" else "${target.hashCode()}"
+            val uri = Uri.parse("rig:/preset/$pathSegment?width=$width&height=$height&useFourGenerator=$useFourGenerator")
+            presetRequestMap.put(uri, preset)
             return uri
         }
 
-        fun makeThumbnailUri(mainType: GeneratorType, secondType: GeneratorType?, width: Int, height: Int): Uri {
-            return Uri.parse("rig:/thumbnail/$mainType/$secondType?width=$width&height=$height")
+        fun makeFromGenerator(mainType: GeneratorType, secondType: GeneratorType?, width: Int, height: Int): Uri {
+            return Uri.parse("rig:/generator/$mainType/$secondType?width=$width&height=$height")
         }
     }
 
     override fun canHandleRequest(data: Request): Boolean {
-        return data.uri.scheme == "rig" && !data.uri.pathSegments.isEmpty() && data.uri.queryParameterNames.size == 2
+        return data.uri.scheme == "rig" && !data.uri.pathSegments.isEmpty() && data.uri.queryParameterNames.size >= 2
     }
 
     override fun load(request: Request, networkPolicy: Int): Result {
         return when (getRequestType(request.uri)) {
-            "thumbnail" -> RequestHandler.Result(generateThumbnail(request.uri), Picasso.LoadedFrom.MEMORY)
-            "preview" -> RequestHandler.Result(generatePreview(request.uri), Picasso.LoadedFrom.MEMORY)
+            "generator" -> RequestHandler.Result(generateFromGenerator(request.uri), Picasso.LoadedFrom.MEMORY)
+            "preset" -> RequestHandler.Result(generateFromPreset(request.uri), Picasso.LoadedFrom.MEMORY)
             else -> throw IllegalStateException("unknown request type")
         }
     }
@@ -90,26 +92,26 @@ class RigRequestHandler : RequestHandler() {
         return uri.pathSegments[0]
     }
 
-    private fun generateThumbnail(uri: Uri): Bitmap {
+    private fun generateFromGenerator(uri: Uri): Bitmap {
         val generatorParams = createGeneratorParams(uri)
         val size = getSize(uri)
-        val bitmap = generateThumbnailBitmap(generatorParams, size[0], size[1])
+        val bitmap = generateBitmap(generatorParams, size[0], size[1])
         if (bitmap == null) {
-            throw IOException("failed to generate thumbnail bitmap")
+            throw IOException("failed to generate bitmap from generator")
         }
         return bitmap
     }
 
-    private fun generatePreview(uri: Uri): Source {
-        val preset: Preset? = previewRequestMap.get(uri)
+    private fun generateFromPreset(uri: Uri): Source {
+        val preset: Preset? = presetRequestMap.get(uri)
         if (preset == null) {
             throw IllegalStateException("request map does not have required preset")
         }
-        previewRequestMap.remove(uri)
+        presetRequestMap.remove(uri)
         val size = getSize(uri)
-        val bitmap = generatePreviewBitmap(preset, size[0], size[1])
+        val bitmap = generatePresetBitmap(preset, size[0], size[1], useFourGenerator(uri))
         if (bitmap == null) {
-            throw IOException("failed to generate preview bitmap")
+            throw IOException("failed to generate preset bitmap")
         }
         return Okio.source(toInputStream(bitmap, preset.getQuality().format, preset.getQuality().qualityValue))
     }
@@ -128,18 +130,30 @@ class RigRequestHandler : RequestHandler() {
         return arrayOf(uri.getQueryParameter("width").toInt(), uri.getQueryParameter("height").toInt())
     }
 
-    private fun generateThumbnailBitmap(generatorParams: GeneratorParams, width: Int, height: Int): Bitmap? {
-        // show 4 images at once if RandomParams is requested
+    private fun useFourGenerator(uri: Uri): Boolean = uri.getQueryParameter("useFourGenerator") == "true"
+
+    private fun generateBitmap(generatorParams: GeneratorParams, width: Int, height: Int): Bitmap? {
+        val generator = wrapRandomParams(generatorParams)
+        return generateBitmap(generator, width, height, Quality.png(), RigPalette.allColors())
+    }
+
+    private fun generatePresetBitmap(preset: Preset, width: Int, height: Int, useFourGenerator: Boolean): Bitmap? {
+        val generator = if (useFourGenerator) {
+            wrapRandomParams(preset.getGeneratorParams())
+        } else {
+            preset.getGeneratorParams().getGenerator()
+        }
+        return generateBitmap(generator, width, height, preset.getQuality(), preset.getColorsAsPalette())
+    }
+
+    // show FourGenerator if RandomParams is requested
+    private fun wrapRandomParams(generatorParams: GeneratorParams): Generator {
         var generator = generatorParams.getGenerator()
         val targetParams = (generatorParams as? EffectGeneratorParams)?.target ?: generatorParams
         if (targetParams is RandomParams) {
             generator = FourGenerator(generator)
         }
-        return generateBitmap(generator, width, height, Quality.png())
-    }
-
-    private fun generatePreviewBitmap(preset: Preset, width: Int, height: Int): Bitmap? {
-        return generateBitmap(preset.getGeneratorParams().getGenerator(), width, height, preset.getQuality())
+        return generator
     }
 
     private fun toInputStream(bitmap: Bitmap, format: Bitmap.CompressFormat, quality: Int): InputStream {

@@ -16,9 +16,7 @@ import butterknife.ButterKnife
 import com.squareup.picasso.Picasso
 import com.stedi.randomimagegenerator.app.R
 import com.stedi.randomimagegenerator.app.di.ActivityContext
-import com.stedi.randomimagegenerator.app.model.data.GeneratorType
 import com.stedi.randomimagegenerator.app.model.data.Preset
-import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams
 import com.stedi.randomimagegenerator.app.other.dim2px
 import com.stedi.randomimagegenerator.app.other.formatTime
 import com.stedi.randomimagegenerator.app.view.components.RigRequestHandler
@@ -80,13 +78,6 @@ class PresetsAdapter(
         val quality = preset.getQuality()
         holder.preset = preset
 
-        val generatorParams = preset.getGeneratorParams()
-        val mainType = generatorParams.getType()
-        var secondType: GeneratorType? = null
-        if (generatorParams is EffectGeneratorParams) {
-            secondType = generatorParams.target.getType()
-        }
-
         holder.cardView.setCardBackgroundColor(if (preset === pendingPreset) context.resources.getColor(R.color.pending_preset) else Color.WHITE)
         holder.tvName.text = preset.name
         holder.tvFolder.text = context.getString(R.string.storage_s, preset.pathToSave.removePrefix(storageDir.absolutePath))
@@ -95,7 +86,7 @@ class PresetsAdapter(
         holder.tvCount.text = context.getString(R.string.count_s_short, preset.getRealCount().toString())
         holder.btnAction.setText(if (preset === pendingPreset) R.string.save else R.string.generate)
 
-        Picasso.get().load(RigRequestHandler.makeThumbnailUri(mainType, secondType, imageSize, imageSize))
+        Picasso.get().load(RigRequestHandler.makeFromPreset(preset, imageSize, imageSize, false, true))
                 .placeholder(context.resources.getDrawable(R.drawable.ic_texture_rig))
                 .into(holder.imageView)
 
