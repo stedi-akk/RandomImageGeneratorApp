@@ -44,15 +44,15 @@ class StubGenerationFragment : BaseFragment(), BlockingStep {
         val fragment = getGenerationFragment()
         if (fragment == null) {
             Handler().postDelayed({
-                if (isResumed && getGenerationFragment() == null) {
-                    try {
+                try {
+                    if (getGenerationFragment() == null) {
                         childFragmentManager.beginTransaction()
                                 ?.add(R.id.stub_step_fragment_container, instantiate(activity, clazzName), clazzName)
-                                ?.commitNow()
+                                ?.commitNowAllowingStateLoss()
                         getGenerationFragment()?.onSelected()
-                    } catch (e: Exception) {
-                        Timber.e(e)
                     }
+                } catch (e: Exception) {
+                    Timber.e(e)
                 }
             }, FRAGMENT_SHOW_DELAY)
         } else {

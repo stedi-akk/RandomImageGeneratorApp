@@ -47,8 +47,8 @@ class ColoredNoiseParamsDialog : ButterKnifeDialogFragment(), ColoredNoiseParams
             setPositiveButton(R.string.ok, null)
             setTitle(getString(R.string.s_parameters, getString(GeneratorType.COLORED_NOISE.nameRes())))
             setView(inflateAndBind(R.layout.colored_noise_params_dialog))
-            spOrientation.adapter = ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, ColoredNoiseGenerator.Orientation.values().map { getString(it.nameRes()) })
-            spType.adapter = ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, TYPES_SORTED.map { getString(it.nameRes()) })
+            spOrientation.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, ColoredNoiseGenerator.Orientation.values().map { getString(it.nameRes()) })
+            spType.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, TYPES_SORTED.map { getString(it.nameRes()) })
         }
 
         val dialog = builder.create()

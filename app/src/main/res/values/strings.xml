@@ -86,9 +86,9 @@
     <string name="noise_type_1">Lines</string>
     <string name="noise_type_2">Pixelation</string>
     <string name="noise_type_3">Lines (soft)</string>
-    <string name="noise_type_4">TV noise</string>
-    <string name="noise_type_5">TV noise (soft)</string>
-    <string name="noise_type_6">Lines + TV noise</string>
+    <string name="noise_type_4">TV</string>
+    <string name="noise_type_5">TV (soft)</string>
+    <string name="noise_type_6">Lines + TV</string>
     <string name="s_permission_required">%s permission is required</string>
     <string name="storage_s">/Storage%s</string>
     <string name="preview">Preview</string>

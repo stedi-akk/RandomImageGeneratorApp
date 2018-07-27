@@ -110,6 +110,7 @@ final class EspressoUtils {
             return;
         if (fromIndex < toIndex && toIndex != GENERATION_STEPS.size()) {
             for (int i = fromIndex + 1; i <= toIndex; i++) {
+                CommonKt.sleep(200);
                 onView(allOf(withId(R.id.ms_stepNextButton), withText(GENERATION_STEPS.get(i)),
                         withParent(allOf(withId(R.id.ms_bottomNavigation),
                                 withParent(withId(R.id.generation_steps_activity_stepper)))), isDisplayed()))
@@ -120,6 +121,7 @@ final class EspressoUtils {
             for (int i = fromIndex - 1; i >= toIndex; i--) {
                 if (i == GENERATION_STEPS.indexOf("Quality") || i == GENERATION_STEPS.indexOf("Summary"))
                     continue;
+                CommonKt.sleep(200);
                 onView(allOf(withId(R.id.ms_stepPrevButton), withText(GENERATION_STEPS.get(i)),
                         withParent(allOf(withId(R.id.ms_bottomNavigation),
                                 withParent(withId(R.id.generation_steps_activity_stepper)))), isDisplayed()))
