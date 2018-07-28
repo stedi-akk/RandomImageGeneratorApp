@@ -8,8 +8,11 @@ import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
 import com.stedi.randomimagegenerator.Quality
 import com.stedi.randomimagegenerator.Rig
+import com.stedi.randomimagegenerator.RigPalette
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.EffectGeneratorParams
 import com.stedi.randomimagegenerator.app.model.data.generatorparams.base.GeneratorParams
+import com.stedi.randomimagegenerator.app.other.toBoolean
+import com.stedi.randomimagegenerator.app.other.toInt
 import java.util.*
 
 @DatabaseTable(tableName = "preset")
@@ -57,6 +60,21 @@ class Preset : Parcelable {
 
     @DatabaseField(columnName = "height_range", dataType = DataType.SERIALIZABLE)
     private var heightRange: IntArray? = null
+
+    @DatabaseField(columnName = "color_from")
+    private var colorFrom = 0
+
+    @DatabaseField(columnName = "color_to")
+    private var colorTo = 360
+
+    @DatabaseField(columnName = "use_light_color")
+    var useLightColor = true
+
+    @DatabaseField(columnName = "use_dark_color")
+    var useDarkColor = true
+
+    @DatabaseField(columnName = "is_grayscale")
+    var isGrayscale = false
 
     // OrmLite required
     constructor()
@@ -187,6 +205,32 @@ class Preset : Parcelable {
 
     fun getHeightRange(): IntArray? = heightRange
 
+    fun setColorFrom(colorFrom: Int) {
+        if (colorFrom !in 0..360) {
+            throw IllegalArgumentException("color must be in 0..360 range")
+        }
+        this.colorFrom = colorFrom
+    }
+
+    fun getColorFrom() = colorFrom
+
+    fun setColorTo(colorTo: Int) {
+        if (colorTo !in 0..360) {
+            throw IllegalArgumentException("color must be in 0..360 range")
+        }
+        this.colorTo = colorTo
+    }
+
+    fun getColorTo() = colorTo
+
+    fun getColorsAsPalette(): RigPalette {
+        return RigPalette.hueRange(colorFrom.toFloat(), colorTo.toFloat()).apply {
+            isUseLightColors = useLightColor
+            isUseDarkColors = useDarkColor
+            isBlackAndWhite = isGrayscale
+        }
+    }
+
     override fun toString() = "Preset{" +
             "id=$id" +
             ", timestamp=$timestamp" +
@@ -199,6 +243,11 @@ class Preset : Parcelable {
             ", height=$height" +
             ", widthRange=${Arrays.toString(widthRange)}" +
             ", heightRange=${Arrays.toString(heightRange)}" +
+            ", colorFrom=$colorFrom" +
+            ", colorTo=$colorTo" +
+            ", useLightColor=$useLightColor" +
+            ", useDarkColor=$useDarkColor" +
+            ", isGrayscale=$isGrayscale" +
             '}'
 
     override fun equals(other: Any?): Boolean {
@@ -214,6 +263,11 @@ class Preset : Parcelable {
         if (getQuality().format != preset.getQuality().format) return false
         if (getQuality().qualityValue != preset.getQuality().qualityValue) return false
         if (pathToSave != preset.pathToSave) return false
+        if (colorFrom != preset.colorFrom) return false
+        if (colorTo != preset.colorTo) return false
+        if (useLightColor != preset.useLightColor) return false
+        if (useDarkColor != preset.useDarkColor) return false
+        if (isGrayscale != preset.isGrayscale) return false
         return if (!Arrays.equals(widthRange, preset.widthRange)) false else Arrays.equals(heightRange, preset.heightRange)
     }
 
@@ -227,6 +281,11 @@ class Preset : Parcelable {
         result = 31 * result + count
         result = 31 * result + width
         result = 31 * result + height
+        result = 31 * result + colorFrom
+        result = 31 * result + colorTo
+        result = 31 * result + useLightColor.toInt()
+        result = 31 * result + useDarkColor.toInt()
+        result = 31 * result + isGrayscale.toInt()
         result = 31 * result + Arrays.hashCode(widthRange)
         result = 31 * result + Arrays.hashCode(heightRange)
         return result
@@ -246,6 +305,11 @@ class Preset : Parcelable {
         dest.writeInt(this.count)
         dest.writeInt(this.width)
         dest.writeInt(this.height)
+        dest.writeInt(this.colorFrom)
+        dest.writeInt(this.colorTo)
+        dest.writeInt(this.useLightColor.toInt())
+        dest.writeInt(this.useDarkColor.toInt())
+        dest.writeInt(this.isGrayscale.toInt())
         dest.writeIntArray(this.widthRange)
         dest.writeIntArray(this.heightRange)
     }
@@ -261,6 +325,11 @@ class Preset : Parcelable {
         this.count = parcel.readInt()
         this.width = parcel.readInt()
         this.height = parcel.readInt()
+        this.colorFrom = parcel.readInt()
+        this.colorTo = parcel.readInt()
+        this.useLightColor = parcel.readInt().toBoolean()
+        this.useDarkColor = parcel.readInt().toBoolean()
+        this.isGrayscale = parcel.readInt().toBoolean()
         this.widthRange = parcel.createIntArray()
         this.heightRange = parcel.createIntArray()
     }

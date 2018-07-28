@@ -114,7 +114,7 @@ class PreviewActivity : BaseActivity(), PreviewGenerationPresenter.UIImpl {
     private fun generateNewPreviewImage() {
         val imageSize = Math.min(imageView.width, imageView.height)
         showProgressBar(true)
-        Picasso.get().load(RigRequestHandler.makePreviewUri(preset, imageSize, imageSize))
+        Picasso.get().load(RigRequestHandler.makeFromPreset(preset, imageSize, imageSize, true, false))
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .noPlaceholder()
                 .into(imageView, object : Callback.EmptyCallback() {

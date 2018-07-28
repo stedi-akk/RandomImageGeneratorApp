@@ -26,6 +26,16 @@ class ColoredNoiseParamsDialog : ButterKnifeDialogFragment(), ColoredNoiseParams
     @BindView(R.id.colored_noise_params_dialog_sp_type) lateinit var spType: Spinner
     @BindView(R.id.colored_noise_params_dialog_et_value) lateinit var etValue: EditText
 
+    private val TYPES_SORTED = arrayOf(
+            ColoredNoiseGenerator.Type.TYPE_4,
+            ColoredNoiseGenerator.Type.TYPE_5,
+            ColoredNoiseGenerator.Type.TYPE_1,
+            ColoredNoiseGenerator.Type.TYPE_3,
+            ColoredNoiseGenerator.Type.TYPE_6,
+            ColoredNoiseGenerator.Type.TYPE_2,
+            ColoredNoiseGenerator.Type.RANDOM
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity as BaseActivity).activityComponent.inject(this)
@@ -37,8 +47,8 @@ class ColoredNoiseParamsDialog : ButterKnifeDialogFragment(), ColoredNoiseParams
             setPositiveButton(R.string.ok, null)
             setTitle(getString(R.string.s_parameters, getString(GeneratorType.COLORED_NOISE.nameRes())))
             setView(inflateAndBind(R.layout.colored_noise_params_dialog))
-            spOrientation.adapter = ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, ColoredNoiseGenerator.Orientation.values().map { getString(it.nameRes()) })
-            spType.adapter = ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, ColoredNoiseGenerator.Type.values().map { getString(it.nameRes()) })
+            spOrientation.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, ColoredNoiseGenerator.Orientation.values().map { getString(it.nameRes()) })
+            spType.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, TYPES_SORTED.map { getString(it.nameRes()) })
         }
 
         val dialog = builder.create()
@@ -56,7 +66,7 @@ class ColoredNoiseParamsDialog : ButterKnifeDialogFragment(), ColoredNoiseParams
     }
 
     override fun showType(type: ColoredNoiseGenerator.Type) {
-        spType.setSelection(type.ordinal)
+        spType.setSelection(TYPES_SORTED.indexOf(type))
     }
 
     override fun showValue(value: Int) {
@@ -78,7 +88,7 @@ class ColoredNoiseParamsDialog : ButterKnifeDialogFragment(), ColoredNoiseParams
 
     private fun apply() {
         presenter.setOrientation(ColoredNoiseGenerator.Orientation.values()[spOrientation.selectedItemPosition])
-        presenter.setType(ColoredNoiseGenerator.Type.values()[spType.selectedItemPosition])
+        presenter.setType(TYPES_SORTED[spType.selectedItemPosition])
 
         val input = etValue.text.toString()
 
